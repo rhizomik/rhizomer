@@ -1,0 +1,258 @@
+#metadata table {
+	width: 100%;
+}
+#metadata .input-error, .semform .input-error {
+	background: #FFCCCC;
+}
+#metadata .yui-ac-input, .semform .yui-ac-input {
+	position: relative;
+}
+.yui-skin-sam .yui-tt .bd {
+    color: black !important;
+    background-color: lightgrey !important;
+    font-family: "Lucida Sans Unicode" !important;
+    border: 1px solid gray !important;
+}
+
+#metadata .yui-ac-container {
+	width:200%;
+}
+#metadata .ac-label {
+	display:inline;
+	margin-right:5px;
+}
+#metadata .ac-uri {
+	color:lightGrey;
+	font-size:xx-small;
+	font-style:italic;
+}
+#metadata .ac-range {
+	color:gray;
+	display:inline;
+	font-size:x-small;
+	text-align:right;
+}
+#metadata input[type="text"].literal, .semform input[type="text"].literal {
+	width: 82%;
+}
+#metadata select[name="lang"] {
+	width: 15%;
+        float: right;
+        margin-right: 1px;
+}
+#metadata input[type="text"], #metadata input[type="password"], #metadata select, #metadata textarea, .semform input[type="text"], .semform input[type="password"], .semform select, .semform textarea {
+	width: 99%;
+}
+#metadata input, #metadata select, #metadata textarea, .semform input, .semform select, .semform textarea {
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode";
+	border-width: 1px;
+	border-style: solid;
+	border-color: #CCCCCC;
+}
+#metadata img {
+	vertical-align: top;
+}
+#waitImage {
+	clear: all;
+	position: relative;
+	left: 50%;
+	width: 16px;
+	margin-left: -16px;
+	margin-top: 10px;
+}
+#metadata a, .rdf2html a {
+	text-decoration:none;
+	color:#50408E;
+}
+#metadata a, .rdf2html a {
+	color:#50408E;
+}
+#metadata a.browse, .rdf2html a.browse {
+	text-decoration: underline;
+}
+#metadata a.browse:visited, .rdf2html a.browse:visited {
+	color:#80708E;
+}
+#metadata p, .rdf2html p {
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode" ;
+	text-align: justify;
+} 
+#metadata ol, .rdf2html ol {
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode" ;
+	text-align: justify;
+}
+#metadata ul, .rdf2html ul {
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode" ;
+	text-align: justify;
+}
+#metadata td, #metadata th, .rdf2html td, .rdf2html th {
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode";
+	vertical-align: baseline;
+}
+#metadata td.actions {
+	text-align: right;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: lightgrey;
+}
+#metadata .description .actions a {
+	font-size: 10px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-right: 1px;
+	padding-left: 1px;
+}
+#metadata a.specific {
+	color: #DB4105;
+	font-weight: bold;
+}
+#metadata .moreResults {
+	margin-top: 10px;
+	text-align: center;
+}
+#metadata .moreResults a {
+	color: #DB4105;
+	font-weight: bold;
+}
+.edition {
+	float: right;
+	font-size: 9px;
+	margin-top: 4px;
+	margin-right: 4px;
+	margin-bottom: 0px;
+}
+.description {
+	background-color: white;
+	border: 1px solid;
+	//clear: both;
+	margin-top: 4px;
+}
+.description table {
+	font-size: 10px;
+	width: 100%;
+}
+.description table table{
+	border-width: 1px;
+	border-style: solid;
+	border-color: lightgrey;
+}
+.description th {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: lightgrey;
+}
+.description td {
+	vertical-align: top;
+}
+.description td:last-child {
+	width: 100%;
+}
+.description .object-type {
+	display: inline-block;
+}
+.description .property-object {
+	display: inline;
+}
+.description th .property-object {
+	display: inline;
+}
+.description .connector {
+	font-style: italic;
+	display: inline-block;
+	margin-right: 0.4em;
+}
+.description .connector-center {
+	font-style: italic;
+	display: inline-block;
+	margin-right: 0.4em;
+	margin-left: 0.4em;
+}
+.description tr[class="http://www.w3.org/2000/01/rdf-schema#label"] {
+        display: none;
+}
+//.description tr[class="http://www.w3.org/2002/07/owl#intersectionOf"] {
+//        display: none;
+//}
+.description tr[class="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"] td a.describe {
+        display: none;
+}
+.description tr[class="http://rhizomik.net/rhizomer/services#hasService"] {
+        display: none;
+}
+.description tr[class="http://swrc.ontoware.org/ontology#authors"] {
+        display: none;
+}
+.description tr[class="http://purl.org/dc/elements/1.1/creator"] {
+        display: none;
+}
+.browser {
+	font-size: 10px;
+	text-align: center;
+}
+#logo a {
+	text-decoration: none;
+	color:#80708E;
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode";
+}
+#footlogo {
+	position: relative;
+	left: 50%;
+	width: 200px;
+	margin-left: -100px;
+	margin-top: 20px;
+}
+img
+{
+	border: 0;
+}
+.list-object, .list-object div
+{
+    display: inline;
+}
+.list-object .connector
+{
+	font-style: italic;
+	display: inline-block;
+}
+.rdfaslist .browser, .rdfaslist .edition, .rdfaslist .actions
+{
+	display: none;
+}
+.rdfaslist .description {
+	background-color: #f0f0f0;
+	border: none;
+	clear: both;
+	margin-top: 4px;
+}
+.rdfaslist .description table {
+	font-size: 10px;
+	width: 100%;
+}
+.rdfaslist .description table table{
+	border-width: 1px;
+	border-style: solid;
+	border-color: lightgrey;
+}
+.rdfaslist .description th {
+	border-bottom-width: 0px;
+	text-align: left;
+}
+.rdfaslist .description th a:first-child,
+.rdfaslist .description th .connector
+{
+	display: none;
+}
+.rdfaslist .description td .connector
+{
+	display: inline;
+}
+.rdfaslist .description td .property-object
+{
+	display: inline-block;
+}

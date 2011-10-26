@@ -1,0 +1,45 @@
+<script type="text/javascript">
+//<![CDATA[
+
+    var rhz = null;
+	YAHOO.util.Event.addListener(window, "load", startRhizomer);
+
+	function startRhizomer()
+	{
+		// The default get metadata for current URI (and its HTML representation)
+		var location = window.document.location;
+		var current = location.protocol+"//"+location.host+location.pathname;
+		var alternativeQuery = null;
+
+		// Define alternative query for the base path, get RSS items
+		if (location.search=="" &&
+			location.pathname =="<%=request.getContextPath()%>/html/")
+			alternativeQuery = "DESCRIBE ?r WHERE {?r a <http://purl.org/rss/1.0/item>; <http://purl.org/dc/elements/1.1/date> ?d} ORDER BY DESC(?d) LIMIT 3";
+
+		// Define Rhizomer endpoint
+		var endpoint = '<%=request.getScheme()+"://"+request.getServerName()+
+							":"+request.getServerPort()+request.getContextPath()%>';
+							
+		rhz = new rhizomik.Rhizomer(endpoint,
+			document.getElementById("metadata"), alternativeQuery);
+	}
+//]]>
+</script>
+
+<div id="left">
+	<div id="metadata">
+		<%= request.getAttribute("metadata") %>
+	</div>
+	<div id="metadatafoot">
+			<%
+			    String requestURL = request.getRequestURL().toString();
+			 %>
+			<a href="http://www.w3.org/2007/08/pyRdfa/extract?uri=<%=requestURL%>">
+		        <img src="<%=request.getContextPath()%>/images/sw-rdfa-grey.png" alt="XHTML+RDFa" width="80" height="15"/> 
+		    </a>
+	        <img src="<%=request.getContextPath()%>/images/sw-sparql-grey.png" alt="SPARQL" width="80" height="15"/>
+	        <a href="<%=request.getContextPath()%>/copyright">
+	            <img src="<%=request.getContextPath()%>/images/cc-some_rights.png" alt="Creative Commons some rights reserved" width="80" height="15"/>       
+	        </a>
+	</div>
+</div>

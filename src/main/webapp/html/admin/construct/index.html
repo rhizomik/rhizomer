@@ -1,0 +1,30 @@
+<h1>SPARQL Construct Query</h1>
+<form method="get" action="rhizomer" id="sparql" name="sparql">
+<textarea wrap="soft" cols="70" rows="18" id="query" name="query">PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX swrc: &lt;http://swrc.ontoware.org/ontology#&gt;
+PREFIX vcard: &lt;http://www.w3.org/2006/vcard/ns#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX rss: &lt;http://purl.org/rss/1.0/&gt;
+
+# Make all properties whose URI contains "LeaseReceivable" subproperties of the specified property
+
+CONSTRUCT { ?p rdfs:subPropertyOf <http://rhizomik.net/ontologies/bizontos/xbrl-edgar/adbe-20080530.owl#InvestmentLeaseReceivable> }
+WHERE {
+   ?r ?p ?o .
+   FILTER (REGEX(STR(?p), ".*LeaseReceivable.*") || REGEX(STR(?p), ".*InvestmentInLeaseReceivable.*"))
+}
+</textarea>
+<!-- select name="format" id="format">
+<option value="application/rdf+xml">RDF/XML</option>
+<option value="application/n-triples">N-Triples</option>
+<option selected="selected" value="application/n3">N3</option>
+</select-->
+<input type="button" value="Construct" name="button"
+onClick="javascript:rhz.sparqlRDF(document.sparql.query.value, function(out) {document.sparql.dump.value=out}); return false;">
+<textarea wrap="soft" cols="70" rows="18" id="dump" name="dump"></textarea>
+<input type="button" value="Load" name="button"
+onClick="javascript:rhz.postRDF(document.sparql.dump.value, 'application/rdf+xml'); return false;">
+</form>

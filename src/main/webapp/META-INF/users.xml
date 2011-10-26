@@ -1,0 +1,3 @@
+<tomcat-users>
+  <user name="rhizomer" password="rhizomer" roles="rhizomer" />
+</tomcat-users>

@@ -1,0 +1,47 @@
+#content .license2text a {
+	text-decoration: none;
+}
+.license2text {
+	margin: 20px;
+}
+.license2text .description {
+	border: 0;
+	background-color: inherit;
+	clear: none;
+}
+.license2text div {
+	display: inline;
+}
+.license2text div div.property-object {
+	display: inline;
+}
+.license2text div[class="http://rhizomik.net/ontologies/2008/05/copyrightonto.owl#theme"] {
+	display: block;
+}
+.license2text div[class="http://rhizomik.net/ontologies/2008/05/copyrightonto.owl#theme"] > div.property-object {
+	display: list-item;
+	list-style-position: outside;
+	list-style-type: disc;
+	margin-left: 25px;
+}
+.license2text .connector {
+	font-style: italic;
+	display: inline;
+}
+#logo a {
+	text-decoration: none;
+	color:#80708E;
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode";
+}
+#footlogo {
+	position: relative;
+	left: 50%;
+	width: 200px;
+	margin-left: -100px;
+	margin-top: 20px;
+}
+img
+{
+	border: 0;
+}

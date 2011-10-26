@@ -1,0 +1,59 @@
+#calendarcontainer {
+	padding: 10px;
+}
+
+#calendarmenu {
+	position: absolute;
+}
+
+#calendarpicker button {
+	background:
+		url(http://developer.yahoo.com/yui/examples/button/assets/calendar_icon.gif)
+		center center no-repeat;
+	text-align: left;
+	text-indent: -10em;
+	overflow: hidden; *
+	margin-left: 10em; /* For IE */ *
+	padding: 0 3em; /* For IE */
+	white-space: nowrap;
+}
+
+#dateF {
+	border: none;
+	padding: .5em;
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode";
+}
+
+#dtendF {
+	border: none;
+	padding: .5em;
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode";
+}
+
+#dtstartF {
+	border: none;
+	padding: .5em;
+	font-size: 10px;
+	font-family: "Lucida Sans Unicode";
+}
+
+#buttonS {
+	background-color: #191970;
+	color: #FFFFFF;
+	border-color: #778899;
+}
+
+#calendarpicker {
+	vertical-align: baseline;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+div.yuimenu .bd {
+	zoom: normal;
+}

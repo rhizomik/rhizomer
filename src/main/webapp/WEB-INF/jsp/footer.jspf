@@ -1,0 +1,13 @@
+<div id="wikifoot">
+	<div id="wikifootlogo">
+		<a href="http://rhizomik.net">
+			<img src="<%=request.getContextPath()%>/images/rhizomer.small.png" alt="Rhizomik"/><br/>Powered by Rhizomik</a>
+	</div>
+</div>
+
+</div> <!-- Finish <div id="content">  -->
+
+</div> <!-- Finish <div id="body">  -->
+
+</body>
+</html>

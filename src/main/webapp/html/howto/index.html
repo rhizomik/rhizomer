@@ -1,0 +1,96 @@
+<h1>Rhizomer Howto</h1>
+<p><a href="http://rhizomik.net/rhizomer/"><strong>Rhizomer</strong></a> gives support to <strong>7 typical tasks </strong><strong>of Semantic Web</strong> <strong>end-users</strong>. Here, end-users stand for users with no or limited knowledge about the Semantic Web. Particularly, we don't include domain experts, which might neither have knowledge about the Semantic Web but whose main task is to work with ontologies. The end-user tasks supported by Rhizomer are:</p>
+<ul>
+    <li><a href="#Search"><b>Search</b></a>: pose a <strong>semantic queries using HTML forms</strong>, which are dynamically generated and user customisable, and <strong>obtain </strong>resource descriptions rendered as <strong>HTML</strong>.</li>
+    <li><a href="#Browse"><b>Browse</b></a>: navigate through the graph of data retrieving <strong>fragments of manageable size </strong>and rendering them <strong>as interactive HTML</strong>.</li>
+    <li><a href="#Annotate"><b>Annotate</b></a>: provide <strong>new semantic metadata</strong> describing a resource, <strong>or edit</strong> existing one, <strong>using HTML forms that assist </strong>the user during this process.</li>
+    <li><a href="#Mashup"><b>Mashup</b></a>: mix two or more pieces of metadata about <strong>common resources</strong>, <strong>or </strong>resources <strong>similar in some sense</strong>, e.g. they all have geographical coordinates or are situated in time and can be placed together in a map or timeline respectively.<a href="#Map"><b><br />
+    </b></a></li>
+    <li><a href="#Share"><b>Share</b></a>: <strong>upload, update and delete</strong> pieces of <strong>content</strong> (HTML, images, videos, documents, etc.).</li>
+    <li><a href="#Map"><b>Map</b></a>: define simple <strong>mappings between concepts</strong> from different ontologies.</li>
+    <li><a href="#Transact"><b>Transact</b></a>: generically, this task includes any <strong>user action</strong> that change the state of a real-world entity or of a resource in a system <strong>outside Rhizomer</strong>. Rhizomer features mechanisms that facilitate integrating external <strong>web services</strong>.</li>
+</ul>
+<h2><a name="Search"></a>Search</h2>
+<p>With Rhizomer, users can perform <strong>semantic queries</strong> without any knowledge of semantic query languages. All that they need to know is to <strong>fill query forms</strong>. These forms are <strong>generated dynamically</strong> from the kind of resource they are interested in, more concretely <strong>from the properties specific for that kind of resource</strong>. Moreover, <strong>users can add other properties</strong> that without being specific, might also apply to resources of that kind. Each property corresponds to a form input that the user can fill in order to retrieve all resources with that property valued with the input filler.</p>
+<p>[Work in progress] <em>Alternatively, the criteria for form generation might be to select those properties more frequently used in order to describe resources of the kind selected by the user. Or, in the case of a query for any kind of resource, those properties more commonly used.</em></p>
+<p>For advanced users, there is also a query form that makes it possible to pose queries based on the semantic query language SPARQL, the <a href="/admin/query/">Admin Query Form</a>.</p>
+<p>Query <strong>results</strong> are those resources satisfying the search criteria. However, result pages show more information than just the identifiers of the <strong>retrieved resources</strong>. In order to provide more context to the user, each resource is presented <strong>together with its description</strong>. The user does not face these descriptions as raw data, the user is presented an <strong>HTML rendering</strong> of the descriptions where all identifiers are substituted by human-readable labels.</p>
+<div id="description" style="width: 250px; position: relative; left: 50%; margin-left: -125px;">
+<table>
+    <tbody>
+        <tr>
+            <th colspan="2"><a class="browse" href="../../%7Erosa" title="Browse http://rhizomik.net/~rosa">Rosa Gil Iranzo</a> a <a class="describe" href="../../?query=DESCRIBE%20%3Chttp://swrc.ontoware.org/ontology%23AssociateProfessor%3E" onclick="javascript:rhz.describeResource('http://swrc.ontoware.org/ontology#AssociateProfessor'); return false;" title="Describe http://swrc.ontoware.org/ontology#AssociateProfessor">AssociateProfessor</a></th>
+        </tr>
+        <tr>
+            <td><a class="describe" href="../../?query=DESCRIBE%20%3Chttp://www.w3.org/2001/vcard-rdf/3.0%23ADR%3E" onclick="javascript:rhz.describeResource('http://www.w3.org/2001/vcard-rdf/3.0#ADR'); return false;" title="Describe http://www.w3.org/2001/vcard-rdf/3.0#ADR">Address</a></td>
+            <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <th colspan="2">a <a class="describe" href="../../?query=DESCRIBE%20%3Chttp://www.w3.org/2001/vcard-rdf/3.0%23work%3E" onclick="javascript:rhz.describeResource('http://www.w3.org/2001/vcard-rdf/3.0#work'); return false;" title="Describe http://www.w3.org/2001/vcard-rdf/3.0#work">work</a></th>
+                    </tr>
+                    <tr>
+                        <td><a class="describe" href="../../?query=DESCRIBE%20%3Chttp://www.w3.org/2001/vcard-rdf/3.0%23Locality%3E" onclick="javascript:rhz.describeResource('http://www.w3.org/2001/vcard-rdf/3.0#Locality'); return false;" title="Describe http://www.w3.org/2001/vcard-rdf/3.0#Locality">Locality</a></td>
+                        <td>Lleida</td>
+                    </tr>
+                    <tr>
+                        <td><a class="describe" href="../../?query=DESCRIBE%20%3Chttp://www.w3.org/2001/vcard-rdf/3.0%23Street%3E" onclick="javascript:rhz.describeResource('http://www.w3.org/2001/vcard-rdf/3.0#Street'); return false;" title="Describe http://www.w3.org/2001/vcard-rdf/3.0#Street">Street</a></td>
+                        <td>Jaume II, 69</td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+        <tr>
+            <td><a class="describe" href="../../?query=DESCRIBE%20%3Chttp://swrc.ontoware.org/ontology%23affiliation%3E" onclick="javascript:rhz.describeResource('http://swrc.ontoware.org/ontology#affiliation'); return false;" title="Describe http://swrc.ontoware.org/ontology#affiliation">affiliation</a></td>
+            <td><a class="describe" href="../../?query=DESCRIBE%20%3Chttp://www.diei.udl.es%3E" onclick="javascript:rhz.describeResource('http://www.diei.udl.es'); return false;" title="Describe http://www.diei.udl.es">Universitat de Lleida</a></td>
+        </tr>
+        <tr>
+            <td><a class="describe" href="../../?query=DESCRIBE%20%3Chttp://www.w3.org/2000/01/rdf-schema%23label%3E" onclick="javascript:rhz.describeResource('http://www.w3.org/2000/01/rdf-schema#label'); return false;" title="Describe http://www.w3.org/2000/01/rdf-schema#label">label</a></td>
+            <td>Rosa Gil</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<p style="text-align: center;"><strong>Fig. 1</strong>. HTML rendering of the description shown in Fig. 1</p>
+<h2><a name="Browse"></a>Browse</h2>
+<p>Users can also <strong>explore </strong>the <strong>descriptions </strong>of the resources managed by Rhizomer <strong>navigating </strong>through <strong>the links that connect them</strong>. In practice, Rhizomer becomes a Semantic Web browser, which can even carry the user from descriptions stored in Rhizomer to the Web of <a target="_blank" href="http://linkeddata.org/">Linked Data</a>. This makes it possible to reuse descriptions from DBPedia, e.g. a description of <a href="?query=DESCRIBE%20%3Chttp://dbpedia.org/resource/Semantic_Web%3E">Semantic_Web</a>.</p>
+<p>The Semantic Web is the web of data, compared to the Web that is the web of documents. Consequently, it is not possible to browse it by jumping from document to document following links. The Semantic Web is a <a href="http://dig.csail.mit.edu/breadcrumbs/node/215" target="_blank">Giant Global Graph</a> that must be broken down into manageable pieces that constitute the <strong>browsing steps</strong>.</p>
+<p>The Rhizomer approach similar to <strong>Concise Bounded Descriptions</strong> (<a target="_blank" href="http://www.w3.org/Submission/CBD/">CBD</a>). A CBD is a portion of the graph that includes the resource the user is currently browsing together with all its properties, their values and all the descriptions for those resources that do not have an identifier and depend on this one in order to be identified, called anonymous resources. CBDs are augmented with <strong>all the available labels</strong> for the involved resources, see Fig. 2. These labels are used in order to produce a more usable HTML rendering of the data.</p>
+<p style="text-align: center;"><img width="334" height="241" src="/html/rhizomer/images/rgi-fragment.png" alt="Diagram showing a graph fragment for a resource built as a CDB plus resource labels" /></p>
+<p style="text-align: center;"><strong>Fig 2</strong>. Diagram showing the browsing fragment for the resource &quot;http://rhizomik.net/~rosa&quot; based on a CBD <br />
+plus the available labels for all the involved resources, in this case &quot;Universitat de Lleida&quot;</p>
+<p>From a resource description, it is possible to <strong>browse the descriptions of all the resources linked from it</strong>. In order to facilitate browsing and avoid the restriction imposed by the fact that links are unidirectional, It is also possible to <strong>browse the descriptions of all the resources that link to the current resource</strong>, the &quot;referrers&quot;.</p>
+<p>Another browsing help is that Rhizomer keeps track of the browsing steps so it is possible to use the<strong> &quot;back&quot; and &quot;forward&quot;</strong> browser buttons. Browsing steps are cached at the browser in order to improve responsiveness.</p>
+<p>Finally, advanced users have access to a special page that makes it possible to retrieve all the stored descriptions, the <a href="/admin/dump/">Dump admin page</a>.</p>
+<h2><a name="Annotate"></a>Annotate</h2>
+<p>With Rhizomer it is possible to <strong>add new descriptions, to edit existing ones and to delete them using web forms</strong>. From any description, an HTML form can be <strong>dynamically generated</strong> with one input field for each property. When editing, each input field is preloaded with the current property value, which can be edited or erased in order to edit the description. It is also possible to add new properties following a similar approach to that used to dynamically build a search form, see the <a href="#Search">Search</a> task description.</p>
+<p>It is also possible to create a new description for a resource starting from zero. In this case, the users starts by characterising the kind of thing that resource is. Then, the same approach in order to select new properties for that resource is followed. Each new property becomes an input field that the user can fill in order to provide a value for that property.</p>
+<p>For advanced users, it is possible to load a bunch of descriptions serialised in different formats using the <a href="/admin/load/">Load admin form</a>.</p>
+<h2><a name="Mashup"></a>Mashup</h2>
+<p>A mashup in the Rhizomer context is when <strong>the user merges different descriptions</strong>, which might refer to the same resources or not.&nbsp; When merging different resources the objective will usually be to show the aggregation in conjunction in the form of maps or timelines. When mixing two or more pieces of metadata about common resources, the common objective will be to obtain new descriptions that aggregate the available data for each resource.</p>
+<p>It is also possible, for advanced users, to use Construct SPARQL queries in order to perform customised mashup through the <a href="/admin/load/">Construct admin page</a>.</p>
+<h2><a name="Share"></a>Share</h2>
+<p>Rhizomer can be used in order to <strong>upload content</strong> and make it available online, for instance documents, images, videos, etc. A especial case are <strong>HTML pages</strong>, which can be edited using a WYSIWYG editor and created following a wiki-style, i.e. type the URL of the new page in order to create it. The WYSIWYG editor (currently FCKEditor) features an uploader that facilitates managing content.</p>
+<p>We are also working in a plugin infrastructure, with plugins specialised on specific content types,&nbsp; that will help users produce semantic annotations for the pieces of content they upload to Rhizomer.</p>
+<h2><a name="Map"></a>Map</h2>
+<p>The objective of this task is to establish <strong>semantic mappings among classes and properties from different ontologies</strong> that can then help driving data mashup. The mappings are defined using the same semantic metadata edition features than in the Annotate task. The user edits one of the involved classes or properties description and defines the appropriate relation that captures the semantics of the mapping and points to the other class or property.</p>
+<p>It is also possible, for advanced users, to bulk-load their mappings using the <a href="/admin/load/">Load admin form</a>.</p>
+<h2><a name="Transact"></a>Transact</h2>
+<p>It is possible to associate resources (depending on their kind or properties) to web <strong>services responsible for performing actions outside Rhizomer </strong>boundaries. This <strong>web services</strong> are <strong>dynamically integrated</strong> with Rhizomer <strong>based on their semantic descriptions</strong>. Once the description is loaded, the service is associated to all resources of the type defined as the service input. The service will get the resource RDF description as input and Rhizomer will be prepared to process the kind of output defined in the service description.</p>
+<p>Generically, this kind of tasks are called <strong>Transact </strong>and common examples are user tasks that have effects outside the boundaries of information systems. For instance, to buy a book or to transfer money between bank accounts. From the point of view of Rhizomer, the range of tasks that might be considered a Transact is much more wider as long as they involve services outside Rhizomer. For instance, to show resources in a map using Google Maps or&nbsp; to play a song using an online player.</p>
+<p>However, some of this services might also give support to any other of the tasks previously introduces, apart from being a Transact from the point of view of Rhizomer as a system. As the <strong>focus is placed on tasks from the point of view of the user</strong>, Transacts should be analysed on a case by case basis and characterised as one of the previous tasks if it is possible.&nbsp;</p>
+<p>Currently these are the available services in Rhizomer:</p>
+<ul>
+    <li><strong>Map</strong>: place resources with lat/long in a Google Map (mashup).</li>
+    <li><strong>Timeline</strong>: place resource with start/end or date in a SIMILE Timeline (mashup).</li>
+    <li><strong>Play</strong>: listen to audio resources with a semantically annotated transcript, while the transcript is shown and links generated to browse associated concepts (browse).</li>
+</ul>
+<p>Planned services:</p>
+<ul>
+    <li>Sindice: look for more metadata about the resource (search).</li>
+    <li>Graph: place a set of resources in a 2D graph using two of their property values (mashup).</li>
+    <li>Pipes: pass the resource RDF&nbsp;through a Semantic Pipe (depends on the particular semantic pipe).</li>
+    <li>Access or Copy content taking into account copyright licensing terms based on the Copyright Ontology (transact).</li>
+    <li>More to come...</li>
+</ul>

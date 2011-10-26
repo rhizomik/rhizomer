@@ -1,0 +1,22 @@
+<h1>Load Data</h1>
+<p>Paste here data in RDF/XML, N3 or N-Triples syntax (alternatively, paste the URL pointing to data):</p>
+<form method="post" action="rhizomer" id="load" name="load">
+<textarea wrap="soft" cols="70" rows="18" id="data" name="data">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix swrc: &lt;http://swrc.ontoware.org/ontology#&gt; .
+@prefix vcard: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rss: &lt;http://purl.org/rss/1.0/&gt; .
+
+</textarea>
+<select name="format" id="format">
+<option value="application/rdf+xml">RDF/XML</option>
+<option value="application/n-triples">N-Triples</option>
+<option selected="selected" value="application/n3">N3</option>
+</select>
+<input type="button" value="Submit" name="button"
+onClick="javascript:rhz.postRDF(document.load.data.value, document.load.format.options[document.load.format.selectedIndex].value); return false;">
+</form>
+<p><a href="http://ebiquity.umbc.edu/_file_directory_/resources/94.pdf">Semantic Web reference card</a> including help for RDF/XML, N3 and N-Triples formats.</p>

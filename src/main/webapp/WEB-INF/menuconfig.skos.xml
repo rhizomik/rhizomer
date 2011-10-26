@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+	<numitemsglobal>8</numitemsglobal>
+	<numitemslocal>15</numitemslocal>
+	<sort>alphabetical</sort>
+	<sort>instances</sort>
+
+	<blacklist>
+	</blacklist>	
+</config>

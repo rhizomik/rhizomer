@@ -1,0 +1,23 @@
+<h1>SPARQL Query</h1>
+<form method="get" action="rhizomer" id="sparql" name="sparql">
+<textarea wrap="soft" cols="70" rows="18" id="query" name="query">PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX swrc: &lt;http://swrc.ontoware.org/ontology#&gt;
+PREFIX vcard: &lt;http://www.w3.org/2001/vcard-rdf/3.0#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX rss: &lt;http://purl.org/rss/1.0/&gt;
+
+# Describe all resource whose rdfs:label begins with "R" ordered ascending by label
+
+DESCRIBE ?r
+WHERE {
+   ?r rdfs:label ?l .
+   FILTER (REGEX(?l, "^R.*"))
+}
+ORDER BY ASC(?l)
+</textarea>
+<input type="button" value="Query" name="button"
+onClick="javascript:rhz.sparql(document.sparql.query.value); return false;">
+</form>

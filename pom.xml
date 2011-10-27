@@ -5,7 +5,7 @@
   <artifactId>rhizomer</artifactId>
   <packaging>war</packaging>
   <version>0.4</version>
-  <name>rhizomer Maven Webapp</name>
+  <name>Rhizomer</name>
   <url>http://maven.apache.org</url>
     <build>
         <finalName>rhizomer</finalName>
@@ -142,7 +142,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <name>Rhizomer</name>
     <repositories>
         <repository>
             <id>javax.net repo</id>

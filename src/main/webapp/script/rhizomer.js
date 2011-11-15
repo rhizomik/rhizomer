@@ -105,7 +105,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		dhtmlHistory.add("history"+hex_md5(query), {query: query, response: response});
 	};
 	// Send query and add result to history
-	function query(expression, callback, contentype)
+	function queryHistory(expression, callback, contentype)
 	{
 		//Escape '#' and '&'
 		expression = expression.replace(/#/g, "%23").replace(/&/g, "%26");
@@ -150,7 +150,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		else // It is a reload, reissue the last query
 		{
 			if (last!=null)
-				query(last.query, function(out) {transform.rdf2html(out, target, last.query);});
+				queryHistory(last.query, function(out) {transform.rdf2html(out, target, last.query);});
 		}
 	};
 		
@@ -190,7 +190,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	self.sparql = function(sparqlQuery)
 	{
 		self.showMessage("<p>Querying...</p>\n"+waitImage);
-		query(encodeURIComponent(sparqlQuery),
+		queryHistory(encodeURIComponent(sparqlQuery),
 			function(out) {self.showMessage("<p>Showing...</p>\n"+waitImage); transform.rdf2html(out, target, sparqlQuery);});
 	};
 	// List descriptions (full or summary) for resources selected by the input query, like SELECT ?r WHERE...
@@ -208,7 +208,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		
 		self.showMessage("<p>List resources...</p>\n"+waitImage);
 		
-		query("CONSTRUCT {?r a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
+		queryHistory("CONSTRUCT {?r a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
 			  "              <http://www.w3.org/2000/01/rdf-schema#comment> ?c. \n"+
 			  "           ?type <http://www.w3.org/2000/01/rdf-schema#label> ?lt} \n"+
 			  "WHERE { ?r a ?type \n" +
@@ -239,7 +239,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	// Like listResources but without keeping history
 	self.listResourcesNoHistory = function(sparqlSelectQuery, offset)
 	{
-		if (mode=="describe")
+		if (browseMode=="describe")
 			self.describeResourcesNoHistory(sparqlSelectQuery, offset);
 		else
 			self.constructResourcesNoHistory(sparqlSelectQuery, offset);
@@ -280,14 +280,14 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	{
 		if (!offset) offset = "0";
 		
-		query = "SELECT ?r WHERE {?r ?p <"+escape(uri)+">}";
+		query = "SELECT DISTINCT ?r WHERE { ?r ?p <"+uri+"> . }";
 		self.listResources(query, offset);
 	};
 	// SPARQL DESCRIBE query for the input URI
 	self.describeResource = function(uri)
 	{
 		self.showMessage("<p>Describe "+uri+"</p>\n"+waitImage);
-		query("DESCRIBE <"+escape(uri)+">",
+		queryHistory("DESCRIBE <"+escape(uri)+">",
 			function(out) {self.showMessage("<p>Showing...</p>\n"+waitImage); transform.rdf2html(out, target);});
 		contentTabs.set('activeIndex', 0); // Show the first tab, where data is loaded
 	};
@@ -297,13 +297,16 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		if (!offset) offset = "0";
 		
 		self.showMessage("<p>Describe resources...</p>\n"+waitImage);
-		  
-		query("DESCRIBE ?r \n"+
-				  "WHERE { ?r a ?type \n" +
-				  "        { "+sparqlSelectQuery+" LIMIT "+step+" OFFSET "+offset+" } } ",
-			function(out) {self.showMessage("<p>Showing...</p>\n"+waitImage); 
-			               transform.rdf2html(out, target); 
-			               self.listMore("describeResources", sparqlSelectQuery, offset); });
+		
+		var describeQuery = "DESCRIBE ?r WHERE { ?r a ?type \n { " +
+			sparqlSelectQuery + " LIMIT " + step + " OFFSET " + offset + " } } ";
+		
+		queryHistory(encodeURIComponent(describeQuery),
+			  function(out) 
+			  {		self.showMessage("<p>Showing...</p>\n"+waitImage); 
+			        transform.rdf2html(out, target); 
+			        self.listMore("describeResources", sparqlSelectQuery, offset); }
+			 );
 		contentTabs.set('activeIndex', 0); // Show the first tab, where data is loaded
 	};
 	// Like describeResources but without keeping history

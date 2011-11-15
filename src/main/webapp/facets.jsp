@@ -66,7 +66,7 @@
 			<li class="selected"><a href="#tab1"><em>Data</em></a></li>
 		</ul>            
 		<div class="yui-content">
-		
+		<div>
 			<div id="active_facets">
 			
 			</div>
@@ -85,5 +85,6 @@
 					<img src="<%=request.getContextPath()%>/images/cc-some_rights.png" alt="Creative Commons some rights reserved" width="80" height="15"/>       
 				</a>
 			</div>
+		</div>
 		</div>
 	</div>

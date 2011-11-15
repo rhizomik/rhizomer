@@ -16,6 +16,7 @@
 
     class TimeLineEvent
     {
+	    private static final long serialVersionUID = 1L;
     	public String id;
 		public String start;
     	public String end;

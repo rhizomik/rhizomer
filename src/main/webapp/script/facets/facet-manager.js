@@ -148,7 +148,7 @@ facet.FacetManager = function (){
 			"?r a <"+facetURI+"> . ";
 		query += self.makeRestrictions();
 		query += "}";
-		rhz.listResourcesNoHistory(query);
+		rhz.listResources(query);
 		self.reloadProperties();		
 	};	
 	

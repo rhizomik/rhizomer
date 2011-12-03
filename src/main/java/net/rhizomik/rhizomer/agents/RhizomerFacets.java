@@ -25,14 +25,12 @@ import net.rhizomik.rhizomer.autoia.manager.FacetManager;
 
 public class RhizomerFacets extends HttpServlet {
 
-	private ServletConfig config;
 	private FacetManager fm;
 	private String filePath;
 	
-	public void init(ServletConfig config) throws ServletException
+	public void init() throws ServletException
     {   
-        super.init(config);
-        this.config = config;
+      ServletConfig config = getServletConfig();
 		String path = config.getServletContext().getRealPath("WEB-INF");
 		
 		String datasetId = "";
@@ -48,47 +46,54 @@ public class RhizomerFacets extends HttpServlet {
 		
 		filePath = path+="/"+file;
 		System.out.println(filePath);
+                
+                try {
+			fm = new FacetManager(filePath);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+                        throw new ServletException(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+                        throw new ServletException(e);
+		}
 
     }
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");
-		try {
-			this.fm = new FacetManager(filePath);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-        
-		String mode = request.getParameter("mode");
-		String facetURI = request.getParameter("facetURI");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
 
-	    ArrayList<String> omitProperties = new ArrayList<String>();
-	    //omitProperties.add("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-	    omitProperties.add("http://www.w3.org/2000/01/rdf-schema#subClassOf");
-	    omitProperties.add("http://www.w3.org/2002/07/owl#intersectionOf");
-/*
-	    omitProperties.add("http://xmlns.com/foaf/0.1/page");
-	    omitProperties.add("http://data.linkedmdb.org/resource/movie/filmid");
-	    omitProperties.add("http://data.linkedmdb.org/resource/movie/performance");
-	    omitProperties.add("http://data.linkedmdb.org/resource/movie/film_cut");
-*/
+        String mode = request.getParameter("mode");
+        String facetURI = request.getParameter("facetURI");
 
-		FacetManager fm;
-		try {
-			fm = new FacetManager(filePath);
-			FacetProperties properties = fm.getProperties(facetURI, omitProperties);
-			StringBuffer propertiesOut = new StringBuffer();
-			propertiesOut = properties.printJSON();    		    
-			StringBuffer output = new StringBuffer();
-			output.append("{\"properties\": "+propertiesOut+ "}");
-			PrintWriter out = response.getWriter();
-			out.println(output);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+        FacetProperties properties;
+
+        try {
+            if ("facets".equals(mode)) {
+                ArrayList<String> omitProperties = new ArrayList<String>();
+                //omitProperties.add("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+                omitProperties.add("http://www.w3.org/2000/01/rdf-schema#subClassOf");
+                omitProperties.add("http://www.w3.org/2002/07/owl#intersectionOf");
+                /*
+                omitProperties.add("http://xmlns.com/foaf/0.1/page");
+                omitProperties.add("http://data.linkedmdb.org/resource/movie/filmid");
+                omitProperties.add("http://data.linkedmdb.org/resource/movie/performance");
+                omitProperties.add("http://data.linkedmdb.org/resource/movie/film_cut");
+                 */
+                properties = fm.getProperties(facetURI, omitProperties);
+            } else if ("charts".equals(mode)) {
+                properties = fm.getNumericProperties(facetURI);
+            } else {
+                throw new ServletException("Bad mode: " + mode);
+            }
+            
+            StringBuffer propertiesOut = properties.printJSON();
+            StringBuffer output = new StringBuffer();
+            output.append("{\"properties\": " + propertiesOut + "}");
+            PrintWriter out = response.getWriter();
+            out.println(output);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

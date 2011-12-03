@@ -1,0 +1,28 @@
+#chart-viewer {
+/*    width: 675px;*/
+    height: 500px;
+}
+
+#chart-form * {
+    vertical-align: top;
+}
+
+#chart-form fieldset {
+    display: inline-block;
+}
+
+#chart-form form {
+    padding-bottom: 10px;
+}
+
+#chart-form label,legend,button {
+    font-weight: bold;
+}
+
+#chart-form input,select {
+    margin-right: 10px;
+}
+
+#chart-form input[name=maxResults] {
+    width: 50px;
+}

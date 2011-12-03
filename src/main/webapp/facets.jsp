@@ -6,6 +6,7 @@
 %>
 
 	<link href="<%=request.getContextPath()%>/style/widgets.css" type="text/css" rel="stylesheet" />
+	<link href="<%=request.getContextPath()%>/style/charts.css" type="text/css" rel="stylesheet" />
 	<script src="<%=request.getContextPath()%>/script/util/dom.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/DefaultNSPrefixes.js"></script>
 	<script src="<%=request.getContextPath()%>/script/widgets/histogram-widget.js"></script>
@@ -17,7 +18,8 @@
 	<script src="<%=request.getContextPath()%>/script/facets/number-facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/string-facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>
-
+	<script src="<%=request.getContextPath()%>/script/charts/charts.js"></script>
+        
 
 <script type="text/javascript">
 //<![CDATA[

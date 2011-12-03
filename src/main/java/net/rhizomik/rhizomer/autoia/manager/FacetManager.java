@@ -20,7 +20,7 @@ import net.rhizomik.rhizomer.autoia.classes.FacetValue;
 
 public class FacetManager
 {
-	
+
     class RevIntComp implements Comparator<Integer>
     {
 	public int compare(Integer o1, Integer o2)
@@ -85,6 +85,69 @@ public class FacetManager
 		} while (busy); 
     	return properties;
     }
+    
+     public FacetProperties getNumericProperties(String uri) throws SQLException {
+
+        String query = "SELECT num_instances from class_summary where class=? ";
+        System.out.println(query);
+        PreparedStatement ps = null;
+        FacetProperties properties = null;
+        boolean busy = false;
+        
+        String[] numericTypes = {"http://www.w3.org/2001/XMLSchema#decimal",
+                                 "http://www.w3.org/2001/XMLSchema#double",
+                                 "http://www.w3.org/2001/XMLSchema#int",
+                                 "http://www.w3.org/2001/XMLSchema#integer",
+                                 "http://www.w3.org/2001/XMLSchema#float",
+                                 "http://www.w3.org/2001/XMLSchema#long",
+                                 "http://www.w3.org/2001/XMLSchema#short"};
+                        
+        do {
+            try {
+                busy = false;
+                ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+                ps.setString(1, uri);
+                ResultSet rs = ps.executeQuery();
+                rs.next();
+                int numInstances = rs.getInt("num_instances");
+                rs.close();
+                ps.close();
+
+                query = "SELECT * FROM property_summary WHERE class=?";
+                query += " and value_range in (";
+                
+                for(String type : numericTypes){
+                    query+="'"+type+"',";
+    	    	}
+    	    	query = query.substring(0, query.length()-1);
+                
+                query += ")";
+                
+                System.out.println(query);
+                ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+                ps.setString(1, uri);
+                rs = ps.executeQuery();
+                properties = new FacetProperties(numInstances);
+                //System.out.println("PROPERTIES:");
+                while (rs.next()) {
+                    //System.out.println(rs.getString("property") + " - " + rs.getString("num_instances") + " - "+rs.getString("max_value"));
+                    properties.addProperty(rs.getString("property"), rs.getInt("num_instances"), rs.getInt("different_values"), rs.getString("value_range"), rs.getString("value_type"));
+                }
+            } catch (SQLException e) {
+                if (e.toString().indexOf("SQLITE_BUSY") > 0) {
+                    busy = true;
+                } else {
+                    e.printStackTrace();
+                }
+            } finally {
+                if (ps != null) {
+                    ps.close();
+                }
+            }
+        } while (busy);
+        return properties;
+    }
+
     
     public FacetProperties getInitialProperties(String uri, ArrayList<String> omitProperties) throws SQLException
     {

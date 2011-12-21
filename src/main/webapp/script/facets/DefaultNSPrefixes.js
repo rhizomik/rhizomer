@@ -1,5 +1,5 @@
 var prefixes = {};
-
+var inverse_prefixes = {};
 prefixes["http://buzzword.org.uk/rdf/xhtml-elements#"] = "xhe";
 prefixes["http://www.w3.org/2001/XMLSchema#"] = "xs";
 prefixes["http://plugin.org.uk/swh-plugins/"] = "swh";
@@ -235,3 +235,7 @@ prefixes["http://schemas.talis.com/2005/library/schema#"] = "lib";
 prefixes["http://purl.org/dc/dcmitype/"] = "dctype";
 prefixes["http://purl.org/NET/book/vocab#"] = "book";
 prefixes["http://schemas.talis.com/2005/user/schema#"] = "user";
+
+for(prefix in prefixes){
+	inverse_prefixes[prefixes[prefix]]=prefix;
+}

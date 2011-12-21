@@ -1,7 +1,8 @@
 <%@page import="net.rhizomik.rhizomer.autoia.manager.HierarchyManager, net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSPARQL, net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSKOS, net.rhizomik.rhizomer.autoia.classes.HierarchyMenu, net.rhizomik.rhizomer.autoia.classes.MenuConfig, net.rhizomik.rhizomer.service.ServiceManager, net.rhizomik.rhizomer.service.Service, net.rhizomik.rhizomer.autoia.manager.FacetManager"%>
 <%
 	
-	String facetURI = request.getParameter("uri");
+	//String facetURI = request.getParameter("uri");
+	String query = request.getParameter("q");
 
 %>
 
@@ -11,19 +12,21 @@
 	<script src="<%=request.getContextPath()%>/script/widgets/histogram-widget.js"></script>
 	<script src="<%=request.getContextPath()%>/script/widgets/slider-widget.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/range-facet.js"></script>
+	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>	
+	<script src="<%=request.getContextPath()%>/script/facets/facet-browser.js"></script>				
 	<script src="<%=request.getContextPath()%>/script/facets/facet-manager.js"></script>		
 	<script src="<%=request.getContextPath()%>/script/facets/facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/facet-value.js"></script>	
 	<script src="<%=request.getContextPath()%>/script/facets/number-facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/string-facet.js"></script>
-	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>
+	<script src="<%=request.getContextPath()%>/script/facets/UrlParser.js"></script>		
 
 
 <script type="text/javascript">
 //<![CDATA[
-
-	var facetURI = '<%=facetURI%>';
-	var fm = facet.FacetManager();	 
+	var facetUri = null;
+	var fm = null;
+	var facetBrowser = null;
     var rhz = null;
 	YAHOO.util.Event.addListener(window, "load", startRhizomer);
 
@@ -45,15 +48,21 @@
 		rhz = new rhizomik.Rhizomer(endpoint,
 			document.getElementById("metadata"), alternativeQuery);
 		
+		var query = '<%=query%>';
+		var parser = new facet.UrlParser(query);
+		facetBrowser = new facet.FacetBrowser(parser);
+		facetBrowser.loadFacets();
+		/*
+		parser.parse();
+		facetURI = parser.getActiveUri();
+		fm = facet.FacetManager(parser);
 		loadFacets();
+		*/
 		
 	}
 
 //]]>
 </script>
-
-
-	<script src="<%=request.getContextPath()%>/script/facets/facet-value.js"></script>	
 
 <div id="left">	
 	<div id="facets">

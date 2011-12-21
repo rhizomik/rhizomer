@@ -1,17 +1,16 @@
-var facet;
-facet = {};
-var searchProperty;
-
-facet.FacetManager = function (){
+facet.FacetManager = function (inParser){
 	var self = this;
 	
 	/**
 	 * Private Attributes
 	 */
+	var parser = inParser;
+	var variable;
 	var facets = {};
 	var facetIds = {};
 	var selectedFacets = {};
 	var defaultFilters = {};
+	var defaultLabels = {};
 	
 	self.getFacet = function (propertyURI){
 		return facets[propertyURI];
@@ -41,22 +40,22 @@ facet.FacetManager = function (){
 		}
 		else
 			return "";
-	};
-	
-	self.addDefaultFilter = function(iproperty, ivalue){
-		if(defaultFilters[iproperty]){
-			defaultFilters[iproperty].push(ivalue);
-		}
-		else{
-			var a = new Array(ivalue);
-			defaultFilters[iproperty] = a;
-		}
-	};
+	};	
 	
 	self.setDefaultFilters = function(){
-		for(i in defaultFilters){
-			for(var x=0; x<defaultFilters[i].length; x++){
-				self.filterInitProperty(i,defaultFilters[i][x]);
+		restrictions = parser.getRestrictions();
+		for(i=0; i<restrictions.length; i++){
+			if(restrictions[i][0]!=null){
+				property = restrictions[i][1].replace('<','').replace('>','');
+				if(!property.startsWith("http://")){
+					tmp = property.split(":");
+					prefix = inverse_prefixes[tmp[0]];
+					property = prefix+tmp[1];
+				}
+				for(x=0;x<restrictions[i][3].length;x++){					
+					value = restrictions[i][3][x];
+					self.filterInitProperty(property, value);
+				}
 			}
 		}
 	};
@@ -84,8 +83,8 @@ facet.FacetManager = function (){
 	
 	self.filterInitProperty = function(propertyUri, propertyValue){
 		facet = facets[propertyUri];
-		facet.toggleValue(propertyValue);
-		var vlabel = makeLabel(propertyValue); //Obtenir label via sparql
+		facet.addInitValue(propertyValue);
+		var vlabel = makeLabel(propertyValue);
 		var fvalue = new FacetValue(propertyValue, vlabel, 0);
 		if(selectedFacets[propertyUri]){
 			selectedFacets[propertyUri][propertyValue] = fvalue;
@@ -94,6 +93,10 @@ facet.FacetManager = function (){
 			selectedFacets[propertyUri] = {};
 			selectedFacets[propertyUri][propertyValue] = fvalue;
 		}
+	};
+	
+	self.setSelectedFacetLabel = function(propertyUri, propertyValue, propertyLabel){
+		selectedFacets[propertyUri][propertyValue].setLabel(propertyLabel);
 	};
 	
 	self.filterProperty = function(propertyUri, propertyValue, vlabel){
@@ -120,7 +123,23 @@ facet.FacetManager = function (){
 		self.reloadFacets();
 		facet.setSelected(false);
 		self.printActive();
-		location.hash = self.makeUrl();;
+	};
+	
+	self.printActiveInit = function(){
+		$j("#active_facets").empty();
+		if(!$j.isEmptyObject(selectedFacets)){
+			$j("#active_facets").append("<div>Your filters:</div>");
+			for(f in selectedFacets){
+				html = "<div class=\"selected_facet\"><span>"+facets[f].getLabel()+"</span>";
+				html += "<ul id=\""+facets[f].getId()+"_active\">";
+				html += "</ul></div>";
+				$j("#active_facets").append(html);
+			}
+			
+			for(f in selectedFacets){
+				facets[f].printInitActiveLabels();
+			}
+		}		
 	};
 	
 	self.printActive = function(){
@@ -145,7 +164,7 @@ facet.FacetManager = function (){
 	self.reloadFacets = function(){		
 		var query = "SELECT DISTINCT ?r "+
 			"WHERE { "+
-			"?r a <"+facetURI+"> . ";
+			"?r a <"+activeURI+"> . ";
 		query += self.makeRestrictions();
 		query += "}";
 		rhz.listResourcesNoHistory(query);
@@ -181,7 +200,7 @@ facet.FacetManager = function (){
 	self.makeSPARQL = function(){
 		var query = "SELECT ?r "+
 				"WHERE { "+
-				"?r a <"+facetURI+"> . ";
+				"?r a <"+activeURI+"> . ";
 		for(f in facets){
 			if(facets[f].getSelectedValue()!=null){
 				if(facets[f].getRange().indexOf("http://www.w3.org/2001/XMLSchema#")>=0)

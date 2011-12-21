@@ -38,9 +38,8 @@ function makeLabel(uri){
 	}	
 }
 
-function getPrefix(uri){
-	label = makeLabel(uri);
-	return uri.replace(label,"");
+function splitPrefix(uri){
+	return uri.split(":");
 }
 
 
@@ -48,7 +47,6 @@ function loadFacets()
 {	
 	$j("#facets").html("<p style=\"font-weight:bold\">Loading filters...</p>");
 	$j("#facets").append("<img id='waitImage' src=\"images/black-loader.gif\"/>");	
-	/*rhz.listResources(fm.makeSPARQL());*/
 	parameters = {};
 	parameters["facetURI"] = facetURI;
 	parameters["mode"] = "facets";
@@ -70,7 +68,7 @@ function loadFacets()
 				addToggle();
 				fm.setDefaultFilters();  
 				fm.reloadFacets();
-				fm.printActive();
+				fm.printActiveInit();
 			}
 	);
 }

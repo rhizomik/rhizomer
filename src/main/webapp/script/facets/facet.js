@@ -15,6 +15,7 @@ facet.Facet = function(property)
 	var numSelectedValues = 0;
 	var selected = false;
 	var opened = false;
+	var initValues = new Array();
 	
 	self.getId = function(){
 		return id;
@@ -53,14 +54,47 @@ facet.Facet = function(property)
 	
 	self.isOpened = function(){
 		return opened;
-	};	
+	};
+	
+	
+	self.printInitActiveLabels = function(){
+		var queryValues = new Array();
+		for(i=0; i<initValues.length; i++){
+			if(initValues[i].startsWith("http://"))
+				queryValues.push("<"+initValues[i]+">");
+			else{
+				html = "<li><a onclick=\"javascript:fm.filterProperty('"+uri+"','"+initValues[i]+"'); return false;\">";
+				html += makeLabel(initValues[i])+ " [x]</a></li>";
+				$j("#"+id+"_active").append(html);						
+			}
+		}
+		if(queryValues.length>0){
+			var query = "SELECT ?r ?label where{?r <http://www.w3.org/2000/01/rdf-schema#label> ?label . FILTER(?r = " + queryValues.join(" || ?r = ") + ")}"; 
+			rhz.sparqlJSON(query, function(out){
+				data = out.evalJSON();
+				for(i=0; i<data.results.bindings.length; i++){
+					r = data.results.bindings[i].r.value;
+					var label = data.results.bindings[i].label.value;				
+					html = "<li><a onclick=\"javascript:fm.filterProperty('"+uri+"','"+r+"'); return false;\">";
+					html += label+ " [x]</a></li>";
+					$j("#"+id+"_active").append(html);		
+					fm.setSelectedFacetLabel(uri,r,label);
+				}
+			});
+		}
+	};
+	
+	self.addInitValue = function(value){
+		initValues.push(value);
+		self.toggleValue(value);
+	};
 	
 	self.resetFacet = function(){
 		numValues = 0;
 		selected = false;
 		valueList = {};
 		$j("#"+id+"_ul").empty();
-	}	
+	};	
 		
 	self.renderBase = function(target){
 		var html = "<div id=\""+id+"_facet\">";
@@ -75,12 +109,18 @@ facet.Facet = function(property)
 	self.renderValueList = function(target){
 		var html = "<div id=\""+id+"_values\"><ul id=\""+id+"_ul\" class=\"values\"></ul>";
 		html += "<div class=\"more\"><a id=\""+id+"_more\" href=\"#\" >more values</a></div>";
+		html += "<div class=\"more\"><a id=\""+id+"_pivot\" href=\"#\" >filter --></a></div>";
 		html+="</div>"
 		$j("#"+target).append(html);
 		$j("#"+id+"_more").click(function (){
 			self.getMoreValues();
-		});		
-	};	
+		});
+		$j("#"+id+"_pivot").click(function (){
+			self.pivotFacet();
+		});
+	};
+	
+	
 	
 	self.renderEnd = function(target){
 		$j("#"+target).append("</div><div class=\"facet_sep\"></div>");	
@@ -127,7 +167,7 @@ facet.Facet = function(property)
 		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" + 
 		"SELECT ?o (COUNT(?o) AS ?n) ?label "+
 		"WHERE {"+
-		"	?r a <"+facetURI+"> . "+
+		"	?r a <"+activeURI+"> . "+
 		"   ?r <"+uri+"> ?o ."+
 		"   FILTER(?o!=\"\" && !isBlank(?o)) ."+
 		" OPTIONAL{ ?o rdfs:label ?label " +
@@ -135,7 +175,11 @@ facet.Facet = function(property)
 		restrictions+
 		" } GROUP BY ?o ?label ORDER BY DESC(?n) LIMIT 5";
 		rhz.sparqlJSON(query, self.processMoreValues);
-	}	
+	};
+	
+	self.pivotFacet = function(){
+		facetBrowser.addManager(uri);
+	};
 	
 	self.getMoreValues = function(){
 		$j("#"+id+"_div").css('display','none');
@@ -144,13 +188,13 @@ facet.Facet = function(property)
 		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
 			   "SELECT ?o (COUNT(?o) AS ?n) ?label "+
 		       "WHERE { "+
-		            "?r a <"+facetURI+"> . "+
+		            "?r a <"+activeURI+"> . "+
 		            "?r <"+uri+"> ?o . "+
 		    		"   FILTER(?o!=\"\" && !isBlank(?o)) ."+
 		    		"OPTIONAL{ ?o rdfs:label ?label . " +
 		    		"FILTER(LANG(?label)='en' || LANG(?label)='')} " +
 		    		fm.makeRestrictions(uri)+
-		    		" } GROUP BY ?o ?label ORDER BY DESC(?n) LIMIT 5 OFFSET "+self.getCurrentValues();
+		    		" } GROUP BY ?o ?label ORDER BY DESC(?n) LIMIT 6 OFFSET "+self.getCurrentValues();
 		rhz.sparqlJSON(query,self.processMoreValues);
 	};
 	
@@ -172,7 +216,7 @@ facet.Facet = function(property)
 			$j("#"+id+"_loading").hide();
 			$j("#"+id+"_div").show();
 			$j("#"+id+"_values div.loading").remove();
-			if(data.results.bindings.length >= 5)
+			if(data.results.bindings.length > 5)
 				$j("#"+id+"_more").show();
 			else
 				$j("#"+id+"_more").hide();
@@ -180,7 +224,6 @@ facet.Facet = function(property)
 		else{
 			$j("#"+id+"_loading").empty();
 			$j("#"+id+"_loading").append("<div>This facet has no possible values</div>");
-			/*$j("#"+id+"_facet").hide();*/
 		}
 	};	
 	

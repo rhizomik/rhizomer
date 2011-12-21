@@ -76,7 +76,7 @@ facet.StringFacet = function(property){
 				"FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+  
 				"} GROUP BY ?uri ?label ORDER BY DESC (?n)";
 			query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
-			query = query.replace(/\[uri\]/g, facetURI);
+			query = query.replace(/\[uri\]/g, activeURI);
 			query = query.replace(/\[property\]/g, searchProperty);
 		    return "?query="+encodeURIComponent(query);
 		};	

@@ -107,6 +107,7 @@
         menu.sort(2);
         
         //SKOS menu for subjects taxonomy
+        /*
 		HierarchyMenu menuSKOS = null;
         if(session.getAttribute("menuSKOS")==null)
         {
@@ -122,6 +123,7 @@
         else
         	menuSKOS = (HierarchyMenu) session.getAttribute("menuSKOS");
         menuSKOS.sort(2);
+        */
   
         if(session.getAttribute("service")==null){
             ServiceManager serviceManager = new ServiceManager();
@@ -151,7 +153,7 @@
 				<li class="yui3-menuitem">
 					<a class="yui3-menuitem-content">Topics:</a>
 				</li>
-				<%=menuSKOS.printAsUl(request, 2, "http://purl.org/dc/terms/subject")%>
+				<%--=menuSKOS.printAsUl(request, 2, "http://purl.org/dc/terms/subject")--%>
 			</ul>
 		</div>
 	</div>

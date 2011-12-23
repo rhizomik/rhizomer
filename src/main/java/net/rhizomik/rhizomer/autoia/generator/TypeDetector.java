@@ -1,21 +1,25 @@
 package net.rhizomik.rhizomer.autoia.generator;
 
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import net.rhizomik.rhizomer.agents.RhizomerRDF;
+
+import static net.rhizomik.rhizomer.autoia.generator.TypeHierarchy.RDF;
+import static net.rhizomik.rhizomer.util.Namespaces.rdfs;
+import static net.rhizomik.rhizomer.util.Namespaces.xsd;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Formatter;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-import net.rhizomik.rhizomer.agents.RhizomerRDF;
-
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
 
 public class TypeDetector {
-	
-	private static TypeHierarchy th = new TypeHierarchy();
-	
-    private static String NL = System.getProperty("line.separator");	
+
+    private static String NL = System.getProperty("line.separator");
 	private static String queryForValues = 
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
@@ -28,69 +32,77 @@ public class TypeDetector {
     	"}"+NL+
     	"GROUP BY ?o"+NL+
     	"ORDER BY DESC(?n) LIMIT 5";
-	
-	public static String detectType(String uri, String property, int instances){	
-    	StringBuilder queryString = new StringBuilder();
-        Formatter f = new Formatter(queryString);
+
+    private String uri;
+    private String property;
+
+    public TypeDetector(String uri, String property) {
+        this.uri = uri;
+        this.property = property;
+    }
+
+    private String makeQueryForValues(String uri, String property) {
+        Formatter f = new Formatter();
         Object[] vars = {uri, property};
         f.format(queryForValues, vars);
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);    	
-        HashMap<String, Integer> types = new HashMap<String, Integer>();
+        return f.toString();
+    }
+
+    public String detectType() {
+        String queryString = makeQueryForValues(uri, property);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString, true);
+        Set<String> types = getTypes(results);
+        assert(types.size() > 0);
+        return RDF.lowestCommonType(types);
+    }
+
+    private Set<String> getTypes(ResultSet results) {
+        Set<String> types = new HashSet<String>();
         String objVar = results.getResultVars().get(0);
-        String type = "";
         while(results.hasNext()){
 			QuerySolution row = results.next();
-			if(row.get(objVar)==null)
+            RDFNode current = row.get(objVar);
+            if(current == null)
 				continue;
-			if(row.get(objVar).isResource())
-				type = "resource";
-			else{
-				type = row.get(objVar).asNode().getLiteralDatatypeURI();
-				if(type == null){
-					String value = row.get(objVar).toString();	
-					type = checkTypes(value);
-				}
-			}	
-			if(types.containsKey(type))
-				types.put(type, types.get(type)+1);
-			else
-				types.put(type, 1);
+            String type = inferType(current);
+            types.add(type);
 		}
-        return getCommonDataType(types);    
+        return types;
     }
-    
-    
-    private static String getCommonDataType(HashMap<String, Integer> types){
-    	String commonType = "";
-    	 for(String type : types.keySet()){
-    		 if(commonType.equals(""))
-    			 commonType = type;
-    		 else
-    			 commonType = th.getNearestParent(commonType, type);
-    	 }
-		return commonType;
+
+    private String inferType(RDFNode current) {
+        String type;
+        if(current.isResource()) {
+            type = rdfs("Resource");
+        } else {
+            type = current.asNode().getLiteralDatatypeURI();
+            if(type == null){
+                String value = current.toString();	
+                type = inferTypeByParsing(value);
+            }
+        }
+        return type;
     }
-        
-    
-    private static String checkTypes(String value){
+
+    private String inferTypeByParsing(String value){
     	try{
     		Integer.parseInt(value);
-    		return "integer";
+    		return xsd("integer");
     	}
     	catch(Exception e){}
     	try{
     		Double.parseDouble(value);
-    		return "double"; // Double, float or decimal
+    		return xsd("double"); // Double, float or decimal
     	}
     	catch(Exception e){}
 		try {
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			formatter.parse(value);
-			return "date";
+			return xsd("date");
 		} catch (ParseException e) {}    	
     	
     	/* Parse Geo points */
-    	return "string";
+    	return xsd("string");
     }
 
 }

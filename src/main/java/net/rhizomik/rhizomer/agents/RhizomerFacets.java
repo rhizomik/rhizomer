@@ -25,41 +25,42 @@ import net.rhizomik.rhizomer.autoia.manager.FacetManager;
 
 public class RhizomerFacets extends HttpServlet {
 
-	private FacetManager fm;
-	private String filePath;
-	
-	public void init() throws ServletException
-    {   
-      ServletConfig config = getServletConfig();
-		String path = config.getServletContext().getRealPath("WEB-INF");
-		
-		String datasetId = "";
-		if (config.getServletContext().getInitParameter("db_graph")!=null)
-			datasetId = config.getServletContext().getInitParameter("db_graph");
-		else if (config.getServletContext().getInitParameter("db_url")!=null)
-			datasetId = config.getServletContext().getInitParameter("db_url");
-		else if (config.getServletContext().getInitParameter("file_name")!=null)
-			datasetId = config.getServletContext().getInitParameter("file_name");
-		
-		int facetHash = datasetId.hashCode();
-		String file = "facets-"+facetHash+".db";
-		
-		filePath = path+="/"+file;
-		System.out.println(filePath);
-                
-                try {
-			fm = new FacetManager(filePath);
+    private FacetManager createFacetManager() throws ServletException {
+        try {
+            String filePath = getFilePath();
+            return new FacetManager(filePath);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-                        throw new ServletException(e);
+            throw new ServletException(e);
 		} catch (SQLException e) {
 			e.printStackTrace();
-                        throw new ServletException(e);
+            throw new ServletException(e);
 		}
-
     }
-	
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    private String getFilePath() {
+        ServletConfig config = getServletConfig();
+        String filePath = config.getServletContext().getRealPath("WEB-INF");
+
+        String dataSetId = "";
+        if (config.getServletContext().getInitParameter("db_graph")!=null)
+            dataSetId = config.getServletContext().getInitParameter("db_graph");
+        else if (config.getServletContext().getInitParameter("db_url")!=null)
+            dataSetId = config.getServletContext().getInitParameter("db_url");
+        else if (config.getServletContext().getInitParameter("file_name")!=null)
+            dataSetId = config.getServletContext().getInitParameter("file_name");
+
+        int facetHash = dataSetId.hashCode();
+        filePath += "/facets-"+facetHash+".db";
+
+        System.out.println(filePath);
+        return filePath;
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+
+        FacetManager fm = createFacetManager();
         response.setCharacterEncoding("UTF-8");
 
         String mode = request.getParameter("mode");
@@ -93,6 +94,8 @@ public class RhizomerFacets extends HttpServlet {
             out.println(output);
 
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -16,6 +16,7 @@ import com.google.common.collect.TreeMultimap;
 import com.hp.hpl.jena.query.QuerySolution;
 import net.rhizomik.rhizomer.agents.RhizomerRDF;
 import net.rhizomik.rhizomer.autoia.classes.FacetProperties;
+import net.rhizomik.rhizomer.autoia.classes.FacetProperty;
 import net.rhizomik.rhizomer.autoia.classes.FacetValue;
 
 public class FacetManager
@@ -38,7 +39,11 @@ public class FacetManager
     	System.out.println(path);
 	sqlconn = DriverManager.getConnection("jdbc:sqlite:"+path);
     }
-    
+
+    private static FacetProperty createPropertyfromResultSet(ResultSet rs) throws SQLException {
+        return new FacetProperty(rs.getString("property"), rs.getInt("num_instances"), rs.getInt("different_values"), rs.getString("value_range"), rs.getString("value_type"));
+    }
+
     public FacetProperties getProperties(String uri, ArrayList<String> omitProperties) throws SQLException
     {
     	if(omitProperties==null)
@@ -58,7 +63,7 @@ public class FacetManager
     			int numInstances = rs.getInt("num_instances");
     			rs.close();
     			ps.close();
-    			
+
     			query = "SELECT * FROM property_summary Where class=? and property not in (";
     	    	for(String omitProperty : omitProperties){
     	    		query+="'"+omitProperty+"',";
@@ -66,7 +71,7 @@ public class FacetManager
     	    	query = query.substring(0, query.length()-1);
     	    	query +=") and num_instances > 0 and (max_value > 1 or num_instances < 100) "; //TODO: define criteria for facets with maxvalue = 1 but dataset with small number of instances
     	    	query += "order by num_instances desc limit 25";
-    	    	
+
     	    	ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
     			ps.setString(1, uri);
     			rs = ps.executeQuery();
@@ -74,64 +79,34 @@ public class FacetManager
     			//System.out.println("PROPERTIES:");
     			while(rs.next()){
     				//System.out.println(rs.getString("property") + " - " + rs.getString("num_instances") + " - "+rs.getString("max_value"));
-    				properties.addProperty(rs.getString("property"), rs.getInt("num_instances"), rs.getInt("different_values"), rs.getString("value_range"), rs.getString("value_type"));
-    			}    			
+    				properties.addProperty(createPropertyfromResultSet(rs));
+    			}
         	}
         	catch (SQLException e)
         	{ if (e.toString().indexOf("SQLITE_BUSY")>0) busy = true;
         		else e.printStackTrace();}
         	finally
         	{ if (ps != null) ps.close(); }
-		} while (busy); 
+		} while (busy);
     	return properties;
     }
-    
-     public FacetProperties getNumericProperties(String uri) throws SQLException {
 
-        String query = "SELECT num_instances from class_summary where class=? ";
-        System.out.println(query);
+
+    public FacetProperties getNumericProperties(String uri) throws SQLException {
         PreparedStatement ps = null;
-        FacetProperties properties = null;
         boolean busy = false;
-        
-        String[] numericTypes = {"http://www.w3.org/2001/XMLSchema#decimal",
-                                 "http://www.w3.org/2001/XMLSchema#double",
-                                 "http://www.w3.org/2001/XMLSchema#int",
-                                 "http://www.w3.org/2001/XMLSchema#integer",
-                                 "http://www.w3.org/2001/XMLSchema#float",
-                                 "http://www.w3.org/2001/XMLSchema#long",
-                                 "http://www.w3.org/2001/XMLSchema#short"};
-                        
+        FacetProperties properties = new FacetProperties();
+        String query = "SELECT * FROM property_summary" + " WHERE class=?" +
+                       " AND  ( value_range IN (" + numericTypesString() + ")" +
+                       "        OR " +
+                       "        value_type  IN (" + numericTypesString() + "))";
         do {
             try {
-                busy = false;
                 ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
                 ps.setString(1, uri);
                 ResultSet rs = ps.executeQuery();
-                rs.next();
-                int numInstances = rs.getInt("num_instances");
-                rs.close();
-                ps.close();
-
-                query = "SELECT * FROM property_summary WHERE class=?";
-                query += " and value_range in (";
-                
-                for(String type : numericTypes){
-                    query+="'"+type+"',";
-    	    	}
-    	    	query = query.substring(0, query.length()-1);
-                
-                query += ")";
-                
-                System.out.println(query);
-                ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-                ps.setString(1, uri);
-                rs = ps.executeQuery();
-                properties = new FacetProperties(numInstances);
-                //System.out.println("PROPERTIES:");
                 while (rs.next()) {
-                    //System.out.println(rs.getString("property") + " - " + rs.getString("num_instances") + " - "+rs.getString("max_value"));
-                    properties.addProperty(rs.getString("property"), rs.getInt("num_instances"), rs.getInt("different_values"), rs.getString("value_range"), rs.getString("value_type"));
+                    properties.addProperty(createPropertyfromResultSet(rs));
                 }
             } catch (SQLException e) {
                 if (e.toString().indexOf("SQLITE_BUSY") > 0) {
@@ -148,7 +123,23 @@ public class FacetManager
         return properties;
     }
 
-    
+    private String numericTypesString() {
+        String query = "";
+        String[] numericTypes = {"http://www.w3.org/2001/XMLSchema#decimal",
+                                 "http://www.w3.org/2001/XMLSchema#double",
+                                 "http://www.w3.org/2001/XMLSchema#int",
+                                 "http://www.w3.org/2001/XMLSchema#integer",
+                                 "http://www.w3.org/2001/XMLSchema#float",
+                                 "http://www.w3.org/2001/XMLSchema#long",
+                                 "http://www.w3.org/2001/XMLSchema#short"};
+        for(String type : numericTypes){
+            query+="'"+type+"',";
+        }
+        query = query.substring(0, query.length()-1);
+        return query;
+    }
+
+
     public FacetProperties getInitialProperties(String uri, ArrayList<String> omitProperties) throws SQLException
     {
     	FacetProperties properties = new FacetProperties(0);;
@@ -185,7 +176,8 @@ public class FacetManager
     			System.out.println("PROPERTIES:");
     			while(rs.next()){
     				System.out.println(rs.getString("property"));
-    				properties.addProperty(rs.getString("property"), rs.getInt("num_instances"), rs.getInt("different_values"), rs.getString("value_range"), rs.getString("value_type"));
+                    FacetProperty property = createPropertyfromResultSet(rs);
+    				properties.addProperty(property);
     			}
         	}
         	catch (SQLException e)

@@ -62,9 +62,9 @@ facet.FacetManager = function (){
 	};
 	
 	self.addFacet = function(property){
-		if(property.type == "number")
+		if(property.type == NS.xsd("integer"))
 			facets[property.uri] = facet.NumberFacet(property);
-		else if(property.type == "string")
+		else if(property.type == NS.xsd("string"))
 			facets[property.uri] = facet.StringFacet(property);
 		else
 			facets[property.uri] = facet.StringFacet(property);	

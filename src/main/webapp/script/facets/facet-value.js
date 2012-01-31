@@ -7,4 +7,5 @@ function FacetValue(uri, label, instances){
 		this.label = inLabel;
 	};
 	
+	return this;
 };

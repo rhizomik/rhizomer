@@ -1,4 +1,4 @@
-facet.Facet = function(property)
+facet.Facet = function(property, inVariable, typeUri)
 {
 	var self = this;
 
@@ -16,6 +16,8 @@ facet.Facet = function(property)
 	var selected = false;
 	var opened = false;
 	var initValues = new Array();
+	var variable = inVariable;
+	var typeUri = typeUri
 	
 	self.getId = function(){
 		return id;
@@ -63,7 +65,7 @@ facet.Facet = function(property)
 			if(initValues[i].startsWith("http://"))
 				queryValues.push("<"+initValues[i]+">");
 			else{
-				html = "<li><a onclick=\"javascript:fm.filterProperty('"+uri+"','"+initValues[i]+"'); return false;\">";
+				html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+uri+"','"+initValues[i]+"'); return false;\">";
 				html += makeLabel(initValues[i])+ " [x]</a></li>";
 				$j("#"+id+"_active").append(html);						
 			}
@@ -75,7 +77,7 @@ facet.Facet = function(property)
 				for(i=0; i<data.results.bindings.length; i++){
 					r = data.results.bindings[i].r.value;
 					var label = data.results.bindings[i].label.value;				
-					html = "<li><a onclick=\"javascript:fm.filterProperty('"+uri+"','"+r+"'); return false;\">";
+					html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+uri+"','"+r+"'); return false;\">";
 					html += label+ " [x]</a></li>";
 					$j("#"+id+"_active").append(html);		
 					fm.setSelectedFacetLabel(uri,r,label);
@@ -95,35 +97,36 @@ facet.Facet = function(property)
 		valueList = {};
 		$j("#"+id+"_ul").empty();
 	};	
-		
+	
 	self.renderBase = function(target){
-		var html = "<div id=\""+id+"_facet\">";
-		html += "<div id=\""+id+"_title\" class=\"facet_title\" onclick=\"fm.toggleFacet('"+id+"'); return false;\">";
-		html +="<h4>" + label + "</h4>";
-		html +="</div>";
+		var html = "<div id=\""+id+"_facet\" class=\"facet\">";
+		html += "<div id=\""+id+"_title\" class=\"facet_header\">";
+		html += "<span class=\"facet_title\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">" +
+				"<h4>"+label+"</h4></span>";
+		html += "<span id=\""+id+"_pivot\" class=\"pivot\">&raquo;</span>";
+		html += "<div class=\"clear\"></div>";
+		html += "</div>";
 		html +="<div id=\""+id+"_loading\"></div>";
 		html +="<div class=\"facet_options\" id=\""+id+"_div\"></div>";
 		$j("#"+target).append(html);
-	};
-	
-	self.renderValueList = function(target){
-		var html = "<div id=\""+id+"_values\"><ul id=\""+id+"_ul\" class=\"values\"></ul>";
-		html += "<div class=\"more\"><a id=\""+id+"_more\" href=\"#\" >more values</a></div>";
-		html += "<div class=\"more\"><a id=\""+id+"_pivot\" href=\"#\" >filter --></a></div>";
-		html+="</div>"
-		$j("#"+target).append(html);
-		$j("#"+id+"_more").click(function (){
-			self.getMoreValues();
-		});
 		$j("#"+id+"_pivot").click(function (){
 			self.pivotFacet();
 		});
 	};
 	
-	
+	self.renderValueList = function(target){
+		var html = "<div id=\""+id+"_values\"><ul id=\""+id+"_ul\" class=\"values\"></ul>";
+		html += "<div class=\"more\"><a id=\""+id+"_more\" href=\"#\" >more values</a></div>";
+		html+="</div>"
+		$j("#"+target).append(html);
+		$j("#"+id+"_more").click(function (){
+			self.getMoreValues();
+		});
+	};
 	
 	self.renderEnd = function(target){
-		$j("#"+target).append("</div><div class=\"facet_sep\"></div>");	
+		html ="</div><div class=\"facet_sep\"></div>";
+		$j("#"+target).append(html);	
 	};	
 	
 	self.toggleFacet = function(){
@@ -167,8 +170,8 @@ facet.Facet = function(property)
 		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" + 
 		"SELECT ?o (COUNT(?o) AS ?n) ?label "+
 		"WHERE {"+
-		"	?r a <"+activeURI+"> . "+
-		"   ?r <"+uri+"> ?o ."+
+		"	?"+variable+" a <"+typeUri+"> . "+
+		"   ?"+variable+" <"+uri+"> ?o ."+
 		"   FILTER(?o!=\"\" && !isBlank(?o)) ."+
 		" OPTIONAL{ ?o rdfs:label ?label " +
 		"  FILTER(LANG(?label)='en' || LANG(?label)='')} ."+
@@ -178,7 +181,7 @@ facet.Facet = function(property)
 	};
 	
 	self.pivotFacet = function(){
-		facetBrowser.addManager(uri);
+		facetBrowser.pivotFacet(uri);
 	};
 	
 	self.getMoreValues = function(){
@@ -188,16 +191,15 @@ facet.Facet = function(property)
 		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
 			   "SELECT ?o (COUNT(?o) AS ?n) ?label "+
 		       "WHERE { "+
-		            "?r a <"+activeURI+"> . "+
-		            "?r <"+uri+"> ?o . "+
+		            "?"+variable+" a <"+typeUri+"> . "+
+		            "?"+variable+" <"+uri+"> ?o . "+
 		    		"   FILTER(?o!=\"\" && !isBlank(?o)) ."+
 		    		"OPTIONAL{ ?o rdfs:label ?label . " +
 		    		"FILTER(LANG(?label)='en' || LANG(?label)='')} " +
-		    		fm.makeRestrictions(uri)+
+		    		facetBrowser.makeRestrictions(uri)+
 		    		" } GROUP BY ?o ?label ORDER BY DESC(?n) LIMIT 6 OFFSET "+self.getCurrentValues();
 		rhz.sparqlJSON(query,self.processMoreValues);
 	};
-	
 	
 	self.processMoreValues = function(output){
 		data = output.evalJSON();
@@ -233,7 +235,7 @@ facet.Facet = function(property)
 			cls = "selected_item";
 		else
 			cls = "item";
-		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:fm.filterProperty('"+uri+"','"+value+"'); return false;\">";
+		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:facetBrowser.filterProperty('"+uri+"','"+value+"'); return false;\">";
 		html += "<div class='item_text'>"+vlabel+" ("+instances+")</div></li>";
 		$j("#"+id+"_ul").append(html);
 		numValues++;

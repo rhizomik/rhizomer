@@ -145,16 +145,6 @@ img {
 	border-width: 1px;
 	display:none;
 }
-.facet_title {
- 	background-color: #F0F0F0;	
-    border: 0 none;
-    cursor: pointer;
-    padding-left: 20px;		
-	font-weight: bold;
-	background-image: url("//y.bstatic.com/static/img/experiments/icon_shut.gif"); /*Canviar per imatge local */
-    background-repeat: no-repeat;
-    margin:0;		
-}
 
 .facet_title_show{
 	background-image: url("//z.bstatic.com/static/img/experiments/icon_open.gif"); /*Canviar per imatge local */
@@ -249,4 +239,51 @@ img {
 	margin-left: 20px;
 	padding-left: 5px;
 	cursor: pointer;
+}
+ 
+.facet_title {
+    border: 0 none;
+    padding-left: 20px;		
+	font-weight: bold;
+	background-image: url("//y.bstatic.com/static/img/experiments/icon_shut.gif"); /*Canviar per imatge local */
+    background-repeat: no-repeat;
+    margin:0;
+  	float: left;
+  	width:80%;
+  	cursor:pointer;
+}
+
+.facet_title h4{
+	padding:0;
+	margin:0;
+}
+ 
+div.clear {
+  clear: both;
+}
+
+.pivot {
+  float: right;
+  cursor:pointer;
+}
+
+.facet_header {
+  background-color: #F0F0F0;	
+  margin-bottom:10px;	
+}
+
+#active_facets ul{
+	margin-top:0px;
+	padding-top:0px;
+}
+
+ul.inline , ul.inline li{
+	display:inline;
+	margin-right:10px;
+	cursor:pointer;
+}
+
+#active_facets .class_active{
+	font-weight:bold;
+	font-size: 14px;
 }

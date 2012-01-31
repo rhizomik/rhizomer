@@ -9,9 +9,9 @@
 	<link href="<%=request.getContextPath()%>/style/widgets.css" type="text/css" rel="stylesheet" />
 	<script src="<%=request.getContextPath()%>/script/util/dom.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/DefaultNSPrefixes.js"></script>
-	<script src="<%=request.getContextPath()%>/script/widgets/histogram-widget.js"></script>
+	<%--<script src="<%=request.getContextPath()%>/script/widgets/histogram-widget.js"></script>
 	<script src="<%=request.getContextPath()%>/script/widgets/slider-widget.js"></script>
-	<script src="<%=request.getContextPath()%>/script/facets/range-facet.js"></script>
+	<script src="<%=request.getContextPath()%>/script/facets/range-facet.js"></script> --%>
 	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>	
 	<script src="<%=request.getContextPath()%>/script/facets/facet-browser.js"></script>				
 	<script src="<%=request.getContextPath()%>/script/facets/facet-manager.js"></script>		

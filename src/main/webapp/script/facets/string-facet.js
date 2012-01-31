@@ -1,6 +1,6 @@
-facet.StringFacet = function(property){
+facet.StringFacet = function(property, fm, typeUri){
 		
-	var that = new facet.Facet(property);
+	var that = new facet.Facet(property, fm, typeUri);
 	var rsNS = "http://www.w3.org/2001/sw/DataAccess/tests/result-set#";	
 
 	that.dataSource = new YAHOO.util.XHRDataSource(rhz.getBaseURL());
@@ -16,14 +16,15 @@ facet.StringFacet = function(property){
         var myAC = aArgs[0]; // reference back to the AC instance
         var elLI = aArgs[1]; // reference to the selected LI element
         var oData = aArgs[2]; // object literal of selected item's result data
-        fm.filterProperty(searchProperty,oData.uri,oData.label);
+        //fm.filterProperty(searchProperty,oData.uri,oData.label);
+        facetBrowser.filterProperty(facetBrowser.getAutoCompleteProperty(),oData.uri,oData.label);
         $j("#"+that.getId()+"_search").val("");
     };
     
-    that.makeSPARQL = function (varCount){
-    	var query = "?r <"+that.getUri()+"> ?var"+varCount+ " FILTER(";
+    that.makeSPARQL = function (varCount, varName){
+    	var query = "?"+varName+" <"+that.getUri()+"> ?"+varName+"var"+varCount+ " FILTER(";
     	for(value in that.getSelectedValues()){
-    		query+="str(?var"+varCount+")=\""+addSlashes(value)+"\" ||";
+    		query+="str(?"+varName+"var"+varCount+")=\""+addSlashes(value)+"\" ||";
     	}
     	query = query.substring(0,query.length-2);
     	query += ") ."
@@ -57,7 +58,8 @@ facet.StringFacet = function(property){
 			};
 			
 		that.autoComplete.textboxFocusEvent.subscribe ( function () {
-			searchProperty = fm.getUriById([(this.getInputEl().id).replace("_search","")]);
+			facetBrowser.setAutoCompleteProperty((this.getInputEl().id).replace("_search",""));
+			//searchProperty = fm.getUriById([(this.getInputEl().id).replace("_search","")]);
 		} );
 		
 		that.autoComplete.maxResultsDisplayed = 20;
@@ -69,15 +71,16 @@ facet.StringFacet = function(property){
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 				"SELECT ?uri ?label (COUNT(?uri) AS ?n) \n"+
 				"WHERE{"+
-				"?r a <[uri]>; <[property]> ?uri . \n"+
-				fm.makeRestrictions(searchProperty)+
+				"?[variable] a <[uri]>; <[property]> ?uri . \n"+
+				facetBrowser.makeRestrictions(searchProperty)+
 				"OPTIONAL{ \n"+
 				"?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
 				"FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+  
 				"} GROUP BY ?uri ?label ORDER BY DESC (?n)";
 			query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
-			query = query.replace(/\[uri\]/g, activeURI);
-			query = query.replace(/\[property\]/g, searchProperty);
+			query = query.replace(/\[uri\]/g, facetBrowser.getActiveManager().getTypeUri());
+			query = query.replace(/\[variable\]/g, facetBrowser.getActiveManager().getVariable());
+			query = query.replace(/\[property\]/g, facetBrowser.getAutoCompleteProperty());
 		    return "?query="+encodeURIComponent(query);
 		};	
 	};

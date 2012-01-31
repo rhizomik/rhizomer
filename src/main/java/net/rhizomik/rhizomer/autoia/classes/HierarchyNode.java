@@ -34,7 +34,6 @@ public class HierarchyNode implements Comparable{
 		public void setLabel(String label) {
 			this.label = label;
 		}
-
 		
 		public HierarchyNode(String uri) {
 			this.uri = uri;
@@ -50,7 +49,14 @@ public class HierarchyNode implements Comparable{
 			this.numInstances = 0;
 			this.setAbstractNode(abstractNode);
 		    makeLabel();
-		}		
+		}
+		
+		public boolean hasChilds(){
+			if (this.getChilds().size()>0)
+				return true;
+			else
+				return false;
+		}
 		
 		private void makeLabelOther(){
 			if(this.uri.equals("#Other"))
@@ -214,7 +220,8 @@ public class HierarchyNode implements Comparable{
 		public void printAsUl(HttpServletRequest req, int levels, StringBuffer out) 
 		{			
 			//TODO: IMPORTANT! Make link to facets.jsp independent from where the app is installed!
-			String link = req.getContextPath()+"/facets.jsp?uri="+this.uri.replace("#", "%23");
+			//String link = req.getContextPath()+"/facets.jsp?uri="+this.uri.replace("#", "%23");
+			String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
 			String query = "SELECT ?r WHERE { ?r ";
 			
 			String label = this.label;

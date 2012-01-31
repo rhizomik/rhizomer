@@ -22,7 +22,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	 * Private Attributes
 	 */
 	// Browse mode: describe (full resource description) or construct (resource description summary)
-	var browseMode = "construct";
+	var browseMode = "describe";
 	// Base URL for Ajax connections and styles
 	var base = baseURL || "http://localhost:8080/rhizomer";
 	// Target element for result HTML

@@ -1,6 +1,6 @@
 var facet;
 facet = {};
-var activeURI;
+//var activeURI;
 var fm;
 var facetBrowser;
 

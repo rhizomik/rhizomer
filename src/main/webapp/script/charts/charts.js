@@ -1,7 +1,7 @@
 YUI().use("charts", "json", "node", function (Y) {
 
 
-    CHARTS = (function (facetURI, fm) {
+    CHARTS = (function () {
 
         "use strict";
 
@@ -9,7 +9,6 @@ YUI().use("charts", "json", "node", function (Y) {
         // - facetURI
         // - fm
         // - rhz
-
         // THis is the single entry point for the module and expects rhz object has
         // been initialized (that's why it can't be added to the explicit dependencies
         // of the module).
@@ -82,7 +81,7 @@ YUI().use("charts", "json", "node", function (Y) {
         };
 
         function loadProperties(callback) {
-            rhz.getNumericProperties(facetURI, function(output) {
+            rhz.getNumericProperties(mediator.facetURI, function(output) {
                 var response = Y.JSON.parse(output);
                 setOptions(response.properties);
                 callback(response.properties);
@@ -112,7 +111,7 @@ YUI().use("charts", "json", "node", function (Y) {
             tabs.addTab(chartTab);
             chartTab.addListener("activeChange", function (e) {
                 if (e.newValue) {
-                    mediator.resetFormIfNeeded(facetURI);
+                    mediator.resetFormIfNeeded(activeURI);
                 }
             });
         }
@@ -132,14 +131,14 @@ YUI().use("charts", "json", "node", function (Y) {
         // SPARQL query for values
 
         function makeSelectQueryPart() {
-            return "?r ?label " + mediator.formData.properties.map(function (p, i) {
+            return "?r1 ?label " + mediator.formData.properties.map(function (p, i) {
                 return "?value" + i;
             }).join(" ");
         }
 
         function makeValuesQueryPart() {
             return mediator.formData.properties.map(function (p, i) {
-                return " ?r <" + p + "> ?value" + i + " .";
+                return " ?r1 <" + p + "> ?value" + i + " .";
             }).join("");
         }
 
@@ -165,9 +164,9 @@ YUI().use("charts", "json", "node", function (Y) {
                 filterBlanks = makeFilterValuesQueryPart();
             return " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
                 " SELECT " + variables +
-                " WHERE {?r a <" + mediator.facetURI + "> . " +
+                " WHERE {?r1 a <" + mediator.facetURI + "> . " +
                          values + filterBlanks +
-                "        OPTIONAL{ ?r rdfs:label ?label " +
+                "        OPTIONAL{ ?r1 rdfs:label ?label " +
                 "                  FILTER(LANG(?label)='en' || LANG(?label)='')} ." +
                          mediator.restrictions +
                 " } ORDER BY ?label LIMIT " + mediator.formData.maxResults;
@@ -184,7 +183,7 @@ YUI().use("charts", "json", "node", function (Y) {
             keys.forEach(function (key) {
                 if (key === "label") {
                     label = obj[key].value;
-                } else if (key === "r") {
+                } else if (key === "r1") {
                     uri = obj[key].value;
                 } else {
                     item[translation[key]] = obj[key].value;
@@ -196,6 +195,7 @@ YUI().use("charts", "json", "node", function (Y) {
 
         function queryForValues(callback) {
             var query = makeQuery(mediator);
+            alert(query);
             rhz.sparqlJSON(query, function (output) {
                 var data = Y.JSON.parse(output),
                     translator = makeTranslatorValuesToProperties(mediator.formData.properties),
@@ -242,9 +242,9 @@ YUI().use("charts", "json", "node", function (Y) {
                 mediator.doChartIfNeeded({
                     properties: selected,
                     maxResults: form.maxResults.value
-                }, fm.makeRestrictions());
+                }, facetBrowser.makeRestrictions());
             }
         };
 
-    }(facetURI, fm));
+    }());
 });

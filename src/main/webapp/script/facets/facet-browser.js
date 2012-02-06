@@ -1,6 +1,5 @@
 var facet;
 facet = {};
-var searchProperty;
 var activeURI;
 var fm;
 var facetBrowser;
@@ -56,6 +55,10 @@ facet.FacetBrowser = function(inParser){
 		return managers[uri];
 	};
 	
+	self.getMainManager = function(){
+		return mainManager;
+	};
+	
 	self.setDefaultFilters = function(){
 		restrictions = parser.getRestrictions();
 		for(i=0; i<restrictions.length; i++){
@@ -105,12 +108,16 @@ facet.FacetBrowser = function(inParser){
 			activeManager = managers[uri];
 			activeManager.loadFacets();
 		}
+		self.printActive();
 	};
 	
 	self.deletePivotFacet = function(uri){
 		delete(managers[uri]);
-		activeManager.deletePivotedFacet(uri);
-		activeManager.reloadFacets();
+		activeURI = mainManager.getTypeUri();
+		activeManager = mainManager;
+		mainManager.deletePivotedFacet(uri);
+		activeManager.renderFacets("facets");		
+		mainManager.reloadFacets();
 		self.printActive();
 	};
 	
@@ -129,18 +136,18 @@ facet.FacetBrowser = function(inParser){
 		varCount++;
 	};
 	
-	self.makeRestrictions = function(){
+	self.makeRestrictions = function(uri){
 		var query = "";
 		for(var m in managers){
-			query += managers[m].makeRestrictions2();
+			query += managers[m].makeRestrictions(uri);
 		}
 		return query;
 	};
 	
 	self.printActive = function(){
 		$j("#active_facets").empty();
-		$j("#active_facets").append("<div>Your filters:</div>");
-		var html = mainManager.printActive2();
+		$j("#active_facets").append("<div class=\"your_filters\">Selected filters:</div>");
+		var html = mainManager.printActive();
 		$j("#active_facets").append(html);
 	};	
 	

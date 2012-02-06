@@ -42,6 +42,7 @@ facet.FacetManager = function (uri, inVariable){
 		return facetIds[id];
 	};
 	
+	/*
 	self.makeUrl = function(){
 		if(!$j.isEmptyObject(selectedFacets)){
 			//var url = "&f=";
@@ -58,7 +59,8 @@ facet.FacetManager = function (uri, inVariable){
 		}
 		else
 			return "";
-	};	
+	};
+	*/	
 	
 	self.setDefaultFilters = function(){
 		restrictions = parser.getRestrictions();
@@ -148,7 +150,7 @@ facet.FacetManager = function (uri, inVariable){
 	self.printActiveInit = function(){
 		$j("#active_facets").empty();
 		if(!$j.isEmptyObject(selectedFacets)){
-			$j("#active_facets").append("<div>Your filters2:</div>");
+			$j("#active_facets").append("<div>Your filters:</div>");
 			for(f in selectedFacets){
 				html = "<div class=\"selected_facet\"><span>"+facets[f].getLabel()+"</span>";
 				html += "<ul id=\""+facets[f].getId()+"_active\">";
@@ -163,29 +165,19 @@ facet.FacetManager = function (uri, inVariable){
 	};
 	
 	self.printActive = function(){
-		if(!$j.isEmptyObject(selectedFacets)){
-			html = "<div>Your filters3:</div>";
-			for(f in selectedFacets){
-				html += "<div class=\"selected_facet\"><span>"+facets[f].getLabel()+"</span>";
-				html += "<ul>";
-				for(key in selectedFacets[f]){
-					value = selectedFacets[f][key];
-					html += "<li id=\""+makeLabel(value.uri)+"\"><a onclick=\"javascript:facetBrowser.filterProperty('"+f+"','"+value.uri+"'); return false;\">";
-					html += value.label+ " [x]</a></li>";
-				}			
-				html += "</ul></div>";
-			}
-			html += "</ul>";
-			$j("#active_facets").append(html);
-		}
-	};	
-	
-	self.printActive2 = function(){
 		var html = "";
 		if(!$j.isEmptyObject(selectedFacets) || !$j.isEmptyObject(pivotedFacets)){
 			html += "<span class=\"class_active\">"+label+"</span>";
-			if(typeUri!=facetBrowser.getActiveManager().getTypeUri()){
+			if(typeUri==facetBrowser.getMainManager().getTypeUri()){
+				if(typeUri!=facetBrowser.getActiveManager().getTypeUri())
+					html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('"+typeUri+"');\">&laquo; Back to</a></span>";
+				html += "<span style=\"margin-left:20px;\"><a href=\"\">Reset all filters[x]</a></span>";
+			}
+			else if(typeUri!=facetBrowser.getActiveManager().getTypeUri()){
 				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('"+typeUri+"');\">&laquo; Back to</a></span>";
+				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.deletePivotFacet('"+typeUri+"');\">[x]</a></span>";
+			}
+			else{
 				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.deletePivotFacet('"+typeUri+"');\">[x]</a></span>";
 			}
 			html += "<ul>";		
@@ -202,9 +194,12 @@ facet.FacetManager = function (uri, inVariable){
 				}
 			}
 			for(m in pivotedFacets){
-				html += "<li>";
-				html += facetBrowser.getManager(m).printActive2();
-				html += "</li>";
+				var tmp = facetBrowser.getManager(m).printActive();
+				if(tmp){
+					html += "<li>";
+					html += tmp;
+					html += "</li>";
+				}
 			}
 			html += "</ul>";
 		}
@@ -236,19 +231,6 @@ facet.FacetManager = function (uri, inVariable){
 	/**SPARQL Queries**/
 	
 	self.makeRestrictions = function(uri){
-		var f;
-		var query = "";
-		var varCount = 0;
-		for(f in facets){
-			if(facets[f].isActive() && f != uri){
-				query += facets[f].makeSPARQL(varCount,"r1");
-				varCount++;
-			}
-		}
-		return query;
-	};	
-	
-	self.makeRestrictions2 = function(uri){
 		var f;
 		var query = "";
 		var varCount2 = 0;

@@ -89,8 +89,7 @@ public class HierarchyNode implements Comparable{
 					if(uriSplitted.length>1)
 						this.label = uriSplitted[uriSplitted.length-1];
 					else
-						this.label = this.uri;					
-						
+						this.label = this.uri;							
 				}
 			}
 		}
@@ -232,11 +231,11 @@ public class HierarchyNode implements Comparable{
 			if (levels>1 && this.getChilds().size()>0)
 			{
 				if (this.uri.indexOf("#Other")>=0)
-					out.append("<a class=\"yui3-menu-label\" href=\"#"+label+"-options\">"+label+" ("+this.getNumInstances()+")</a>");
+					out.append("<a class=\"yui3-menu-label\" href=\"#"+label+"-options\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
 				else
 				{
 					out.append("<span class=\"yui3-menu-label\">");
-					out.append("<a href=\""+link+"\">"+label+" ("+this.getNumInstances()+")</a>");
+					out.append("<a href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
 					out.append("<a href=\"#"+label+"-options\"></a>");
 					out.append("</span>");
 				}
@@ -255,7 +254,7 @@ public class HierarchyNode implements Comparable{
 						   "</div>");
 			}
 			else
-				out.append("<a class=\"yui3-menuitem-content\" href=\""+link+"\">"+label+" ("+this.getNumInstances()+")</a>");
+				out.append("<a class=\"yui3-menuitem-content\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
 		}
 
 		public void printAsUl(HttpServletRequest req, int levels, StringBuffer out, String property) 
@@ -276,11 +275,11 @@ public class HierarchyNode implements Comparable{
 			if (levels>1 && this.getChilds().size()>0)
 			{
 				if (this.uri.indexOf("#Other")>=0)
-					out.append("<a class=\"yui3-menu-label\" href=\"#"+label+"-options\">"+label+" ("+this.getNumInstances()+")</a>");
+					out.append("<a class=\"yui3-menu-label\" href=\"#"+label+"-options\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
 				else
 				{
 					out.append("<span class=\"yui3-menu-label\">");
-					out.append("<a onclick=\""+onclick+"\" href=\""+link+"\">"+label+" ("+this.getNumInstances()+")</a>");
+					out.append("<a onclick=\""+onclick+"\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
 					out.append("<a href=\"#"+label+"-options\"></a>");
 					out.append("</span>");
 				}
@@ -299,7 +298,7 @@ public class HierarchyNode implements Comparable{
 						   "</div>");
 			}
 			else
-				out.append("<a class=\"yui3-menuitem-content\" onclick=\""+onclick+"\" href=\""+link+"\">"+label+" ("+this.getNumInstances()+")</a>");
+				out.append("<a class=\"yui3-menuitem-content\" onclick=\""+onclick+"\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
 		}
 		
 		public int compareTo(Object o) { 

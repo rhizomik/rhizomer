@@ -285,5 +285,19 @@ ul.inline , ul.inline li{
 
 #active_facets .class_active{
 	font-weight:bold;
-	font-size: 14px;
+	font-size: 12px;
+}
+
+.menu_instances{
+	font-weight:normal;
+}
+
+#active_facets .your_filters{
+	font-weight:bold;
+	text-decoration:underlined;
+}
+
+#active_facets{
+	margin-top:10px;
+	margin-bottom:5px;
 }

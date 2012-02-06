@@ -19,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
 import net.rhizomik.rhizomer.autoia.classes.MenuConfig;
+import net.rhizomik.rhizomer.util.FacetUtil;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -331,6 +332,10 @@ public class HierarchyManager
 		String uri = xmlNode.getAttributes().getNamedItem("uri").getTextContent();
 	    int instances = Integer.parseInt(xmlNode.getAttributes().getNamedItem("instances").getTextContent());
 		String label = xmlNode.getAttributes().getNamedItem("label").getTextContent();
+		
+		//Parxe temporal
+		label = FacetUtil.makeLabel(label);
+		
 	    HierarchyNode node = new HierarchyNode(uri);
 	    node.setLabel(label);
 	    node.setNumInstances(instances);

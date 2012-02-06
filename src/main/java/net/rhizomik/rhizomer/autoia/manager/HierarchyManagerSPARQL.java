@@ -130,7 +130,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
 	        	    if (child == null)
 	        		child = new HierarchyNode(uri);
 	        	    if (row.contains("label"))
-	        		child.setLabel(row.get("label").toString());
+	        	    	child.setLabel(row.get("label").toString());
 	        	    menu.addChild(node, child);
 	        	}
 	        }

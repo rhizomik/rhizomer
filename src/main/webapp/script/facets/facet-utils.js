@@ -24,54 +24,30 @@ function addToggle(){
 }
 
 function makeLabel(uri){
+	var label;
 	var uriSplitted = uri.split("#");
 	if(uriSplitted.length>1)
-		return uriSplitted[uriSplitted.length-1];
+		label = uriSplitted[uriSplitted.length-1];
 	else{
 		uriSplitted = uri.split("/");
 		if(uriSplitted.length>1 && uri.charAt(uri.length-1)!='/')
-			return uriSplitted[uriSplitted.length-1];
+			label = uriSplitted[uriSplitted.length-1];
 		else if(uriSplitted.length>1)
-			return uriSplitted[uriSplitted.length-2];
+			label = uriSplitted[uriSplitted.length-2];
 		else
-			return uri;
-	}	
+			label = uri;
+	}
+	label = label.replace(/_/g," ").capitalize();
+	return label;
 }
 
 function splitPrefix(uri){
 	return uri.split(":");
 }
 
-
-function loadFacets()
-{	
-	$j("#facets").html("<p style=\"font-weight:bold\">Loading filters...</p>");
-	$j("#facets").append("<img id='waitImage' src=\"images/black-loader.gif\"/>");	
-	parameters = {};
-	parameters["facetURI"] = facetURI;
-	parameters["mode"] = "facets";
-
-	rhz.getFacets(parameters, 
-			function(output) 
-			{
-				var response = output.evalJSON();		
-				html = "<div class='filter_by'>Filter by:</div>";
-				html += "<div class='reset_facets'><a href=''>Reset filters</a></div>";
-				
-				$j("#facets").html(html);
-				$j.each(response.properties, 
-					function(i, property)
-					{
-						fm.addFacet(property);
-					});
-				fm.renderFacets("facets");
-				addToggle();
-				fm.setDefaultFilters();  
-				fm.reloadFacets();
-				fm.printActiveInit();
-			}
-	);
-}
+String.prototype.capitalize = function(){
+	return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+};
 
 function addSlashes(str) {
 	str = str.replace(/\'/g,'\\\'');

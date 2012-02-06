@@ -1,93 +1,116 @@
 package net.rhizomik.rhizomer.autoia.generator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+
+import static net.rhizomik.rhizomer.util.Namespaces.rdf;
+import static net.rhizomik.rhizomer.util.Namespaces.rdfs;
+import static net.rhizomik.rhizomer.util.Namespaces.xsd;
+
 
 public class TypeHierarchy {
-	
-	private HashMap<String,TypeNode> nodes;
-	
-	public TypeHierarchy(){
-		this.nodes = new HashMap<String, TypeNode>();
-		TypeNode stringNode = new TypeNode("string",null);
-		this.nodes.put("string", stringNode);
-		addChild("string","number");
-		addChild("number","integer");
-		addChild("number","double");
-		addChild("string","resource");
-		addChild("string","date");
-		/* Afegir datetime, time, geo point, etc*/
-		//addChild("date","datetime");
-		//addChild("date","time");
-	}
-	
-	public String getNearestParent(String type1, String type2){
-		if(type1.equals("string") || type2.equals("string"))
-			return "string";
-		if(type1.equals(type2))
-			return type1;
-		TypeNode node1 = nodes.get(type1);
-		TypeNode node2 = nodes.get(type2);
-		if(node1 == node2)
-			return node1.getType();
-		
-		while(node1!=node2 && !(node1.getType().equals("string")) && !(node2.getType().equals("string"))){
-			if(node1.getLevel()>node2.getLevel())
-				node1 = node1.getParent();
-			else
-				node2 = node2.getParent();
-				
-		}
-		if(node1.getType().equals("string"))
-			return node1.getType();
-		else if(node2.getType().equals("string"))
-			return node2.getType();
-		else
-			return node1.getType();
-	}
-		
-	private void addChild(String parent, String child){
-		TypeNode parentNode = nodes.get(parent);
-		addChild(parentNode, child);
-	}
 
-	private void addChild(TypeNode parent, String child){
-		TypeNode childNode = new TypeNode(child,parent);
-		parent.addChild(childNode);
-		nodes.put(child, childNode);
-	}
-}
+    private static class TypeNode {
 
+        private String type;
+        private TypeNode parent;
+        private int level;
 
-class TypeNode{
-	private String type;
-	private TypeNode parent;
-	private ArrayList<TypeNode> childs;
-	private int level;
-	
-	protected TypeNode(String type, TypeNode parent){
-		this.type = type;
-		this.parent = parent;
-		this.childs = new ArrayList<TypeNode>();
-		if(parent==null)
-			this.level = 0;
-		else
-			this.level = parent.level+1;
-	}
-	
-	protected int getLevel(){
-		return this.level;
-	}
-	
-	protected String getType(){
-		return this.type;
-	}
-	
-	protected TypeNode getParent(){
-		return this.parent;
-	}
-	
-	protected void addChild(TypeNode child){
-		this.childs.add(child);
-	}
+        public TypeNode(String type, TypeNode parent) {
+            this.type = type;
+            this.parent = parent;
+            if (parent == null) {
+                this.level = 0;
+            } else {
+                this.level = parent.level + 1;
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TypeNode typeNode = (TypeNode) o;
+
+            return !(type != null ? !type.equals(typeNode.type) : typeNode.type != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return type != null ? type.hashCode() : 0;
+        }
+    }
+    
+    public static final TypeHierarchy RDF;
+    
+    static {
+        RDF = new TypeHierarchy(rdfs("Resource"));
+        TypeNode rdfs_Class = RDF.addType(rdfs("Class"), RDF.rootNode);
+        TypeNode rdfs_Literal = RDF.addType(rdfs("Literal"), RDF.rootNode);
+        TypeNode rdf_Property = RDF.addType(rdf("Property"), RDF.rootNode);
+        TypeNode rdfs_Datatype = RDF.addType(rdfs("Datatype"), rdfs_Class);
+        TypeNode rdf_XMLLiteral = RDF.addType(rdf("XLMLiteral"), rdfs_Literal);
+        TypeNode xsd_anySimpleType = RDF.addType(xsd("anySimpleType"), rdfs_Literal);
+        TypeNode xsd_string = RDF.addType(xsd("string"), xsd_anySimpleType);
+        TypeNode xsd_double = RDF.addType(xsd("double"), xsd_anySimpleType);
+        TypeNode xsd_decimal = RDF.addType(xsd("decimal"), xsd_anySimpleType);
+        TypeNode xsd_integer = RDF.addType(xsd("integer"), xsd_decimal);
+        TypeNode xsd_date = RDF.addType(xsd("date"), xsd_anySimpleType);
+    }
+
+    private Map<String, TypeNode> nodes;
+    private TypeNode rootNode;
+
+    public TypeHierarchy(String root) {
+        nodes = new HashMap<String, TypeNode>();
+        rootNode = createRoot(root);
+    }
+
+    private TypeNode createRoot(String root) {
+        return addType(root, null);
+    }
+
+    private TypeNode addType(String child, TypeNode parentNode) {
+        TypeNode childNode = new TypeNode(child, parentNode);
+        nodes.put(child, childNode);
+        return childNode;
+    }
+
+    private TypeNode lowestCommonAncestor(Collection<TypeNode> nodes) {
+        Iterator<TypeNode> it = nodes.iterator();
+        TypeNode lowest = it.next();
+        while (it.hasNext()) {
+            lowest = lowestCommonAncestor(lowest, it.next());
+        }
+        return lowest;
+    }
+
+    private TypeNode lowestCommonAncestor(TypeNode node1, TypeNode node2) {
+        while (!node1.equals(node2)) {
+            if (node1.level == node2.level) {
+                node1 = node1.parent;
+                node2 = node2.parent;
+            } else if (node1.level > node2.level) {
+                node1 = node1.parent;
+            } else {
+                node2 = node2.parent;
+            }
+        }
+        return node1;
+    }
+
+    public String lowestCommonType(Collection<String> types) {
+        Collection<TypeNode> typeNodes = new HashSet<TypeNode>();
+        for (String type : types) {
+            TypeNode node = nodes.get(type);
+            if (node == null) {
+                // If we don't find the type, we add it to the hierarchy as a child of the root node
+                node = addType(type, rootNode);
+            }
+            typeNodes.add(node);
+        }
+        return lowestCommonAncestor(typeNodes).type;
+    }
+
 }

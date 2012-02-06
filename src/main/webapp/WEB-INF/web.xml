@@ -8,21 +8,21 @@
 <!-- DataStore Configuration. Options: Virtuoso, Jena File/Database, OWLIM. -->
 
 <!-- JENA FILE MODEL -->
-    <!--context-param>
+    <context-param>
       <param-name>store_class</param-name>
       <param-value>net.rhizomik.rhizomer.store.jena.JenaStore</param-value>
     </context-param>
     <context-param>
       <param-name>file_name</param-name>
-      <param-value>www-2011-complete.rdf</param-value>
+      <param-value>nfl-norange.rdf</param-value>
     </context-param>
     <context-param>
       <param-name>dir_name</param-name>
       <param-value>/metadata</param-value>
-    </context-param-->
+    </context-param>
 
 <!-- Virtuoso MODEL -->
-    <context-param>
+    <!--context-param>
       <param-name>store_class</param-name>
       <param-value>net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore</param-value>
     </context-param>
@@ -41,8 +41,8 @@
     <context-param>
       <param-name>db_graph</param-name>
       <param-value>http://rhizomik.net/linkedmdb/</param-value>
-      <!--param-value>http://dbpedia.org</param-value-->
-    </context-param>
+      <param-value>http://dbpedia.org</param-value>
+    </context-param-->
   <!-- By default, the VirtuosoStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
     <!--context-param>
       <param-name>db_schema</param-name>

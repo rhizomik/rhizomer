@@ -423,6 +423,12 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		post(base+"/facetProperties.jsp?"+queryString, "", "",
 			function(out) {callback(out);});
 	};
+        // Get numeric valued properties of selected type
+        self.getNumericProperties = function(facetURI, callback) 
+        {
+            var queryString = rhizomik.Utils.toQueryString({facetURI: facetURI, mode: "charts" });
+            post(base+"/facetProperties.jsp?"+queryString, "", "", callback);
+        }
 	
 	return self;
 };

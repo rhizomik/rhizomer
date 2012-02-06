@@ -1,17 +1,12 @@
 package net.rhizomik.rhizomer.autoia.classes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
 
 public class FacetProperties{
 	
-	private TreeMap<String, FacetProperty> properties;
-	private ArrayList<FacetProperty> propertyList;
+	private Map<String, FacetProperty> properties;
+	private List<FacetProperty> propertyList;
 	private int numInstancesTotal;
 	
 	public FacetProperties(){
@@ -33,13 +28,12 @@ public class FacetProperties{
 		this.propertyList = new ArrayList<FacetProperty>();
 		this.numInstancesTotal = numInstances;
 	}
-	
-	public void addProperty(String property, int numInstances, int numValues, String range, String dataType){
-		FacetProperty fp = new FacetProperty(property, numInstances, numValues, range, dataType);
-		properties.put(property, fp);
-		propertyList.add(fp);		
-	}
-		
+
+    public void addProperty(FacetProperty property) {
+        properties.put(property.getUri(), property);
+        propertyList.add(property);
+    }
+
 	public void addPropertyValue(String property, String valueURI, String valueLabel, int num){
 		FacetProperty fp = properties.get(property);
 		fp.addValue(valueURI, valueLabel, num);
@@ -49,16 +43,16 @@ public class FacetProperties{
 		return properties.get(uri);
 	}
 	
-	public ArrayList<FacetProperty> getSortedProperties(){
+	public List<FacetProperty> getSortedProperties(){
 		Collections.sort(propertyList);
 		return this.propertyList;
 	}
 	
-	public ArrayList<String> getProperties(){
+	public List<String> getProperties(){
 		return new ArrayList(properties.keySet());
 	}
 	
-	public TreeMap<String, Integer> getPropertyValues(String property){
+	public Map<String, Integer> getPropertyValues(String property){
 		return properties.get(property).getValues();
 	}
 	
@@ -68,26 +62,15 @@ public class FacetProperties{
 	
 	public StringBuffer printJSON(){
 		StringBuffer out = new StringBuffer();
+		List<FacetProperty> properties = getSortedProperties();
+		int total = 0;
 		out.append("[");
-		
-		ArrayList<FacetProperty> properties = getSortedProperties();
 		for(FacetProperty property : properties){
-			//if(property.getValues().size()>0){
-				out.append("{");
-				out.append("\"numValues\":\""+property.getNumValues()+"\",\n");
-				out.append("\"range\":\""+property.getRange()+"\",\n");
-				out.append("\"type\":\""+property.getFacetType()+"\",\n");
-				out.append("\"uri\": \""+property.getUri()+"\",\n ");
-				out.append("\"label\": \""+property.getLabel()+"\",\n ");
-				out.append("\"values\": ["+property.printJSON()+"]\n");
-				out.append("}\n");
-				out.append(",\n");
-			//}
+            total++;
+            out.append(property.printJSON());
+		    if (total < properties.size())
+                out.append(",\n");
 		}
-		if(out.charAt(out.length()-1)==','){
-			out.substring(0, out.length()-2);
-		}
-			
 		out.append("]");
 		return out;
 	}

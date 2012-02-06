@@ -67,11 +67,12 @@
 								<xsl:if test="position()!=last()"><xsl:text> </xsl:text></xsl:if>
 							</xsl:for-each>
 						</xsl:variable>
-						<xsl:if test="not($cardinality)">
-						<a class="specific" href="#"
-						   onclick="javascript:rhz.callServiceOnResource('{$servicelabel}', '{$endpoint}', '{$resources}'); return false;"
-						   title="{$servicelabel} {count(key('services', $serviceuri))} resource/s" xmlns="http://www.w3.org/1999/xhtml">
-						     <xsl:value-of select="$servicelabel"/> (<xsl:value-of select="count(key('services', $serviceuri))"/>)  </a>
+												
+						<xsl:if test="$cardinality != '1'">
+							<a class="specific" href="#"
+						   		onclick="javascript:rhz.callServiceOnResource('{$servicelabel}', '{$endpoint}', '{$resources}'); return false;"
+						   		title="{$servicelabel} {count(key('services', $serviceuri))} resource/s" xmlns="http://www.w3.org/1999/xhtml">
+						     	<xsl:value-of select="$servicelabel"/> (<xsl:value-of select="count(key('services', $serviceuri))"/>)  </a>
 						</xsl:if>
 						
 					</xsl:for-each>					
@@ -432,11 +433,11 @@
 							<!-- Ignore, already processed with first value of the same property -->
 						</xsl:when>
 						<xsl:otherwise>
-							<!-- Activate to generate HTML rendering just for the preferred language 
+							<!-- Activate to generate HTML rendering just for the preferred language -->
 							<xsl:variable name="isPreferredLanguage">
 								<xsl:call-template name="isPreferredLanguage"/>
 							</xsl:variable>
-							<xsl:if test="$isPreferredLanguage='true'" -->
+							<xsl:if test="$isPreferredLanguage='true'">
 								<tr class="{$property-namespace}{$property-name}" xmlns="http://www.w3.org/1999/xhtml">
 									<td xmlns="http://www.w3.org/1999/xhtml">
 										<xsl:call-template name="resourceDetailLink">
@@ -473,7 +474,7 @@
 										</xsl:for-each>	
 									</td>
 								</tr>
-							<!-- /xsl:if -->
+							</xsl:if>
 						</xsl:otherwise>
 					</xsl:choose>						
 				</xsl:when>

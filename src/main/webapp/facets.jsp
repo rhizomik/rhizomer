@@ -7,7 +7,9 @@
 %>
 
 	<link href="<%=request.getContextPath()%>/style/widgets.css" type="text/css" rel="stylesheet" />
+	<link href="<%=request.getContextPath()%>/style/charts.css" type="text/css" rel="stylesheet" />
 	<script src="<%=request.getContextPath()%>/script/util/dom.js"></script>
+	<script src="<%=request.getContextPath()%>/script/util/namespaces.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/DefaultNSPrefixes.js"></script>
 	<%--<script src="<%=request.getContextPath()%>/script/widgets/histogram-widget.js"></script>
 	<script src="<%=request.getContextPath()%>/script/widgets/slider-widget.js"></script>
@@ -20,11 +22,12 @@
 	<script src="<%=request.getContextPath()%>/script/facets/number-facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/string-facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/UrlParser.js"></script>		
-
+	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>
+	<script src="<%=request.getContextPath()%>/script/charts/charts.js"></script>
 
 <script type="text/javascript">
 //<![CDATA[
-	var facetUri = null;
+	var activeURI = null;
 	var fm = null;
 	var facetBrowser = null;
     var rhz = null;
@@ -52,6 +55,7 @@
 		var parser = new facet.UrlParser(query);
 		facetBrowser = new facet.FacetBrowser(parser);
 		facetBrowser.loadFacets();
+		alert(activeURI);
 		/*
 		parser.parse();
 		facetURI = parser.getActiveUri();
@@ -75,7 +79,7 @@
 			<li class="selected"><a href="#tab1"><em>Data</em></a></li>
 		</ul>            
 		<div class="yui-content">
-		
+		<div>
 			<div id="active_facets">
 			
 			</div>
@@ -94,5 +98,6 @@
 					<img src="<%=request.getContextPath()%>/images/cc-some_rights.png" alt="Creative Commons some rights reserved" width="80" height="15"/>       
 				</a>
 			</div>
+		</div>
 		</div>
 	</div>

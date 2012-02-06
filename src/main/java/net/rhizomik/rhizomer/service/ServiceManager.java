@@ -88,41 +88,46 @@ private String rhizomerServiceBaseUri = "http://rhizomik.net/rhizomer/services#"
         }
     }
     
-    public String addServices(String subrdf, HttpServletRequest request){
-        try {
+    public String addServices(String subrdf, HttpServletRequest request)
+    {
+        try 
+        {
             Model model = ModelFactory.createMemModelMaker().createDefaultModel();
             Model modeltmp = ModelFactory.createMemModelMaker().createDefaultModel();
-            try {
-
-                model.read(new StringReader(subrdf), "");
-            } catch (Exception e) {
-            }
+            try 
+            { model.read(new StringReader(subrdf), ""); } 
+            catch (Exception e) {}
+            
             ArrayList<Service> serList = (ArrayList<Service>) request.getSession().getAttribute("service");
             Query query = QueryFactory.create(queryForResources);
             QueryExecution qexec = QueryExecutionFactory.create(query, model);
             ResultSet results = qexec.execSelect();
-            while (serList!=null && results.hasNext()) {
+            while (serList!=null && results.hasNext()) 
+            {
                 QuerySolution row = results.next();
                 ListIterator<Service> itservices = serList.listIterator();
-                while (itservices.hasNext()) {
+                while (itservices.hasNext()) 
+                {
                     Service s = itservices.next();
-                    if (isVisualizable(s, row.getResource("r"))) {
+                    if (isVisualizable(model, s, row.getResource("r"))) 
                         updateResource(s, row.getResource("r"), modeltmp);
-                    }
                 }
             }
+            
             model.add(modeltmp);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             model.write(out, "RDF/XML-ABBREV");
             subrdf = out.toString("UTF8");
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             Logger.getLogger(ServiceManager.class.getName()).log(Level.SEVERE, "Exception while retrieving external metadata ", ex);
-        }finally{
-            return subrdf;
         }
+        return subrdf;
     }
-    private void updateResource(Service s,Resource r, Model model){
-       
+    
+    private void updateResource(Service s, Resource r, Model model)
+    {
         Property serviceURI = model.createProperty(this.rhizomerServiceBaseUri,"hasService");
         Property serviceEndPoint = model.createProperty(this.rhizomerServiceBaseUri,"endPoint");
         
@@ -131,12 +136,27 @@ private String rhizomerServiceBaseUri = "http://rhizomik.net/rhizomer/services#"
         model.add(rs,serviceEndPoint,s.getEndpoint());
 
         model.add(r,serviceURI,rs);
-
-
     }
-    private boolean isVisualizable(Service s,Resource r){
-        String askquery = s.getSparqlQuery().replaceAll("\\[URI\\]", r.toString());
-        return RhizomerRDF.instance().queryAsk(askquery);
+    
+    // A Resource is visualizable using the Service if the associated ASK SPARQL query returns true,
+    // either when querying the locally stored data or the response data (that might come from external
+    // sources by following Linked Data principles
+    private boolean isVisualizable(Model response, Service s,Resource r)
+    {
+	boolean visualizable = false;
+        String askQuery = s.getSparqlQuery().replaceAll("\\[URI\\]", r.toString());
+        
+        // First query locally store data
+        visualizable = RhizomerRDF.instance().queryAsk(askQuery);
+        
+        // If not visualizable considering local data, check with the response data
+        if (!visualizable)
+        {
+            Query query = QueryFactory.create(askQuery);
+            QueryExecution qexec = QueryExecutionFactory.create(query, response);
+            visualizable = qexec.execAsk();
+        }
+        return visualizable;
     }
     
     /**

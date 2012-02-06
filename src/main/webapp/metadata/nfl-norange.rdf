@@ -1,0 +1,509 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://www.nfl.com/Stats/passes#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xml:base="http://www.nfl.com/Stats/passes">
+  <owl:Ontology rdf:about="">
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Created with TopBraid Spreadsheet converter</owl:versionInfo>
+  </owl:Ontology>
+  <owl:Class rdf:ID="Player">
+    <rdfs:label>Player</rdfs:label>
+    <rdfs:comment>The class of NFL players.</rdfs:comment>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:ID="hasTeam">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="en">Team</rdfs:label>
+    <rdfs:domain rdf:resource="#Player"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasMore20">
+    <rdfs:domain rdf:resource="#Player"/>
+    <rdfs:label xml:lang="en">More than 20 yards</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasFirstDown">
+    <rdfs:domain rdf:resource="#Player"/>
+    <rdfs:label xml:lang="en">1st downs</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasAttempted">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:domain rdf:resource="#Player"/>
+    <rdfs:label xml:lang="en">Attempted passes</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasCompleted">
+    <rdfs:domain rdf:resource="#Player"/>
+    <rdfs:label xml:lang="en">Completed passes</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasMore40">
+    <rdfs:domain rdf:resource="#Player"/>
+    <rdfs:label xml:lang="en">More than 40 yards</rdfs:label>
+  </owl:DatatypeProperty>
+  <Player rdf:ID="JoeFlacco">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Joe Flacco</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >5</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >198</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >361</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >116</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >26</hasMore20>
+  </Player>
+  <Player rdf:ID="MattSchaub">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Matt Schaub</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >9</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >178</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >292</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >118</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >37</hasMore20>
+  </Player>
+  <Player rdf:ID="EliManning">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Eli Manning</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >7</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >202</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >320</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >120</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >38</hasMore20>
+  </Player>
+  <Player rdf:ID="DonovanMcNabb">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Donovan McNabb</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >3</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >94</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >156</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >52</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >14</hasMore20>
+  </Player>
+  <Player rdf:ID="SamBradford">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Sam Bradford</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >2</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >142</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >257</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >79</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >17</hasMore20>
+  </Player>
+  <Player rdf:ID="CamNewton">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Cam Newton</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >6</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >197</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >327</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >108</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >40</hasMore20>
+  </Player>
+  <Player rdf:ID="JohnBeck">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >John Beck</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >0</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >80</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >132</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >44</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >8</hasMore20>
+  </Player>
+  <Player rdf:ID="RyanFitzpatrick">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Ryan Fitzpatrick</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >6</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >190</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >291</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >97</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >25</hasMore20>
+  </Player>
+  <Player rdf:ID="PhilipRivers">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Philip Rivers</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >4</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >216</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >352</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >141</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >43</hasMore20>
+  </Player>
+  <Player rdf:ID="RexGrossman">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Rex Grossman</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >2</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >113</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >197</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >71</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >18</hasMore20>
+  </Player>
+  <Player rdf:ID="MarkSanchez">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Mark Sanchez</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >1</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >169</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >298</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >99</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >28</hasMore20>
+  </Player>
+  <Player rdf:ID="BenRoethlisberger">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Ben Roethlisberger</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >6</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >224</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >354</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >149</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >37</hasMore20>
+  </Player>
+  <Player rdf:ID="TarvarisJackson">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Tarvaris Jackson</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >5</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >154</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >254</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >76</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >23</hasMore20>
+  </Player>
+  <Player rdf:ID="AlexSmith">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Alex Smith</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >2</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >151</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >236</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >80</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >25</hasMore20>
+  </Player>
+  <Player rdf:ID="AaronRodgers">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Aaron Rodgers</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >9</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >215</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >295</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >123</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >34</hasMore20>
+  </Player>
+  <Player rdf:ID="JoshFreeman">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Josh Freeman</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >4</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >208</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >340</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >101</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >18</hasMore20>
+  </Player>
+  <Player rdf:ID="DrewBrees">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Drew Brees</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >6</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >299</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >422</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >170</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >38</hasMore20>
+  </Player>
+  <Player rdf:ID="TomBrady">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Tom Brady</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >5</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >238</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >360</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >151</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >42</hasMore20>
+  </Player>
+  <Player rdf:ID="MattMoore">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Matt Moore</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >1</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >105</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >167</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >60</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >17</hasMore20>
+  </Player>
+  <Player rdf:ID="JayCutler">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Jay Cutler</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >4</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >164</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >283</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >91</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >27</hasMore20>
+  </Player>
+  <Player rdf:ID="MatthewStafford">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Matthew Stafford</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >9</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >216</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >362</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >118</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >29</hasMore20>
+  </Player>
+  <Player rdf:ID="ColtMcCoy">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Colt McCoy</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >3</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >197</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >335</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >107</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >17</hasMore20>
+  </Player>
+  <Player rdf:ID="MichaelVick">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Michael Vick</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >4</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >181</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >300</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >105</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >31</hasMore20>
+  </Player>
+  <Player rdf:ID="TonyRomo">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Tony Romo</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >7</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >200</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >309</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >119</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >37</hasMore20>
+  </Player>
+  <Player rdf:ID="KevinKolb">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Kevin Kolb</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >6</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >129</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >227</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >78</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >20</hasMore20>
+  </Player>
+  <Player rdf:ID="MattRyan">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Matt Ryan</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >6</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >197</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >328</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >118</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >29</hasMore20>
+  </Player>
+  <Player rdf:ID="JasonCampbell">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Jason Campbell</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >3</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >100</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >165</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >56</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >17</hasMore20>
+  </Player>
+  <Player rdf:ID="BlaineGabbert">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Blaine Gabbert</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >2</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >93</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >194</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >49</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >11</hasMore20>
+  </Player>
+  <Player rdf:ID="MattCassel">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Matt Cassel</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >5</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >160</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >269</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >83</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >21</hasMore20>
+  </Player>
+  <Player rdf:ID="AndyDalton">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Andy Dalton</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >4</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >173</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >287</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >90</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >26</hasMore20>
+  </Player>
+  <Player rdf:ID="CurtisPainter">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Curtis Painter</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >3</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >117</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >214</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >61</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >17</hasMore20>
+  </Player>
+  <Player rdf:ID="MattHasselbeck">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Matt Hasselbeck</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >7</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >193</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >312</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >99</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >25</hasMore20>
+  </Player>
+  <Player rdf:ID="KyleOrton">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Kyle Orton</rdfs:label>
+    <hasMore40 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >2</hasMore40>
+    <hasCompleted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >91</hasCompleted>
+    <hasAttempted rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >155</hasAttempted>
+    <hasFirstDown rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >54</hasFirstDown>
+    <hasMore20 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >11</hasMore20>
+  </Player>
+</rdf:RDF>
+
+<!-- Created with TopBraid -->

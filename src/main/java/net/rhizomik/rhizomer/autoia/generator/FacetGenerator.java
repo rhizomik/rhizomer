@@ -314,9 +314,9 @@ public class FacetGenerator {
     		st.setInt(5, maxValue); //TODO: make it a boolean
     		st.setString(6, range);
     		String type = null;
-    		//if(range==null){
-    			//type = TypeDetector.detectType(classUri, property, instances);
-    		//}
+    		if(range==null){
+    			type = new TypeDetector(classUri, property).detectType();
+    		}
     		st.setString(7, type);
     		
     		st.executeUpdate();

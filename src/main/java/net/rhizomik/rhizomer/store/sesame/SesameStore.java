@@ -148,7 +148,7 @@ public class SesameStore implements MetadataStore
 	    int wherePos = queryString.indexOf("WHERE");
     	    if (wherePos>0)
     	        queryString = queryString.substring(0, wherePos) + 
-    		    "FROM <"+graphURI+">\n"+ "FROM NAMED <http://www.ontotext.com/implicit>\n"+ queryString.substring(wherePos);
+    		    "FROM <"+graphURI+">\n"+ "FROM <http://www.ontotext.com/implicit>\n"+ queryString.substring(wherePos);
 	    isDescribe = true;
 	}
 	else

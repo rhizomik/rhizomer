@@ -1,31 +1,27 @@
 package net.rhizomik.rhizomer.autoia.classes;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.Map.Entry;
-
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Ordering;
-import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
-
 import net.rhizomik.rhizomer.util.FacetUtil;
 
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+
+import static net.rhizomik.rhizomer.util.Namespaces.xsd;
+
 public class FacetProperty implements Comparable{
-	
-	class RevIntComp implements Comparator<Integer>
+
+    class RevIntComp implements Comparator<Integer>
 	{
 	    public int compare(Integer o1, Integer o2)
 	    {
 	        return (o1>o2 ? -1 : (o1==o2 ? 0 : 1));
 	    }
 	}
-	
+
 	private String facetType;
 	private String uri;
 	private String label;
@@ -35,12 +31,12 @@ public class FacetProperty implements Comparable{
 	private double metric;
 	private double entropy;
 	private double cardinalityGaussian;
-	private TreeMap<String, Integer> valuesByString;
-	private TreeMultimap<Integer, String> valuesByInteger;
-	private TreeMultimap<Integer, FacetValue> values;
+	private Map<String, Integer> valuesByString;
+	private Multimap<Integer, String> valuesByInteger;
+	private Multimap<Integer, FacetValue> values;
 	//private HashMap<String, String> uriToLabel;
 	private int numValues;
-	
+
 	public FacetProperty(String uri, int numInstances, int numValues, String range, String dataType){
 		this.numInstances = numInstances;
 		this.numValues = numValues;
@@ -54,7 +50,7 @@ public class FacetProperty implements Comparable{
 		label = FacetUtil.makeLabel(uri);
 		this.facetType = getType();
 	}
-	
+
 	public void setNumValues(int numValues){
 		this.numValues = numValues;
 	}
@@ -137,7 +133,7 @@ public class FacetProperty implements Comparable{
 		}
 	}
 	
-	public TreeMap<String, Integer> getValues(){
+	public Map<String, Integer> getValues(){
 		return this.valuesByString;
 	}
 	/*
@@ -146,7 +142,7 @@ public class FacetProperty implements Comparable{
 	}
 	*/
 	
-	public TreeMultimap getSortedValues(){
+	public Multimap getSortedValues(){
 		return this.valuesByInteger;
 	}
 	
@@ -154,6 +150,13 @@ public class FacetProperty implements Comparable{
 	public StringBuffer printJSON(){
 		StringBuffer out = new StringBuffer();
 		int total=0;
+        out.append("{");
+        out.append("\"numValues\":\""+getNumValues()+"\",\n");
+        out.append("\"range\":\""+getRange()+"\",\n");
+        out.append("\"type\":\""+getFacetType()+"\",\n");
+        out.append("\"uri\": \""+getUri()+"\",\n ");
+        out.append("\"label\": \""+getLabel()+"\",\n ");
+        out.append("\"values\": [");
 		for(Entry<Integer, FacetValue> e : values.entries()){
 				total++;
 				FacetValue value = e.getValue();
@@ -162,6 +165,8 @@ public class FacetProperty implements Comparable{
 				if(total<valuesByInteger.size())
 					out.append(",\n");
 		}
+        out.append("]\n");
+        out.append("}\n");
 		return out;
 	}
 	
@@ -204,10 +209,10 @@ public class FacetProperty implements Comparable{
 	}
 
 	private String getType(){
-		if(this.dataType!=null && this.dataType.equals("integer"))
-			return "number";
+		if(this.dataType!=null && this.dataType.equals(xsd("integer")))
+			return this.dataType;
 		else
-			return "string";
+			return xsd("string");
 	}
 
 }

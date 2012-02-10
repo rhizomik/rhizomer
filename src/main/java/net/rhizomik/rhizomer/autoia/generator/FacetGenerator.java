@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
-
+import static net.rhizomik.rhizomer.util.Namespaces.rdfs;
 import net.rhizomik.rhizomer.agents.RhizomerRDF;
 
 import com.hp.hpl.jena.query.QuerySolution;
@@ -60,6 +60,7 @@ public class FacetGenerator {
         "WHERE {"+NL+
         "   ?x a <%1$s> ; ?p ?o"+NL+
         "   OPTIONAL { ?p rdfs:range ?r }"+NL+
+        "   FILTER (?o != \"\")"+NL+
         "   FILTER (?p!=owl:differentFrom && ?p!=owl:sameAs)"+NL+            
         "}";
     
@@ -76,7 +77,7 @@ public class FacetGenerator {
 	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
-        "SELECT (COUNT(?o) AS ?n)"+NL+ 
+        "SELECT (COUNT(distinct(?o)) AS ?n)"+NL+ 
         "WHERE {"+NL+
         "   ?x a <%1$s> ; <%2$s> ?o ."+NL+
         "   FILTER (?o!=\"\")"+NL+   
@@ -92,6 +93,17 @@ public class FacetGenerator {
         "   ?y a <%1$s> ; <%2$s> ?o ."+NL+
         "   FILTER (?x!=?y)"+NL+   
         "}";    
+	
+	private String queryForMaxCardinality = 
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+	    "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
+	    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
+	    "SELECT (COUNT(?o) AS ?n)"+NL+ 
+	    "WHERE {"+NL+
+	    "   ?x a <%1$s> ; <%2$s> ?o ."+NL+
+	    "   FILTER (?o!=\"\")"+NL+   
+	    "}"+NL+
+	    "GROUP BY ?o ORDER BY DESC(?n) LIMIT 1";
     
     public FacetGenerator(ServletConfig config) throws ClassNotFoundException, SQLException{
     	
@@ -119,7 +131,7 @@ public class FacetGenerator {
 	        */
 	        stat.execute("CREATE TABLE if not exists property_summary(id int auto_increment, " +
 	        		"class varchar(255), property varchar(255), num_instances int, different_values int, " +
-	        		"max_value int, value_range varchar(255), value_type varchar(255), primary key(id))");
+	        		"max_value int, max_cardinality int, value_range varchar(255), value_type varchar(255), primary key(id))");
 	        stat.close(); 
 	        generateFacets();
 		}
@@ -174,6 +186,23 @@ public class FacetGenerator {
         }
         return count;
     }
+    
+    private int countMaxCardinalityForProperty(String uri, String property){
+    	StringBuilder queryString = new StringBuilder();
+        Formatter f = new Formatter(queryString);
+        Object[] vars = {uri, property};
+        f.format(queryForMaxCardinality, vars);    	
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+        int count = 0;
+        if (results.hasNext())
+        {
+			QuerySolution row = results.next();
+			// The first var is the count value
+	        String countVar = results.getResultVars().get(0);
+	        count = row.getLiteral(countVar).getInt();
+        }
+        return count;
+    }    
     
     private boolean isInverseFunctionalForValues(String uri, String property){
     	StringBuilder queryString = new StringBuilder();
@@ -283,7 +312,7 @@ public class FacetGenerator {
 		st.setInt(2, total);
 		st.executeUpdate();
 		
-		st = conn.prepareStatement("INSERT INTO property_summary VALUES(NULL,?,?,?,?,?,?,?)");
+		st = conn.prepareStatement("INSERT INTO property_summary VALUES(NULL,?,?,?,?,?,?,?,?)");
 		//PreparedStatement st = conn.prepareStatement("UPDATE property_summary SET num_instances = ? where class = ? and property = ?");
 		
 		HashMap<String, String>  properties = this.getProperties(classUri);
@@ -293,12 +322,16 @@ public class FacetGenerator {
     		//double entropy = calculateEntropy(classUri, property);
     		int instances = 0;
     		int values = 0;
-    		int maxValue = 2; 
+    		int maxValue = 2;
+    		int maxCardinality = 0;
     		
 	    	System.out.println("COUNT INSTANCES: "+ classUri + " - "+ property);
 	    	instances = this.countInstancesForProperty(classUri, property); 
 	    	System.out.println("COUNT VALUES: "+ classUri + " - "+ property);
 	    	values = this.countValues(classUri, property);
+	    	
+	    	System.out.println("COUNT MAX CARDINALITY: "+ classUri + " - "+ property);
+	    	maxCardinality = this.countMaxCardinalityForProperty(classUri, property);
 	    	
 	    	if(isInverseFunctionalForValues(classUri, property))
 	    	{
@@ -312,12 +345,15 @@ public class FacetGenerator {
     		st.setInt(4, values);
     		//st.setDouble(5, entropy);
     		st.setInt(5, maxValue); //TODO: make it a boolean
-    		st.setString(6, range);
+    		st.setInt(6, maxCardinality); //TODO: make it a boolean
     		String type = null;
     		if(range==null){
     			type = new TypeDetector(classUri, property).detectType();
+    			if(type.equals(rdfs("Resource")))
+    				range = new TypeDetector(classUri, property).detectRange();
     		}
-    		st.setString(7, type);
+    		st.setString(7, range);    		
+    		st.setString(8, type);
     		
     		st.executeUpdate();
 

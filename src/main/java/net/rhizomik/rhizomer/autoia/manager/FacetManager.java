@@ -41,7 +41,31 @@ public class FacetManager
     }
 
     private static FacetProperty createPropertyfromResultSet(ResultSet rs) throws SQLException {
-        return new FacetProperty(rs.getString("property"), rs.getInt("num_instances"), rs.getInt("different_values"), rs.getString("value_range"), rs.getString("value_type"));
+        return new FacetProperty(rs.getString("property"), rs.getInt("num_instances"), rs.getInt("different_values"), rs.getInt("max_cardinality"), rs.getString("value_range"), rs.getString("value_type"));
+    }
+    
+    private ArrayList<String> getClasses() throws SQLException{
+    	String query = "SELECT class from class_summary";
+    	ArrayList<String> classes = new ArrayList<String>();
+    	PreparedStatement ps = null;
+    	boolean busy = false;
+    	do {
+        	try
+        	{
+        		busy = false;
+    	    	ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+    			ResultSet rs = ps.executeQuery();
+    			while(rs.next()){
+    				classes.add(rs.getString("class"));
+    			}
+        	}
+        	catch (SQLException e)
+        	{ if (e.toString().indexOf("SQLITE_BUSY")>0) busy = true;
+        		else e.printStackTrace();}
+        	finally
+        	{ if (ps != null) ps.close(); }
+		} while (busy);
+    	return classes;
     }
 
     public FacetProperties getProperties(String uri, ArrayList<String> omitProperties) throws SQLException
@@ -69,17 +93,16 @@ public class FacetManager
     	    		query+="'"+omitProperty+"',";
     	    	}
     	    	query = query.substring(0, query.length()-1);
-    	    	query +=") and num_instances > 0 and (max_value > 1 or num_instances < 100) "; //TODO: define criteria for facets with maxvalue = 1 but dataset with small number of instances
-    	    	query += "order by num_instances desc limit 25";
-
+    	    	//query +=") and num_instances > 0 and max_value > 1 "; //TODO: define criteria for facets with maxvalue = 1 but dataset with small number of instances
+    	    	query += ") order by num_instances desc";
     	    	ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
     			ps.setString(1, uri);
     			rs = ps.executeQuery();
     			properties = new FacetProperties(numInstances);
-    			//System.out.println("PROPERTIES:");
     			while(rs.next()){
-    				//System.out.println(rs.getString("property") + " - " + rs.getString("num_instances") + " - "+rs.getString("max_value"));
-    				properties.addProperty(createPropertyfromResultSet(rs));
+    				FacetProperty property = createPropertyfromResultSet(rs);
+    				if(!property.discardProperty())
+    					properties.addProperty(property);
     			}
         	}
         	catch (SQLException e)
@@ -167,17 +190,16 @@ public class FacetManager
     	    	for(String omitProperty : omitProperties){
     	    		query+="'"+omitProperty+"',";
     	    	}
-    	    	query +=") and (num_instances > \"+minInstances+\")"; // and entropy < 0.99";
-    	    	//query += "order by num_instances desc limit 15";
+    	    	//query +=") and (num_instances > \"+minInstances+\")"; // and entropy < 0.99";
+    	    	query += ") order by num_instances desc";
     			ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
     			ps.setString(1, uri);
     			rs = ps.executeQuery();
     			properties = new FacetProperties(numInstances);
-    			System.out.println("PROPERTIES:");
     			while(rs.next()){
-    				System.out.println(rs.getString("property"));
                     FacetProperty property = createPropertyfromResultSet(rs);
-    				properties.addProperty(property);
+                    if(!property.discardProperty())
+                    	properties.addProperty(property);
     			}
         	}
         	catch (SQLException e)

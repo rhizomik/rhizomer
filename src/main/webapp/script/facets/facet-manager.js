@@ -81,13 +81,15 @@ facet.FacetManager = function (uri, inVariable){
 	};
 	
 	self.addFacet = function(property){
-		//facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);	
+		facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
+		/*
 		if(property.type == NS.xsd("integer"))
 			facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);
 		else if(property.type == NS.xsd("string"))
 			facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
 		else
-			facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);	
+			facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
+		*/	
 		facetIds[hex_md5(property.uri)] = property.uri;
 	};
 	
@@ -213,7 +215,7 @@ facet.FacetManager = function (uri, inVariable){
 			"?"+variable+" a <"+typeUri+"> . ";
 		query += facetBrowser.makeRestrictions();
 		query += "}";
-		rhz.listResourcesNoHistory(query);
+		//rhz.listResourcesNoHistory(query);
 		self.reloadProperties();		
 	};	
 	

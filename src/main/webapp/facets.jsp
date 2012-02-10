@@ -55,13 +55,6 @@
 		var parser = new facet.UrlParser(query);
 		facetBrowser = new facet.FacetBrowser(parser);
 		facetBrowser.loadFacets();
-		alert(activeURI);
-		/*
-		parser.parse();
-		facetURI = parser.getActiveUri();
-		fm = facet.FacetManager(parser);
-		loadFacets();
-		*/
 		
 	}
 

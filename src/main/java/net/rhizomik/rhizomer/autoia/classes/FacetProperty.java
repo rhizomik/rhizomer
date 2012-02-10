@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import static net.rhizomik.rhizomer.util.Namespaces.*;
+
 import static net.rhizomik.rhizomer.util.Namespaces.xsd;
 
 public class FacetProperty implements Comparable{
@@ -36,10 +38,12 @@ public class FacetProperty implements Comparable{
 	private Multimap<Integer, FacetValue> values;
 	//private HashMap<String, String> uriToLabel;
 	private int numValues;
+	private int maxCardinality;
 
-	public FacetProperty(String uri, int numInstances, int numValues, String range, String dataType){
+	public FacetProperty(String uri, int numInstances, int numValues, int maxCardinality, String range, String dataType){
 		this.numInstances = numInstances;
 		this.numValues = numValues;
+		this.maxCardinality = maxCardinality;
 		this.uri = uri;
 		this.range = range;
 		this.dataType = dataType;
@@ -209,10 +213,24 @@ public class FacetProperty implements Comparable{
 	}
 
 	private String getType(){
-		if(this.dataType!=null && this.dataType.equals(xsd("integer")))
+		/*
+		if(this.dataType!=null && (this.dataType.equals(xsd("integer"))
 			return this.dataType;
 		else
 			return xsd("string");
+		*/
+		return this.dataType;
+	}
+	
+	public boolean discardProperty(){
+		Boolean discard = false;
+		if(maxCardinality==numInstances && dataType!=rdfs("Resource"))
+			discard = true;
+		else if(numInstances==numValues && range==null)
+			discard = true;
+		else if((float) numValues/ (float) numInstances>0.98 && range ==null)
+			discard = true;
+		return discard;
 	}
 
 }

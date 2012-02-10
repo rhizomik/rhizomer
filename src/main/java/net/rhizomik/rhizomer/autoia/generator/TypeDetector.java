@@ -32,6 +32,19 @@ public class TypeDetector {
     	"}"+NL+
     	"GROUP BY ?o"+NL+
     	"ORDER BY DESC(?n) LIMIT 5";
+	
+	private static String queryForPivotingFacets = 
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+	    "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
+	    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
+	    "SELECT distinct(?type)"+NL+
+	    "WHERE {"+NL+
+	    "   ?x a <%1$s> ."+NL+
+	    "   ?x <%2$s> ?o ."+NL+
+	    "   ?o a ?type ."+NL+
+	    "	?type a ?class"+NL+
+	    "}" +
+	    "LIMIT 1";	
 
     private String uri;
     private String property;
@@ -40,6 +53,13 @@ public class TypeDetector {
         this.uri = uri;
         this.property = property;
     }
+    
+    private String makeQueryForPivotingFacets(String uri, String property){
+    	Formatter f = new Formatter();
+        Object[] vars = {uri, property};
+        f.format(queryForPivotingFacets, vars);
+        return f.toString();
+    }
 
     private String makeQueryForValues(String uri, String property) {
         Formatter f = new Formatter();
@@ -47,6 +67,18 @@ public class TypeDetector {
         f.format(queryForValues, vars);
         return f.toString();
     }
+    
+    public String detectRange(){
+    	String queryString = makeQueryForPivotingFacets(uri, property);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString, true);
+        if(results.hasNext()){
+        	QuerySolution row = results.next();
+        	return row.get("type").toString();
+        }
+        else
+        	return null;
+    }
+    
 
     public String detectType() {
         String queryString = makeQueryForValues(uri, property);

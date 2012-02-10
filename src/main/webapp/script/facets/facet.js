@@ -1,4 +1,4 @@
-facet.Facet = function(property, inVariable, typeUri)
+facet.Facet = function(property, inVariable, classURI)
 {
 	var self = this;
 
@@ -17,7 +17,9 @@ facet.Facet = function(property, inVariable, typeUri)
 	var opened = false;
 	var initValues = new Array();
 	var variable = inVariable;
-	var typeUri = typeUri
+	var classURI = classURI
+	var type = property.type;
+	var range = property.range;
 	
 	self.getId = function(){
 		return id;
@@ -103,7 +105,8 @@ facet.Facet = function(property, inVariable, typeUri)
 		html += "<div id=\""+id+"_title\" class=\"facet_header\">";
 		html += "<span class=\"facet_title\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">" +
 				"<h4>"+label+"</h4></span>";
-		html += "<span id=\""+id+"_pivot\" class=\"pivot\">&raquo;</span>";
+		if(type == NS.rdfs("Resource") && range!="null")
+			html += "<span id=\""+id+"_pivot\" class=\"pivot\">&raquo;</span>";
 		html += "<div class=\"clear\"></div>";
 		html += "</div>";
 		html +="<div id=\""+id+"_loading\"></div>";
@@ -170,7 +173,7 @@ facet.Facet = function(property, inVariable, typeUri)
 		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" + 
 		"SELECT ?o (COUNT(?o) AS ?n) ?label "+
 		"WHERE {"+
-		"	?"+variable+" a <"+typeUri+"> . "+
+		"	?"+variable+" a <"+classURI+"> . "+
 		"   ?"+variable+" <"+uri+"> ?o ."+
 		"   FILTER(?o!=\"\" && !isBlank(?o)) ."+
 		" OPTIONAL{ ?o rdfs:label ?label " +
@@ -181,7 +184,7 @@ facet.Facet = function(property, inVariable, typeUri)
 	};
 	
 	self.pivotFacet = function(){
-		facetBrowser.pivotFacet(uri);
+		facetBrowser.pivotFacet(range);
 	};
 	
 	self.getMoreValues = function(){
@@ -191,7 +194,7 @@ facet.Facet = function(property, inVariable, typeUri)
 		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
 			   "SELECT ?o (COUNT(?o) AS ?n) ?label "+
 		       "WHERE { "+
-		            "?"+variable+" a <"+typeUri+"> . "+
+		            "?"+variable+" a <"+classURI+"> . "+
 		            "?"+variable+" <"+uri+"> ?o . "+
 		    		"   FILTER(?o!=\"\" && !isBlank(?o)) ."+
 		    		"OPTIONAL{ ?o rdfs:label ?label . " +

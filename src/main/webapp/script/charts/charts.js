@@ -195,7 +195,6 @@ YUI().use("charts", "json", "node", function (Y) {
 
         function queryForValues(callback) {
             var query = makeQuery(mediator);
-            alert(query);
             rhz.sparqlJSON(query, function (output) {
                 var data = Y.JSON.parse(output),
                     translator = makeTranslatorValuesToProperties(mediator.formData.properties),

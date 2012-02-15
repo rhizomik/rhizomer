@@ -82,6 +82,8 @@ public class FacetManager
     	PreparedStatement ps = null;
     	FacetProperties properties = null;
     	boolean busy = false;
+    	int limit = 15;
+    	int i = 1;
     	do {
         	try
         	{
@@ -107,8 +109,10 @@ public class FacetManager
     			properties = new FacetProperties(numInstances);
     			while(rs.next()){
     				FacetProperty property = createPropertyfromResultSet(rs);
-    				if(!property.discardProperty())
+    				if(!property.discardProperty() && i<=limit){
     					properties.addProperty(property);
+    					i++;
+    				}
     			}
     			rs.close();
     			ps.close();
@@ -120,7 +124,10 @@ public class FacetManager
     			while(rs.next()){
     				FacetProperty property = createInversePropertyFromResultSet(rs);
     				System.out.println("INVERSE: "+property.getClassUri());
-    				properties.addProperty(property);
+    				if(i<=limit){
+    					properties.addProperty(property);
+    					i++;
+    				}
     			}
     			
         	}

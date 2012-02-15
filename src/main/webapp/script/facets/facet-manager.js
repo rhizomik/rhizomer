@@ -85,11 +85,13 @@ facet.FacetManager = function (uri, inVariable){
 	
 	self.addFacet = function(property){
 		if(property.classUri){
-			//facets[property.uri] = facet.InverseFacet(property, self.getVariable(), typeUri);
-			;
+			facets[property.uri] = facet.InverseFacet(property, self.getVariable(), typeUri);
+			facetIds[hex_md5(property.classUri+property.uri)] = property.uri;
 		}
-		else
+		else{
 			facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
+			facetIds[hex_md5(property.uri)] = property.uri;
+		}
 		/*
 		if(property.type == NS.xsd("integer"))
 			facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);
@@ -98,7 +100,7 @@ facet.FacetManager = function (uri, inVariable){
 		else
 			facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
 		*/	
-		facetIds[hex_md5(property.uri)] = property.uri;
+		
 	};
 	
 	self.renderFacets = function(target){

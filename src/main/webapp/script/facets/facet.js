@@ -106,7 +106,8 @@ facet.Facet = function(property, inVariable, classURI)
 		html += "<span class=\"facet_title\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">" +
 				"<h4>"+label+"</h4></span>";
 		if(type == NS.rdfs("Resource") && range!="null")
-			html += "<span id=\""+id+"_pivot\" class=\"pivot\">&raquo;</span>";
+			//html += "<span id=\""+id+"_pivot\" class=\"pivot\" title=\"Filter "+label+" by\">&raquo;</span>";
+			html += "<img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_92.gif\" id=\""+id+"_pivot\" class=\"pivot\" title=\"Filter "+label+" by\"></>";
 		html += "<div class=\"clear\"></div>";
 		html += "</div>";
 		html +="<div id=\""+id+"_loading\"></div>";
@@ -184,7 +185,7 @@ facet.Facet = function(property, inVariable, classURI)
 	};
 	
 	self.pivotFacet = function(){
-		facetBrowser.pivotFacet(range);
+		facetBrowser.pivotFacet(uri, range);
 	};
 	
 	self.getMoreValues = function(){

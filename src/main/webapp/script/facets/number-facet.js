@@ -152,7 +152,6 @@
 		$j("#"+that.getLabel()+"_bar > div").toggle();
 		$j("#"+that.getLabel()+"_hbutton").click(function (){
 			that.setActive(true);
-			alert(that.isActive());
 			that.mode = "range";
 			fm.reloadFacets();
 		});

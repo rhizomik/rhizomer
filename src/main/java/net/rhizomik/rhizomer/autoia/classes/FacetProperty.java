@@ -24,6 +24,8 @@ public class FacetProperty implements Comparable{
 	    }
 	}
 
+    private Boolean isInverse;
+    private String classUri;
 	private String facetType;
 	private String uri;
 	private String label;
@@ -54,7 +56,16 @@ public class FacetProperty implements Comparable{
 		label = FacetUtil.makeLabel(uri);
 		this.facetType = getType();
 	}
-
+	
+	public void setInverse(String classUri){
+		this.classUri = classUri;
+		this.isInverse = true;
+	}
+	
+	public String getClassUri(){
+		return this.classUri;
+	}
+	
 	public void setNumValues(int numValues){
 		this.numValues = numValues;
 	}
@@ -160,6 +171,8 @@ public class FacetProperty implements Comparable{
         out.append("\"type\":\""+getFacetType()+"\",\n");
         out.append("\"uri\": \""+getUri()+"\",\n ");
         out.append("\"label\": \""+getLabel()+"\",\n ");
+        if(getClassUri()!=null)
+        	out.append("\"classUri\": \""+getClassUri()+"\",\n ");
         out.append("\"values\": [");
 		for(Entry<Integer, FacetValue> e : values.entries()){
 				total++;

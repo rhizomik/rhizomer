@@ -94,28 +94,29 @@ facet.FacetBrowser = function(inParser){
 		activeManager.reloadFacets();
 	};
 	
-	self.pivotFacet = function(uri){
-		if(managers[uri]){
-			activeManager = managers[uri];
+	self.pivotFacet = function(uri, range){
+		if(managers[range]){
+			activeManager = managers[range];
 			activeManager.renderFacets("facets");
 			activeManager.reloadFacets();
 			self.printActive();
 		}
 		else{
-			activeManager.addPivotedFacet(uri, "r"+varCount);		
-			self.addManager(uri, "r"+varCount);
-			activeURI = uri;
-			activeManager = managers[uri];
+			activeManager.addPivotedFacet(uri, range, "r"+varCount);
+			self.addManager(range, "r"+varCount);
+			activeURI = range;
+			activeManager = managers[range];
 			activeManager.loadFacets();
 		}
 		self.printActive();
 	};
 	
-	self.deletePivotFacet = function(uri){
-		delete(managers[uri]);
+	self.deletePivotFacet = function(range){
+		delete(managers[range]);
 		activeURI = mainManager.getTypeUri();
 		activeManager = mainManager;
-		mainManager.deletePivotedFacet(uri);
+		//TODO: Missing property URI
+		// mainManager.deletePivotedFacet(uri);
 		activeManager.renderFacets("facets");		
 		mainManager.reloadFacets();
 		self.printActive();

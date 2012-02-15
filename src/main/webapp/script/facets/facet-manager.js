@@ -22,8 +22,11 @@ facet.FacetManager = function (uri, inVariable){
 		return typeUri;
 	};
 	
-	self.addPivotedFacet = function(propertyURI, pivotedVar){
-		pivotedFacets[propertyURI] = pivotedVar;
+	self.addPivotedFacet = function(propertyURI, range, pivotedVar){
+        var obj = {};
+        obj.range = range;
+        obj.pivotedVar = pivotedVar;
+		pivotedFacets[propertyURI] = obj;
 	};
 	
 	self.deletePivotedFacet = function(propertyURI){
@@ -81,7 +84,12 @@ facet.FacetManager = function (uri, inVariable){
 	};
 	
 	self.addFacet = function(property){
-		facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
+		if(property.classUri){
+			//facets[property.uri] = facet.InverseFacet(property, self.getVariable(), typeUri);
+			;
+		}
+		else
+			facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
 		/*
 		if(property.type == NS.xsd("integer"))
 			facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);
@@ -173,11 +181,11 @@ facet.FacetManager = function (uri, inVariable){
 			html += "<span class=\"class_active\">"+label+"</span>";
 			if(typeUri==facetBrowser.getMainManager().getTypeUri()){
 				if(typeUri!=facetBrowser.getActiveManager().getTypeUri())
-					html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('"+typeUri+"');\">&laquo; Back to</a></span>";
+					html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('','"+typeUri+"');\"><img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_99.gif\"/> Back to</a></span>";
 				html += "<span style=\"margin-left:20px;\"><a href=\"\">Reset all filters[x]</a></span>";
 			}
 			else if(typeUri!=facetBrowser.getActiveManager().getTypeUri()){
-				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('"+typeUri+"');\">&laquo; Back to</a></span>";
+				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('','"+typeUri+"');\"><img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_99.gif\"/> Back to</a></span>";
 				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.deletePivotFacet('"+typeUri+"');\">[x]</a></span>";
 			}
 			else{
@@ -197,7 +205,7 @@ facet.FacetManager = function (uri, inVariable){
 				}
 			}
 			for(m in pivotedFacets){
-				var tmp = facetBrowser.getManager(m).printActive();
+				var tmp = facetBrowser.getManager(pivotedFacets[m].range).printActive();
 				if(tmp){
 					html += "<li>";
 					html += tmp;
@@ -215,7 +223,8 @@ facet.FacetManager = function (uri, inVariable){
 			"?"+variable+" a <"+typeUri+"> . ";
 		query += facetBrowser.makeRestrictions();
 		query += "}";
-		//rhz.listResourcesNoHistory(query);
+		//alert(query);
+		rhz.listResourcesNoHistory(query);
 		self.reloadProperties();		
 	};	
 	
@@ -243,7 +252,8 @@ facet.FacetManager = function (uri, inVariable){
 			}
 		}
 		for(m in pivotedFacets){
-			query += " ?"+variable+" <"+m+"> ?"+pivotedFacets[m]+" .";
+			query += " ?"+variable+" <"+m+"> ?"+pivotedFacets[m].pivotedVar+" .";
+			query += " ?"+variable+" a <"+typeUri+"> .";
 		}
 		return query;
 	};	

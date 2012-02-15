@@ -5,16 +5,16 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import net.rhizomik.rhizomer.agents.RhizomerRDF;
 
-import static net.rhizomik.rhizomer.autoia.generator.TypeHierarchy.RDF;
-import static net.rhizomik.rhizomer.util.Namespaces.rdfs;
-import static net.rhizomik.rhizomer.util.Namespaces.xsd;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Set;
+
+import static net.rhizomik.rhizomer.autoia.generator.TypeHierarchy.RDF;
+import static net.rhizomik.rhizomer.util.Namespaces.rdfs;
+import static net.rhizomik.rhizomer.util.Namespaces.xsd;
 
 
 public class TypeDetector {
@@ -71,9 +71,10 @@ public class TypeDetector {
     public String detectRange(){
     	String queryString = makeQueryForPivotingFacets(uri, property);
         ResultSet results = RhizomerRDF.instance().querySelect(queryString, true);
+        String typeVar = results.getResultVars().get(0);
         if(results.hasNext()){
         	QuerySolution row = results.next();
-        	return row.get("type").toString();
+        	return row.get(typeVar).toString();
         }
         else
         	return null;

@@ -21,6 +21,7 @@
 	<script src="<%=request.getContextPath()%>/script/facets/facet-value.js"></script>	
 	<script src="<%=request.getContextPath()%>/script/facets/number-facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/string-facet.js"></script>
+	<script src="<%=request.getContextPath()%>/script/facets/inverse-facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/UrlParser.js"></script>		
 	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>
 	<script src="<%=request.getContextPath()%>/script/charts/charts.js"></script>

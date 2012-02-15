@@ -2,7 +2,6 @@
 function addInputFocus(){
 
 	$j('.facet_form input[type=text]').focus(function(){
-		alert("hola");
 		$j(this).attr('value', '');
 	});
 }

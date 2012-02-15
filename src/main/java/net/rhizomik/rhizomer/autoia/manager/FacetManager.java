@@ -44,6 +44,12 @@ public class FacetManager
         return new FacetProperty(rs.getString("property"), rs.getInt("num_instances"), rs.getInt("different_values"), rs.getInt("max_cardinality"), rs.getString("value_range"), rs.getString("value_type"));
     }
     
+    private static FacetProperty createInversePropertyFromResultSet(ResultSet rs) throws SQLException {
+    	FacetProperty fp = new FacetProperty(rs.getString("property"), rs.getInt("num_instances"), rs.getInt("different_values"), rs.getInt("max_cardinality"), rs.getString("value_range"), rs.getString("value_type"));
+    	fp.setInverse(rs.getString("class"));
+    	return fp;
+    }
+    
     private ArrayList<String> getClasses() throws SQLException{
     	String query = "SELECT class from class_summary";
     	ArrayList<String> classes = new ArrayList<String>();
@@ -67,7 +73,7 @@ public class FacetManager
 		} while (busy);
     	return classes;
     }
-
+    
     public FacetProperties getProperties(String uri, ArrayList<String> omitProperties) throws SQLException
     {
     	if(omitProperties==null)
@@ -104,6 +110,19 @@ public class FacetManager
     				if(!property.discardProperty())
     					properties.addProperty(property);
     			}
+    			rs.close();
+    			ps.close();
+    			
+    			query = "SELECT * FROM property_summary where value_range=?";
+    	    	ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+    			ps.setString(1, uri);
+    			rs = ps.executeQuery();
+    			while(rs.next()){
+    				FacetProperty property = createInversePropertyFromResultSet(rs);
+    				System.out.println("INVERSE: "+property.getClassUri());
+    				properties.addProperty(property);
+    			}
+    			
         	}
         	catch (SQLException e)
         	{ if (e.toString().indexOf("SQLITE_BUSY")>0) busy = true;

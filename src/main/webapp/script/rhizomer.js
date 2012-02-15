@@ -205,17 +205,18 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	self.constructResources = function(sparqlSelectQuery, offset)
 	{		
 		if (!offset) offset = "0";
+		var selectVar = facetBrowser.getActiveManager().getVariable();
 		
 		self.showMessage("<p>List resources...</p>\n"+waitImage);
 		
-		queryHistory("CONSTRUCT {?r a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
+		queryHistory("CONSTRUCT {?"+selectVar+" a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
 			  "              <http://www.w3.org/2000/01/rdf-schema#comment> ?c. \n"+
 			  "           ?type <http://www.w3.org/2000/01/rdf-schema#label> ?lt} \n"+
-			  "WHERE { ?r a ?type \n" +
-			  "        OPTIONAL {?r <http://www.w3.org/2000/01/rdf-schema#label> ?l} \n"+
-			  "        OPTIONAL {?r <http://www.w3.org/2000/01/rdf-schema#comment> ?c} \n"+
+			  "WHERE { ?"+selectVar+" a ?type \n" +
+			  "        OPTIONAL {?"+selectVar+" <http://www.w3.org/2000/01/rdf-schema#label> ?l} \n"+
+			  "        OPTIONAL {?"+selectVar+" <http://www.w3.org/2000/01/rdf-schema#comment> ?c} \n"+
 			  "        OPTIONAL {?type <http://www.w3.org/2000/01/rdf-schema#label> ?lt} \n"+
-			  "        OPTIONAL {?r a ?type2. ?type2 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?type. \n" +
+			  "        OPTIONAL {?"+selectVar+" a ?type2. ?type2 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?type. \n" +
 			  "                  FILTER (?type!=?type2 && !isBlank(?type2) )} \n"+
 			  "        { "+sparqlSelectQuery+" LIMIT "+step+" OFFSET "+offset+" } \n"+
 			  "          FILTER( !bound(?type2) ) }",
@@ -248,17 +249,17 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	self.constructResourcesNoHistory = function(sparqlSelectQuery, offset)
 	{
 		if (!offset) offset = "0";
-		
+		var selectVar = facetBrowser.getActiveManager().getVariable();
 		self.showMessage("<p>List resources...</p>\n"+waitImage);
 		
-		queryNoHistory("CONSTRUCT {?r a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
+		queryNoHistory("CONSTRUCT {?"+selectVar+" a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
 			  "              <http://www.w3.org/2000/01/rdf-schema#comment> ?c. \n"+
 			  "           ?type <http://www.w3.org/2000/01/rdf-schema#label> ?lt} \n"+
-			  "WHERE { ?r a ?type \n" +
-			  "        OPTIONAL {?r <http://www.w3.org/2000/01/rdf-schema#label> ?l} \n"+
-			  "        OPTIONAL {?r <http://www.w3.org/2000/01/rdf-schema#comment> ?c} \n"+
+			  "WHERE { ?"+selectVar+" a ?type \n" +
+			  "        OPTIONAL {?"+selectVar+" <http://www.w3.org/2000/01/rdf-schema#label> ?l} \n"+
+			  "        OPTIONAL {?"+selectVar+" <http://www.w3.org/2000/01/rdf-schema#comment> ?c} \n"+
 			  "        OPTIONAL {?type <http://www.w3.org/2000/01/rdf-schema#label> ?lt} \n"+
-			  "        OPTIONAL {?r a ?type2. ?type2 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?type. \n" +
+			  "        OPTIONAL {?"+selectVar+" a ?type2. ?type2 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?type. \n" +
 			  "                  FILTER (?type!=?type2 && !isBlank(?type2) )} \n"+
 			  "        { "+sparqlSelectQuery+" LIMIT "+step+" OFFSET "+offset+" } \n"+
 			  "          FILTER(!isBlank(?type) && !bound(?type2)) }",
@@ -297,8 +298,9 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		if (!offset) offset = "0";
 		
 		self.showMessage("<p>Describe resources...</p>\n"+waitImage);
-		
-		var describeQuery = "DESCRIBE ?r WHERE { ?r a ?type \n { " +
+		var selectVar = facetBrowser.getActiveManager().getVariable();
+
+		var describeQuery = "DESCRIBE ?"+selectVar+" WHERE { ?"+selectVar+" a ?type \n { " +
 			sparqlSelectQuery + " LIMIT " + step + " OFFSET " + offset + " } } ";
 		
 		queryHistory(encodeURIComponent(describeQuery),
@@ -315,9 +317,9 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		if (!offset) offset = "0";
 		
 		self.showMessage("<p>Describe resources...</p>\n"+waitImage);
-		  
-		queryNoHistory("DESCRIBE ?r \n"+
-				  "WHERE { ?r a ?type \n" +
+        var selectVar = facetBrowser.getActiveManager().getVariable();
+		queryNoHistory("DESCRIBE ?"+selectVar+" \n"+
+				  "WHERE { ?"+selectVar+" a ?type \n" +
 				  "        { "+sparqlSelectQuery+" LIMIT "+step+" OFFSET "+offset+" } } ",
 			function(out) {self.showMessage("<p>Showing...</p>\n"+waitImage); 
 			               transform.rdf2html(out, target); 

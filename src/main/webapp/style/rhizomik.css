@@ -301,3 +301,9 @@ ul.inline , ul.inline li{
 	margin-top:10px;
 	margin-bottom:5px;
 }
+
+.search_loading{
+	float:right;
+ 	position: relative;
+    z-index: 10;	
+}

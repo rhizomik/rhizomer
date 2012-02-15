@@ -16,7 +16,6 @@ facet.StringFacet = function(property, fm, typeUri){
         var myAC = aArgs[0]; // reference back to the AC instance
         var elLI = aArgs[1]; // reference to the selected LI element
         var oData = aArgs[2]; // object literal of selected item's result data
-        //fm.filterProperty(searchProperty,oData.uri,oData.label);
         facetBrowser.filterProperty(facetBrowser.getAutoCompleteProperty(),oData.uri,oData.label);
         $j("#"+that.getId()+"_search").val("");
     };
@@ -41,6 +40,7 @@ facet.StringFacet = function(property, fm, typeUri){
 	that.renderString = function (target){
 		var html = "<div class=\"facet_form\">";
 		html += "<input class=\"text-box\" type=\"text\" id=\""+that.getId()+"_search\" title=\"search...\" />";
+		html += "<div class=\"search_loading\" id=\""+that.getId()+"_search_loading\"></div>";
 		html += "<div id=\""+that.getId()+"_container\">";
 		html += "</div>";
 		html += "<input type=\"hidden\" id=\""+that.getId()+"_hidden\"/>";
@@ -59,7 +59,6 @@ facet.StringFacet = function(property, fm, typeUri){
 			
 		that.autoComplete.textboxFocusEvent.subscribe ( function () {
 			facetBrowser.setAutoCompleteProperty((this.getInputEl().id).replace("_search",""));
-			//searchProperty = fm.getUriById([(this.getInputEl().id).replace("_search","")]);
 		} );
 		
 		that.autoComplete.maxResultsDisplayed = 20;
@@ -67,12 +66,13 @@ facet.StringFacet = function(property, fm, typeUri){
 		that.autoComplete.queryDelay = 0.5;
 		that.autoComplete.typeAhead = false;
 		that.autoComplete.generateRequest = function(sQuery) {
+			$j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").append("<img style=\"width:60%\" src=\"images/black-loader.gif\"/>");
 			var query = 
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 				"SELECT ?uri ?label (COUNT(?uri) AS ?n) \n"+
 				"WHERE{"+
 				"?[variable] a <[uri]>; <[property]> ?uri . \n"+
-				facetBrowser.makeRestrictions(searchProperty)+
+				facetBrowser.makeRestrictions(facetBrowser.getAutoCompleteProperty())+
 				"OPTIONAL{ \n"+
 				"?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
 				"FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+  
@@ -87,8 +87,8 @@ facet.StringFacet = function(property, fm, typeUri){
 	
 	function processResults(resultsXMLDoc)
 	{
+		$j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").empty();		
 		var solutions = resultsXMLDoc.getElementsByTagNameNS(rsNS,"solution");
-			
 		var results=[];					
 		for(var i=0; i<solutions.length; i++)
 		{

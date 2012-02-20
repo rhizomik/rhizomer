@@ -183,11 +183,11 @@ facet.FacetManager = function (uri, inVariable){
 			html += "<span class=\"class_active\">"+label+"</span>";
 			if(typeUri==facetBrowser.getMainManager().getTypeUri()){
 				if(typeUri!=facetBrowser.getActiveManager().getTypeUri())
-					html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('','"+typeUri+"');\"><img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_99.gif\"/> Back to</a></span>";
+					html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('','"+typeUri+"');\"><img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_99.gif\"/> Go to</a></span>";
 				html += "<span style=\"margin-left:20px;\"><a href=\"\">Reset all filters[x]</a></span>";
 			}
 			else if(typeUri!=facetBrowser.getActiveManager().getTypeUri()){
-				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('','"+typeUri+"');\"><img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_99.gif\"/> Back to</a></span>";
+				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('','"+typeUri+"');\"><img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_99.gif\"/> Go to</a></span>";
 				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.deletePivotFacet('"+typeUri+"');\">[x]</a></span>";
 			}
 			else{

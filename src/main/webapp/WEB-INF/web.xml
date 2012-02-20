@@ -14,7 +14,7 @@
     </context-param>
     <context-param>
       <param-name>file_name</param-name>
-      <param-value>nfl-norange.rdf</param-value>
+      <param-value>rhizomikstore.rdf</param-value>
     </context-param>
     <context-param>
       <param-name>dir_name</param-name>
@@ -22,7 +22,7 @@
     </context-param>
 
 <!-- Virtuoso MODEL -->
-    <!--context-param>
+<!--    <context-param>
       <param-name>store_class</param-name>
       <param-value>net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore</param-value>
     </context-param>
@@ -32,17 +32,16 @@
     </context-param>
     <context-param>
       <param-name>db_user</param-name>
-      <param-value>rhizomer</param-value>
+      <param-value>user</param-value>
     </context-param>
     <context-param>
       <param-name>db_pass</param-name>
-      <param-value>griho</param-value>
+      <param-value>password</param-value>
     </context-param>    
     <context-param>
       <param-name>db_graph</param-name>
-      <param-value>http://rhizomik.net/linkedmdb/</param-value>
-      <param-value>http://dbpedia.org</param-value>
-    </context-param-->
+      <param-value>http://rhizomik.net/</param-value>
+    </context-param -->
   <!-- By default, the VirtuosoStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
     <!--context-param>
       <param-name>db_schema</param-name>
@@ -205,12 +204,6 @@
   </servlet>
   
   <servlet>
-    <servlet-name>RhizomerMobile</servlet-name>
-    <servlet-class>net.rhizomik.rhizomer.agents.RhizomerMobile</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>  
-  
-  <servlet>
   	<servlet-name>ServiceProxy</servlet-name>
   	<servlet-class>net.rhizomik.rhizomer.service.ServiceProxy</servlet-class>
   </servlet>
@@ -278,20 +271,6 @@
     <servlet-name>history.jsp</servlet-name>
     <jsp-file>/WEB-INF/jsp/history.jsp</jsp-file>
   </servlet>
-  
-  <servlet>
-    <description>JSP for Mobile</description>
-    <display-name>Mobile JSP</display-name>  
-    <servlet-name>mobile-index.jsp</servlet-name>
-    <jsp-file>/WEB-INF/jsp/mobile/index.jsp</jsp-file>
-  </servlet>  
-  
-  <servlet>
-    <description>JSP for Mobile</description>
-    <display-name>Mobile JSP</display-name>  
-    <servlet-name>mobile-resource-list.jsp</servlet-name>
-    <jsp-file>/WEB-INF/jsp/mobile/list.jsp</jsp-file>
-  </servlet>    
 
   <servlet>
     <description>JSP for Faceted Browsing</description>
@@ -324,24 +303,6 @@
 			<include-prelude>/WEB-INF/jsp/header.jspf</include-prelude>
 			<include-coda>/WEB-INF/jsp/footer.jspf</include-coda>
 		</jsp-property-group>
-		<jsp-property-group>
-			<description>JSPs for mobile devices</description>
-			<display-name>JSPs for mobile devices</display-name>
-			<url-pattern>/WEB-INF/jsp/mobile/index.jsp</url-pattern>
-			<page-encoding>UTF-8</page-encoding>
-			<scripting-invalid>false</scripting-invalid>
-			<include-prelude>/WEB-INF/jsp/mobile/header.jspf</include-prelude>
-			<include-coda>/WEB-INF/jsp/mobile/footer.jspf</include-coda>
-		</jsp-property-group>
-		<jsp-property-group>
-			<description>JSPs for mobile devices</description>
-			<display-name>JSPs for mobile devices</display-name>
-			<url-pattern>/WEB-INF/jsp/mobile/list.jsp</url-pattern>
-			<page-encoding>UTF-8</page-encoding>
-			<scripting-invalid>false</scripting-invalid>
-			<include-prelude>/WEB-INF/jsp/mobile/header.jspf</include-prelude>
-			<include-coda>/WEB-INF/jsp/mobile/footer.jspf</include-coda>
-		</jsp-property-group>		
   </jsp-config>
 
   <!-- FCKEditor browse and upload servlet -->

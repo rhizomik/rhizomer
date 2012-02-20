@@ -78,7 +78,7 @@
 			
 			</div>
 			<div id="metadata">
-				<%= request.getAttribute("metadata") %>
+ 				Retrieving data...
 			</div>
 			<div id="metadatafoot">
 				<%

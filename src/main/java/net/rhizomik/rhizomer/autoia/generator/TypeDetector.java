@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static net.rhizomik.rhizomer.autoia.generator.TypeHierarchy.RDF;
 import static net.rhizomik.rhizomer.util.Namespaces.rdfs;
@@ -19,6 +21,7 @@ import static net.rhizomik.rhizomer.util.Namespaces.xsd;
 
 public class TypeDetector {
 
+    private static final Logger log = Logger.getLogger(TypeDetector.class.getName());
     private static String NL = System.getProperty("line.separator");
 	private static String queryForValues = 
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
@@ -86,7 +89,9 @@ public class TypeDetector {
         ResultSet results = RhizomerRDF.instance().querySelect(queryString, true);
         Set<String> types = getTypes(results);
         assert(types.size() > 0);
-        return RDF.lowestCommonType(types);
+        if (types.size() == 0)
+            log.log(Level.WARNING, "No values for class: "+uri+" and property: "+property);
+        return types.size()>0? RDF.lowestCommonType(types):rdfs("Resource");
     }
 
     private Set<String> getTypes(ResultSet results) {

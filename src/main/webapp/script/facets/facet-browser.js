@@ -94,23 +94,6 @@ facet.FacetBrowser = function(inParser){
 		activeManager.reloadFacets();
 	};
 	
-	self.pivotFacet = function(uri, range){
-		if(managers[range]){
-			activeManager = managers[range];
-			activeManager.renderFacets("facets");
-			activeManager.reloadFacets();
-			self.printActive();
-		}
-		else{
-			activeManager.addPivotedFacet(uri, range, "r"+varCount);
-			self.addManager(range, "r"+varCount);
-			activeURI = range;
-			activeManager = managers[range];
-			activeManager.loadFacets();
-		}
-		self.printActive();
-	};
-	
 	self.deletePivotFacet = function(range){
 		delete(managers[range]);
 		activeURI = mainManager.getTypeUri();
@@ -159,6 +142,34 @@ facet.FacetBrowser = function(inParser){
 	self.getAutoCompleteProperty = function(){
 		return autoCompleteProperty;
 	};
+	
+	self.pivotFacet = function(uri, range){
+		if(managers[range]){
+			activeManager = managers[range];
+			activeManager.renderFacets("facets");
+			activeManager.reloadFacets();
+			self.printActive();
+		}
+		else{
+			activeManager.addPivotedFacet(uri, range, "r"+varCount);
+			self.addManager(range, "r"+varCount);
+			activeURI = range;
+			activeManager = managers[range];
+			activeManager.loadFacets();
+		}
+		self.printActive();
+	};
+	
+	self.inversePivotFacet = function(inverseClassUri, propertyUri, propertyRange){
+		self.addManager(inverseClassUri, "r"+varCount);
+		activeURI = inverseClassUri;
+		var variable = activeManager.getVariable();
+		activeManager = managers[inverseClassUri];
+		mainManager = managers[inverseClassUri];
+		activeManager.addPivotedFacet(propertyUri, propertyRange, variable);
+		activeManager.loadFacets();
+		self.printActive();
+	};	
 	
 	return self;
 };

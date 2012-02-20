@@ -107,11 +107,15 @@ facet.InverseFacet = function(property, inVariable, classURI){
 		html += "<div id=\""+id+"_title\" class=\"facet_header\">";
 		html += "<span class=\"facet_title\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">" +
 				"<h4>"+label+"</h4></span>";
+		html += "<img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_92.gif\" id=\""+id+"_inversepivot\" class=\"pivot\" title=\"Navigate to "+makeLabel(inverseClassUri)+"\"></>";
 		html += "<div class=\"clear\"></div>";
 		html += "</div>";
 		html +="<div id=\""+id+"_loading\"></div>";
 		html +="<div class=\"facet_options\" id=\""+id+"_div\"></div>";
 		$j("#"+target).append(html);
+		$j("#"+id+"_inversepivot").click(function (){
+			self.inversePivotFacet();
+		});		
 	};
 	
 	self.renderValueList = function(target){
@@ -253,6 +257,10 @@ facet.InverseFacet = function(property, inVariable, classURI){
     	}
     	return query;
 	};	
+	
+	self.inversePivotFacet = function(){
+		facetBrowser.inversePivotFacet(inverseClassUri, uri, classURI);
+	};
 	
 	return self;
 };

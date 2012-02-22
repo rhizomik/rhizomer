@@ -33,9 +33,17 @@ facet.Facet = function(property, inVariable, classURI)
 		return uri;
 	};
 	
+	self.getRange = function(){
+		return range;
+	};
+	
 	self.getSelectedValues = function(){
 		return selectedValues;
 	};	
+	
+	self.isInverse = function(){
+		return false;
+	}	
 	
 	self.isActive = function(){
 		if(numSelectedValues>0)
@@ -60,6 +68,12 @@ facet.Facet = function(property, inVariable, classURI)
 		return opened;
 	};
 	
+	self.isNavigable = function(){
+		if(type == NS.rdfs("Resource") && range!="null")
+			return true;
+		else
+			return false;
+	};
 	
 	self.printInitActiveLabels = function(){
 		var queryValues = new Array();
@@ -105,7 +119,7 @@ facet.Facet = function(property, inVariable, classURI)
 		html += "<div id=\""+id+"_title\" class=\"facet_header\">";
 		html += "<span class=\"facet_title\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">" +
 				"<h4>"+label+"</h4></span>";
-		if(type == NS.rdfs("Resource") && range!="null")
+		if(self.isNavigable())
 			//html += "<span id=\""+id+"_pivot\" class=\"pivot\" title=\"Filter "+label+" by\">&raquo;</span>";
 			html += "<img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_92.gif\" id=\""+id+"_pivot\" class=\"pivot\" title=\"Filter "+label+" by\"></>";
 		html += "<div class=\"clear\"></div>";
@@ -185,7 +199,7 @@ facet.Facet = function(property, inVariable, classURI)
 	};
 	
 	self.pivotFacet = function(){
-		facetBrowser.pivotFacet(uri, range);
+		facetBrowser.pivotFacet(classURI, uri, range);
 	};
 	
 	self.getMoreValues = function(){

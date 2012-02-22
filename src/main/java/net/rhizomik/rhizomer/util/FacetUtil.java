@@ -21,6 +21,12 @@ public class FacetUtil {
 		return capitalizeString(label.replace("_", " "));
 	}
 	
+	public static String makeInverseLabel(String uri, String inverseClassUri){
+		String uriLabel = makeLabel(uri);
+		String inverseLabel = makeLabel(inverseClassUri);
+		return "Is "+uriLabel+" in "+inverseLabel;
+	}
+	
 	public static String makeQueryString(Map<String, String[]> parameters, String omitParameter) throws UnsupportedEncodingException{
 		String ret = new String("");
 		for(String parameter : parameters.keySet()){

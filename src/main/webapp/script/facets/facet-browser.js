@@ -19,9 +19,9 @@ facet.FacetBrowser = function(inParser){
 		parser.parse();
 		activeURI = parser.getActiveUri();
 		activeVar = parser.getVariable();
-		self.addManager(activeURI, activeVar);
-		mainManager = managers[activeURI];
-		activeManager = managers[activeURI];
+		self.addManager(activeURI, "", activeVar);
+		mainManager = managers[activeURI].manager;
+		activeManager = managers[activeURI].manager;
 		$j("#facets").html("<p style=\"font-weight:bold\">Loading filters...</p>");
 		$j("#facets").append("<img id='waitImage' src=\"images/black-loader.gif\"/>");	
 		parameters = {};
@@ -35,14 +35,15 @@ facet.FacetBrowser = function(inParser){
 					$j.each(response.properties, 
 						function(i, property)
 						{
-							managers[activeURI].addFacet(property);
+							managers[activeURI].manager.addFacet(property);
 						});
-					managers[activeURI].renderFacets("facets");
+					managers[activeURI].manager.renderFacets("facets");
 					addToggle();
 					self.setDefaultFilters();
-					managers[activeURI].reloadFacets();
-					fm = managers[activeURI];
+					managers[activeURI].manager.reloadFacets();
+					fm = managers[activeURI].manager;
 					self.printActiveFilters();
+					self.printRelated();
 				}
 		);
 	};
@@ -52,7 +53,7 @@ facet.FacetBrowser = function(inParser){
 	}
 	
 	self.getManager = function(uri){
-		return managers[uri];
+		return managers[uri].manager;
 	};
 	
 	self.getMainManager = function(){
@@ -87,7 +88,7 @@ facet.FacetBrowser = function(inParser){
 	};
 	
 	self.removeProperty = function(typeUri, propertyUri, propertyValue, vlabel){
-		managers[typeUri].filterProperty(propertyUri, propertyValue, vlabel);
+		managers[typeUri].manager.filterProperty(propertyUri, propertyValue, vlabel);
 	};
 	
 	self.reloadFacets = function(){
@@ -111,29 +112,57 @@ facet.FacetBrowser = function(inParser){
 	
 	self.filterInitProperty = function(variable, property, value){
 		uri = vars_uris[variable];
-		managers[uri].filterInitProperty(property,value);
+		managers[uri].manager.filterInitProperty(property,value);
 	};
 	
-	self.addManager = function(uri, variable){
-		managers[uri] = new facet.FacetManager(uri, variable);
-		vars_uris[variable] = uri;
+	self.addManager = function(range, propertyURI, variable){
+		var obj = {};
+        obj.range = range;
+        obj.propertyURI = propertyURI;
+        obj.manager = new facet.FacetManager(range, variable);
+        managers[range] = obj;
+		//managers[range] = new facet.FacetManager(range, variable);
+		vars_uris[variable] = range;
 		varCount++;
 	};
 	
 	self.makeRestrictions = function(uri){
 		var query = "";
 		for(var m in managers){
-			query += managers[m].makeRestrictions(uri);
+			query += managers[m].manager.makeRestrictions(uri);
 		}
 		return query;
 	};
 	
 	self.printActive = function(){
 		$j("#active_facets").empty();
-		$j("#active_facets").append("<div class=\"your_filters\">Selected filters:</div>");
-		var html = mainManager.printActive();
+		$j("#active_facets").append("<span><a href=\"\">Reset all filters[x]</a></span><br/><br/>");
+		var html = mainManager.printActive(true);
+		for(m in managers){
+			if(managers[m].manager!=mainManager){
+				html += "<br/>has "+makeLabel(managers[m].propertyURI, false)+" ";
+				html += managers[m].manager.printActive(false);
+				
+			}
+		}
 		$j("#active_facets").append(html);
-	};	
+	};
+	
+	self.printRelated = function(){
+		$j("#related").html("<h4>Navigate to:</h4><ul>");
+		var html = "";
+		var navigableFacets = mainManager.getNavigableFacets();
+		for(f in navigableFacets){
+			if(!navigableFacets[f].isInverse() && $j.isEmptyObject(managers[f]))
+				html += "<li><a href=\"javascript:facetBrowser.pivotFacet('','"+navigableFacets[f].getUri()+"','"+navigableFacets[f].getRange()+"');\">"+navigableFacets[f].getLabel()+"</a></li>";
+		}
+		for(m in managers){
+			if(managers[m].manager!=mainManager)
+				html += "<li><a href=\"javascript:facetBrowser.pivotFacet('','','"+m+"');\">"+managers[m].manager.getLabel();+"</a></li>";
+		}
+		html += "</ul>";
+		$j("#related").append(html);
+	};
 	
 	self.setAutoCompleteProperty = function(id){
 		autoCompleteProperty = activeManager.getUriById(id);
@@ -143,29 +172,31 @@ facet.FacetBrowser = function(inParser){
 		return autoCompleteProperty;
 	};
 	
-	self.pivotFacet = function(uri, range){
+	self.pivotFacet = function(classURI, propertyURI, range){
 		if(managers[range]){
-			activeManager = managers[range];
+			activeManager = managers[range].manager;
 			activeManager.renderFacets("facets");
 			activeManager.reloadFacets();
-			self.printActive();
+			mainManager = activeManager;
+			self.printRelated();
 		}
-		else{
-			activeManager.addPivotedFacet(uri, range, "r"+varCount);
-			self.addManager(range, "r"+varCount);
+		else{	        
+			activeManager.addPivotedFacet(propertyURI, range, "r"+varCount);
+			self.addManager(range, propertyURI, "r"+varCount);
 			activeURI = range;
-			activeManager = managers[range];
+			activeManager = managers[range].manager;
 			activeManager.loadFacets();
+			mainManager = activeManager;
 		}
 		self.printActive();
 	};
 	
 	self.inversePivotFacet = function(inverseClassUri, propertyUri, propertyRange){
-		self.addManager(inverseClassUri, "r"+varCount);
+		self.addManager(inverseClassUri, propertyUri, "r"+varCount);
 		activeURI = inverseClassUri;
 		var variable = activeManager.getVariable();
-		activeManager = managers[inverseClassUri];
-		mainManager = managers[inverseClassUri];
+		activeManager = managers[inverseClassUri].manager;
+		mainManager = managers[inverseClassUri].manager;
 		activeManager.addPivotedFacet(propertyUri, propertyRange, variable);
 		activeManager.loadFacets();
 		self.printActive();

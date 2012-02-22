@@ -20,8 +20,9 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	var type = property.type;
 	var range = property.range;
 	var inverseClassUri = property.classUri;
-	var propertyLabel = property.label;
-	var label = "Is "+propertyLabel+ " in "+makeLabel(inverseClassUri);
+	//var propertyLabel = property.label;
+	//var label = "Is "+propertyLabel+ " in "+makeLabel(inverseClassUri);
+	var label = property.label;
 	var inverseVariable = "i1"
 	
 	self.getId = function(){
@@ -34,6 +35,15 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	
 	self.getUri = function(){
 		return uri;
+	};
+	
+	self.isInverse = function(){
+		return true;
+	}
+	
+	self.getRange = function(){
+		//return range;
+		return inverseClassUri
 	};
 	
 	self.getSelectedValues = function(){
@@ -61,6 +71,10 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	
 	self.isOpened = function(){
 		return opened;
+	};
+	
+	self.isNavigable = function(){
+		return true;
 	};
 	
 	self.printInitActiveLabels = function(){

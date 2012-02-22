@@ -60,6 +60,7 @@ public class FacetProperty implements Comparable{
 	public void setInverse(String classUri){
 		this.classUri = classUri;
 		this.isInverse = true;
+		this.label = FacetUtil.makeInverseLabel(uri, classUri);
 	}
 	
 	public String getClassUri(){
@@ -125,19 +126,26 @@ public class FacetProperty implements Comparable{
 		return total;
 	}
 	
+	public int compareTo(Object o){
+		FacetProperty other = (FacetProperty) o;
+		return label.compareTo(other.getLabel());
+	}
+	
+	/*
 	public int compareTo(Object o) { 
 		FacetProperty other = (FacetProperty) o;
 		if(other.entropy >= this.entropy)
 			return -1;
 		else
 			return 1;
-		/*
-		if(other.metric > this.metric)
-			return 1;
-		else	
-			return -1;
-		*/
+		
+		//if(other.metric > this.metric)
+			//return 1;
+		//else	
+			//return -1;
 	}
+	*/
+	
 	
 	public void addValue(String uri, String label, int num){
 		if (!valuesByString.containsKey(uri)) // Avoid repeating values when there is more than one label for them

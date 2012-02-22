@@ -75,8 +75,10 @@
 		<div class="yui-content">
 		<div>
 			<div id="active_facets">
-			
 			</div>
+			<div id="related">
+			</div>
+			<div style="clear:right;"></div>
 			<div id="metadata">
  				Retrieving data...
 			</div>

@@ -298,6 +298,7 @@ ul.inline , ul.inline li{
 }
 
 #active_facets{
+	float:left;
 	margin-top:10px;
 	margin-bottom:5px;
 }
@@ -306,4 +307,12 @@ ul.inline , ul.inline li{
 	float:right;
  	position: relative;
     z-index: 10;	
+}
+
+.pointer{
+	cursor:pointer;
+}
+
+#related{
+	float:right;
 }

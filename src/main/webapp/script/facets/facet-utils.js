@@ -22,7 +22,9 @@ function addToggle(){
 	});
 }
 
-function makeLabel(uri){
+function makeLabel(uri, capitalize){
+	if(capitalize == null)
+		capitalize = true;
 	var label;
 	var uriSplitted = uri.split("#");
 	if(uriSplitted.length>1)
@@ -36,7 +38,8 @@ function makeLabel(uri){
 		else
 			label = uri;
 	}
-	label = label.replace(/_/g," ").capitalize();
+	if(capitalize)
+		label = label.replace(/_/g," ").capitalize();
 	return label;
 }
 

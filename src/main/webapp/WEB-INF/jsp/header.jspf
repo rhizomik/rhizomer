@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Rhizomik</title>
 
-	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js" charset="utf-8"></script>
+	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js" charset="utf-8"></script>
 	
 	<!-- YUI 2 Loading... --> 
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/yuiloader-dom-event.js"></script>

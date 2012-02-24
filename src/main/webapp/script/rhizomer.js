@@ -56,47 +56,63 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		mySimpleDialog.cfg.setProperty("icon",YAHOO.widget.SimpleDialog.ICON_WARN);
 	};
 	// XMLHTTPRequest GET
-	function get(url, callback, contentype)
+	function get(url, callback, contenttype)
 	{
-		if (!contentype) contentype = "application/rdf+xml";
-		var oCallback = {
-				success: function(o) { callback(o.responseText); },
-				failure: function(o) { onFailure(o); }
-			};
-		YAHOO.util.Connect.setDefaultPostHeader(false);
-		YAHOO.util.Connect.initHeader("Accept", contentype);
-		YAHOO.util.Connect.asyncRequest("GET", url, oCallback);
+		if (!contentype) contenttype = "application/rdf+xml";
+
+        YUI().use('io-base', function (Y) {
+            var cfg = {
+                method: 'GET',
+                on: {
+                    success: function(tid, response) { callback(response.responseText); },
+                    failure: function(tid, response) { onFailure(response); }
+                } };
+            Y.io.header('Accept', contenttype);
+            Y.io(url, cfg);
+        });
 	};
 	// XMLHTTPRequest PUT
 	function put(url, uri, content, contenttype, callback)
 	{
-		var oCallback = {
-				success: function(o) { callback(o.responseText); },
-				failure: function(o) { onFailure(o); }
-			};
-		YAHOO.util.Connect.setDefaultPostHeader(false);
-		YAHOO.util.Connect.initHeader('Content-Type', contenttype);
-		YAHOO.util.Connect.asyncRequest('PUT', url+'?uri='+uri, oCallback, content);
+        YUI().use('io-base', function (Y) {
+            var cfg = {
+                method: 'PUT',
+                data: content,
+                on: {
+                    success: function(tid, response) { callback(response.responseText); },
+                    failure: function(tid, response) { onFailure(response); }
+                } };
+            Y.io.header('Content-Type', contenttype);
+            Y.io(url+'?uri='+uri, cfg);
+        });
 	};
 	// XMLHTTPRequest POST
 	function post(url, content, contenttype, callback)
 	{
-		var oCallback = {
-				success: function(o) { callback(o.responseText); },
-				failure: function(o) { onFailure(o); }
-			};
-		YAHOO.util.Connect.setDefaultPostHeader(false);
-		YAHOO.util.Connect.initHeader('Content-Type', contenttype);
-		YAHOO.util.Connect.asyncRequest('POST', url, oCallback, content);
-	} ;
+        YUI().use('io-base', function (Y) {
+            var cfg = {
+                method: 'POST',
+                data: content,
+                on: {
+                    success: function(tid, response) { callback(response.responseText); },
+                    failure: function(tid, response) { onFailure(response); }
+                } };
+            Y.io.header('Content-Type', contenttype);
+            Y.io(url, cfg);
+        });
+	};
 	// XMLHTTPRequest DELETE
 	function del(url, uri, callback)
 	{
-		var oCallback = {
-				success: function(o) { callback(o.responseText); },
-				failure: function(o) { onFailure(o); }
-			};
-		YAHOO.util.Connect.asyncRequest('DELETE', url+'?uri='+uri, oCallback);
+        YUI().use('io-base', function (Y) {
+            var cfg = {
+                method: 'DELETE',
+                on: {
+                    success: function(tid, response) { callback(response.responseText); },
+                    failure: function(tid, response) { onFailure(response); }
+                } };
+            Y.io(url+'?uri='+uri, cfg);
+        });
 	};
 	
 	// By default, on successful query add response to history

@@ -48,6 +48,21 @@ rhizomik.Transform = function(baseURL)
 			rdf2htmlTransformer = new XSLTProcessor();
 			rdf2htmlTransformer.importStylesheet(xslDocRDF2HTML);
 		}
+        else if(window.ActiveXObject) {
+            var xsltDocRDF2HTML = new ActiveXObject("Msxml2.XSLTemplate");
+            var xsltDocRDF2FORM = new ActiveXObject("Msxml2.XSLTemplate");
+
+            var xsltDocRDF2HTMLFree  = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
+            var xsltDocRDF2FORMFree = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
+            xsltDocRDF2HTMLFree.loadXML(xslDocRDF2HTML.xml);
+            xsltDocRDF2FORMFree.loadXML(xslDocRDF2FORM.xml);
+
+            xsltDocRDF2HTML.stylesheet = xsltDocRDF2HTMLFree;
+            xsltDocRDF2FORM.stylesheet = xsltDocRDF2FORMFree;
+
+            rdf2htmlTransformer = xsltDocRDF2HTML.createProcessor();
+            rdf2formTransformer = xsltDocRDF2FORM.createProcessor();
+        }
 	};
 	
 	/**
@@ -115,13 +130,16 @@ rhizomik.Transform = function(baseURL)
 		}
 		else
 		{
-			try
-			{
-//TODO: add parameters for XSLT transformation...
-				var inputXML = XML.createXMLDocFromText(response);
-				targetElem.innerHTML = inputXML.transformNode(xslDocRDF2HTML);
-			}
-			catch(e){ targetElem.innerHTML = e.toString(); }
+            //TODO: add parameters for XSLT transformation...
+
+            if(window.ActiveXObject) {
+                var inputXML = XML.createXMLDocFromText(response);
+                rdf2htmlTransformer.input = inputXML;
+                rdf2htmlTransformer.transform();
+                targetElem.innerHTML = rdf2htmlTransformer.output;
+
+                return true;
+            }
 		}
 		window.scroll(0,0);
     };
@@ -182,7 +200,7 @@ rhizomik.XMLFactory = function()
 		if (window.ActiveXObject)
 	    {
 			var aVersions = // ["MSXML2.DOMDocument.5.0", "MSXML2.DOMDocument.4.0","MSXML2.DOMDocument.3.0",
-	    					[ "MSXML2.DOMDocument","Microsoft.DOMDocument"];
+	    					[ "Msxml2.DOMDocument","Microsoft.DOMDocument"];
 			for (var i = 0; i < aVersions.length; i++)
 			{
 	        	try 
@@ -248,7 +266,7 @@ rhizomik.XMLFactory = function()
 		}
 		else 
 		{
-			xmlDoc = self.createXMLDoc();
+			xmlDoc = new ActiveXObject("Msxml2.DOMDocument");
 			xmlDoc.async = false;
 			if (!xmlDoc.loadXML(text))
 				throw new Error("Parse error for:\n"+text);

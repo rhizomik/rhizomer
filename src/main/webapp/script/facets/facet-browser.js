@@ -42,8 +42,9 @@ facet.FacetBrowser = function(inParser){
 					self.setDefaultFilters();
 					managers[activeURI].manager.reloadFacets();
 					fm = managers[activeURI].manager;
-					self.printActiveFilters();
+					//self.printActiveFilters();
 					self.printRelated();
+					self.printActive();
 				}
 		);
 	};
@@ -152,12 +153,16 @@ facet.FacetBrowser = function(inParser){
 		$j("#related").html("<h4>Navigate to:</h4><ul>");
 		var html = "";
 		var navigableFacets = mainManager.getNavigableFacets();
+		var links = {};
 		for(f in navigableFacets){
-			if(!navigableFacets[f].isInverse() && $j.isEmptyObject(managers[f]))
+			links[navigableFacets[f].getRange()] = true;			
+			if(navigableFacets[f].isInverse())
+				html += "<li><a href=\"javascript:facetBrowser.inversePivotFacet('"+navigableFacets[f].getRange()+"','"+navigableFacets[f].getUri()+"','"+navigableFacets[f].getClassUri()+"');\">"+makeLabel(navigableFacets[f].getRange())+"</a></li>";
+			else
 				html += "<li><a href=\"javascript:facetBrowser.pivotFacet('','"+navigableFacets[f].getUri()+"','"+navigableFacets[f].getRange()+"');\">"+navigableFacets[f].getLabel()+"</a></li>";
 		}
 		for(m in managers){
-			if(managers[m].manager!=mainManager)
+			if(managers[m].manager!=mainManager && !links[m])
 				html += "<li><a href=\"javascript:facetBrowser.pivotFacet('','','"+m+"');\">"+managers[m].manager.getLabel();+"</a></li>";
 		}
 		html += "</ul>";
@@ -192,14 +197,23 @@ facet.FacetBrowser = function(inParser){
 	};
 	
 	self.inversePivotFacet = function(inverseClassUri, propertyUri, propertyRange){
-		self.addManager(inverseClassUri, propertyUri, "r"+varCount);
-		activeURI = inverseClassUri;
-		var variable = activeManager.getVariable();
-		activeManager = managers[inverseClassUri].manager;
-		mainManager = managers[inverseClassUri].manager;
-		activeManager.addPivotedFacet(propertyUri, propertyRange, variable);
-		activeManager.loadFacets();
-		self.printActive();
+		if(managers[inverseClassUri]){
+			activeManager = managers[inverseClassUri].manager;
+			activeManager.renderFacets("facets");
+			activeManager.reloadFacets();
+			mainManager = activeManager;
+			self.printRelated();
+		}
+		else{
+			self.addManager(inverseClassUri, propertyUri, "r"+varCount);
+			activeURI = inverseClassUri;
+			var variable = activeManager.getVariable();
+			activeManager = managers[inverseClassUri].manager;
+			mainManager = managers[inverseClassUri].manager;
+			activeManager.addPivotedFacet(propertyUri, propertyRange, variable);
+			activeManager.loadFacets();
+			self.printActive();
+		}
 	};	
 	
 	return self;

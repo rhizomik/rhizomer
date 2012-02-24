@@ -28,6 +28,10 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	self.getId = function(){
 		return id;
 	};
+	
+	self.getClassUri = function(){
+		return classURI;
+	};
 
 	self.getLabel = function(){
 		return label;

@@ -190,7 +190,7 @@ facet.Facet = function(property, inVariable, classURI)
 		"WHERE {"+
 		"	?"+variable+" a <"+classURI+"> . "+
 		"   ?"+variable+" <"+uri+"> ?o ."+
-		"   FILTER(?o!=\"\" && !isBlank(?o)) ."+
+		"   FILTER(?o!=\"\" && (!isBlank(?o) || bound(?label)) ) ."+
 		" OPTIONAL{ ?o rdfs:label ?label " +
 		"  FILTER(LANG(?label)='en' || LANG(?label)='')} ."+
 		restrictions+
@@ -211,7 +211,7 @@ facet.Facet = function(property, inVariable, classURI)
 		       "WHERE { "+
 		            "?"+variable+" a <"+classURI+"> . "+
 		            "?"+variable+" <"+uri+"> ?o . "+
-		    		"   FILTER(?o!=\"\" && !isBlank(?o)) ."+
+		    		"   FILTER(?o!=\"\" && (!isBlank(?o) || bound(?label)) ) ."+
 		    		"OPTIONAL{ ?o rdfs:label ?label . " +
 		    		"FILTER(LANG(?label)='en' || LANG(?label)='')} " +
 		    		facetBrowser.makeRestrictions(uri)+

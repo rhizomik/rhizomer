@@ -181,12 +181,14 @@ YUI().use("charts", "json", "node", function (Y) {
         function transformToObject(obj, keys, translation) {
             var item = {}, label, uri;
             keys.forEach(function (key) {
-                if (key === "label") {
-                    label = obj[key].value;
-                } else if (key === "r1") {
-                    uri = obj[key].value;
-                } else {
-                    item[translation[key]] = obj[key].value;
+                if (obj[key] != undefined) {
+                    if (key === "label") {
+                        label = obj[key].value;
+                    } else if (key === "r1") {
+                        uri = obj[key].value;
+                    } else {
+                        item[translation[key]] = obj[key].value;
+                    }
                 }
             });
             item.label = label || lastPartOfURI(uri);

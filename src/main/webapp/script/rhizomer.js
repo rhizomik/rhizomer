@@ -58,7 +58,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	// XMLHTTPRequest GET
 	function get(url, callback, contenttype)
 	{
-		if (!contentype) contenttype = "application/rdf+xml";
+		if (!contenttype) contenttype = "application/rdf+xml";
 
         YUI().use('io-base', function (Y) {
             var cfg = {

@@ -84,12 +84,32 @@ facet.StringFacet = function(property, fm, typeUri){
 		    return "?query="+encodeURIComponent(query);
 		};	
 	};
-	
+
+    function xBrowserGetElementsByTagNameNS(elem, namespace, alias, name)
+    {
+        var elements;
+        if (YAHOO.env.ua.ie > 0)
+            elements = elem.getElementsByTagName(alias+":"+name);
+        else
+            elements = elem.getElementsByTagNameNS(namespace, name);
+        return elements;
+    };
+
+    function xBrowserGetText(elem)
+    {
+        var text;
+        if (YAHOO.env.ua.ie > 0)
+            text = elem.text;
+        else
+            text = elem.textContent;
+        return text;
+    }
+
 	function processResults(resultsXMLDoc)
 	{
-		$j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").empty();		
-		var solutions = resultsXMLDoc.getElementsByTagNameNS(rsNS,"solution");
-		var results=[];					
+		$j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").empty();
+        var solutions = xBrowserGetElementsByTagNameNS(resultsXMLDoc, rsNS, "rs", "solution");
+		var results=[];
 		for(var i=0; i<solutions.length; i++)
 		{
 			var result = processSolution(solutions[i]);
@@ -103,16 +123,17 @@ facet.StringFacet = function(property, fm, typeUri){
 	function processSolution(solutionElem)
 	{
 		var solution = {};
-		var bindings = solutionElem.getElementsByTagNameNS(rsNS,"binding");
+        var bindings = xBrowserGetElementsByTagNameNS(solutionElem, rsNS, "rs", "binding");
 		for (var i = 0; i < bindings.length; i++) 
         {
-            var variable = bindings[i].getElementsByTagNameNS(rsNS,"variable")[0].textContent;
-            var valueEl = bindings[i].getElementsByTagNameNS(rsNS,"value")[0];
+            var variableEl = xBrowserGetElementsByTagNameNS(bindings[i], rsNS, "rs", "variable")[0];
+            var variable = xBrowserGetText(variableEl);
+            var valueEl = xBrowserGetElementsByTagNameNS(bindings[i], rsNS, "rs", "value")[0];
             var value;
-            if (valueEl.hasAttribute("rdf:resource"))
-                    value = valueEl.getAttribute("rdf:resource");
+            if (valueEl.attributes.getNamedItem("rdf:resource")!=null)
+                    value = valueEl.attributes.getNamedItem("rdf:resource").value;
             else
-                    value = valueEl.textContent;
+                    value = xBrowserGetText(valueEl);
             solution[variable] = value;
     }
 		if(!solution["label"])

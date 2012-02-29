@@ -314,5 +314,8 @@ ul.inline , ul.inline li{
 }
 
 #related{
-	float:right;
+    background: none repeat scroll 0 0 white;
+    border: 1px solid;
+    float: right;
+    padding: 20px;
 }

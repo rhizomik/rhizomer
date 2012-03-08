@@ -196,6 +196,16 @@
     <servlet-name>RhizomerHTML</servlet-name>
     <url-pattern>/html/*</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RhizomerData</servlet-name>
+    <servlet-class>net.rhizomik.rhizomer.agents.RhizomerData</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RhizomerData</servlet-name>
+    <url-pattern>/data/*</url-pattern>
+  </servlet-mapping>
   
   <servlet>
     <servlet-name>RhizomerStatic</servlet-name>

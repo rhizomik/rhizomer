@@ -54,6 +54,8 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		mySimpleDialog.setHeader("Error "+o.statusText);
 		mySimpleDialog.setBody(o.responseText);
 		mySimpleDialog.cfg.setProperty("icon",YAHOO.widget.SimpleDialog.ICON_WARN);
+        mySimpleDialog.render(document.body);
+        mySimpleDialog.show();
 	};
 	// XMLHTTPRequest GET
 	function get(url, callback, contenttype)

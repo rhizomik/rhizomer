@@ -36,7 +36,7 @@ public class RhizomerRDF
     private static final Logger log = Logger.getLogger(RhizomerRDF.class.getName());
     
     private RhizomerRDF()
-    { 
+    {
     }
     
     static public RhizomerRDF instance() // throws Exception 
@@ -154,6 +154,13 @@ public class RhizomerRDF
     			
     			query = query + " <"+requestURI+">";
     		}
+            else if (requestURL.indexOf("/data")>0)
+            {
+                String requestURI = requestURL.substring(0, requestURL.indexOf("/data"))+
+                        requestURL.substring(requestURL.indexOf("/data")+5, requestURL.length());
+
+                query = query + " <"+requestURI+">";
+            }
     			
     		rdf = store.query(query);
     	}

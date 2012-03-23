@@ -53,8 +53,8 @@
 #metadata img {
 	vertical-align: top;
 }
-#waitImage {
-	clear: all;
+.waitImage {
+	clear: both;
 	position: relative;
 	left: 50%;
 	width: 16px;

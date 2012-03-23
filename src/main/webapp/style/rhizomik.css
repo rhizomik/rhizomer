@@ -13,6 +13,7 @@ body {
 	background-image: url(../images/rhizomik.jpg);
 	background-repeat: no-repeat;
 	background-color: white;
+    background-position: -200px 0px;
 } 
 td {
 	font-size: 11px;
@@ -40,10 +41,12 @@ img {
 #header #menu-class, #header #menu-skos {
 	float: right;
 	clear: both;
-	font-size: 11px;
+	font-size: 13px;
 	margin-top: 20px;
-	margin-right: 10px;
 	font-weight: bold;
+}
+#header #menu-skos {
+    display: none;
 }
 #body {
 	margin-top: 10px;
@@ -141,6 +144,7 @@ img {
 
 .facet_options {
 	margin-top:-10px;
+    margin-bottom:10px;
 	border: solid grey;
 	border-width: 1px;
 	display:none;
@@ -189,7 +193,8 @@ img {
 	color:grey;
  	background-image:url('http://www.imdb.com/images/searchlink.png'); /*Canviar per imatge local!*/
   	background-repeat:no-repeat;
-  	padding-left:20px;
+  	margin-left:-15px;
+    padding-left:15px;
   	border:1px solid grey;
 }
 
@@ -267,6 +272,11 @@ div.clear {
   cursor:pointer;
 }
 
+.showvalues {
+    float: left;
+    cursor:pointer;
+}
+
 .facet_header {
   background-color: #F0F0F0;	
   margin-bottom:10px;	
@@ -294,19 +304,25 @@ ul.inline , ul.inline li{
 
 #active_facets .your_filters{
 	font-weight:bold;
-	text-decoration:underlined;
+	text-decoration: underline;
 }
 
 #active_facets{
-	float:left;
 	margin-top:10px;
 	margin-bottom:5px;
+    font-size: 12px;
 }
 
 .search_loading{
 	float:right;
  	position: relative;
-    z-index: 10;	
+    z-index: 10;
+    width: 16px;
+}
+
+.autocompleting{
+    margin-top: 3px;
+    width: 90%;
 }
 
 .pointer{
@@ -314,6 +330,7 @@ ul.inline , ul.inline li{
 }
 
 #related{
+    display: none;
     background: none repeat scroll 0 0 white;
     border: 1px solid;
     float: right;

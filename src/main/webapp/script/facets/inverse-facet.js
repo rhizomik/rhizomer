@@ -1,6 +1,6 @@
 facet.InverseFacet = function(property, inVariable, classURI){
 		
-	var self = this;
+	var self = new facet.Facet(property, fm, classURI);
 
 	/**
 	 * Private Attributes
@@ -23,7 +23,18 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	//var propertyLabel = property.label;
 	//var label = "Is "+propertyLabel+ " in "+makeLabel(inverseClassUri);
 	var label = property.label;
-	var inverseVariable = "i1"
+	var inverseVariable = "i1";
+
+    var rsNS = "http://www.w3.org/2001/sw/DataAccess/tests/result-set#";
+
+    self.dataSource = new YAHOO.util.XHRDataSource(rhz.getBaseURL());
+    self.dataSource.connMgr.initHeader('Accept', 'application/rdf+xml', true);
+    self.dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_XML;
+    self.dataSource.parseXMLData = function ( oRequest , oFullResponse ) {
+        var rsArray = processResults(oFullResponse);
+        return { results: rsArray, error: false};
+    };
+    self.dataSource.responseSchema = {fields : ["label","uri","n"]};
 	
 	self.getId = function(){
 		return id;
@@ -123,9 +134,10 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	self.renderBase = function(target){
 		var html = "<div id=\""+id+"_facet\" class=\"facet\">";
 		html += "<div id=\""+id+"_title\" class=\"facet_header\">";
-		html += "<span class=\"facet_title\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">" +
-				"<h4>"+label+"</h4></span>";
-		html += "<img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_92.gif\" id=\""+id+"_inversepivot\" class=\"pivot\" title=\"Navigate to "+makeLabel(inverseClassUri)+"\"></>";
+		html += "<span id=\""+id+"_toggle\" class=\"facet_title\">" +
+				"<h4 onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">"+label+"</h4></span>";
+        html += "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
+		html += "<span id=\""+id+"_inversepivot\" class=\"pivot\">"+makeLabel(inverseClassUri)+"<br/> Advanced Search</span>";
 		html += "<div class=\"clear\"></div>";
 		html += "</div>";
 		html +="<div id=\""+id+"_loading\"></div>";
@@ -263,7 +275,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 
 	self.render = function (target){
 		self.renderBase(target);
-		//that.renderString(that.getId()+"_div");		
+		self.renderString(self.getId()+"_toggle");
 		self.renderValueList(self.getId()+"_div");
 		self.renderEnd(target);		
 	};	
@@ -279,6 +291,118 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	self.inversePivotFacet = function(){
 		facetBrowser.inversePivotFacet(inverseClassUri, uri, classURI);
 	};
-	
+
+    self.handler = function(sType, aArgs) {
+        var myAC = aArgs[0]; // reference back to the AC instance
+        var elLI = aArgs[1]; // reference to the selected LI element
+        var oData = aArgs[2]; // object literal of selected item's result data
+        facetBrowser.filterProperty(facetBrowser.getAutoCompleteProperty(),oData.uri,oData.label);
+        $j("#"+self.getId()+"_search").val("");
+    };
+
+    self.renderString = function (target){
+        var html = "<div class=\"facet_form\">";
+        html += "<input class=\"text-box\" type=\"text\" id=\""+self.getId()+"_search\" value=\"Search "+makeLabel(inverseClassUri)+" values...\" />";
+        html += "<div class=\"search_loading\" id=\""+self.getId()+"_search_loading\"></div>";
+        html += "<div id=\""+self.getId()+"_container\">";
+        html += "</div>";
+        html += "<input type=\"hidden\" id=\""+self.getId()+"_hidden\"/>";
+        html += "<input type=\"hidden\" id=\""+self.getId()+"_hidden_label\"/>";
+        html += "</div>";
+        $j("#"+target).append(html);
+
+        self.autoComplete = new YAHOO.widget.AutoComplete(self.getId()+"_search",self.getId()+"_container", self.dataSource);
+        self.autoComplete.itemSelectEvent.subscribe(self.handler);
+        self.autoComplete.animVert = false;
+        self.autoComplete.resultTypeList = false;
+
+        self.autoComplete.formatResult = function(oResultData, sQuery, sResultMatch) {
+            return (sResultMatch + " (" +  oResultData.n + ")");
+        };
+
+        self.autoComplete.textboxFocusEvent.subscribe ( function () {
+            facetBrowser.setAutoCompleteProperty((this.getInputEl().id).replace("_search",""));
+        } );
+
+        self.autoComplete.maxResultsDisplayed = 20;
+        self.autoComplete.minQueryLength = 2;
+        self.autoComplete.queryDelay = 0.5;
+        self.autoComplete.typeAhead = false;
+        self.autoComplete.generateRequest = function(sQuery) {
+            $j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").append("<img class=\"autocompleting\" src=\"images/black-loader.gif\"/>");
+            var query =
+                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
+                    "SELECT ?uri ?label (COUNT(?uri) AS ?n) \n"+
+                    "WHERE{"+
+                    "?[variable] a <[uri]>. ?uri <[property]> ?[variable] . \n"+
+                    facetBrowser.makeRestrictions(facetBrowser.getAutoCompleteProperty())+
+                    "OPTIONAL{ \n"+
+                    "?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
+                    "FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+
+                    "} GROUP BY ?uri ?label ORDER BY DESC (?n)";
+            query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
+            query = query.replace(/\[uri\]/g, facetBrowser.getActiveManager().getTypeUri());
+            query = query.replace(/\[variable\]/g, facetBrowser.getActiveManager().getVariable());
+            query = query.replace(/\[property\]/g, facetBrowser.getAutoCompleteProperty());
+            return "?query="+encodeURIComponent(query);
+        };
+    };
+
+    function xBrowserGetElementsByTagNameNS(elem, namespace, alias, name)
+    {
+        var elements;
+        if (YAHOO.env.ua.ie > 0)
+            elements = elem.getElementsByTagName(alias+":"+name);
+        else
+            elements = elem.getElementsByTagNameNS(namespace, name);
+        return elements;
+    };
+
+    function xBrowserGetText(elem)
+    {
+        var text;
+        if (YAHOO.env.ua.ie > 0)
+            text = elem.text;
+        else
+            text = elem.textContent;
+        return text;
+    }
+
+    function processResults(resultsXMLDoc)
+    {
+        $j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").empty();
+        var solutions = xBrowserGetElementsByTagNameNS(resultsXMLDoc, rsNS, "rs", "solution");
+        var results=[];
+        for(var i=0; i<solutions.length; i++)
+        {
+            var result = processSolution(solutions[i]);
+            if(result.label == null || result.label == "")
+                result.label = result.uri;
+            results[i] = result;
+        }
+        return results;
+    };
+
+    function processSolution(solutionElem)
+    {
+        var solution = {};
+        var bindings = xBrowserGetElementsByTagNameNS(solutionElem, rsNS, "rs", "binding");
+        for (var i = 0; i < bindings.length; i++)
+        {
+            var variableEl = xBrowserGetElementsByTagNameNS(bindings[i], rsNS, "rs", "variable")[0];
+            var variable = xBrowserGetText(variableEl);
+            var valueEl = xBrowserGetElementsByTagNameNS(bindings[i], rsNS, "rs", "value")[0];
+            var value;
+            if (valueEl.attributes.getNamedItem("rdf:resource")!=null)
+                value = valueEl.attributes.getNamedItem("rdf:resource").value;
+            else
+                value = xBrowserGetText(valueEl);
+            solution[variable] = value;
+        }
+        if(!solution["label"])
+            solution["label"] = makeLabel(solution["uri"]);
+        return solution;
+    };
+
 	return self;
 };

@@ -61,7 +61,7 @@
 			$j("#"+that.getLabel()+"_bar > div").toggle();
 		}
 		else{
-			var html = "<div id=\""+that.getLabel()+"_loading\"><p>Loading...</p><img id='waitImage' src=\"images/black-loader.gif\"/></div>";
+			var html = "<div id=\""+that.getLabel()+"_loading\"><p>Loading...</p><img class='waitImage' src=\"images/black-loader.gif\"/></div>";
 			$j("#"+that.getLabel()+"_div").append(html);
 			var query = "SELECT (min(?o) as ?min) (max(?o) as ?max) (count(?o) as ?total) "+
 				"WHERE { "+

@@ -24,7 +24,7 @@ public class FacetUtil {
 	public static String makeInverseLabel(String uri, String inverseClassUri){
 		String uriLabel = makeLabel(uri);
 		String inverseLabel = makeLabel(inverseClassUri);
-		return "Is "+uriLabel+" in "+inverseLabel;
+		return "Is "+uriLabel+" of "+inverseLabel;
 	}
 	
 	public static String makeQueryString(Map<String, String[]> parameters, String omitParameter) throws UnsupportedEncodingException{

@@ -104,14 +104,17 @@ facet.FacetManager = function (uri, inVariable){
 	};
 	
 	self.addFacet = function(property){
-		if(property.classUri){
-			facets[property.uri] = facet.InverseFacet(property, self.getVariable(), typeUri);
-			facetIds[hex_md5(property.classUri+property.uri)] = property.uri;
-		}
-		else{
-			facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
-			facetIds[hex_md5(property.uri)] = property.uri;
-		}
+        if (!facets[property.uri])
+        {
+            if(property.isInverse == "true"){
+                facets[property.uri] = facet.InverseFacet(property, self.getVariable(), typeUri);
+                facetIds[hex_md5(property.classUri+property.uri)] = property.uri;
+            }
+            else{
+                facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
+                facetIds[hex_md5(property.uri)] = property.uri;
+            }
+        }
 		/*
 		if(property.type == NS.xsd("integer"))
 			facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);
@@ -314,7 +317,7 @@ facet.FacetManager = function (uri, inVariable){
 	self.loadFacets = function(){
 		facets = {};
 		$j("#facets").html("<p style=\"font-weight:bold\">Loading filters...</p>");
-		$j("#facets").append("<img id='waitImage' src=\"images/black-loader.gif\"/>");	
+		$j("#facets").append("<img class='waitImage' src=\"images/black-loader.gif\"/>");
 		parameters = {};
 		parameters["facetURI"] = typeUri;
 		parameters["mode"] = "facets";

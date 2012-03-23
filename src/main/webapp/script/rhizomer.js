@@ -30,7 +30,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	// XSL transformation engine
 	var transform = new rhizomik.Transform(base);
 	// Wait image
-	var waitImage = "<img id='waitImage' src='"+baseURL+"/images/black-loader.gif'/>";
+	var waitImage = "<img class='waitImage' src='"+baseURL+"/images/black-loader.gif'/>";
 	// Number of results per page
 	var step = 10;
 	
@@ -314,7 +314,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	self.describeResources = function(sparqlSelectQuery, offset)
 	{		
 		if (!offset) offset = "0";
-		
+
 		self.showMessage("<p>Describe resources...</p>\n"+waitImage);
 		var selectVar = facetBrowser.getActiveManager().getVariable();
 

@@ -23,6 +23,8 @@ function addToggle(){
 }
 
 function makeLabel(uri, capitalize){
+    if (!uri)
+        return "";
 	if(capitalize == null)
 		capitalize = true;
 	var label;

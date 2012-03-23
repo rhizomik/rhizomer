@@ -19,8 +19,7 @@ facet.Facet = function(property, inVariable, classURI)
 	var variable = inVariable;
 	var classURI = classURI
 	var type = property.type;
-	var range = property.range;
-	
+
 	self.getId = function(){
 		return id;
 	};
@@ -117,15 +116,15 @@ facet.Facet = function(property, inVariable, classURI)
 	self.renderBase = function(target){
 		var html = "<div id=\""+id+"_facet\" class=\"facet\">";
 		html += "<div id=\""+id+"_title\" class=\"facet_header\">";
-		html += "<span class=\"facet_title\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">" +
-				"<h4>"+label+"</h4></span>";
+		html += "<span id=\""+id+"_toggle\" class=\"facet_title\">" +
+				"<h4 onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">"+label+"</h4></span>";
+        html += "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
 		if(self.isNavigable())
-			//html += "<span id=\""+id+"_pivot\" class=\"pivot\" title=\"Filter "+label+" by\">&raquo;</span>";
-			html += "<img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_92.gif\" id=\""+id+"_pivot\" class=\"pivot\" title=\"Filter "+label+" by\"></>";
+            html += "<span id=\""+id+"_pivot\" class=\"pivot\">"+makeLabel(range)+"<br/> Advanced Search</span>";
 		html += "<div class=\"clear\"></div>";
 		html += "</div>";
-		html +="<div id=\""+id+"_loading\"></div>";
-		html +="<div class=\"facet_options\" id=\""+id+"_div\"></div>";
+		html += "<div id=\""+id+"_loading\"></div>";
+		html += "<div class=\"facet_options\" id=\""+id+"_div\"></div>";
 		$j("#"+target).append(html);
 		$j("#"+id+"_pivot").click(function (){
 			self.pivotFacet();
@@ -182,7 +181,7 @@ facet.Facet = function(property, inVariable, classURI)
 	
 	self.reloadValues = function(restrictions){
 		$j("#"+id+"_div").css('display','none');
-		$j("#"+id+"_loading").append("<img src=\"images/black-loader.gif\"/>");
+		$j("#"+id+"_loading").append("<img class=\"waitImage\" src=\"images/black-loader.gif\"/>");
 		$j("#"+id+"_loading").show();			
 		self.resetFacet();
 		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" + 

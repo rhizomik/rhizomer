@@ -23,7 +23,7 @@ facet.FacetBrowser = function(inParser){
 		mainManager = managers[activeURI].manager;
 		activeManager = managers[activeURI].manager;
 		$j("#facets").html("<p style=\"font-weight:bold\">Loading filters...</p>");
-		$j("#facets").append("<img id='waitImage' src=\"images/black-loader.gif\"/>");	
+		$j("#facets").append("<img class='waitImage' src=\"images/black-loader.gif\"/>");
 		parameters = {};
 		parameters["facetURI"] = activeURI;
 		activeLabel = makeLabel(activeURI);

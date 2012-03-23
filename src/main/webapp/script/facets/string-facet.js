@@ -32,14 +32,16 @@ facet.StringFacet = function(property, fm, typeUri){
     
 	that.render = function (target){
 		that.renderBase(target);
-		that.renderString(that.getId()+"_div");		
+		that.renderString(that.getId()+"_toggle");
 		that.renderValueList(that.getId()+"_div");
 		that.renderEnd(target);		
 	};
 	
 	that.renderString = function (target){
+        var inputElDefault = "Search "+makeLabel(that.range)+" values...";
+
 		var html = "<div class=\"facet_form\">";
-		html += "<input class=\"text-box\" type=\"text\" id=\""+that.getId()+"_search\" title=\"search...\" />";
+		html += "<input class=\"text-box\" type=\"text\" id=\""+that.getId()+"_search\" value=\""+inputElDefault+"\" />";
 		html += "<div class=\"search_loading\" id=\""+that.getId()+"_search_loading\"></div>";
 		html += "<div id=\""+that.getId()+"_container\">";
 		html += "</div>";
@@ -52,6 +54,16 @@ facet.StringFacet = function(property, fm, typeUri){
 		that.autoComplete.itemSelectEvent.subscribe(that.handler);
 		that.autoComplete.animVert = false;
 		that.autoComplete.resultTypeList = false;
+        that.autoComplete.textboxFocusEvent.subscribe(function(sType, aArgs) {
+            var inputEl = aArgs[0].getInputEl();
+            if (inputEl.value.indexOf("Search ")>=0 && inputEl.value.indexOf("values...")>0)
+                inputEl.value = "";
+        });
+        that.autoComplete.textboxBlurEvent.subscribe(function(sType, aArgs) {
+            var inputEl = aArgs[0].getInputEl();
+            if (inputEl.value == "")
+                inputEl.value = inputElDefault;
+        });
 		
 		that.autoComplete.formatResult = function(oResultData, sQuery, sResultMatch) {
 			    return (sResultMatch + " (" +  oResultData.n + ")");
@@ -66,7 +78,7 @@ facet.StringFacet = function(property, fm, typeUri){
 		that.autoComplete.queryDelay = 0.5;
 		that.autoComplete.typeAhead = false;
 		that.autoComplete.generateRequest = function(sQuery) {
-			$j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").append("<img style=\"width:60%\" src=\"images/black-loader.gif\"/>");
+			$j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").append("<img class=\"autocompleting\" src=\"images/black-loader.gif\"/>");
 			var query = 
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 				"SELECT ?uri ?label (COUNT(?uri) AS ?n) \n"+

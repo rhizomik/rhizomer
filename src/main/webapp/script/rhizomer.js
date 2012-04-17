@@ -126,16 +126,16 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	function queryHistory(expression, callback, contentype)
 	{
 		//Escape '#' and '&'
-		expression = expression.replace(/#/g, "%23").replace(/&/g, "%26");
-		get(base + "?query="+expression, 
+		//expression = expression.replace(/#/g, "%23").replace(/&/g, "%26");
+		get(base + "?query="+encodeURIComponent(expression),
 			function(out) {defaultOnResponse(expression, out); callback(out);}, contentype);
 	};
 	// Send query but do not add it to history
 	function queryNoHistory(expression, callback, contentype)
 	{
 		//Escape '#' and '&'
-		expression = expression.replace(/#/g, "%23").replace(/&/g, "%26");
-		get(base + "?query="+expression, 
+		//expression = expression.replace(/#/g, "%23").replace(/&/g, "%26");
+		get(base + "?query="+encodeURIComponent(expression),
 			function(out) {callback(out);}, contentype);
 	};
 	// Handle history change (back and forward) and reloads.
@@ -188,27 +188,27 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	// Perform SPARQL query and return RDF/XML to the provided callback function
 	self.sparqlRDF = function(sparqlQuery, callback)
 	{
-		queryNoHistory(encodeURIComponent(sparqlQuery),
+		queryNoHistory(sparqlQuery,
 			function(out) {callback(out);});
 	};
 	// Perform SPARQL query and return JSON to the provided callback function
 	self.sparqlJSON = function(sparqlQuery, callback)
 	{
-		queryNoHistory(encodeURIComponent(sparqlQuery),
+		queryNoHistory(sparqlQuery,
 			function(out) {callback(out);}, "application/json");
 	};
 	// Perform SPARQL query and return HTML in the specified target DOM element.
 	// Intended for rendering RDF in different parts of the page, do not keep history
 	self.sparqlHTML = function(sparqlQuery, target)
 	{
-		queryNoHistory(encodeURIComponent(sparqlQuery),
+		queryNoHistory(sparqlQuery,
 			function(out) {transform.rdf2html(out, target, sparqlQuery);});
 	};
 	// Perform SPARQL query and show results as HTML in the target DOM element
 	self.sparql = function(sparqlQuery)
 	{
 		self.showMessage("<p>Querying...</p>\n"+waitImage);
-		queryHistory(encodeURIComponent(sparqlQuery),
+		queryHistory(sparqlQuery,
 			function(out) {self.showMessage("<p>Showing...</p>\n"+waitImage); transform.rdf2html(out, target, sparqlQuery);});
 	};
 	// List descriptions (full or summary) for resources selected by the input query, like SELECT ?r WHERE...
@@ -306,7 +306,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	self.describeResource = function(uri)
 	{
 		self.showMessage("<p>Describe "+uri+"</p>\n"+waitImage);
-		queryHistory("DESCRIBE <"+escape(uri)+">",
+		queryHistory("DESCRIBE <"+uri+">",
 			function(out) {self.showMessage("<p>Showing...</p>\n"+waitImage); transform.rdf2html(out, target);});
 		contentTabs.set('activeIndex', 0); // Show the first tab, where data is loaded
 	};
@@ -321,7 +321,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		var describeQuery = "DESCRIBE ?"+selectVar+" WHERE { ?"+selectVar+" a ?type \n { " +
 			sparqlSelectQuery + " LIMIT " + step + " OFFSET " + offset + " } } ";
 		
-		queryHistory(encodeURIComponent(describeQuery),
+		queryHistory(describeQuery,
 			  function(out) 
 			  {		self.showMessage("<p>Showing...</p>\n"+waitImage); 
 			        transform.rdf2html(out, target); 
@@ -349,7 +349,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	{
 		if (!offset) offset = "0";
 
-		query = "SELECT ?r WHERE {?r a <"+escape(typeURI)+">}";
+		query = "SELECT ?r WHERE {?r a <"+typeURI+">}";
 		self.describeResources(query, offset);
 	};
 	// SPARQL DESCRIBE query for all resources connected to the input URI
@@ -357,19 +357,19 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	{
 		if (!offset) offset = "0";
 		
-		query = "SELECT ?r WHERE {?r ?p <"+escape(uri)+">}";
+		query = "SELECT ?r WHERE {?r ?p <"+uri+">}";
 		self.describeResources(query, offset);
 	};
 	// Edit the RDF description for the input URI
 	self.editResourceDescription = function(uri)
 	{
-		queryNoHistory("DESCRIBE <"+escape(uri)+">",
+		queryNoHistory("DESCRIBE <"+uri+">",
 			function(out) {transform.rdf2form(out, target, "edit");});
 	};
 	// New RDF description using that for the input URI as source
 	self.newResourceDescription = function(uri)
 	{
-		queryNoHistory("DESCRIBE <"+escape(uri)+">",
+		queryNoHistory("DESCRIBE <"+uri+">",
 			function(out) 
 			{
 				transform.rdf2form(out, target, "new");

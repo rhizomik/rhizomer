@@ -15,8 +15,8 @@ public class HierarchyMenu {
 	
 	public static String ALPHABETICAL = "alphabetical";
 	public static String INSTANCES = "instances";
-	
-	protected HierarchyNode first;
+
+    protected HierarchyNode first;
 	protected Map<String, HierarchyNode> map;
 	protected MenuConfig config;
 	
@@ -39,7 +39,11 @@ public class HierarchyMenu {
 	
 	public MenuConfig getConfig() {
 		return config;
-	}	
+	}
+
+    public HierarchyNode getFirst() {
+        return first;
+    }
 	
 	public HierarchyMenu(HierarchyNode first){
 		this.first = new HierarchyNode(first);

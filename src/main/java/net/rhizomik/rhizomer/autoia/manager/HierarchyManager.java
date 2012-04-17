@@ -122,7 +122,7 @@ public class HierarchyManager
 	public HierarchyMenu generateFullMenu(int numItemsGlobal, int numItemsLocal, String uri){
 		if(uri == null)
 			uri = "http://www.w3.org/2002/07/owl#Thing";
-		HierarchyNode base = menu.getByUri(uri);
+		HierarchyNode base = menu.getFirst(); //getByUri(uri);
 		menu.clearEmpty();
 		menu.clearEmpty(); // Això és un parche temporal!!
 

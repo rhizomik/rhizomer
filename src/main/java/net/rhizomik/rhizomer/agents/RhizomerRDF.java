@@ -78,9 +78,9 @@ public class RhizomerRDF
 		return store.query(query);
 	}
 	
-	public ResultSet querySelect(String query, boolean includeSchema)
+	public ResultSet querySelect(String query, int scope)
 	{
-		return store.querySelect(query, includeSchema);
+		return store.querySelect(query, scope);
 	}
 	
 	public boolean queryAsk(String query)

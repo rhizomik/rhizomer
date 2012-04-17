@@ -11,6 +11,7 @@ import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
+import net.rhizomik.rhizomer.store.MetadataStore;
 
 
 public class HierarchyManagerSPARQL extends HierarchyManager 
@@ -91,7 +92,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
     private ArrayList<HierarchyNode> getRootClasses(){
 		ArrayList<HierarchyNode> roots = new ArrayList<HierarchyNode>();
 		
-        ResultSet results = RhizomerRDF.instance().querySelect(queryForRoots, true);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryForRoots, MetadataStore.REASONING);
         while(results.hasNext()){
 			   QuerySolution row = results.next();
 			   String uri = row.get("root").toString();
@@ -120,7 +121,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         f.format(queryForDirectSubs, vars);
         try
         {
-	        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+	        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
 	        while(results.hasNext()){
 	        	QuerySolution row = results.next();
 	        	String uri = row.get("sub").toString();
@@ -140,7 +141,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
     }
     
     private void countInstances(){
-        ResultSet results = RhizomerRDF.instance().querySelect(queryForCount, false);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryForCount, MetadataStore.INSTANCES);
         // The second var is the count value
         String countVar = results.getResultVars().get(1);
         while(results.hasNext())

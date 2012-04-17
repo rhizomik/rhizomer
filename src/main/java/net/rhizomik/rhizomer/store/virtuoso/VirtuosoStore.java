@@ -197,37 +197,40 @@ public class VirtuosoStore implements MetadataStore
     }
     
     /** Perform input SPARQL SELECT query and return result as ResultSet
-     * @return com.hp.hpl.jena.query.ResultSet
-     * @param queryString java.lang.String 
+     * The scopes, defined in MetadataStore, are:
+     * - INSTANCES (if just to query instance data)
+     * - SCHEMAS (if just to query schemas and ontologies)
+     * - REASONING (instance plus schemas plus the reasoning provided by the store)
      */
-	public ResultSet querySelect(String queryString, boolean includeSchema)
+	public ResultSet querySelect(String queryString, int scope)
 	{
-	    ResultSet results = null;
+        ResultSet results = null;
+        VirtuosoQueryExecution qexec = null;
+        Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
 
-	    VirtuosoQueryExecution qexec = null;
-
-	    Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+        if (scope == MetadataStore.INSTANCES || scope == MetadataStore.REASONING)
             query.addGraphURI(graphURI);
-            if (includeSchema)
-        	query.addGraphURI(schema);
-            queryString = query.toString();
-            if (query.hasGroupBy())
-            {
-            	if (query.getGroupBy().isEmpty())
-            		queryString = query.toString().substring(0, query.toString().indexOf("GROUP BY"));
-            		
-            }
+        if (scope == MetadataStore.SCHEMAS || scope == MetadataStore.REASONING)
+            query.addGraphURI(schema);
 
-            //queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+queryString;
-            log.log(Level.INFO, "VirtuosoStore.query: "+queryString);
-            
-            qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
-        
-	    if (query.isSelectType())
-		results = qexec.execSelect();
-       
+        queryString = query.toString();
+        if (query.hasGroupBy())
+        {
+            if (query.getGroupBy().isEmpty())
+                queryString = query.toString().substring(0, query.toString().indexOf("GROUP BY"));
 
-	    return results;
+        }
+
+        //queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+queryString;
+        log.log(Level.INFO, "VirtuosoStore.query: "+queryString);
+
+        qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
+
+        if (query.isSelectType())
+            results = qexec.execSelect();
+
+
+        return results;
 	}
 	
     /** Perform input SPARQL ASK query and return result as boolean

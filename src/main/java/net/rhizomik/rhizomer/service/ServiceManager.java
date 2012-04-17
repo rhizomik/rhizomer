@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import net.rhizomik.rhizomer.agents.RhizomerRDF;
 import net.rhizomik.rhizomer.service.Service;
+import net.rhizomik.rhizomer.store.MetadataStore;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
 /**
@@ -69,7 +70,7 @@ private String rhizomerServiceBaseUri = "http://rhizomik.net/rhizomer/services#"
     }
     
     public void readServiceList(){
-        ResultSet results = RhizomerRDF.instance().querySelect(queryForServices, true);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryForServices, MetadataStore.REASONING);
         while(results.hasNext()){
             QuerySolution row = results.next();
             String uri = row.get("r").toString();

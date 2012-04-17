@@ -91,23 +91,36 @@ public class SesameStore implements MetadataStore
 
     public void init(ServletConfig config) throws Exception 
     {
-	if (config.getServletContext().getInitParameter("manager_url") == null)
-	    throw new Exception("Missing parameter for SesameStore init: manager_url");
-	else if (config.getServletContext().getInitParameter("repository_id") == null)
-	    throw new Exception("Missing parameter for SesameStore init: repository_id");
-	else if (config.getServletContext().getInitParameter("db_graph")==null)
-	    throw new Exception("Missing parameter for SesameStore init: db_graph");
-	else 
-	{
-	    init(config.getServletContext().getInitParameter("manager_url"), 
-		 config.getServletContext().getInitParameter("repository_id"),
-		 config.getServletContext().getInitParameter("db_graph"), 
-		 config.getServletContext().getInitParameter("db_schema"));
-	}
+        if (config.getServletContext().getInitParameter("manager_url") == null)
+            throw new Exception("Missing parameter for SesameStore init: manager_url");
+        else if (config.getServletContext().getInitParameter("repository_id") == null)
+            throw new Exception("Missing parameter for SesameStore init: repository_id");
+        else if (config.getServletContext().getInitParameter("db_graph")==null)
+            throw new Exception("Missing parameter for SesameStore init: db_graph");
+        else
+        {
+            init(config.getServletContext().getInitParameter("manager_url"),
+             config.getServletContext().getInitParameter("repository_id"),
+             config.getServletContext().getInitParameter("db_graph"),
+             config.getServletContext().getInitParameter("db_schema"));
+        }
     }
 
-    public void init(Properties props) throws Exception {
-	// TODO: missing implementation...
+    public void init(Properties props) throws Exception
+    {
+        if (props.getProperty("manager_url") == null)
+            throw new Exception("Missing parameter for SesameStore init: manager_url");
+        else if (props.getProperty("repository_id") == null)
+            throw new Exception("Missing parameter for SesameStore init: repository_id");
+        else if (props.getProperty("db_graph")==null)
+            throw new Exception("Missing parameter for SesameStore init: db_graph");
+        else
+        {
+            init(props.getProperty("manager_url"),
+                    props.getProperty("repository_id"),
+                    props.getProperty("db_graph"),
+                    props.getProperty("db_schema"));
+        }
     }
 
     protected void finalize() throws Throwable {
@@ -145,10 +158,10 @@ public class SesameStore implements MetadataStore
 	{
 	    queryString = queryString.substring(queryString.indexOf("SELECT"), queryString.lastIndexOf('}'));
 	    queryString = queryString.substring(0, queryString.lastIndexOf('}'));
-	    int wherePos = queryString.indexOf("WHERE");
-    	    if (wherePos>0)
-    	        queryString = queryString.substring(0, wherePos) + 
-    		    "FROM <"+graphURI+">\n"+ "FROM <http://www.ontotext.com/implicit>\n"+ queryString.substring(wherePos);
+//	    int wherePos = queryString.indexOf("WHERE");
+//    	    if (wherePos>0)
+//    	        queryString = queryString.substring(0, wherePos) +
+//    		    "FROM <"+graphURI+">\n"+ "FROM <http://www.ontotext.com/implicit>\n"+ queryString.substring(wherePos);
 	    isDescribe = true;
 	}
 	else
@@ -284,23 +297,35 @@ public class SesameStore implements MetadataStore
 
     /**
      * Perform input SPARQL SELECT query and return result as ResultSet
-     * 
-     * @return com.hp.hpl.jena.query.ResultSet
-     * @param queryString java.lang.String
+     * The scopes, defined in MetadataStore, are: 
+     * - INSTANCES (if just to query instance data) 
+     * - SCHEMAS (if just to query schemas and ontologies) 
+     * - REASONING (instance plus schemas plus the reasoning provided by the store)
      */
-    public ResultSet querySelect(String queryString, boolean includeSchema)
+    public ResultSet querySelect(String queryString, int scope)
     {
         ResultSet results = null;
-	ByteArrayOutputStream out = new ByteArrayOutputStream();
-	// Add FROM so results from 
-	
-	if (!includeSchema)
-	{
-    	    int wherePos = queryString.indexOf("WHERE");
-    	    if (wherePos>0)
-    	        queryString = queryString.substring(0, wherePos) + 
-    		    "FROM <"+graphURI+">\n"+ queryString.substring(wherePos);
-	}
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        // If just to query instance or schema data, restrict to the corresponding graph:
+        //    SELECT ... WHERE { GRAPH <InstanceOrSchemaGraph> { ... } } ...
+        if (scope != MetadataStore.REASONING) {
+            String queryGraph;
+            if (scope == MetadataStore.INSTANCES)
+                queryGraph = graphURI;
+            else
+                queryGraph = schemaURI;
+
+            int startWhere = queryString.indexOf("WHERE")+"WHERE".length();
+            int endWhere = queryString.lastIndexOf('}');
+            if (startWhere>0)
+                queryString = queryString.substring(0, startWhere) +
+                        "{ GRAPH <"+queryGraph+"> "+
+                        queryString.substring(startWhere, endWhere)+"} "+
+                        queryString.substring(endWhere);
+        }
+        // If scope is REASONING, no need to constraint the query graph, leave it unchanged
+           
         try
         {
             log.log(Level.INFO, "SesameStore.query: "+queryString);
@@ -318,7 +343,7 @@ public class SesameStore implements MetadataStore
             }
         }
         catch(Exception e)
-        { log.log(Level.INFO, e.toString()); }
+        { log.log(Level.WARNING, e.toString()); }
         finally {}	
 
         return results;
@@ -398,9 +423,6 @@ public class SesameStore implements MetadataStore
 
     /**
      * Store the input metadata.
-     * 
-     * @return java.lang.String
-     * @param metadatavjava.io.InputStream
      */
     public String store(InputStream metadata, String contentType) 
     {

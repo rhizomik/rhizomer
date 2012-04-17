@@ -15,6 +15,10 @@ import com.hp.hpl.jena.query.ResultSet;
  */
 public interface MetadataStore 
 {
+    public static int INSTANCES = 1;
+    public static int SCHEMAS = 2;
+    public static int REASONING = 3;
+
     /**
      * Abstract method to initialise the metadata store using the parameters
      * from a servlet config .
@@ -38,9 +42,14 @@ public interface MetadataStore
 	String queryJSON(String query);
 	
 	/**
-	 * Abstract method for querying an retrieving Jena ResultSet, just for SPARQL select.
-	 */
-	ResultSet querySelect(String query, boolean includeSchema);
+	 * Abstract method for querying an retrieving Jena ResultSet, just for SPARQL select
+     * and for a defined query scope.
+     * The scopes, defined in MetadataStore, are:
+     * - INSTANCES (if just to query instance data)
+     * - SCHEMAS (if just to query schemas and ontologies)
+     * - REASONING (instance plus schemas plus the reasoning provided by the store)
+     */
+	ResultSet querySelect(String query, int scope);
 	
 	/**
 	 * Abstract method for performing a SPARQL ASK query an retrieve a boolean.

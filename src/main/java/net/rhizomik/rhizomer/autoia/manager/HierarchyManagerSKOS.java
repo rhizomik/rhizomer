@@ -12,6 +12,7 @@ import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
+import net.rhizomik.rhizomer.store.MetadataStore;
 
 
 public class HierarchyManagerSKOS extends HierarchyManager 
@@ -103,7 +104,7 @@ public class HierarchyManagerSKOS extends HierarchyManager
 		ArrayList<HierarchyNode> roots = new ArrayList<HierarchyNode>();
 		//HierarchyNode node = new HierarchyNode("http://dbpedia.org/resource/Category:Main_topic_classifications");
 		//roots.add(node);
-        ResultSet results = RhizomerRDF.instance().querySelect(queryForRoots, true);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryForRoots, MetadataStore.REASONING);
         while(results.hasNext()){
 			   QuerySolution row = results.next();
 			   String uri = row.get("root").toString();
@@ -133,7 +134,7 @@ public class HierarchyManagerSKOS extends HierarchyManager
         Formatter f = new Formatter(queryString);
         Object[] vars = {node.getUri()};
         f.format(queryForDirectSubs, vars);    
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
         while(results.hasNext()){
         	QuerySolution row = results.next();
         	String uri = row.get("sub").toString();
@@ -149,7 +150,7 @@ public class HierarchyManagerSKOS extends HierarchyManager
     }
     
     private void countInstancesAll(){
-        ResultSet results = RhizomerRDF.instance().querySelect(queryForCountAll, false);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryForCountAll, MetadataStore.INSTANCES);
         // The second var is the count value
         String countVar = results.getResultVars().get(1);
         while(results.hasNext())
@@ -195,7 +196,7 @@ public class HierarchyManagerSKOS extends HierarchyManager
         Formatter f = new Formatter(queryString);
         Object[] vars = {uri};
         f.format(queryForCount, vars);    
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
 	    // The second var is the count value
         String countVar = results.getResultVars().get(0);
         int count = 0;

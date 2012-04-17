@@ -152,11 +152,14 @@ public class JenaStore implements MetadataStore
         return response;
     }
     
-    /** Perform input SPARQL SELECT query and return result as ResultSet
-     * @return com.hp.hpl.jena.query.ResultSet
-     * @param queryString java.lang.String 
+    /** Perform input SPARQL SELECT query and return result as ResultSet.
+     * TODO: implement the possibility to constraint the scope of the query.
+     * The scopes, defined in MetadataStore, are:
+     * - INSTANCES (if just to query instance data)
+     * - SCHEMAS (if just to query schemas and ontologies)
+     * - REASONING (instance plus schemas plus the reasoning provided by the store)
      */
-	public ResultSet querySelect(String queryString, boolean includeSchema)
+	public ResultSet querySelect(String queryString, int scope)
 	{
         ResultSet results = null;
 

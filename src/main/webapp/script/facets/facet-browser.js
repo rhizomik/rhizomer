@@ -84,8 +84,8 @@ facet.FacetBrowser = function(inParser){
 		activeManager.toggleFacet(id);
 	};
 	
-	self.filterProperty = function(propertyUri, propertyValue, vlabel){
-		activeManager.filterProperty(propertyUri, propertyValue, vlabel);
+	self.filterProperty = function(facetID, propertyValue, vlabel){
+		activeManager.filterProperty(facetID, propertyValue, vlabel);
 	};
 	
 	self.removeProperty = function(typeUri, propertyUri, propertyValue, vlabel){
@@ -170,12 +170,16 @@ facet.FacetBrowser = function(inParser){
 	};
 	
 	self.setAutoCompleteProperty = function(id){
-		autoCompleteProperty = activeManager.getUriById(id);
+		autoCompleteProperty = id;
 	};
 	
-	self.getAutoCompleteProperty = function(){
+	self.getAutoCompletePropertyID = function(){
 		return autoCompleteProperty;
 	};
+
+    self.getAutoCompletePropertyURI = function(){
+        return activeManager.getUriById(autoCompleteProperty);
+    };
 	
 	self.pivotFacet = function(classURI, propertyURI, range){
 		if(managers[range]){
@@ -196,25 +200,24 @@ facet.FacetBrowser = function(inParser){
 		self.printActive();
 	};
 	
-	self.inversePivotFacet = function(inverseClassUri, propertyUri, propertyRange){
-		if(managers[inverseClassUri]){
-			activeManager = managers[inverseClassUri].manager;
+	self.pivotInverseFacet = function(classURI, propertyURI, range){
+		if(managers[range]){
+			activeManager = managers[range].manager;
 			activeManager.renderFacets("facets");
 			activeManager.reloadFacets();
 			mainManager = activeManager;
 			self.printRelated();
 		}
 		else{
-			self.addManager(inverseClassUri, propertyUri, "r"+varCount);
-			activeURI = inverseClassUri;
-			var variable = activeManager.getVariable();
-			activeManager = managers[inverseClassUri].manager;
-			mainManager = managers[inverseClassUri].manager;
-			activeManager.addPivotedFacet(propertyUri, propertyRange, variable);
+            activeManager.addPivotedInverseFacet(propertyURI, range, "r"+varCount);
+            self.addManager(range, propertyURI, "r"+varCount);
+            activeURI = range;
+            activeManager = managers[range].manager;
 			activeManager.loadFacets();
-			self.printActive();
-		}
-	};	
+            mainManager = activeManager;
+        }
+        self.printActive();
+    };
 	
 	return self;
 };

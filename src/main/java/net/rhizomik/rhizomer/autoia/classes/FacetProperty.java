@@ -64,7 +64,7 @@ public class FacetProperty implements Comparable{
 	public void setInverse(String classUri){
 		this.classUri = classUri;
 		this.isInverse = true;
-		this.label = FacetUtil.makeInverseLabel(uri, classUri);
+		this.label = FacetUtil.makeInverseLabel(uri, range);
 	}
 	
 	public String getClassUri(){

@@ -48,13 +48,28 @@ facet.FacetManager = function (uri, inVariable){
         obj.pivotedVar = pivotedVar;
 		pivotedFacets[propertyURI] = obj;
 	};
-	
-	self.deletePivotedFacet = function(propertyURI){
-		delete(pivotedFacets[propertyURI]);
+
+    self.addPivotedInverseFacet = function(propertyURI, range, pivotedVar){
+        var obj = {};
+        obj.range = range;
+        obj.pivotedVar = pivotedVar;
+        pivotedFacets[propertyURI+range] = obj;
+    };
+
+    self.deletePivotedFacet = function(propertyURI){
+        delete(pivotedFacets[propertyURI]);
+    }
+
+    self.deletePivotedFacet = function(propertyURI, range){
+		delete(pivotedFacets[propertyURI+range]);
 	}
-	
-	self.getFacet = function (propertyURI){
-		return facets[propertyURI];
+
+    self.getFacet = function (propertyURI){
+        return facets[propertyURI];
+    };
+
+	self.getFacet = function (propertyURI, range){
+		return facets[propertyURI+range];
 	};
 	
 	self.getFacetById = function (id){
@@ -62,7 +77,7 @@ facet.FacetManager = function (uri, inVariable){
 	};
 	
 	self.getUriById = function (id){
-		return facetIds[id];
+		return facets[facetIds[id]].getUri();
 	};
 	
 	/*
@@ -72,8 +87,8 @@ facet.FacetManager = function (uri, inVariable){
 			var url = "";
 			for(f in selectedFacets){
 				for(key in selectedFacets[f]){
-					prefix = prefixes[getPrefix(facets[f].getUri())];
-					url += encodeURIComponent(facets[f].getUri());
+					prefix = prefixes[getPrefix(facets[facetIds[f]].getUri())];
+					url += encodeURIComponent(facets[facetIds[f]].getUri());
 					value = selectedFacets[f][key];
 					url += "/"+encodeURIComponent(value.uri)+"/";
 				}			
@@ -104,17 +119,15 @@ facet.FacetManager = function (uri, inVariable){
 	};
 	
 	self.addFacet = function(property){
-        if (!facets[property.uri])
-        {
-            if(property.isInverse == "true"){
-                facets[property.uri] = facet.InverseFacet(property, self.getVariable(), typeUri);
-                facetIds[hex_md5(property.classUri+property.uri)] = property.uri;
-            }
-            else{
-                facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
-                facetIds[hex_md5(property.uri)] = property.uri;
-            }
+        if(property.isInverse == "true"){
+            facets[property.uri+property.range] = facet.InverseFacet(property, self.getVariable(), typeUri);
+            facetIds[hex_md5(property.uri+property.range)] = property.uri+property.range;
         }
+        else{
+            facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
+            facetIds[hex_md5(property.uri)] = property.uri;
+        }
+
 		/*
 		if(property.type == NS.xsd("integer"))
 			facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);
@@ -153,29 +166,29 @@ facet.FacetManager = function (uri, inVariable){
 		}
 	};
 	
-	self.setSelectedFacetLabel = function(propertyUri, propertyValue, propertyLabel){
-		selectedFacets[propertyUri][propertyValue].setLabel(propertyLabel);
+	self.setSelectedFacetLabel = function(facetID, propertyValue, propertyLabel){
+		selectedFacets[facetID][propertyValue].setLabel(propertyLabel);
 	};
 	
-	self.filterProperty = function(propertyUri, propertyValue, vlabel){
-		var facet = facets[propertyUri];
+	self.filterProperty = function(facetID, propertyValue, vlabel){
+		var facet = facets[facetIds[facetID]];
 		valueReturn = facet.toggleValue(propertyValue);
-		if(selectedFacets[propertyUri]){
+		if(selectedFacets[facetID]){
 			if(valueReturn){
-				selectedFacets[propertyUri][propertyValue] = valueReturn;
+				selectedFacets[facetID][propertyValue] = valueReturn;
 			}
 			else{
-				delete(selectedFacets[propertyUri][propertyValue]);
-				if($j.isEmptyObject(selectedFacets[propertyUri])){
-					delete(selectedFacets[propertyUri]);
+				delete(selectedFacets[facetID][propertyValue]);
+				if($j.isEmptyObject(selectedFacets[facetID])){
+					delete(selectedFacets[facetID]);
 				}
 			}
 		}
 		else{
 			if(vlabel)
 				valueReturn = new FacetValue(propertyValue, vlabel, 0);
-			selectedFacets[propertyUri] = {};
-			selectedFacets[propertyUri][propertyValue] = valueReturn;
+			selectedFacets[facetID] = {};
+			selectedFacets[facetID][propertyValue] = valueReturn;
 		}
 		facet.setSelected(true);
 		facetBrowser.reloadFacets();
@@ -188,14 +201,14 @@ facet.FacetManager = function (uri, inVariable){
 		if(!$j.isEmptyObject(selectedFacets)){
 			$j("#active_facets").append("<div>Your filters:</div>");
 			for(f in selectedFacets){
-				html = "<div class=\"selected_facet\"><span>"+facets[f].getLabel()+"</span>";
-				html += "<ul id=\""+facets[f].getId()+"_active\">";
+				html = "<div class=\"selected_facet\"><span>"+facets[facetIds[f]].getLabel()+"</span>";
+				html += "<ul id=\""+facets[facetIds[f]].getId()+"_active\">";
 				html += "</ul></div>";
 				$j("#active_facets").append(html);
 			}
 			
 			for(f in selectedFacets){
-				facets[f].printInitActiveLabels();
+				facets[facetIds[f]].printInitActiveLabels();
 			}
 		}
 	};
@@ -211,7 +224,7 @@ facet.FacetManager = function (uri, inVariable){
 			for(f in selectedFacets){
 				if(x>0)
 					html += " and ";
-				html += "<b>"+facets[f].getLabel()+"</b> is ";
+				html += "<b>"+facets[facetIds[f]].getLabel()+"</b> is ";
 				var i=0;
 				for(key in selectedFacets[f]){
 					if(i>0)
@@ -246,7 +259,7 @@ facet.FacetManager = function (uri, inVariable){
 			html += "<ul>";		
 			if(!$j.isEmptyObject(selectedFacets)){
 				for(f in selectedFacets){
-					html += "<li><span>"+facets[f].getLabel()+"</span>";
+					html += "<li><span>"+facets[facetIds[f]].getLabel()+"</span>";
 					html += "<ul class=\"inline\">";
 					for(key in selectedFacets[f]){
 						value = selectedFacets[f][key];
@@ -303,9 +316,12 @@ facet.FacetManager = function (uri, inVariable){
 				varCount2++;
 			}
 		}
-		for(m in pivotedFacets){
-			query += " ?"+variable+" <"+m+"> ?"+pivotedFacets[m].pivotedVar+" .";
-			query += " ?"+variable+" a <"+typeUri+"> .";
+		for(m in pivotedFacets) {
+            if (facets[m].isInverse())
+                query += " ?"+pivotedFacets[m].pivotedVar+" <"+facets[m].getUri()+"> ?"+variable+" .";
+            else
+                query += " ?"+variable+" <"+facets[m].getUri()+"> ?"+pivotedFacets[m].pivotedVar+" .";
+            query += " ?"+variable+" a <"+typeUri+"> .";
 		}
 		return query;
 	};	

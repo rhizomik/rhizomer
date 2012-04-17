@@ -18,6 +18,7 @@ import net.rhizomik.rhizomer.agents.RhizomerRDF;
 import net.rhizomik.rhizomer.autoia.classes.FacetProperties;
 import net.rhizomik.rhizomer.autoia.classes.FacetProperty;
 import net.rhizomik.rhizomer.autoia.classes.FacetValue;
+import net.rhizomik.rhizomer.store.MetadataStore;
 
 public class FacetManager
 {
@@ -82,7 +83,7 @@ public class FacetManager
     	PreparedStatement ps = null;
     	FacetProperties properties = null;
     	boolean busy = false;
-    	int limit = 15;
+    	int limit = 30;
     	int i = 1;
     	do {
         	try
@@ -96,7 +97,7 @@ public class FacetManager
     			rs.close();
     			ps.close();
 
-    			query = "SELECT * FROM property_summary Where class=? and property not in (";
+    			query = "SELECT * FROM property_summary WHERE class=? AND is_inverse=0 AND property NOT IN (";
     	    	for(String omitProperty : omitProperties){
     	    		query+="'"+omitProperty+"',";
     	    	}
@@ -116,20 +117,27 @@ public class FacetManager
     			}
     			rs.close();
     			ps.close();
-    			
-    			query = "SELECT * FROM property_summary where value_range=?";
-    	    	ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-    			ps.setString(1, uri);
-    			rs = ps.executeQuery();
-    			while(rs.next()){
-    				FacetProperty property = createInversePropertyFromResultSet(rs);
-    				System.out.println("INVERSE: "+property.getClassUri());
-    				if(i<=limit){
-    					properties.addProperty(property);
-    					i++;
-    				}
-    			}
-    			
+
+                query = "SELECT * FROM property_summary WHERE class=? AND is_inverse=1 AND property NOT IN (";
+                for(String omitProperty : omitProperties){
+                    query+="'"+omitProperty+"',";
+                }
+                query = query.substring(0, query.length()-1);
+                //query +=") and num_instances > 0 and max_value > 1 "; //TODO: define criteria for facets with maxvalue = 1 but dataset with small number of instances
+                query += ") order by num_instances desc";
+                ps = sqlconn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+                ps.setString(1, uri);
+                rs = ps.executeQuery();
+
+                while(rs.next()){
+                    FacetProperty property = createInversePropertyFromResultSet(rs);
+                    if(!property.discardProperty() && i<=limit){
+                        properties.addProperty(property);
+                        i++;
+                    }
+                }
+                rs.close();
+                ps.close();
         	}
         	catch (SQLException e)
         	{ if (e.toString().indexOf("SQLITE_BUSY")>0) busy = true;
@@ -263,7 +271,7 @@ public class FacetManager
     	Object[] vars = {classURI,propertyURI};
         f.format(query, vars);    	
     	
-    	com.hp.hpl.jena.query.ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);	                
+    	com.hp.hpl.jena.query.ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
 		QuerySolution row = results.next();
 		return row.getLiteral("callret-0").getInt();
     }
@@ -307,7 +315,7 @@ public class FacetManager
 	Formatter f = new Formatter(queryString);
 	Object[] vars = {uri, property};
 	f.format(queryForValues, vars);
-	com.hp.hpl.jena.query.ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+	com.hp.hpl.jena.query.ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
 	String strVar = results.getResultVars().get(0);
 	String countVar = results.getResultVars().get(1);
 	TreeMultimap<Integer, FacetValue> map = TreeMultimap.create(new RevIntComp(),Ordering.natural());
@@ -344,7 +352,7 @@ public class FacetManager
 	    Formatter f = new Formatter(queryString);
 	    Object[] vars = {uri, property};
 	    f.format(queryForValues, vars);
-	    com.hp.hpl.jena.query.ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+	    com.hp.hpl.jena.query.ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
 	    String strVar = results.getResultVars().get(0);
 	    String countVar = results.getResultVars().get(1);
 	    while(results.hasNext())

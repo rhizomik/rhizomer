@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +19,7 @@ import net.rhizomik.rhizomer.agents.RhizomerRDF;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import net.rhizomik.rhizomer.store.MetadataStore;
 
 public class FacetGenerator {
 	
@@ -26,45 +28,76 @@ public class FacetGenerator {
     private Connection conn;    
     
     private String queryForClasses = 
-	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+	    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
         "SELECT DISTINCT ?c"+NL+
         "WHERE {"+NL+
         "   ?c rdf:type ?class. FILTER (!isBlank(?c) && (?class=owl:Class || ?class=rdfs:Class) )"+NL+
         "}";
+
+    private String queryForSubClasses =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
+        "SELECT DISTINCT ?subclass"+NL+
+        "WHERE {"+NL+
+        "   ?subclass rdfs:subClassOf <%1$s>"+NL+
+        "}";
     
     private String queryForCountInstancesProperty =
-	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+	    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
         "SELECT (COUNT(?x) AS ?n)"+NL+
         "WHERE {"+NL+
         "   ?x a <%1$s> ; <%2$s> ?o"+NL+
         "}";
-    
+
+    private String queryForCountInstancesInverseProperty =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
+        "SELECT (COUNT(?o) AS ?n)"+NL+
+        "WHERE {"+NL+
+        "   ?o a <%1$s>. ?x <%2$s> ?o."+NL+
+        "}";
+
     private String queryForCountTotalInstances =
-	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+	    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
         "SELECT (COUNT(?x) AS ?n)"+NL+
         "WHERE {"+NL+
         "   ?x a <%1$s>"+NL+
         "}";
-    
-    private String queryForProperties = 
-	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+
+    private String queryForProperties =
+	    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
         "SELECT DISTINCT ?p ?r"+NL+
         "WHERE {"+NL+
-        "   ?x a <%1$s> ; ?p ?o"+NL+
+        "   ?x a ?type ; ?p ?o"+NL+
         "   OPTIONAL { ?p rdfs:range ?r }"+NL+
         "   FILTER (?o != \"\")"+NL+
-        "   FILTER (?p!=owl:differentFrom && ?p!=owl:sameAs)"+NL+            
+        "   FILTER (?p!=owl:differentFrom && ?p!=owl:sameAs)"+NL+
+        "   FILTER (%1$s)"+NL+   // Generate filter to get properties for class and also all subclasses
         "}";
-    
-    private String queryForEntropy = 
+
+    private String queryForInverseProperties =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
+        "SELECT DISTINCT ?p ?r"+NL+
+        "WHERE {"+NL+
+        "   ?o a ?type. ?x ?p ?o"+NL+
+        "   OPTIONAL { ?p rdfs:range ?r }"+NL+
+        "   FILTER (?p!=owl:differentFrom && ?p!=owl:sameAs)"+NL+
+        "   FILTER (%1$s)"+NL+  // Generate filter to get inverse properties for class and also all subclasses
+        "}";
+
+    private String queryForEntropy =
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
@@ -72,41 +105,61 @@ public class FacetGenerator {
         "WHERE {"+NL+
         "   ?x a <%1$s> ; <%2$s> ?o"+NL+
         "}";
-    
+
 	private String queryForCountValues =
 	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
-        "SELECT (COUNT(distinct(?o)) AS ?n)"+NL+ 
+        "SELECT (COUNT(distinct(?o)) AS ?n)"+NL+
         "WHERE {"+NL+
         "   ?x a <%1$s> ; <%2$s> ?o ."+NL+
-        "   FILTER (?o!=\"\")"+NL+   
+        "   FILTER (?o!=\"\")"+NL+
         "}";
-	
-	private String queryIsNotInverseFunctional =
+
+    private String queryForCountInversePropertyValues =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
+        "SELECT (COUNT(distinct(?x)) AS ?n)"+NL+
+        "WHERE {"+NL+
+        "   ?o a <%1$s>. ?x <%2$s> ?o ."+NL+
+        "   FILTER (?o!=\"\")"+NL+
+        "}";
+
+    private String queryIsNotInverseFunctional =
 	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
-        "ASK"+NL+ 
+        "ASK"+NL+
         "WHERE {"+NL+
         "   ?x a <%1$s> ; <%2$s> ?o ."+NL+
         "   ?y a <%1$s> ; <%2$s> ?o ."+NL+
-        "   FILTER (?x!=?y)"+NL+   
-        "}";    
-	
-	private String queryForMaxCardinality = 
+        "   FILTER (?x!=?y)"+NL+
+        "}";
+    private String queryForMaxCardinality =
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
 	    "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
 	    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
-	    "SELECT (COUNT(?o) AS ?n)"+NL+ 
+	    "SELECT (COUNT(?o) AS ?n)"+NL+
 	    "WHERE {"+NL+
 	    "   ?x a <%1$s> ; <%2$s> ?o ."+NL+
-	    "   FILTER (?o!=\"\")"+NL+   
+	    "   FILTER (?o!=\"\")"+NL+
 	    "}"+NL+
 	    "GROUP BY ?o ORDER BY DESC(?n) LIMIT 1";
-    
+
+    private String queryForMaxCardinalityForInverseProperty =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
+        "SELECT (COUNT(?x) AS ?n)"+NL+
+        "WHERE {"+NL+
+        "   ?o a <%1$s>. ?x <%2$s> ?o ."+NL+
+        "   FILTER (?o!=\"\")"+NL+
+        "}"+NL+
+        "GROUP BY ?x ORDER BY DESC(?n) LIMIT 1";
+
     public FacetGenerator(ServletConfig config) throws ClassNotFoundException, SQLException{
-    	
+
     	String path = config.getServletContext().getRealPath("WEB-INF");
 		String datasetId = "";
 		if (config.getServletContext().getInitParameter("db_graph")!=null)
@@ -117,12 +170,12 @@ public class FacetGenerator {
 			datasetId = config.getServletContext().getInitParameter("file_name");
 		int facetHash = datasetId.hashCode();
 		String filePath = path+="/facets-"+facetHash+".db";
-		
+
 		if(!fileExists(filePath)){
 	        Class.forName("org.sqlite.JDBC"); // TODO: get db class from web.xml
 	    	conn = DriverManager.getConnection("jdbc:sqlite:"+filePath);
 	    	System.out.println("File \""+filePath+"\" created, generating facets");
-	    	Statement stat = conn.createStatement(); 
+	    	Statement stat = conn.createStatement();
 	        stat.execute("CREATE TABLE if not exists class_summary(class varchar(255), num_instances int, " +
 	        		"primary key(class))");
 	        /*stat.execute("CREATE TABLE if not exists property_summary(id int auto_increment, " +
@@ -131,14 +184,16 @@ public class FacetGenerator {
 	        */
 	        stat.execute("CREATE TABLE if not exists property_summary(id int auto_increment, " +
 	        		"class varchar(255), property varchar(255), num_instances int, different_values int, " +
-	        		"max_value int, max_cardinality int, value_range varchar(255), value_type varchar(255), primary key(id))");
-	        stat.close(); 
+	        		"max_value int, max_cardinality int, value_range varchar(255), value_type varchar(255), is_inverse boolean, primary key(id))");
+	        stat.close();
 	        generateFacets();
 		}
 		else
 			System.out.println("File \""+filePath+"\" already exists");
     }
-    
+
+    public FacetGenerator() {}
+
     private void generateFacets() throws SQLException{
     	ArrayList<String> classes = getClasses();
     	ArrayList<String> omitClasses = new ArrayList<String>();
@@ -153,29 +208,43 @@ public class FacetGenerator {
     			System.out.println("Omiting facets for "+classUri);
     	}
     }
-    
+
     private boolean fileExists(String filename){
     	File f = new File(filename);
 		return f.exists();
     }
-    
-    
-    private ArrayList<String >getClasses(){
+
+
+    private ArrayList<String> getClasses(){
     	ArrayList<String> classes = new ArrayList<String>();
-        ResultSet results = RhizomerRDF.instance().querySelect(queryForClasses, true);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryForClasses, MetadataStore.REASONING);
         while(results.hasNext()){
 			   QuerySolution row = results.next();
 			   classes.add(row.get("c").toString());
 		}
         return classes;
     }
-    
+
+    private ArrayList<String> getSubClasses(String uri){
+        StringBuilder queryString = new StringBuilder();
+        Formatter f = new Formatter(queryString);
+        Object[] vars = {uri};
+        f.format(queryForSubClasses, vars);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
+        ArrayList<String> subclasses = new ArrayList<String>();
+        while(results.hasNext()){
+            QuerySolution row = results.next();
+            subclasses.add(row.get("subclass").toString());
+        }
+        return subclasses;
+    }
+
     private int countInstancesForProperty(String uri, String property){
     	StringBuilder queryString = new StringBuilder();
         Formatter f = new Formatter(queryString);
         Object[] vars = {uri, property};
-        f.format(queryForCountInstancesProperty, vars);    	
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+        f.format(queryForCountInstancesProperty, vars);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
         int count = 0;
         if (results.hasNext())
         {
@@ -186,13 +255,30 @@ public class FacetGenerator {
         }
         return count;
     }
-    
+
+    private int countInstancesForInverseProperty(String uri, String property) {
+        StringBuilder queryString = new StringBuilder();
+        Formatter f = new Formatter(queryString);
+        Object[] vars = {uri, property};
+        f.format(queryForCountInstancesInverseProperty, vars);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
+        int count = 0;
+        if (results.hasNext())
+        {
+            QuerySolution row = results.next();
+            // The first var is the count value
+            String countVar = results.getResultVars().get(0);
+            count = row.getLiteral(countVar).getInt();
+        }
+        return count;
+    }
+
     private int countMaxCardinalityForProperty(String uri, String property){
     	StringBuilder queryString = new StringBuilder();
         Formatter f = new Formatter(queryString);
         Object[] vars = {uri, property};
-        f.format(queryForMaxCardinality, vars);    	
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+        f.format(queryForMaxCardinality, vars);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
         int count = 0;
         if (results.hasNext())
         {
@@ -202,22 +288,39 @@ public class FacetGenerator {
 	        count = row.getLiteral(countVar).getInt();
         }
         return count;
-    }    
-    
+    }
+
+    private int countMaxCardinalityForInverseProperty(String uri, String property) {
+        StringBuilder queryString = new StringBuilder();
+        Formatter f = new Formatter(queryString);
+        Object[] vars = {uri, property};
+        f.format(queryForMaxCardinalityForInverseProperty, vars);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
+        int count = 0;
+        if (results.hasNext())
+        {
+            QuerySolution row = results.next();
+            // The first var is the count value
+            String countVar = results.getResultVars().get(0);
+            count = row.getLiteral(countVar).getInt();
+        }
+        return count;
+    }
+
     private boolean isInverseFunctionalForValues(String uri, String property){
     	StringBuilder queryString = new StringBuilder();
         Formatter f = new Formatter(queryString);
         Object[] vars = {uri, property};
-        f.format(queryIsNotInverseFunctional, vars);    	
+        f.format(queryIsNotInverseFunctional, vars);
         return !RhizomerRDF.instance().queryAsk(queryString.toString());
     }
-    
+
     private int countTotalInstances(String uri){
     	StringBuilder queryString = new StringBuilder();
         Formatter f = new Formatter(queryString);
         Object[] vars = {uri};
         f.format(queryForCountTotalInstances, vars);
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
         int count = 0;
         if (results!=null && results.hasNext())
 		{
@@ -228,13 +331,13 @@ public class FacetGenerator {
 		}
         return count;
     }
-    
-    private HashMap<String,String> getProperties(String uri){
+
+    public HashMap<String,String> getProperties(String uri) {
     	StringBuilder queryString = new StringBuilder();
         Formatter f = new Formatter(queryString);
-        Object[] vars = {uri};
-        f.format(queryForProperties, vars);    
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+        Object[] vars = {makeTypesFilter(uri)};
+        f.format(queryForProperties, vars);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.INSTANCES);
         HashMap<String, String> properties = new HashMap<String, String>();
         while(results!=null && results.hasNext()){
 			QuerySolution row = results.next();
@@ -243,25 +346,45 @@ public class FacetGenerator {
 			if(row.get("r")!=null)
 				range = row.get("r").toString();
 			else
-				range = null;			
+				range = null;
 			properties.put(property, range);
         }
         return properties;
-    }    
-    
-    private double calculateEntropy(String uri, String property) throws SQLException{    	
+    }
+
+    public HashMap<String,String> getInverseProperties(String uri){
+        StringBuilder queryString = new StringBuilder();
+        Formatter f = new Formatter(queryString);
+        Object[] vars = {makeTypesFilter(uri)};
+        f.format(queryForInverseProperties, vars);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.INSTANCES);
+        HashMap<String, String> properties = new HashMap<String, String>();
+        while(results!=null && results.hasNext()){
+            QuerySolution row = results.next();
+            String property = row.get("p").toString();
+            String range;
+            if(row.get("r")!=null)
+                range = row.get("r").toString();
+            else
+                range = null;
+            properties.put(property, range);
+        }
+        return properties;
+    }
+
+    private double calculateEntropy(String uri, String property) throws SQLException{
     	StringBuilder queryString = new StringBuilder();
         Formatter f = new Formatter(queryString);
         Object[] vars = {uri, property};
         f.format(queryForEntropy, vars);
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
         int total = 0;
         ArrayList<Integer> values = new ArrayList<Integer>();
         int numRows = 0;
         while(results.hasNext()){
-			QuerySolution row = results.next();        
+			QuerySolution row = results.next();
 			// The first var is the count value
-	        String countVar = results.getResultVars().get(0);			
+	        String countVar = results.getResultVars().get(0);
 			int count = row.getLiteral(countVar).getInt();
 			total += count;
 			numRows++;
@@ -278,7 +401,7 @@ public class FacetGenerator {
 			entropy = 0;
 		return entropy;
     }
-    
+
     private int countValues(String uri, String property){
     	int count = 0;
     	StringBuilder queryString = new StringBuilder();
@@ -287,10 +410,10 @@ public class FacetGenerator {
         f.format(queryForCountValues, vars);
         try
         {
-	        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), true);
+	        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
 			QuerySolution row = results.next();
 			// The first var is the count value
-	        String countVar = results.getResultVars().get(0);			
+	        String countVar = results.getResultVars().get(0);
 			count = row.getLiteral(countVar).getInt();
         }
         catch (Exception e)
@@ -298,47 +421,68 @@ public class FacetGenerator {
         	log.log(Level.SEVERE, "Exception in SPARQL query: "+queryString.toString());
         }
 		return count;
-    }        
-    
+    }
+
+    private int countInversePropertyValues(String uri, String property) {
+        int count = 0;
+        StringBuilder queryString = new StringBuilder();
+        Formatter f = new Formatter(queryString);
+        Object[] vars = {uri, property};
+        f.format(queryForCountInversePropertyValues, vars);
+        try
+        {
+            ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
+            QuerySolution row = results.next();
+            // The first var is the count value
+            String countVar = results.getResultVars().get(0);
+            count = row.getLiteral(countVar).getInt();
+        }
+        catch (Exception e)
+        {
+            log.log(Level.SEVERE, "Exception in SPARQL query: "+queryString.toString());
+        }
+        return count;
+    }
+
     private double log(double number, double base){
     	return Math.log(number)/Math.log(base);
-    }    
-    
+    }
+
     public void generateFacetsForClass(String classUri) throws SQLException{
 		int total = this.countTotalInstances(classUri);
-		
+
 		PreparedStatement st = conn.prepareStatement("INSERT INTO class_summary VALUES(?,?)");
 		st.setString(1, classUri);
 		st.setInt(2, total);
 		st.executeUpdate();
-		
-		st = conn.prepareStatement("INSERT INTO property_summary VALUES(NULL,?,?,?,?,?,?,?,?)");
+
+		st = conn.prepareStatement("INSERT INTO property_summary VALUES(NULL,?,?,?,?,?,?,?,?,?)");
 		//PreparedStatement st = conn.prepareStatement("UPDATE property_summary SET num_instances = ? where class = ? and property = ?");
-		
+
 		HashMap<String, String>  properties = this.getProperties(classUri);
     	for(String property : properties.keySet()){
-    		
+
     		String range = properties.get(property);
     		//double entropy = calculateEntropy(classUri, property);
     		int instances = 0;
     		int values = 0;
     		int maxValue = 2;
     		int maxCardinality = 0;
-    		
+
 	    	System.out.println("COUNT INSTANCES: "+ classUri + " - "+ property);
-	    	instances = this.countInstancesForProperty(classUri, property); 
+	    	instances = this.countInstancesForProperty(classUri, property);
 	    	System.out.println("COUNT VALUES: "+ classUri + " - "+ property);
 	    	values = this.countValues(classUri, property);
-	    	
+
 	    	System.out.println("COUNT MAX CARDINALITY: "+ classUri + " - "+ property);
 	    	maxCardinality = this.countMaxCardinalityForProperty(classUri, property);
-	    	
+
 	    	if(isInverseFunctionalForValues(classUri, property))
 	    	{
     			System.out.println("Inverse functional property for "+ property +" for class "+ classUri);
     			maxValue = 1;
     		}
-    			
+
     		st.setString(1, classUri);
     		st.setString(2, property);
     		st.setInt(3, instances);
@@ -348,17 +492,74 @@ public class FacetGenerator {
     		st.setInt(6, maxCardinality); //TODO: make it a boolean
     		String type = null;
     		if(range==null){
-    			type = new TypeDetector(classUri, property).detectType();
+    			type = new TypeDetector(classUri, property,false).detectType();
     			if(type.equals(rdfs("Resource")))
-    				range = new TypeDetector(classUri, property).detectRange();
+    				range = new TypeDetector(classUri, property, false).detectRange();
     		}
-    		st.setString(7, range);    		
+    		st.setString(7, range);
     		st.setString(8, type);
-    		
+            st.setBoolean(9, false);
+
     		st.executeUpdate();
 
     	}
+
+        HashMap<String, String>  invProperties = this.getInverseProperties(classUri);
+        for(String property : invProperties.keySet()){
+
+            String range = properties.get(property);
+            //double entropy = calculateEntropy(classUri, property);
+            int instances = 0;
+            int values = 0;
+            int maxValue = 2;
+            int maxCardinality = 0;
+
+            System.out.println("COUNT INSTANCES: "+ classUri + " - "+ property);
+            instances = this.countInstancesForInverseProperty(classUri, property);
+            System.out.println("COUNT VALUES: "+ classUri + " - "+ property);
+            values = this.countInversePropertyValues(classUri, property);
+
+            System.out.println("COUNT MAX CARDINALITY: "+ classUri + " - "+ property);
+            maxCardinality = this.countMaxCardinalityForInverseProperty(classUri, property);
+
+            if(isInverseFunctionalForValues(classUri, property))
+            {
+                System.out.println("Inverse functional property for "+ property +" for class "+ classUri);
+                maxValue = 1;
+            }
+
+            st.setString(1, classUri);
+            st.setString(2, property);
+            st.setInt(3, instances);
+            st.setInt(4, values);
+            //st.setDouble(5, entropy);
+            st.setInt(5, maxValue); //TODO: make it a boolean
+            st.setInt(6, maxCardinality); //TODO: make it a boolean
+            String type = null;
+            if(range==null){
+                type = new TypeDetector(classUri, property, true).detectType();
+                if(type.equals(rdfs("Resource")))
+                    range = new TypeDetector(classUri, property, true).detectRange();
+            }
+            st.setString(7, range);
+            st.setString(8, type);
+            st.setBoolean(9, true);
+
+            st.executeUpdate();
+
+        }
     	st.close();
+    }
+
+    // Generate filter to get properties for class and also all subclasses
+    private String makeTypesFilter(String classURI) {
+        StringBuilder out=new StringBuilder();
+        out.append("?type=<"+classURI+">");
+
+        for (String subclassURI: getSubClasses(classURI))
+            out.append(" || ?type=<"+subclassURI+">");
+
+        return out.toString();
     }
 
 

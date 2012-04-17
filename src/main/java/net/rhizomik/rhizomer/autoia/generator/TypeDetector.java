@@ -4,6 +4,7 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import net.rhizomik.rhizomer.agents.RhizomerRDF;
+import net.rhizomik.rhizomer.store.MetadataStore;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,6 +19,23 @@ import static net.rhizomik.rhizomer.autoia.generator.TypeHierarchy.RDF;
 import static net.rhizomik.rhizomer.util.Namespaces.rdfs;
 import static net.rhizomik.rhizomer.util.Namespaces.xsd;
 
+/*
+Alternative to find common superclasses, more than one when disjoint subclasses...
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT DISTINCT ?common
+WHERE {
+GRAPH <http://msp.sonydadc.com/examples/schema/>  { ?type rdfs:subClassOf{1} ?common. }
+FILTER (!isBlank(?common))
+{SELECT ?type
+WHERE{ GRAPH <http://msp.sonydadc.com/examples/>  {
+   ?x a owl:Class .
+   ?x <http://rhizomik.net/ontologies/2009/09/copyrightonto.owl#theme> ?o .
+   ?o a ?type .
+} } }
+*/
 
 public class TypeDetector {
 
@@ -40,27 +58,105 @@ public class TypeDetector {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
 	    "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
 	    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
-	    "SELECT DISTINCT ?type"+NL+
+	    "SELECT ?type (COUNT(?type) AS ?n) "+NL+
 	    "WHERE {"+NL+
 	    "   ?x a <%1$s> ."+NL+
 	    "   ?x <%2$s> ?o ."+NL+
 	    "   ?o a ?type ."+NL+
-	    "	?type a ?class"+NL+
-	    "}" +
-	    "LIMIT 1";	
+// TODO: is this restriction really necessary?	    "	?type a ?class"+NL+
+	    "}"+NL+
+        "GROUP BY ?type"+NL+
+        "ORDER BY DESC(?n) LIMIT 1";
+
+    private static String queryForFacetTypes =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+        "SELECT ?type (COUNT(?type) AS ?n) \n" +
+        "WHERE { \n" +
+        "   ?x a <%1$s> .\n" +
+        "   ?x <%2$s> ?o .\n" +
+        "   ?o a ?type .\n" +
+        "   ?type a ?class.\n" +
+        "   FILTER ( !isBlank(?type) && (?class = owl:Class || ?class = rdfs:Class) ) } \n"+
+        "GROUP BY ?type"+NL+
+        "ORDER BY DESC(?n) LIMIT 5";
+
+    private static String queryForInverseFacetTypes =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+        "SELECT ?type (COUNT(?type) AS ?n) \n" +
+        "WHERE { \n" +
+        "   ?o a <%1$s> .\n" +
+        "   ?x <%2$s> ?o .\n" +
+        "   ?x a ?type .\n" +
+        "   ?type a ?class.\n" +
+        "   FILTER ( !isBlank(?type) && (?class = owl:Class || ?class = rdfs:Class) ) } \n"+
+        "GROUP BY ?type"+NL+
+        "ORDER BY DESC(?n) LIMIT 5";
+
+    private static String queryForSuperClassInversePropertyPath =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+        "SELECT DISTINCT ?common\n" +
+        "WHERE {\n" +
+        "   ?common ^rdfs:subClassOf %1$s.\n" +  //comma separated list of subclasses
+        "   OPTIONAL {\n" +
+        "      ?intermediate ^rdfs:subClassOf %1$s.\n" +
+        "      ?intermediate rdfs:subClassOf ?common." +
+        "      FILTER (?intermediate!=?common && !isBlank(?intermediate)) } \n" +
+        "   FILTER (!BOUND(?intermediate) && !isBlank(?common)) }";
+
+    private static String queryForSuperClass =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n" +
+        "SELECT ?common (COUNT(?i) AS ?n) \n" +
+        "WHERE { \n" +
+        "   ?i a ?common. \n" +
+        "   ?subclasses rdfs:subClassOf ?common. \n" +
+        "   ?common a ?class. \n" +
+        "   OPTIONAL {\n" +
+        "      ?subclass rdfs:subClassOf ?intermediate.\n" +
+        "      ?intermediate rdfs:subClassOf ?common." +
+        "      FILTER (?intermediate!=?common && !isBlank(?intermediate)) } \n" +
+        "   FILTER (!BOUND(?intermediate) && !isBlank(?common) &&" +
+        "           (%1$s) ) \n"+                        // disjunction of subclasses
+        "   FILTER ( ?class = owl:Class || ?class = rdfs:Class ) } \n" +
+        "GROUP BY ?common \n"+
+        "ORDER BY DESC(?n) LIMIT 1";
 
     private String uri;
     private String property;
+    private boolean isInverse;
 
-    public TypeDetector(String uri, String property) {
+    public TypeDetector(String uri, String property, boolean isInverse) {
         this.uri = uri;
         this.property = property;
+        this.isInverse = isInverse;
     }
     
     private String makeQueryForPivotingFacets(String uri, String property){
     	Formatter f = new Formatter();
         Object[] vars = {uri, property};
         f.format(queryForPivotingFacets, vars);
+        return f.toString();
+    }
+
+    private String makeQueryForFacetTypes(String uri, String property){
+        Formatter f = new Formatter();
+        Object[] vars = {uri, property};
+        f.format(queryForFacetTypes, vars);
+        return f.toString();
+    }
+
+    private String makeQueryForInverseFacetTypes(String uri, String property){
+        Formatter f = new Formatter();
+        Object[] vars = {uri, property};
+        f.format(queryForInverseFacetTypes, vars);
+        return f.toString();
+    }
+
+    private String makeQueryForSuperClass(String facetTypes){
+        Formatter f = new Formatter();
+        f.format(queryForSuperClass, facetTypes);
         return f.toString();
     }
 
@@ -72,21 +168,47 @@ public class TypeDetector {
     }
     
     public String detectRange(){
-    	String queryString = makeQueryForPivotingFacets(uri, property);
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString, true);
-        String typeVar = results.getResultVars().get(0);
-        if(results.hasNext()){
-        	QuerySolution row = results.next();
-        	return row.get(typeVar).toString();
-        }
+        String range = rdfs("Resource");
+        String queryString = "";
+        if (this.isInverse)
+            queryString = makeQueryForInverseFacetTypes(uri, property);
         else
-        	return null;
+    	    queryString = makeQueryForFacetTypes(uri, property);
+        
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString, MetadataStore.REASONING);
+        String typeVar = results.getResultVars().get(0);
+        String facetTypes = "";
+        while(results.hasNext()){
+        	QuerySolution row = results.next();
+            if (row.get(typeVar)!=null) {
+        	    range = row.get(typeVar).toString();
+                if (!range.contains("http://www.w3.org/2002/07/owl#Thing") &&
+                    !range.contains("http://www.w3.org/2002/07/owl#Class") &&
+                    !range.contains("http://www.w3.org/2000/01/rdf-schema#Resource") &&
+                    !range.contains("http://www.w3.org/1999/02/22-rdf-syntax-ns#Resource") ) {
+                    if (facetTypes.length() > 0) facetTypes += " || ";
+                    facetTypes += "?subclass = <"+range+">";
+                }
+            }
+        }
+        log.log(Level.INFO, "Facet types: "+facetTypes);
+        if (facetTypes.length()>0) {
+            queryString = makeQueryForSuperClass(facetTypes);
+            results = RhizomerRDF.instance().querySelect(queryString, MetadataStore.REASONING);
+            String classVar = results.getResultVars().get(0);
+            if (results.hasNext()) {
+                QuerySolution row = results.next();
+                if (row.get(classVar)!=null)
+                    range = row.get(classVar).toString();
+            }
+        }
+        return range;
     }
     
 
     public String detectType() {
         String queryString = makeQueryForValues(uri, property);
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString, true);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString, MetadataStore.REASONING);
         Set<String> types = getTypes(results);
         assert(types.size() > 0);
         if (types.size() == 0)

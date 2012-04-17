@@ -19,6 +19,7 @@ facet.Facet = function(property, inVariable, classURI)
 	var variable = inVariable;
 	var classURI = classURI
 	var type = property.type;
+    var inverse = false;
 
 	self.getId = function(){
 		return id;
@@ -41,7 +42,7 @@ facet.Facet = function(property, inVariable, classURI)
 	};	
 	
 	self.isInverse = function(){
-		return false;
+		return inverse;
 	}	
 	
 	self.isActive = function(){
@@ -80,7 +81,7 @@ facet.Facet = function(property, inVariable, classURI)
 			if(initValues[i].startsWith("http://"))
 				queryValues.push("<"+initValues[i]+">");
 			else{
-				html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+uri+"','"+initValues[i]+"'); return false;\">";
+				html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+initValues[i]+"'); return false;\">";
 				html += makeLabel(initValues[i])+ " [x]</a></li>";
 				$j("#"+id+"_active").append(html);						
 			}
@@ -92,10 +93,10 @@ facet.Facet = function(property, inVariable, classURI)
 				for(i=0; i<data.results.bindings.length; i++){
 					r = data.results.bindings[i].r.value;
 					var label = data.results.bindings[i].label.value;				
-					html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+uri+"','"+r+"'); return false;\">";
+					html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+r+"'); return false;\">";
 					html += label+ " [x]</a></li>";
 					$j("#"+id+"_active").append(html);		
-					fm.setSelectedFacetLabel(uri,r,label);
+					fm.setSelectedFacetLabel(id,r,label);
 				}
 			});
 		}
@@ -120,7 +121,7 @@ facet.Facet = function(property, inVariable, classURI)
 				"<h4 onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">"+label+"</h4></span>";
         html += "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
 		if(self.isNavigable())
-            html += "<span id=\""+id+"_pivot\" class=\"pivot\">"+makeLabel(range)+"<br/> Advanced Search</span>";
+            html += "<span id=\""+id+"_pivot\" class=\"pivot\">Filter "+makeLabel(range)+"</span>";
 		html += "<div class=\"clear\"></div>";
 		html += "</div>";
 		html += "<div id=\""+id+"_loading\"></div>";
@@ -242,7 +243,7 @@ facet.Facet = function(property, inVariable, classURI)
 		}
 		else{
 			$j("#"+id+"_loading").empty();
-			$j("#"+id+"_loading").append("<div>This facet has no possible values</div>");
+			$j("#"+id+"_loading").append("<div>No facet values for the current selection</div>");
 		}
 	};	
 	
@@ -252,7 +253,7 @@ facet.Facet = function(property, inVariable, classURI)
 			cls = "selected_item";
 		else
 			cls = "item";
-		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:facetBrowser.filterProperty('"+uri+"','"+value+"'); return false;\">";
+		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+value+"'); return false;\">";
 		html += "<div class='item_text'>"+vlabel+" ("+instances+")</div></li>";
 		$j("#"+id+"_ul").append(html);
 		numValues++;

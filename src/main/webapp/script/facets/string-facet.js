@@ -16,7 +16,7 @@ facet.StringFacet = function(property, fm, typeUri){
         var myAC = aArgs[0]; // reference back to the AC instance
         var elLI = aArgs[1]; // reference to the selected LI element
         var oData = aArgs[2]; // object literal of selected item's result data
-        facetBrowser.filterProperty(facetBrowser.getAutoCompleteProperty(),oData.uri,oData.label);
+        facetBrowser.filterProperty(facetBrowser.getAutoCompletePropertyID(),oData.uri,oData.label);
         $j("#"+that.getId()+"_search").val("");
     };
     
@@ -38,7 +38,7 @@ facet.StringFacet = function(property, fm, typeUri){
 	};
 	
 	that.renderString = function (target){
-        var inputElDefault = "Search "+makeLabel(that.range)+" values...";
+        var inputElDefault = "Search "+makeLabel(property.range)+" values...";
 
 		var html = "<div class=\"facet_form\">";
 		html += "<input class=\"text-box\" type=\"text\" id=\""+that.getId()+"_search\" value=\""+inputElDefault+"\" />";
@@ -58,6 +58,7 @@ facet.StringFacet = function(property, fm, typeUri){
             var inputEl = aArgs[0].getInputEl();
             if (inputEl.value.indexOf("Search ")>=0 && inputEl.value.indexOf("values...")>0)
                 inputEl.value = "";
+            facetBrowser.setAutoCompleteProperty((this.getInputEl().id).replace("_search",""));
         });
         that.autoComplete.textboxBlurEvent.subscribe(function(sType, aArgs) {
             var inputEl = aArgs[0].getInputEl();
@@ -68,23 +69,19 @@ facet.StringFacet = function(property, fm, typeUri){
 		that.autoComplete.formatResult = function(oResultData, sQuery, sResultMatch) {
 			    return (sResultMatch + " (" +  oResultData.n + ")");
 			};
-			
-		that.autoComplete.textboxFocusEvent.subscribe ( function () {
-			facetBrowser.setAutoCompleteProperty((this.getInputEl().id).replace("_search",""));
-		} );
 		
 		that.autoComplete.maxResultsDisplayed = 20;
 		that.autoComplete.minQueryLength = 2;
 		that.autoComplete.queryDelay = 0.5;
 		that.autoComplete.typeAhead = false;
 		that.autoComplete.generateRequest = function(sQuery) {
-			$j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").append("<img class=\"autocompleting\" src=\"images/black-loader.gif\"/>");
+			$j("#"+facetBrowser.getAutoCompletePropertyID()+"_search_loading").append("<img class=\"autocompleting\" src=\"images/black-loader.gif\"/>");
 			var query = 
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 				"SELECT ?uri ?label (COUNT(?uri) AS ?n) \n"+
 				"WHERE{"+
 				"?[variable] a <[uri]>; <[property]> ?uri . \n"+
-				facetBrowser.makeRestrictions(facetBrowser.getAutoCompleteProperty())+
+				facetBrowser.makeRestrictions(facetBrowser.getAutoCompletePropertyURI())+
 				"OPTIONAL{ \n"+
 				"?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
 				"FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+  
@@ -92,7 +89,7 @@ facet.StringFacet = function(property, fm, typeUri){
 			query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
 			query = query.replace(/\[uri\]/g, facetBrowser.getActiveManager().getTypeUri());
 			query = query.replace(/\[variable\]/g, facetBrowser.getActiveManager().getVariable());
-			query = query.replace(/\[property\]/g, facetBrowser.getAutoCompleteProperty());
+			query = query.replace(/\[property\]/g, facetBrowser.getAutoCompletePropertyURI());
 		    return "?query="+encodeURIComponent(query);
 		};	
 	};
@@ -119,7 +116,7 @@ facet.StringFacet = function(property, fm, typeUri){
 
 	function processResults(resultsXMLDoc)
 	{
-		$j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").empty();
+		$j("#"+facetBrowser.getAutoCompletePropertyID()+"_search_loading").empty();
         var solutions = xBrowserGetElementsByTagNameNS(resultsXMLDoc, rsNS, "rs", "solution");
 		var results=[];
 		for(var i=0; i<solutions.length; i++)

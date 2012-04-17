@@ -5,7 +5,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	/**
 	 * Private Attributes
 	 */	
-	var id = hex_md5(property.classUri+property.uri);
+	var id = hex_md5(property.uri+property.range);
 	var uri = property.uri;
 	var range = property.range;
 	var valueList = {};
@@ -26,6 +26,8 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	var inverseVariable = "i1";
 
     var rsNS = "http://www.w3.org/2001/sw/DataAccess/tests/result-set#";
+
+    var inverse = true;
 
     self.dataSource = new YAHOO.util.XHRDataSource(rhz.getBaseURL());
     self.dataSource.connMgr.initHeader('Accept', 'application/rdf+xml', true);
@@ -53,12 +55,11 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	};
 	
 	self.isInverse = function(){
-		return true;
+		return inverse;
 	}
 	
 	self.getRange = function(){
-		//return range;
-		return inverseClassUri
+		return range;
 	};
 	
 	self.getSelectedValues = function(){
@@ -98,7 +99,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 			if(initValues[i].startsWith("http://"))
 				queryValues.push("<"+initValues[i]+">");
 			else{
-				html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+uri+"','"+initValues[i]+"'); return false;\">";
+				html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+initValues[i]+"'); return false;\">";
 				html += makeLabel(initValues[i])+ " [x]</a></li>";
 				$j("#"+id+"_active").append(html);						
 			}
@@ -110,10 +111,10 @@ facet.InverseFacet = function(property, inVariable, classURI){
 				for(i=0; i<data.results.bindings.length; i++){
 					r = data.results.bindings[i].r.value;
 					var label = data.results.bindings[i].label.value;				
-					html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+uri+"','"+r+"'); return false;\">";
+					html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+r+"'); return false;\">";
 					html += label+ " [x]</a></li>";
 					$j("#"+id+"_active").append(html);		
-					fm.setSelectedFacetLabel(uri,r,label);
+					fm.setSelectedFacetLabel(id,r,label);
 				}
 			});
 		}
@@ -137,14 +138,14 @@ facet.InverseFacet = function(property, inVariable, classURI){
 		html += "<span id=\""+id+"_toggle\" class=\"facet_title\">" +
 				"<h4 onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">"+label+"</h4></span>";
         html += "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
-		html += "<span id=\""+id+"_inversepivot\" class=\"pivot\">"+makeLabel(inverseClassUri)+"<br/> Advanced Search</span>";
+		html += "<span id=\""+id+"_inversepivot\" class=\"pivot\">Filter "+makeLabel(range)+"</span>";
 		html += "<div class=\"clear\"></div>";
 		html += "</div>";
 		html +="<div id=\""+id+"_loading\"></div>";
 		html +="<div class=\"facet_options\" id=\""+id+"_div\"></div>";
 		$j("#"+target).append(html);
 		$j("#"+id+"_inversepivot").click(function (){
-			self.inversePivotFacet();
+			self.pivotInverseFacet();
 		});		
 	};
 	
@@ -196,8 +197,8 @@ facet.InverseFacet = function(property, inVariable, classURI){
 		}	
 	};	
 	
-	self.pivotFacet = function(){
-		facetBrowser.pivotFacet(uri, range);
+	self.pivotInverseFacet = function(){
+		facetBrowser.pivotInverseFacet(classURI, uri, range);
 	};	
 	
 	self.reloadValues = function(restrictions){
@@ -205,15 +206,16 @@ facet.InverseFacet = function(property, inVariable, classURI){
 		$j("#"+id+"_loading").append("<img src=\"images/black-loader.gif\"/>");
 		$j("#"+id+"_loading").show();			
 		self.resetFacet();
-		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" + 
-		"SELECT (?"+inverseVariable+" as ?r) (COUNT(?"+variable+") AS ?n) ?label "+
-		"WHERE {"+
-		"	?"+inverseVariable+" a <"+inverseClassUri+"> . "+
-		"   ?"+inverseVariable+" <"+uri+"> ?"+variable+" . "+
-		" OPTIONAL{ ?"+inverseVariable+" rdfs:label ?label " +
-		"  FILTER(LANG(?label)='en' || LANG(?label)='')} ."+
-		restrictions+
-		" } GROUP BY ?"+inverseVariable+" ?label ORDER BY DESC(?n) LIMIT 6";
+		query =
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+		    "SELECT (?"+inverseVariable+" as ?r) (COUNT(?"+inverseVariable+") AS ?n) ?label "+
+		    "WHERE {"+
+		    "	?"+variable+" a <"+inverseClassUri+"> . "+
+		    "   ?"+inverseVariable+" <"+uri+"> ?"+variable+" . "+
+		    "   OPTIONAL{ ?"+inverseVariable+" rdfs:label ?label " +
+		    "      FILTER(LANG(?label)='en' || LANG(?label)='') } ."+
+		    restrictions+
+		    " } GROUP BY ?"+inverseVariable+" ?label ORDER BY DESC(?n) LIMIT 6";
 		rhz.sparqlJSON(query, self.processMoreValues);
 	};
 	
@@ -221,15 +223,16 @@ facet.InverseFacet = function(property, inVariable, classURI){
 		$j("#"+id+"_div").css('display','none');
 		$j("#"+id+"_loading").append("<img src=\"images/black-loader.gif\"/>");
 		$j("#"+id+"_loading").show();				
-		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-			   "SELECT (?"+inverseVariable+" as ?r) (COUNT(?"+variable+") AS ?n) ?label "+
-		       "WHERE { "+
-		            "?"+inverseVariable+" a <"+inverseClassUri+"> . "+
-		            "?"+inverseVariable+" <"+uri+"> ?"+variable+" . "+
-		    		"OPTIONAL{ ?"+inverseVariable+" rdfs:label ?label . " +
-		    		"FILTER(LANG(?label)='en' || LANG(?label)='')} " +
-		    		facetBrowser.makeRestrictions(uri)+
-		    		" } GROUP BY ?"+inverseVariable+" ?label ORDER BY DESC(?n) LIMIT 6 OFFSET "+self.getCurrentValues();
+		query =
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+			"SELECT (?"+inverseVariable+" as ?r) (COUNT(?"+inverseVariable+") AS ?n) ?label "+
+		    "WHERE { "+
+		    "   ?"+variable+" a <"+inverseClassUri+"> . "+
+		    "   ?"+inverseVariable+" <"+uri+"> ?"+variable+" . "+
+		    "   OPTIONAL{ ?"+inverseVariable+" rdfs:label ?label . " +
+		    "      FILTER(LANG(?label)='en' || LANG(?label)='') } " +
+		    facetBrowser.makeRestrictions(uri) +
+		    " } GROUP BY ?"+inverseVariable+" ?label ORDER BY DESC(?n) LIMIT 6 OFFSET "+self.getCurrentValues();
 		rhz.sparqlJSON(query,self.processMoreValues);
 	};
 	
@@ -257,7 +260,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 		}
 		else{
 			$j("#"+id+"_loading").empty();
-			$j("#"+id+"_loading").append("<div>This facet has no possible values</div>");
+			$j("#"+id+"_loading").append("<div>No facet values for the current selection</div>");
 		}
 	};	
 	
@@ -267,7 +270,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 			cls = "selected_item";
 		else
 			cls = "item";
-		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:facetBrowser.filterProperty('"+uri+"','"+value+"'); return false;\">";
+		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+value+"'); return false;\">";
 		html += "<div class='item_text'>"+vlabel+" ("+instances+")</div></li>";
 		$j("#"+id+"_ul").append(html);
 		numValues++;
@@ -296,13 +299,13 @@ facet.InverseFacet = function(property, inVariable, classURI){
         var myAC = aArgs[0]; // reference back to the AC instance
         var elLI = aArgs[1]; // reference to the selected LI element
         var oData = aArgs[2]; // object literal of selected item's result data
-        facetBrowser.filterProperty(facetBrowser.getAutoCompleteProperty(),oData.uri,oData.label);
+        facetBrowser.filterProperty(facetBrowser.getAutoCompletePropertyID(),oData.uri,oData.label);
         $j("#"+self.getId()+"_search").val("");
     };
 
     self.renderString = function (target){
         var html = "<div class=\"facet_form\">";
-        html += "<input class=\"text-box\" type=\"text\" id=\""+self.getId()+"_search\" value=\"Search "+makeLabel(inverseClassUri)+" values...\" />";
+        html += "<input class=\"text-box\" type=\"text\" id=\""+self.getId()+"_search\" value=\"Search "+makeLabel(range)+" values...\" />";
         html += "<div class=\"search_loading\" id=\""+self.getId()+"_search_loading\"></div>";
         html += "<div id=\""+self.getId()+"_container\">";
         html += "</div>";
@@ -315,27 +318,34 @@ facet.InverseFacet = function(property, inVariable, classURI){
         self.autoComplete.itemSelectEvent.subscribe(self.handler);
         self.autoComplete.animVert = false;
         self.autoComplete.resultTypeList = false;
+        self.autoComplete.textboxFocusEvent.subscribe(function(sType, aArgs) {
+            var inputEl = aArgs[0].getInputEl();
+            if (inputEl.value.indexOf("Search ")>=0 && inputEl.value.indexOf("values...")>0)
+                inputEl.value = "";
+            facetBrowser.setAutoCompleteProperty((this.getInputEl().id).replace("_search",""));
+        });
+        self.autoComplete.textboxBlurEvent.subscribe(function(sType, aArgs) {
+            var inputEl = aArgs[0].getInputEl();
+            if (inputEl.value == "")
+                inputEl.value = inputElDefault;
+        });
 
         self.autoComplete.formatResult = function(oResultData, sQuery, sResultMatch) {
             return (sResultMatch + " (" +  oResultData.n + ")");
         };
-
-        self.autoComplete.textboxFocusEvent.subscribe ( function () {
-            facetBrowser.setAutoCompleteProperty((this.getInputEl().id).replace("_search",""));
-        } );
 
         self.autoComplete.maxResultsDisplayed = 20;
         self.autoComplete.minQueryLength = 2;
         self.autoComplete.queryDelay = 0.5;
         self.autoComplete.typeAhead = false;
         self.autoComplete.generateRequest = function(sQuery) {
-            $j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").append("<img class=\"autocompleting\" src=\"images/black-loader.gif\"/>");
+            $j("#"+facetBrowser.getAutoCompletePropertyID()+"_search_loading").append("<img class=\"autocompleting\" src=\"images/black-loader.gif\"/>");
             var query =
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
                     "SELECT ?uri ?label (COUNT(?uri) AS ?n) \n"+
                     "WHERE{"+
                     "?[variable] a <[uri]>. ?uri <[property]> ?[variable] . \n"+
-                    facetBrowser.makeRestrictions(facetBrowser.getAutoCompleteProperty())+
+                    facetBrowser.makeRestrictions(facetBrowser.getAutoCompletePropertyURI())+
                     "OPTIONAL{ \n"+
                     "?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
                     "FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+
@@ -343,7 +353,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
             query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
             query = query.replace(/\[uri\]/g, facetBrowser.getActiveManager().getTypeUri());
             query = query.replace(/\[variable\]/g, facetBrowser.getActiveManager().getVariable());
-            query = query.replace(/\[property\]/g, facetBrowser.getAutoCompleteProperty());
+            query = query.replace(/\[property\]/g, facetBrowser.getAutoCompletePropertyURI());
             return "?query="+encodeURIComponent(query);
         };
     };
@@ -370,7 +380,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 
     function processResults(resultsXMLDoc)
     {
-        $j("#"+hex_md5(facetBrowser.getAutoCompleteProperty())+"_search_loading").empty();
+        $j("#"+facetBrowser.getAutoCompletePropertyID()+"_search_loading").empty();
         var solutions = xBrowserGetElementsByTagNameNS(resultsXMLDoc, rsNS, "rs", "solution");
         var results=[];
         for(var i=0; i<solutions.length; i++)

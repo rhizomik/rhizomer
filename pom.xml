@@ -4,7 +4,7 @@
   <groupId>net.rhizomik</groupId>
   <artifactId>rhizomer</artifactId>
   <packaging>war</packaging>
-  <version>0.4</version>
+  <version>0.5</version>
   <name>Rhizomer</name>
   <url>http://maven.apache.org</url>
     <build>
@@ -131,36 +131,6 @@
         	<artifactId>guava</artifactId>
         	<version>10.0.1</version>
         </dependency>
-		<dependency>
-			<groupId>org.openrdf.sesame</groupId>
-			<artifactId>sesame-repository-manager</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openrdf.sesame</groupId>
-			<artifactId>sesame-queryresultio-sparqljson</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openrdf.sesame</groupId>
-			<artifactId>sesame-rio-rdfxml</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openrdf.sesame</groupId>
-			<artifactId>sesame-queryresultio-sparqlxml</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openrdf.sesame</groupId>
-			<artifactId>sesame-http-client</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openrdf.sesame</groupId>
-			<artifactId>sesame-queryparser-sparql</artifactId>
-			<version>2.6.0</version>
-		</dependency>
         <dependency>
             <groupId>com.googlecode.jstd-maven-plugin</groupId>
             <artifactId>jstd-maven-plugin</artifactId>
@@ -184,11 +154,6 @@
         	<id>openjena</id>
         	<url>http://openjena.org/repo</url>
         </repository>
-		<repository>
-			<id>aduna-repo</id>
-			<name>Aduna Repository</name>
-			<url>http://repo.aduna-software.org/maven2/releases</url>
-		</repository>
         <repository>
             <id>jstd-maven-plugin google code repo</id>
             <url>http://jstd-maven-plugin.googlecode.com/svn/maven2</url>

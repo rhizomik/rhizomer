@@ -111,7 +111,7 @@ public class TypeDetector {
         "SELECT ?common (COUNT(?i) AS ?n) \n" +
         "WHERE { \n" +
         "   ?i a ?common. \n" +
-        "   ?subclasses rdfs:subClassOf ?common. \n" +
+        "   ?subclass rdfs:subClassOf ?common. \n" +
         "   ?common a ?class. \n" +
         "   OPTIONAL {\n" +
         "      ?subclass rdfs:subClassOf ?intermediate.\n" +

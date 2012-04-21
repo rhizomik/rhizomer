@@ -6,12 +6,6 @@
   <packaging>jar</packaging>
   <version>0.5</version>
   <name>Rhizomer SesameStore</name>
-  <parent>
-        <groupId>net.rhizomik</groupId>
-        <artifactId>rhizomer</artifactId>
-        <version>0.5</version>
-        <relativePath>../pom.xml</relativePath>
-  </parent>
   <url>http://maven.apache.org</url>
     <build>
         <finalName>rhizomer-sesamesotre</finalName>
@@ -37,6 +31,11 @@
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>net.rhizomik</groupId>
+            <artifactId>rhizomer</artifactId>
+            <version>0.5</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

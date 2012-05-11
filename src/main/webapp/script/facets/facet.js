@@ -69,7 +69,8 @@ facet.Facet = function(property, inVariable, classURI)
 	};
 	
 	self.isNavigable = function(){
-		if(type == NS.rdfs("Resource") && range!="null")
+		if(range.indexOf("http://www.w3.org/2001/XMLSchema#")<0 &&
+           range.indexOf("http://www.w3.org/2000/01/rdf-schema#Literal")<0)
 			return true;
 		else
 			return false;

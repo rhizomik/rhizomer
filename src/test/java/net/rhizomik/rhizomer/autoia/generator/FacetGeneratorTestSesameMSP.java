@@ -1,12 +1,10 @@
 package net.rhizomik.rhizomer.autoia.generator;
 
-import com.hp.hpl.jena.vocabulary.DCTerms;
 import net.rhizomik.rhizomer.agents.RhizomerRDF;
 import net.rhizomik.rhizomer.util.Namespaces;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -15,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author http://rhizomik.net/~roberto/
  */
-public class FacetGeneratorTest {
+public class FacetGeneratorTestSesameMSP {
 
     static String co = "http://rhizomik.net/ontologies/2009/09/copyrightonto.owl#";
     static String msp = "http://rhizomik.net/ontologies/2011/06/mspontology.owl#";
@@ -32,7 +30,7 @@ public class FacetGeneratorTest {
     }
 
     @Test
-    public void testGetProperties() throws Exception {
+    public void testGetPropertiesMSPAsset() throws Exception {
         FacetGenerator fg = new FacetGenerator();
         HashMap<String,String> properties = new HashMap<String, String>();
         properties.put(Namespaces.rdf("type"), null);
@@ -53,7 +51,7 @@ public class FacetGeneratorTest {
     }
 
     @Test
-    public void testGetInverseProperties() throws Exception {
+    public void testGetInversePropertiesMSPAsset() throws Exception {
         FacetGenerator fg = new FacetGenerator();
         HashMap<String,String> properties = new HashMap<String, String>();
         properties.put(Namespaces.rdf("first"), null);

@@ -20,8 +20,8 @@ public class TypeDetectorVirtuosoStoreTest {
         props.put("store_class", "net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore");
         props.put("db_graph", "http://rhizomik.net/linkedmdb/");
         props.put("db_url", "jdbc:virtuoso://omediadis.udl.cat:1111");
-        props.put("db_user", "user");
-        props.put("db_pass", "password");
+        props.put("db_user", "rhizomer");
+        props.put("db_pass", "griho");
         RhizomerRDF.instance().addStore(props);
     }
 

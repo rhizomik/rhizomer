@@ -2,6 +2,7 @@
  * Rhizomer AJAX
  *
  * Author: http://rhizomik.net/~roberto
+ * Author: Juanma Giménez
  * 
  */
 
@@ -581,7 +582,7 @@ YUI().use('autocomplete', 'autocomplete-highlighters', 'autocomplete-filters', '
 				var resourcesDS = rhizomik.AutoComplete.createRemoteDataSource();
 				rhizomik.AutoComplete.defineJSONFields(resourcesDS, ["label", "uri", "type"]);	
 				
-				var dbpediaDS = rhizomik.AutoComplete.createExternalDataSource("http://omediadis.udl.cat:8890/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org");
+				var dbpediaDS = rhizomik.AutoComplete.createExternalDataSource("http://lod.openlinksw.com/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org");
 				rhizomik.AutoComplete.defineJSONFields(dbpediaDS, ["label", "uri", "type"]);
 				var dbpedia = false;				//booleano para saber si estamos buscando en el servidor local o en DBpedia
 				

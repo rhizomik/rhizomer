@@ -1,3 +1,16 @@
+/*
+ * Rhizomer AJAX
+ *
+ * Author: http://rhizomik.net/~roberto
+ * Author: Juanma Giménez
+ * 
+ */
+
+/****************************************************************************
+ * Rhizomer AutoComplete Singleton
+ ****************************************************************************/
+
+
 YUI().use('autocomplete', 'autocomplete-highlighters', 'autocomplete-filters', 'autocomplete-list', 'node', 'event', 'event-valuechange', 'event-key', 'datasource', 'json', function (Y) 
 {
 

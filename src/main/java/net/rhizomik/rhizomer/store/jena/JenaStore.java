@@ -81,7 +81,36 @@ public class JenaStore implements MetadataStore
     
     public void init(Properties props) throws Exception
     {
-    	//TODO: missing implementation...
+        if (props.getProperty("file_name")!=null && props.getProperty("dir_name")!=null)
+        {
+            String basePath = "src/main/webapp/" + props.getProperty("dir_name");
+            String fileName = props.getProperty("file_name");
+            ModelMaker maker = ModelFactory.createFileModelMaker(basePath);
+            Model baseModel = maker.openModel(fileName, true);
+            model = ModelFactory.createInfModel(ReasonerRegistry.getRDFSReasoner(), baseModel);
+        }
+        else if (props.getProperty("db_url")==null)
+            throw new Exception("Missing parameter for JenaStore init: db_url if database model or file and ir name if file model");
+        else if (props.getProperty("db_user")==null)
+            throw new Exception("Missing parameter for JenaStore init: db_user");
+        else if (props.getProperty("db_pass")==null)
+            throw new Exception("Missing parameter for JenaStore init: db_pass");
+        else if (props.getProperty("db_type")==null)
+            throw new Exception("Missing parameter for JenaStore init: db_type");
+        else if (props.getProperty("db_driver")==null)
+            throw new Exception("Missing parameter for JenaStore init: db_driver");
+        else if (props.getProperty("db_model")==null)
+            throw new Exception("Missing parameter for JenaStore init: db_model");
+        else
+        {
+            //TODO: additional parameters for kind of reasoning,...
+            Class.forName(props.getProperty("db_driver"));
+            IDBConnection conn = new DBConnection(props.getProperty("db_url"),
+                    props.getProperty("db_user"), props.getProperty("db_pass"),
+                    props.getProperty("db_type"));
+            ModelMaker maker = ModelFactory.createModelRDBMaker( conn );
+            model = maker.createModel(props.getProperty("db_model"), false );
+        }
     }
     
     protected void finalize() throws Throwable

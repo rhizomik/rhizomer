@@ -14,7 +14,7 @@
     </context-param>
     <context-param>
       <param-name>file_name</param-name>
-      <param-value>rhizomikstore.rdf</param-value>
+      <param-value>nasa-apollo.rdf</param-value>
     </context-param>
     <context-param>
       <param-name>dir_name</param-name>

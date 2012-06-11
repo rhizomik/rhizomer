@@ -23,11 +23,11 @@
 	
 	<xsl:template match="rdf:RDF">
 		<form name="editform">
-			<script type="text/javascript">
+			<!--script type="text/javascript">
 				<xsl:text disable-output-escaping="yes"><![CDATA[ //<![CDATA[  ]]></xsl:text>
 					rhizomik.SemanticForms.getGenericProperties(rhz);
 				<xsl:text disable-output-escaping="yes"><![CDATA[//]]]]><![CDATA[>]]></xsl:text>
-			</script>
+			</script-->
 			
 			<xsl:for-each select="child::*">
 				<xsl:sort select="@rdf:about" order="ascending"/>

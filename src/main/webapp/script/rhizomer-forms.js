@@ -498,8 +498,9 @@ YUI().use('autocomplete', 'autocomplete-highlighters', 'autocomplete-filters', '
 				var query =	"SELECT DISTINCT ?uri ?label ?type \n" +
 							"WHERE { \n" +
 							"?uri rdf:type ?type; rdfs:label ?label. \n" +
-							"FILTER (" + typeCondition + 
-							"(regex(?label, '( |^)" + sQuery + ".*','i')))}\n" +
+							"FILTER (" + typeCondition +
+                           "(bif:contains(?label, '" + '"' + sQuery + '*"' + "') && lang(?label)='en' ))}\n"+ 
+//							"(regex(?label, '( |^)" + sQuery + ".*','i')))}\n" +
 							"LIMIT 500";
 				return '&query=' + encodeURIComponent(query) + '&format=json&timeout=5000'; 
 			},
@@ -559,7 +560,7 @@ YUI().use('autocomplete', 'autocomplete-highlighters', 'autocomplete-filters', '
 				var jsonRanges = Y.JSON.parse(ranges);				
 				var rangesArray = jsonRanges.results.bindings;		
 				var range = "http://www.w3.org/2000/01/rdf-schema#Resource";
-				var rangeLabel = null;
+				var rangeLabel = "Resource";
 	// TODO: just the first range is considered right now
 				if (rangesArray.length > 0 && rangesArray[0].range)
 				{
@@ -582,7 +583,7 @@ YUI().use('autocomplete', 'autocomplete-highlighters', 'autocomplete-filters', '
 				var resourcesDS = rhizomik.AutoComplete.createRemoteDataSource();
 				rhizomik.AutoComplete.defineJSONFields(resourcesDS, ["label", "uri", "type"]);	
 				
-				var dbpediaDS = rhizomik.AutoComplete.createExternalDataSource("http://lod.openlinksw.com/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org");
+				var dbpediaDS = rhizomik.AutoComplete.createExternalDataSource("http://omediadis.udl.cat:8890/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org");
 				rhizomik.AutoComplete.defineJSONFields(dbpediaDS, ["label", "uri", "type"]);
 				var dbpedia = false;				//booleano para saber si estamos buscando en el servidor local o en DBpedia
 				

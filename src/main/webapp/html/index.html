@@ -1,33 +1,17 @@
 <h1 style="text-align: left;">Rhizomer</h1>
-<p>Rhizomer is a web application that facilitates <strong>publishing, querying, browsing, editing and interacting with semantic data</strong>.</p>
-<p>Concretely, it gives support to <strong>7 typical tasks </strong><strong>of Semantic Web</strong> <strong>end-users</strong>. Here, end-users stand for users with no or limited knowledge about the Semantic Web. Particularly, we don't include domain experts, which might neither have knowledge about the Semantic Web but whose main task is to work with ontologies. The end-user tasks supported by Rhizomer are:</p>
-<ul>
-    <li><a href="howto/#Search"><b>Search</b></a>: pose a <strong>semantic queries using HTML forms</strong>, which are dynamically generated and user customisable, and <strong>obtain </strong>resource descriptions rendered as <strong>HTML</strong>.</li>
-    <li><a href="howto/#Browse"><b>Browse</b></a>: navigate through the graph of data retrieving <strong>fragments of manageable size </strong>and rendering them <strong>as interactive HTML</strong>.</li>
-    <li><a href="howto/#Annotate"><b>Annotate</b></a>: provide <strong>new semantic metadata</strong> describing a resource, <strong>or edit</strong> existing one, <strong>using HTML forms that assist </strong>the user during this process.</li>
-    <li><a href="howto/#Mashup"><b>Mashup</b></a>: mix two or more pieces of metadata about <strong>common resources</strong>, <strong>or </strong>resources <strong>similar in some sense</strong>, e.g. they all have geographical coordinates or are situated in time and can be placed together in a map or timeline respectively.<a href="howto/#Map"><b><br />
-    </b></a></li>
-    <li><a href="howto/#Share"><b>Share</b></a>: <strong>upload, update and delete</strong> pieces of <strong>content</strong> (HTML, images, videos, documents, etc.).</li>
-    <li><a href="howto/#Map"><b>Map</b></a>: define simple <strong>mappings between concepts</strong> from different ontologies.</li>
-    <li><a href="howto/#Transact"><b>Transact</b></a>: generically, this task includes any <strong>user action</strong> that change the state of a real-world entity or of a resource in a system <strong>outside Rhizomer</strong>. Rhizomer features mechanisms that facilitate integrating external <strong>web services</strong>.</li>
+<p>Rhizomer is a web application that facilitates publishing and also exploration of Semantic Web data (and particularly Linked Data).</p>
+<p>With Rhizomer, lay users can explore datasets performing the 3 basic data analysis tasks proposed by Shneiderman:</p>
+<ul type="disc">
+    <li><b>Overview</b>: <em>get the full picture of the data set at hand</em>. <br />
+    Rhizomer applies the Global Navigation interaction pattern implemented as <strong>navigation bars</strong> (at the top), automatically generated from the <strong>ontologies and taxonomies</strong> structuring the dataset.</li>
+    <li><b>Zoom &amp; Filter</b>: <em>zoom in on items of interest and filter out uninteresting      items</em>.<br />
+    The choice in this case is Faceted Navigation.      Once we have zoomed by selecting the kind of things we are interested in      from the navigation bar, <strong>facets</strong> help users filter out those that are not interesting. Facets are also generated automatically.</li>
+    <li><b>Details</b>: <em>after zooming and filtering the user arrives to the concrete      resources of interest</em>. <br />
+    At this point, the user can get the details for      those resources. This is&nbsp;implemented as a <strong>list of properties      and values</strong>&nbsp;plus <strong>plugable specific visualisations</strong> tailored to the kind of resource at hand, e.g. a map for geo-located      resources.</li>
 </ul>
 <h2>Download</h2>
 <p>A preliminary version of Rhizomer is available for <a href="http://rhizomik.net/rhizomer/install/">download</a>. Please, treat it with care because it is very preliminary ;-)</p>
 <h2>Architecture</h2>
 <p style="text-align: left;"><a href="images/architecture.png"><img width="296" height="328" alt="Rhizomer architecture" src="images/architecture-small.png" /></a></p>
 <p>Click on the image to enlarge it, or alternatively there is a poster about the Rhizomer architecture<a target="_blank" href="images/architecture.pdf"><img width="16" height="16" src="../images/pdf.gif" alt="PDF" /></a>.</p>
-<p>For more details, there are some publications and presentations about Rhizomer available below.</p>
-
-<!-- script type="text/javascript">
-
-	YAHOO.util.Event.addListener(window, "load", showPublications);
-	function showPublications(e)
-	{ 
-		rhz.sparqlHTML("DESCRIBE ?r WHERE {?r a <http://swrc.ontoware.org/ontology#Publication>}",
-						document.getElementById("publications"));
-	}
-</script>
-
-<div id="publications" class="rdfaslist">
-		<a href="">List publications</a>.
-</div -->
+<p>For more details, there are some publications and presentations about Rhizomer available <a href="http://rhizomik.net/rhizomer/">online</a>.</p>

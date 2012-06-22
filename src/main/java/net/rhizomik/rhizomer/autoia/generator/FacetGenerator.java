@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -448,7 +447,7 @@ public class FacetGenerator {
     	return Math.log(number)/Math.log(base);
     }
 
-    public void generateFacetsForClass(String classUri) throws SQLException{
+    private void generateFacetsForClass(String classUri) throws SQLException{
 		int total = this.countTotalInstances(classUri);
 
 		PreparedStatement st = conn.prepareStatement("INSERT INTO class_summary VALUES(?,?)");
@@ -460,95 +459,87 @@ public class FacetGenerator {
 		//PreparedStatement st = conn.prepareStatement("UPDATE property_summary SET num_instances = ? where class = ? and property = ?");
 
 		HashMap<String, String>  properties = this.getProperties(classUri);
-    	for(String property : properties.keySet()){
-
-    		String range = properties.get(property);
-    		//double entropy = calculateEntropy(classUri, property);
-    		int instances = 0;
-    		int values = 0;
-    		int maxValue = 2;
-    		int maxCardinality = 0;
-
-	    	System.out.println("COUNT INSTANCES: "+ classUri + " - "+ property);
-	    	instances = this.countInstancesForProperty(classUri, property);
-	    	System.out.println("COUNT VALUES: "+ classUri + " - "+ property);
-	    	values = this.countValues(classUri, property);
-
-	    	System.out.println("COUNT MAX CARDINALITY: "+ classUri + " - "+ property);
-	    	maxCardinality = this.countMaxCardinalityForProperty(classUri, property);
-
-	    	if(isInverseFunctionalForValues(classUri, property))
-	    	{
-    			System.out.println("Inverse functional property for "+ property +" for class "+ classUri);
-    			maxValue = 1;
-    		}
-
-    		st.setString(1, classUri);
-    		st.setString(2, property);
-    		st.setInt(3, instances);
-    		st.setInt(4, values);
-    		//st.setDouble(5, entropy);
-    		st.setInt(5, maxValue); //TODO: make it a boolean
-    		st.setInt(6, maxCardinality); //TODO: make it a boolean
-    		String type = null;
-    		if(range==null){
-    			type = new TypeDetector(classUri, property,false).detectType();
-    			if(type.equals(rdfs("Resource")))
-    				range = new TypeDetector(classUri, property, false).detectRange();
-    		}
-    		st.setString(7, range);
-    		st.setString(8, type);
-            st.setBoolean(9, false);
-
-    		st.executeUpdate();
-
-    	}
+    	for(String property : properties.keySet())
+            try { generateFacet(st, classUri, property, properties.get(property)); }
+            catch (Exception e) {log.log(Level.SEVERE, "Error generating facet "+property+" for class"+classUri+"\n"+e.toString()); }
 
         HashMap<String, String>  invProperties = this.getInverseProperties(classUri);
-        for(String property : invProperties.keySet()){
+        for(String property : invProperties.keySet())
+            try { generateInverseFacet(st, classUri, property, properties.get(property)); }
+            catch (Exception e) {log.log(Level.SEVERE, "Error generating inverse facet "+property+" for class"+classUri+"\n"+e.toString()); }
 
-            String range = properties.get(property);
-            //double entropy = calculateEntropy(classUri, property);
-            int instances = 0;
-            int values = 0;
-            int maxValue = 2;
-            int maxCardinality = 0;
-
-            System.out.println("COUNT INSTANCES: "+ classUri + " - "+ property);
-            instances = this.countInstancesForInverseProperty(classUri, property);
-            System.out.println("COUNT VALUES: "+ classUri + " - "+ property);
-            values = this.countInversePropertyValues(classUri, property);
-
-            System.out.println("COUNT MAX CARDINALITY: "+ classUri + " - "+ property);
-            maxCardinality = this.countMaxCardinalityForInverseProperty(classUri, property);
-
-            if(isInverseFunctionalForValues(classUri, property))
-            {
-                System.out.println("Inverse functional property for "+ property +" for class "+ classUri);
-                maxValue = 1;
-            }
-
-            st.setString(1, classUri);
-            st.setString(2, property);
-            st.setInt(3, instances);
-            st.setInt(4, values);
-            //st.setDouble(5, entropy);
-            st.setInt(5, maxValue); //TODO: make it a boolean
-            st.setInt(6, maxCardinality); //TODO: make it a boolean
-            String type = null;
-            if(range==null){
-                type = new TypeDetector(classUri, property, true).detectType();
-                if(type.equals(rdfs("Resource")))
-                    range = new TypeDetector(classUri, property, true).detectRange();
-            }
-            st.setString(7, range);
-            st.setString(8, type);
-            st.setBoolean(9, true);
-
-            st.executeUpdate();
-
-        }
     	st.close();
+    }
+
+    private void generateInverseFacet(PreparedStatement st, String classUri, String property, String range) throws Exception {
+        //double entropy = calculateEntropy(classUri, property);
+        int instances = 0;
+        int values = 0;
+        int maxValue = 2;
+        int maxCardinality = 0;
+
+        System.out.println("COUNT INSTANCES: "+ classUri + " - "+ property);
+        instances = this.countInstancesForInverseProperty(classUri, property);
+        System.out.println("COUNT VALUES: "+ classUri + " - "+ property);
+        values = this.countInversePropertyValues(classUri, property);
+
+        System.out.println("COUNT MAX CARDINALITY: "+ classUri + " - "+ property);
+        maxCardinality = this.countMaxCardinalityForInverseProperty(classUri, property);
+
+        if(isInverseFunctionalForValues(classUri, property))
+        {
+            System.out.println("Inverse functional property for "+ property +" for class "+ classUri);
+            maxValue = 1;
+        }
+
+        boolean isInverse = true;
+        insertFacetData(st, classUri, property, range, instances, values, maxValue, maxCardinality, isInverse);
+    }
+
+    private void generateFacet(PreparedStatement st, String classUri, String property, String range) throws SQLException {
+        //double entropy = calculateEntropy(classUri, property);
+        int instances = 0;
+        int values = 0;
+        int maxValue = 2;
+        int maxCardinality = 0;
+
+        System.out.println("COUNT INSTANCES: "+ classUri + " - "+ property);
+        instances = this.countInstancesForProperty(classUri, property);
+        System.out.println("COUNT VALUES: "+ classUri + " - "+ property);
+        values = this.countValues(classUri, property);
+
+        System.out.println("COUNT MAX CARDINALITY: "+ classUri + " - "+ property);
+        maxCardinality = this.countMaxCardinalityForProperty(classUri, property);
+
+        if(isInverseFunctionalForValues(classUri, property))
+        {
+            System.out.println("Inverse functional property for "+ property +" for class "+ classUri);
+            maxValue = 1;
+        }
+
+        boolean isInverse = false;
+        insertFacetData(st, classUri, property, range, instances, values, maxValue, maxCardinality, isInverse);
+    }
+
+    private void insertFacetData(PreparedStatement st, String classUri, String property, String range, int instances, int values, int maxValue, int maxCardinality, boolean inverse) throws SQLException {
+        st.setString(1, classUri);
+        st.setString(2, property);
+        st.setInt(3, instances);
+        st.setInt(4, values);
+        //st.setDouble(5, entropy);
+        st.setInt(5, maxValue); //TODO: make it a boolean
+        st.setInt(6, maxCardinality); //TODO: make it a boolean
+        String type = null;
+        if(range==null){
+            type = new TypeDetector(classUri, property, inverse).detectType();
+            if(type.equals(rdfs("Resource")))
+                range = new TypeDetector(classUri, property, inverse).detectRange();
+        }
+        st.setString(7, range);
+        st.setString(8, type);
+        st.setBoolean(9, inverse);
+
+        st.executeUpdate();
     }
 
     // Generate filter to get properties for class and also all subclasses

@@ -10,16 +10,13 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.sparql.resultset.ResultSetMem;
 import net.rhizomik.rhizomer.store.MetadataStore;
 import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.query.Syntax;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
@@ -204,9 +201,16 @@ public class VirtuosoStore implements MetadataStore
      */
 	public ResultSet querySelect(String queryString, int scope)
 	{
-        ResultSet results = null;
+        ResultSet results = new ResultSetMem();
         VirtuosoQueryExecution qexec = null;
-        Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+        Query query = null;
+
+        try {
+            query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+        } catch (QueryParseException e) {
+            log.log(Level.SEVERE, e.toString());
+            return results; // Return empty results
+        }
 
         if (scope == MetadataStore.INSTANCES || scope == MetadataStore.REASONING)
             query.addGraphURI(graphURI);
@@ -215,20 +219,15 @@ public class VirtuosoStore implements MetadataStore
 
         queryString = query.toString();
         if (query.hasGroupBy())
-        {
             if (query.getGroupBy().isEmpty())
                 queryString = query.toString().substring(0, query.toString().indexOf("GROUP BY"));
 
-        }
-
-        //queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+queryString;
-        log.log(Level.INFO, "VirtuosoStore.query: "+queryString);
+        log.log(Level.INFO, queryString);
 
         qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
 
         if (query.isSelectType())
             results = qexec.execSelect();
-
 
         return results;
 	}
@@ -240,20 +239,25 @@ public class VirtuosoStore implements MetadataStore
 	public boolean queryAsk(String queryString)
 	{
         boolean result = false;
+        VirtuosoQueryExecution qexec = null;
+        Query query = null;
 
-		VirtuosoQueryExecution qexec = null;
+        try {
+            query = QueryFactory.create(queryString, Syntax.syntaxARQ);
+        } catch (QueryParseException e) {
+            log.log(Level.SEVERE, e.toString());
+            return result;
+        }
 
-        	Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
-            query.addGraphURI(graphURI);
-            query.addGraphURI(schema);
-            queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+query.toString();
-            log.log(Level.INFO, "VirtuosoStore.query: "+query.toString());
-            
-            qexec = VirtuosoQueryExecutionFactory.create(query.toString(), graph);
-        
-	        if (query.isAskType())
-	        	result = qexec.execAsk();
-       
+        query.addGraphURI(graphURI);
+        query.addGraphURI(schema);
+        queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+query.toString();
+        log.log(Level.INFO, "VirtuosoStore.query: "+query.toString());
+
+        qexec = VirtuosoQueryExecutionFactory.create(query.toString(), graph);
+
+        if (query.isAskType())
+            result = qexec.execAsk();
 
         return result;
 	}

@@ -1,0 +1,162 @@
+<%@page import="net.rhizomik.rhizomer.authentication.Constants.Constants"%>
+<%@page pageEncoding="UTF-8"%><%@page contentType="text/html;charset=UTF-8"%><?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html xml:lang="en" version="XHTML+RDFa 1.0" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Rhizomik</title>
+
+	<script src="<%=request.getContextPath()%>/script/yui-min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        YUI_config = {
+            //base: "<%=request.getContextPath()%>/script/yui3/build/"
+        };
+    </script>
+
+    <!-- YUI 2 Loading... -->
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/yuiloader-dom-event.js"></script>
+    <script type="text/javascript">
+        (function() {
+            var loader = new YAHOO.util.YUILoader({
+                //base: "<%=request.getContextPath()%>/script/yui2/build/",
+                require: ["button","connectioncore","container","datasource","element","resize","tabview","autocomplete","animation"],
+                loadOptional: false,
+                combine: true,
+                filter: "MIN",
+                allowRollup: true,
+                onSuccess: function() {
+                    contentTabs = new YAHOO.widget.TabView("contentTabs");
+                    var resizeLeft = new YAHOO.util.Resize("left",{handles: ["r"]});
+                    var resizeContent = new YAHOO.util.Resize("content",{handles: []});
+                    resizeLeft.on("resize", function(args) {
+                        resizeContent.setStyle("margin-left",(args.width+27)+"px");
+                    });
+
+                }
+            });
+            loader.insert();
+        })();
+    </script>
+
+    <link href="<%=request.getContextPath()%>/style/rhizomik.css" type="text/css" rel="stylesheet" />
+    <link href="<%=request.getContextPath()%>/style/rhizomer.css" type="text/css" rel="stylesheet" />
+    <link href="<%=request.getContextPath()%>/style/rhizomer-forms.css" type="text/css" rel="stylesheet" />
+
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/dhtmlHistory.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/md5.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/rhizomer.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/rhizomer-transform.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/rhizomer-forms.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/autocomplete.js"></script>
+
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/dispatcher-min.js"></script>
+
+    <script src="<%=request.getContextPath()%>/script/prototype.js"></script>
+    <script src="<%=request.getContextPath()%>/script/jquery-1.4.2.min.js"></script>
+
+    <script type="text/javascript">
+        $j = jQuery.noConflict();
+    </script>
+
+    <script type="text/javascript">
+        YUI({
+            modules: {
+                "node-menunav-core-css": {
+                    type: "css",
+                    fullpath: "<%=request.getContextPath()%>/style/node-menunav-core.css"
+                },
+                "custommenunavskin": {
+                    type: "css",
+                    fullpath: "<%=request.getContextPath()%>/style/menuskin.css",
+                    supersedes: ['skin-sam-node-menunav']
+                }
+            }
+
+        }).use("node-menunav", "node-menunav-core-css", "custommenunavskin",  function(Y) {
+                    Y.on("contentready", function () {
+                        this.plug(Y.Plugin.NodeMenuNav, { autoSubmenuDisplay: true });
+                    }, "#menu-class");
+                    Y.on("contentready", function () {
+                        this.plug(Y.Plugin.NodeMenuNav, { autoSubmenuDisplay: true });
+                    }, "#menu-skos");
+                });
+    </script>
+
+
+</head>
+<body class="yui-skin-sam yui3-skin-sam">
+<div id="header">
+    <div id="login">
+        <% if (request.getSession().getAttribute("net.rhizomik.rhizomer.authentication") == null) { %>
+        <a href="<%=request.getContextPath()%>/html/admin/login.jsp">login</a>
+        <% } else { %>
+        <div id="username"><a href="<%=request.getContextPath()%>/html/admin/"><%=request.getSession().getAttribute("net.rhizomik.rhizomer.authentication")%></a></div>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/html/admin/logout.jsp">logout</a>
+        <% } %>
+    </div>
+
+    <%
+        // Menu for class hierarchy
+        HierarchyMenu menu = null;
+        if(session.getAttribute("menu")==null)
+        {
+            String path = config.getServletContext().getRealPath("WEB-INF");
+            String menuFile = (String) config.getServletContext().getAttribute("menuFile");
+            HierarchyManagerSPARQL manager = new HierarchyManagerSPARQL();
+            manager.readXML(path+"/"+menuFile);
+            MenuConfig menuConfig = new MenuConfig(path+"/menuconfig.xml");
+            manager.setMenuConfig(menuConfig);
+            menu = manager.generateFullMenu(null);
+            session.setAttribute("menu",menu);
+        }
+        else
+            menu = (HierarchyMenu) session.getAttribute("menu");
+        menu.sort(2);
+
+        //SKOS menu for subjects taxonomy
+        HierarchyMenu menuSKOS = null;
+        if(session.getAttribute("menuSKOS")==null)
+        {
+            String path = config.getServletContext().getRealPath("WEB-INF");
+            String menuFileSKOS = (String) config.getServletContext().getAttribute("menuFileSKOS");
+            HierarchyManagerSKOS manager = new HierarchyManagerSKOS();
+            manager.readXML(path+"/"+menuFileSKOS);
+            MenuConfig menuConfig = new MenuConfig(path+"/menuconfig.skos.xml");
+            manager.setMenuConfig(menuConfig);
+            menuSKOS = manager.generateFullMenu(null);
+            session.setAttribute("menuSKOS",menuSKOS);
+        }
+        else
+            menuSKOS = (HierarchyMenu) session.getAttribute("menuSKOS");
+        menuSKOS.sort(2);
+
+        if(session.getAttribute("service")==null){
+            ServiceManager serviceManager = new ServiceManager();
+            serviceManager.readServiceList();
+            session.setAttribute("service",serviceManager.getServiceList());
+        }
+    %>
+    <div id="menu-class" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
+        <div class="yui3-menu-content">
+            <ul>
+                <li class="yui3-menuitem">
+                    <a class="yui3-menuitem-content" href="<%=request.getContextPath()%>/">About</a>
+                </li>
+                <%=menu.printAsUl(request, 2)%>
+                <li class="yui3-menuitem">
+                    <a class="yui3-menuitem-content" href="mailto:contact at rhizomik dot net">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="menu-skos" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
+        <div class="yui3-menu-content">
+            <ul>
+                <li class="yui3-menuitem">
+                    <a class="yui3-menuitem-content">Topics:</a>
+                </li>
+                <%=menuSKOS.printAsUl(request, 2, "http://purl.org/dc/terms/subject")%>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="body">

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+    					http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+<!-- DataStore Configuration. Options: Virtuoso, Jena File/Database, OWLIM. -->
+
+<!-- JENA FILE MODEL -->
+    <context-param>
+      <param-name>store_class</param-name>
+      <param-value>net.rhizomik.rhizomer.store.jena.JenaStore</param-value>
+    </context-param>
+    <context-param>
+      <param-name>file_name</param-name>
+      <param-value>rhizomikstore.rdf</param-value>
+    </context-param>
+    <context-param>
+      <param-name>dir_name</param-name>
+      <param-value>/metadata</param-value>
+    </context-param>
+
+<!-- Virtuoso MODEL -->
+<!--    <context-param>
+      <param-name>store_class</param-name>
+      <param-value>net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore</param-value>
+    </context-param>
+    <context-param>
+      <param-name>db_url</param-name>
+      <param-value>jdbc:virtuoso://asera.ii.uam.es:1111</param-value>
+    </context-param>
+    <context-param>
+      <param-name>db_user</param-name>
+      <param-value>dba</param-value>
+    </context-param>
+    <context-param>
+      <param-name>db_pass</param-name>
+      <param-value>gestora1</param-value>
+    </context-param>    
+    <context-param>
+      <param-name>db_graph</param-name>
+      <param-value>http://es.dbpedia.org</param-value>
+    </context-param>
+-->  <!-- By default, the VirtuosoStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
+    <!--context-param>
+      <param-name>db_schema</param-name>
+      <param-value>http://rhizomik.net/schema/</param-value>
+    </context-param -->
+
+<!-- SESAME MODEL -
+    <context-param>
+      <param-name>store_class</param-name>
+      <param-value>net.rhizomik.rhizomer.store.sesame.SesameStore</param-value>
+    </context-param>
+    <context-param>
+      <param-name>manager_url</param-name>
+      <param-value>http://localhost:8080/openrdf-sesame</param-value>
+    </context-param>
+    <context-param>
+      <param-name>repository_id</param-name>
+      <param-value>rhizomer</param-value>
+    </context-param>
+    <context-param>
+      <param-name>db_graph</param-name>
+      <param-value>http://rhizomik.net/</param-value>
+    </context-param>    
+--> <!-- By default, the SesameStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
+    <!--context-param>
+      <param-name>db_schema</param-name>
+      <param-value>http://rhizomik.net/schema/</param-value>
+    </context-param -->
+
+<!-- JENA DATABASE MODEL -
+    <context-param>
+      <param-name>db_url</param-name>
+      <param-value>jdbc:mysql://localhost/rhizomer?autoReconnect=true</param-value>
+    </context-param>
+    <context-param>
+      <param-name>db_user</param-name>
+      <param-value>user</param-value>
+    </context-param>
+    <context-param>
+      <param-name>db_pass</param-name>
+      <param-value>password</param-value>
+    </context-param>    
+    <context-param>
+      <param-name>db_type</param-name>
+      <param-value>MySQL</param-value>
+    </context-param>    
+    <context-param>
+      <param-name>db_driver</param-name>
+      <param-value>com.mysql.jdbc.Driver</param-value>
+    </context-param>
+    <context-param>
+      <param-name>db_model</param-name>
+      <param-value>rhizomer</param-value>
+    </context-param>
+-->    					
+  
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>restricted content</web-resource-name>
+      <url-pattern>/html/admin/*</url-pattern>
+      <url-pattern>/fckeditor/*</url-pattern>
+      <url-pattern>/html/private/*</url-pattern>
+      <url-pattern>/WEB-INF/jsp/new.jsp</url-pattern>
+      <url-pattern>/WEB-INF/jsp/edit.jsp</url-pattern>
+      <url-pattern>/WEB-INF/jsp/history.jsp</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>rhizomer</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>restricted metadata</web-resource-name>
+      <url-pattern>/*</url-pattern>
+      <http-method>PUT</http-method>
+      <http-method>POST</http-method>
+      <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>rhizomer</role-name>
+    </auth-constraint>
+  </security-constraint>
+  
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>ServiceProxy</web-resource-name>
+      <url-pattern>/serviceproxy</url-pattern>
+      <url-pattern>/services/*</url-pattern>
+      <http-method>POST</http-method>
+    </web-resource-collection>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>RhizomerFacets</web-resource-name>
+      <url-pattern>/facetProperties.jsp</url-pattern>
+      <http-method>POST</http-method>
+    </web-resource-collection>
+  </security-constraint>  
+  
+  <security-role>
+    <role-name>rhizomer</role-name>
+  </security-role>
+
+  <login-config>
+  	<auth-method>BASIC</auth-method>
+  	<realm-name>Editor</realm-name>
+  </login-config>
+
+  <!-- FOAF+SSL Filter and security constraints -->
+
+    <filter>
+        <filter-name>FOAFSSLFilter</filter-name>
+        <filter-class>net.rhizomik.rhizomer.authentication.FiltreRhizomik</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FOAFSSLFilter</filter-name>
+        <url-pattern>/html/admin/*</url-pattern>
+        <url-pattern>/fckeditor/*</url-pattern>
+        <url-pattern>/html/private/*</url-pattern>
+        <url-pattern>/WEB-INF/jsp/new.jsp</url-pattern>
+        <url-pattern>/WEB-INF/jsp/edit.jsp</url-pattern>
+        <url-pattern>/WEB-INF/jsp/history.jsp</url-pattern>
+    </filter-mapping>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Entire  Application</web-resource-name>
+            <url-pattern>/html/admin/*</url-pattern>
+            <url-pattern>/fckeditor/*</url-pattern>
+            <url-pattern>/html/private/*</url-pattern>
+            <url-pattern>/WEB-INF/jsp/new.jsp</url-pattern>
+            <url-pattern>/WEB-INF/jsp/edit.jsp</url-pattern>
+            <url-pattern>/WEB-INF/jsp/history.jsp</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+  <!-- URLRewrite filter, fix old-style URLs, rules in urlrewrite.xml -->
+
+  <filter>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+  </filter>
+  <filter-mapping>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+
+  <!-- Rhizomer servlets -->
+
+  <servlet>
+  	<servlet-name>RhizomerFacets</servlet-name>
+  	<servlet-class>net.rhizomik.rhizomer.agents.RhizomerFacets</servlet-class>
+    <load-on-startup>1</load-on-startup>  	
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RhizomerFacets</servlet-name>
+    <url-pattern>/facetProperties.jsp</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>Rhizomer</servlet-name>
+    <servlet-class>net.rhizomik.rhizomer.agents.Rhizomer</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Rhizomer</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>RhizomerHTML</servlet-name>
+    <servlet-class>net.rhizomik.rhizomer.agents.RhizomerHTML</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RhizomerHTML</servlet-name>
+    <url-pattern>/html/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RhizomerData</servlet-name>
+    <servlet-class>net.rhizomik.rhizomer.agents.RhizomerData</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RhizomerData</servlet-name>
+    <url-pattern>/data/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>RhizomerStatic</servlet-name>
+    <servlet-class>net.rhizomik.rhizomer.agents.RhizomerStatic</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>ServiceProxy</servlet-name>
+  	<servlet-class>net.rhizomik.rhizomer.service.ServiceProxy</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServiceProxy</servlet-name>
+    <url-pattern>/serviceproxy</url-pattern>
+  </servlet-mapping>
+  
+<!-- Rhizomer Browsing and HTML Management Servlets-->
+  <servlet>
+    <description>Default servlet for serving JSP pages</description>
+    <servlet-name>jsp</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>jsp</servlet-name>
+    <url-pattern>*.jsp</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <description>Servlet for saving HTML content</description>
+    <display-name>Save HTML Servlet</display-name>
+    <servlet-name>save</servlet-name>
+    <servlet-class>net.rhizomik.wiki.Save</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <description>Servlet for deleting HTML content</description>
+    <display-name>Delete HTML Servlet</display-name>
+    <servlet-name>delete</servlet-name>
+    <servlet-class>net.rhizomik.wiki.Delete</servlet-class>
+  </servlet>
+
+  <servlet>
+    <description>JSP for viewing HTML content</description>
+    <display-name>View HTML JSP</display-name>
+    <servlet-name>view.jsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/view.jsp</jsp-file>
+  </servlet>
+
+  <servlet>
+    <description>JSP for editing HTML content</description>
+    <display-name>Edit HTML JSP</display-name>
+    <servlet-name>edit.jsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/edit.jsp</jsp-file>
+  </servlet>
+
+  <servlet>
+    <description>JSP for creating HTML content</description>
+    <display-name>New HTML JSP</display-name>
+    <servlet-name>new.jsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/new.jsp</jsp-file>
+  </servlet>
+
+  <servlet>
+    <description>JSP for deleting HTML content</description>
+    <display-name>Delete HTML JSP</display-name>
+    <servlet-name>delete.jsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/delete.jsp</jsp-file>
+  </servlet>
+
+  <servlet>
+    <description>JSP for HTML content history management</description>
+    <display-name>History HTML JSP</display-name>  
+    <servlet-name>history.jsp</servlet-name>
+    <jsp-file>/WEB-INF/jsp/history.jsp</jsp-file>
+  </servlet>
+
+  <servlet>
+    <description>JSP for Faceted Browsing</description>
+    <display-name>Faceted Browsing JSP</display-name>  
+    <servlet-name>facets.jsp</servlet-name>
+    <jsp-file>/facets.jsp</jsp-file>
+  </servlet>
+  
+  <jsp-config>
+		<jsp-property-group>
+			<description>Wiki JSP</description>
+			<display-name>Wiki JSP</display-name>
+			<url-pattern>/WEB-INF/jsp/view.jsp</url-pattern>
+			<url-pattern>/WEB-INF/jsp/new.jsp</url-pattern>
+			<url-pattern>/WEB-INF/jsp/edit.jsp</url-pattern>
+			<url-pattern>/WEB-INF/jsp/delete.jsp</url-pattern>
+			<url-pattern>/WEB-INF/jsp/history.jsp</url-pattern>
+			<page-encoding>UTF-8</page-encoding>
+			<scripting-invalid>false</scripting-invalid>
+			<include-prelude>/WEB-INF/jsp/header.jspf</include-prelude>
+			<include-prelude>/WEB-INF/jsp/metadata.jspf</include-prelude>
+			<include-coda>/WEB-INF/jsp/footer.jspf</include-coda>
+		</jsp-property-group>
+		<jsp-property-group>
+			<description>JSPs without metadata JSPF</description>
+			<display-name>JSPs no metadata JSPF</display-name>
+			<url-pattern>/facets.jsp</url-pattern>
+			<page-encoding>UTF-8</page-encoding>
+			<scripting-invalid>false</scripting-invalid>
+			<include-prelude>/WEB-INF/jsp/header.jspf</include-prelude>
+			<include-coda>/WEB-INF/jsp/footer.jspf</include-coda>
+		</jsp-property-group>
+  </jsp-config>
+
+  <!-- FCKEditor browse and upload servlet -->
+  
+  <servlet>
+	<servlet-name>Connector</servlet-name>
+	<servlet-class>net.fckeditor.connector.ConnectorServlet</servlet-class>
+	<load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Connector</servlet-name>
+    <url-pattern>/fckeditor/editor/filemanager/connectors/*</url-pattern>
+  </servlet-mapping>
+    
+</web-app>

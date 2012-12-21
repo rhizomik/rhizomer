@@ -336,3 +336,11 @@ ul.inline , ul.inline li{
     float: right;
     padding: 20px;
 }
+
+#sitemap{
+    margin-left:150px;
+}
+
+.inline{
+    display: inline;
+}

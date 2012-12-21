@@ -48,8 +48,8 @@ public class Rhizomer extends HttpServlet
         	store = RhizomerRDF.instance();
         	store.addStore(config);
 			transformer = new RDF2HTMLTransformer(getServletContext().getRealPath("/"));
-        	MenuManager menuMng = new MenuManager();
-        	menuMng.getMenu(config);
+        	MenuManager menuMng = MenuManager.getInstance(config);
+        	//menuMng.getMenu();
         	FacetGenerator fg = new FacetGenerator(config);
         }
         catch(Exception e)

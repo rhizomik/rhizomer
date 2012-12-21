@@ -5,7 +5,8 @@
 	<numitemsglobal>7</numitemsglobal>
 	<numitemslocal>10</numitemslocal>
 	<sort>alphabetical</sort>
-	<sort>instances</sort>
+    <store>void</store>
+	<!--sort>instances</sort-->
 
 	<whitelist>
 		<uris>

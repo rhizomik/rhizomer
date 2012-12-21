@@ -1,7 +1,6 @@
 package net.rhizomik.rhizomer.autoia.manager;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +15,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.util.FileManager;
+import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.XSD;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
 import net.rhizomik.rhizomer.autoia.classes.MenuConfig;
@@ -33,7 +37,10 @@ import com.hp.hpl.jena.util.iterator.Filter;
 
 
 public class HierarchyManager 
-{		
+{
+
+    private static Property classPartition = null;
+    private static Property distinctSubjects = null;
 	private static int MAX_DEPTH = 3;
 	protected HierarchyMenu menu;
 	protected HierarchyMenu out;
@@ -397,7 +404,82 @@ public class HierarchyManager
 		        writeNode(doc, xmlChild, child, depth+1);
 			}
 		}
-	}	
+	}
+
+    public void writeVoid(String filename) throws FileNotFoundException {
+        Model model = ModelFactory.createDefaultModel();
+        model.setNsPrefix("void","http://rdfs.org/ns/void#");
+        Resource dataset = model.createResource("http://rhizomik.net/dataset"); //Change for dataset uri
+        dataset.addProperty(RDF.type,"http://rdfs.org/ns/void#Dataset");
+        //Property p = model.createProperty("http://rdfs.org/ns/void#classes");
+        //dataset.addProperty(p,Integer.toString(menu.getNumNodes()), XSDDatatype.XSDinteger);
+        Property classPartition = model.createProperty("http://rdfs.org/ns/void#classPartition");
+        Property distinctSubjects = model.createProperty("http://rdfs.org/ns/void#distinctSubjects");
+
+        for(HierarchyNode node : menu.getNodes()){
+            Resource klass = model.createResource(node.getUri());
+            klass.addProperty(distinctSubjects,Integer.toString(node.getNumInstances()),XSDDatatype.XSDinteger);
+            dataset.addProperty(classPartition,klass);
+            writeVoidNode(model, klass, node);
+        }
+
+        PrintStream p = new PrintStream(filename);
+
+        //model.write(System.out,"RDF/XML-ABBREV");
+        model.write(p, "RDF/XML-ABBREV");
+    }
+
+    public void writeVoidNode(Model model, Resource resource, HierarchyNode node){
+        Property distinctSubjects = model.createProperty("http://rdfs.org/ns/void#distinctSubjects");
+        Property classPartition = model.createProperty("http://rdfs.org/ns/void#classPartition");
+        for(HierarchyNode child : node.getChilds()){
+            Resource klass = model.createResource(child.getUri());
+            klass.addProperty(distinctSubjects,Integer.toString(node.getNumInstances()),XSDDatatype.XSDinteger);
+            resource.addProperty(classPartition,klass);
+            writeVoidNode(model, klass, child);
+        }
+    }
+
+    public void readVoid(String path){
+        InputStream in = FileManager.get().open(path);
+        Model model = ModelFactory.createDefaultModel();
+        model.read(in,null);
+        Resource dataset = model.getResource("http://rhizomik.net/dataset");
+        classPartition = model.createProperty("http://rdfs.org/ns/void#classPartition");
+        distinctSubjects = model.createProperty("http://rdfs.org/ns/void#distinctSubjects");
+
+        StmtIterator iter = dataset.listProperties(classPartition);
+        while (iter.hasNext()) {
+            Resource r = iter.nextStatement().getResource();
+            HierarchyNode node = getVoidNode(r);
+            menu.addNode(node);
+            getChildNodesVoid(r, node);
+        }
+    }
+
+    private HierarchyNode getVoidNode(Resource r){
+        String uri = r.getURI();
+        int instances = r.getProperty(distinctSubjects).getInt();
+        //String label = xmlNode.getAttributes().getNamedItem("label").getTextContent();
+
+        //Parxe temporal
+        //label = FacetUtil.makeLabel(label);
+
+        HierarchyNode node = new HierarchyNode(uri);
+        node.setNumInstances(instances);
+        //node.setLabel(label);
+        return node;
+    }
+
+    private void getChildNodesVoid(Resource r, HierarchyNode node){
+        StmtIterator iter = r.listProperties(classPartition);
+        while (iter.hasNext()) {
+            Resource rchild = iter.nextStatement().getResource();
+            HierarchyNode child = getVoidNode(rchild);
+            menu.addChild(node, child);
+            getChildNodesVoid(rchild, child);
+        }
+    }
 	
 
 }

@@ -351,4 +351,34 @@ public class HierarchyNode implements Comparable{
 			return null;
 		}
 
+        public void printAsSitemap(HttpServletRequest req, int levels, StringBuffer out)
+    {
+        //TODO: IMPORTANT! Make link to facets.jsp independent from where the app is installed!
+        //String link = req.getContextPath()+"/facets.jsp?uri="+this.uri.replace("#", "%23");
+        String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
+        String query = "SELECT ?r WHERE { ?r ";
+
+        String label = this.label;
+        int pos;
+        if ((pos = label.indexOf('@')) > 0)
+            label = label.substring(0, pos);
+
+        if (levels>=1)
+        {
+            out.append("<a href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
+
+            if(this.hasChilds()){
+                out.append("<ul class=\"sub\">");
+                for(HierarchyNode n : this.getChilds())
+                {
+                    out.append("<li class=\"inline\">");
+                    n.printAsUl(req, levels-1, out);
+                    out.append("</li>");
+                }
+                out.append("</ul>");
+            }
+        }
+
+    }
+
 }

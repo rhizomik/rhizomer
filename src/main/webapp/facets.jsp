@@ -1,6 +1,6 @@
 <%@page import="net.rhizomik.rhizomer.autoia.manager.HierarchyManager, net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSPARQL, net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSKOS, net.rhizomik.rhizomer.autoia.classes.HierarchyMenu, net.rhizomik.rhizomer.autoia.classes.MenuConfig, net.rhizomik.rhizomer.service.ServiceManager, net.rhizomik.rhizomer.service.Service, net.rhizomik.rhizomer.autoia.manager.FacetManager"%>
 <%
-	
+
 	//String facetURI = request.getParameter("uri");
 	String query = request.getParameter("q");
 
@@ -14,15 +14,15 @@
 	<%--<script src="<%=request.getContextPath()%>/script/widgets/histogram-widget.js"></script>
 	<script src="<%=request.getContextPath()%>/script/widgets/slider-widget.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/range-facet.js"></script> --%>
-	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>	
-	<script src="<%=request.getContextPath()%>/script/facets/facet-browser.js"></script>				
-	<script src="<%=request.getContextPath()%>/script/facets/facet-manager.js"></script>		
+	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>
+	<script src="<%=request.getContextPath()%>/script/facets/facet-browser.js"></script>
+	<script src="<%=request.getContextPath()%>/script/facets/facet-manager.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/facet.js"></script>
-	<script src="<%=request.getContextPath()%>/script/facets/facet-value.js"></script>	
+	<script src="<%=request.getContextPath()%>/script/facets/facet-value.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/number-facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/string-facet.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/inverse-facet.js"></script>
-	<script src="<%=request.getContextPath()%>/script/facets/UrlParser.js"></script>		
+	<script src="<%=request.getContextPath()%>/script/facets/UrlParser.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>
 	<script src="<%=request.getContextPath()%>/script/charts/charts.js"></script>
 
@@ -47,22 +47,22 @@
 
 		// Define Rhizomer endpoint
 		var endpoint = '<%=request.getScheme()+"://"+request.getServerName()+
-							":"+request.getServerPort()+request.getContextPath()%>';				
-							
+							":"+request.getServerPort()+request.getContextPath()%>';
+
 		rhz = new rhizomik.Rhizomer(endpoint,
 			document.getElementById("metadata"), alternativeQuery);
-		
+
 		var query = '<%=query%>';
 		var parser = new facet.UrlParser(query);
 		facetBrowser = new facet.FacetBrowser(parser);
 		facetBrowser.loadFacets();
-		
+
 	}
 
 //]]>
 </script>
 
-<div id="left">	
+<div id="left">
 	<div id="facets">
 	</div>
 </div>
@@ -71,7 +71,7 @@
 	<div id="contentTabs" class="yui-navset">
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1"><em>Data</em></a></li>
-		</ul>            
+		</ul>
 		<div class="yui-content">
 		<div>
 			<div id="active_facets">
@@ -87,11 +87,11 @@
 					String requestURL = request.getRequestURL().toString();
 				 %>
 				<a href="http://www.w3.org/2007/08/pyRdfa/extract?uri=<%=requestURL%>">
-					<img src="<%=request.getContextPath()%>/images/sw-rdfa-grey.png" alt="XHTML+RDFa" width="80" height="15"/> 
+					<img src="<%=request.getContextPath()%>/images/sw-rdfa-grey.png" alt="XHTML+RDFa" width="80" height="15"/>
 				</a>
 				<img src="<%=request.getContextPath()%>/images/sw-sparql-grey.png" alt="SPARQL" width="80" height="15"/>
 				<a href="<%=request.getContextPath()%>/copyright">
-					<img src="<%=request.getContextPath()%>/images/cc-some_rights.png" alt="Creative Commons some rights reserved" width="80" height="15"/>       
+					<img src="<%=request.getContextPath()%>/images/cc-some_rights.png" alt="Creative Commons some rights reserved" width="80" height="15"/>
 				</a>
 			</div>
 		</div>

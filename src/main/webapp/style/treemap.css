@@ -1,0 +1,67 @@
+#vis{
+    /*width:1000px;*/
+    width:auto;
+    height:600px;
+    text-align:center;
+}
+
+.treemap{
+    width:auto;
+    height:800px;
+    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.indentedtree{
+    overflow:auto;
+}
+
+/*
+#vis {
+  width:auto;
+  height:600px;
+  font-family: "Lucida Grande", Verdana;
+  font-size: 0.9em;
+  text-align: center;
+  overflow:auto;
+}
+*/
+
+
+svg { display:block; overflow:auto; }
+
+.node {
+    color:#fff;
+    font-size:9px;
+    overflow:hidden;
+    cursor:pointer;
+    /*
+      text-shadow:2px 2px 5px #000;
+      -o-text-shadow:2px 2px 5px #000;
+      -webkit-text-shadow:2px 2px 5px #000;
+      -moz-text-shadow:2px 2px 5px #000;
+    */
+}
+
+/*TOOLTIPS*/
+.tip {
+    color: #111;
+    width: 260px;
+    background-color: white;
+    border:1px solid #ccc;
+    -moz-box-shadow:#555 2px 2px 8px;
+    -webkit-box-shadow:#555 2px 2px 8px;
+    -o-box-shadow:#555 2px 2px 8px;
+    box-shadow:#555 2px 2px 8px;
+    opacity:0.9;
+    filter:alpha(opacity=90);
+    font-size:10px;
+    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+    padding:7px;
+    text-align:center;
+}
+
+.tip-text{
+    font-size:14px;
+}

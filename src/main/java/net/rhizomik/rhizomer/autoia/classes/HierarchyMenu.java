@@ -24,6 +24,10 @@ public class HierarchyMenu {
 		this.config = config;
 	}
 
+    public int getNumNodes(){
+        return map.size();
+    }
+
 	public HierarchyMenu() {
 		first = new HierarchyNode("http://www.w3.org/2002/07/owl#Thing");
 		map = new HashMap<String, HierarchyNode>();
@@ -116,6 +120,24 @@ public class HierarchyMenu {
 		}
 		return out;
 	}
+
+    public StringBuffer printAsSitemap(HttpServletRequest req, int levels)
+    {
+        StringBuffer out = new StringBuffer();
+        String previousURI = "";
+        out.append("<ul>");
+        for(HierarchyNode child : first.getChilds())
+        {
+            if (!child.getUri().equals(previousURI)) // Patch to avoid duplicate nodes when multiple parents for node
+            {
+                out.append("<li>");
+                child.printAsSitemap(req, levels, out);
+                out.append("</li>");
+                previousURI = child.getUri();
+            }
+        }
+        return out;
+    }
 	
 	public StringBuffer printAsUl(HttpServletRequest req, int levels, String property)
 	{

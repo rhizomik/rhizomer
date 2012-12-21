@@ -1,3 +1,8 @@
+<%@ page import="net.rhizomik.rhizomer.autoia.classes.HierarchyMenu" %>
+<%@ page import="net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSPARQL" %>
+<%@ page import="net.rhizomik.rhizomer.autoia.classes.MenuConfig" %>
+<%@ page import="net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSKOS" %>
+<%@ page import="net.rhizomik.rhizomer.autoia.manager.MenuManager" %>
 <%@page pageEncoding="UTF-8"%><%@page contentType="text/html;charset=UTF-8"%><?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd"> 
 <html xml:lang="en" version="XHTML+RDFa 1.0" xmlns="http://www.w3.org/1999/xhtml">
@@ -45,8 +50,8 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/script/autocomplete.js"></script>
 	
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/dispatcher-min.js"></script>
-	
-	<script src="<%=request.getContextPath()%>/script/prototype.js"></script>	
+
+	<script src="<%=request.getContextPath()%>/script/prototype.js"></script>
 	<script src="<%=request.getContextPath()%>/script/jquery-1.4.2.min.js"></script>
 	
 	<script type="text/javascript">
@@ -90,6 +95,24 @@
 	</div>
  	
 	<%
+
+        HierarchyMenu menu = null;
+        if(session.getAttribute("menu")==null)
+        {
+            MenuManager menuMng = MenuManager.getInstance(config);
+            HierarchyManagerSPARQL manager = menuMng.getManager();
+
+            String path = config.getServletContext().getRealPath("WEB-INF");
+            MenuConfig menuConfig = new MenuConfig(path+"/menuconfig.xml");
+            manager.setMenuConfig(menuConfig);
+            menu = manager.generateFullMenu(null);
+            session.setAttribute("menu",menu);
+        }
+        else
+            menu = (HierarchyMenu) session.getAttribute("menu");
+        menu.sort(2);
+
+        /*
 		// Menu for class hierarchy
 		HierarchyMenu menu = null;
         if(session.getAttribute("menu")==null)
@@ -106,8 +129,10 @@
         else
         	menu = (HierarchyMenu) session.getAttribute("menu");
         menu.sort(2);
-        
+        */
+
         //SKOS menu for subjects taxonomy
+        /*
 		HierarchyMenu menuSKOS = null;
         if(session.getAttribute("menuSKOS")==null)
         {
@@ -123,12 +148,14 @@
         else
         	menuSKOS = (HierarchyMenu) session.getAttribute("menuSKOS");
         menuSKOS.sort(2);
-  
+          */
+        /*
         if(session.getAttribute("service")==null){
             ServiceManager serviceManager = new ServiceManager();
             serviceManager.readServiceList();
             session.setAttribute("service",serviceManager.getServiceList());
         }
+        */
 	%>
 	<div id="menu-class" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
 		<div class="yui3-menu-content">
@@ -143,15 +170,15 @@
 			</ul>
 		</div>
 	</div>
-	<div id="menu-skos" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
+	<!--div id="menu-skos" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
 		<div class="yui3-menu-content">
 			<ul>
 				<li class="yui3-menuitem">
 					<a class="yui3-menuitem-content">Topics:</a>
-				</li>
-				<%=menuSKOS.printAsUl(request, 2, "http://purl.org/dc/terms/subject")%>
-			</ul>
+				</li-->
+				<!--%=menuSKOS.printAsUl(request, 2, "http://purl.org/dc/terms/subject")%-->
+			<!--/ul>
 		</div>
-	</div>
+	</div-->
 </div>
 <div id="body">

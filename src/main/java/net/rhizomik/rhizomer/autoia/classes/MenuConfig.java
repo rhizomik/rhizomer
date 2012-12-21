@@ -25,6 +25,7 @@ public class MenuConfig {
 	protected List<String> uriWhiteList;
 	protected List<String> namespaceBlackList;
 	protected String sort;
+    protected String store;
 
 	public MenuConfig(String path) throws ParserConfigurationException, SAXException, IOException{
 		uriBlackList = new ArrayList<String>();
@@ -72,8 +73,16 @@ public class MenuConfig {
 	public void setNamespaceBlackList(List<String> namespaceBlackList) {
 		this.namespaceBlackList = namespaceBlackList;
 	}
-		
-	public void loadFromXML(String path) throws ParserConfigurationException, SAXException, IOException{
+
+    public String getStore() {
+        return store;
+    }
+
+    public void setStore(String store) {
+        this.store = store;
+    }
+
+    public void loadFromXML(String path) throws ParserConfigurationException, SAXException, IOException{
 		
 		File file = new File(path);
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -104,6 +113,10 @@ public class MenuConfig {
 		nodeLst = doc.getElementsByTagName("sort");
 		xmlNode = nodeLst.item(0);
 		this.sort = xmlNode.getTextContent();
+        nodeLst = doc.getElementsByTagName("store");
+        xmlNode = nodeLst.item(0);
+        this.store = xmlNode.getTextContent();
+
 	}
 
 	public String getSort() {

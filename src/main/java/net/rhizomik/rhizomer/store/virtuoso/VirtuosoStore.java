@@ -13,6 +13,7 @@ import javax.servlet.ServletConfig;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.sparql.resultset.ResultSetMem;
 import net.rhizomik.rhizomer.store.MetadataStore;
+import net.rhizomik.rhizomer.store.ResultSetCache;
 import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
@@ -43,6 +44,7 @@ public class VirtuosoStore implements MetadataStore
     private String graphURI = "";
     private String schema = "";
     private String ruleSet = "";
+    private ResultSetCache cache = null;
     private static final Logger log = Logger.getLogger(VirtuosoStore.class.getName());
     private static int SPARQL_LIMIT = 15;
 
@@ -54,7 +56,8 @@ public class VirtuosoStore implements MetadataStore
     	super();
     }
     
-    public void init(String db_url, String db_user, String db_pass, String db_graph, String db_schema) throws SQLException
+    public void init(String db_url, String db_user, String db_pass, String db_graph, String db_schema, int cacheSize)
+            throws SQLException
     {
     	graphURI = db_graph;
 		// If schema for reasoning explicitly stated in web.xml, otherwise build from db_graph
@@ -71,6 +74,9 @@ public class VirtuosoStore implements MetadataStore
 		graph.getConnection().prepareCall(sqlStatement).execute();
 		//sqlStatement = "set result_timeout = 0";
 		//graph.getConnection().prepareCall(sqlStatement).execute();
+
+        if (cacheSize > 0)
+            cache = new ResultSetCache(graphURI, cacheSize);
     }
     
     public void init(ServletConfig config) throws Exception
@@ -85,9 +91,13 @@ public class VirtuosoStore implements MetadataStore
     		throw new Exception("Missing parameter for VirtuosoStore init: db_graph");
     	else
     	{
+            int cacheSize = 0;
+            if (config.getServletContext().getInitParameter("cache_size")!=null)
+                cacheSize = Integer.parseInt(config.getServletContext().getInitParameter("cache_size"));
+
     		init(config.getServletContext().getInitParameter("db_url"), config.getServletContext().getInitParameter("db_user"), 
     				config.getServletContext().getInitParameter("db_pass"), config.getServletContext().getInitParameter("db_graph"), 
-    				config.getServletContext().getInitParameter("db_schema"));
+    				config.getServletContext().getInitParameter("db_schema"), cacheSize);
     	}
     }
     
@@ -103,9 +113,13 @@ public class VirtuosoStore implements MetadataStore
     		throw new Exception("Missing parameter for VirtuosoStore init: db_graph");
     	else
     	{
+            int cacheSize = 0;
+            if (props.getProperty("cache_size")!=null)
+                cacheSize = Integer.parseInt(props.getProperty("cache_size"));
+
     		init(props.getProperty("db_url"), props.getProperty("db_user"), 
     				props.getProperty("db_pass"), props.getProperty("db_graph"), 
-    				props.getProperty("db_schema"));
+    				props.getProperty("db_schema"), cacheSize);
     	}
     }
     
@@ -155,7 +169,7 @@ public class VirtuosoStore implements MetadataStore
             	queryString = queryString.replace(", 'i'", "");
             }*/
             
-            //log.log(Level.INFO, "VirtuosoStore.query: "+queryString);
+            log.log(Level.INFO, "VirtuosoStore.query: "+queryString);
             
             qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
         
@@ -202,35 +216,41 @@ public class VirtuosoStore implements MetadataStore
 	public ResultSet querySelect(String queryString, int scope)
 	{
         ResultSet results = new ResultSetMem();
+
+        if (cache!=null && cache.isCached(queryString))
+            return cache.getCached(queryString);
+
         VirtuosoQueryExecution qexec = null;
         Query query = null;
 
         try {
             query = QueryFactory.create(queryString, Syntax.syntaxARQ);
-        } catch (QueryParseException e) {
+
+            if (scope == MetadataStore.INSTANCES || scope == MetadataStore.REASONING)
+                query.addGraphURI(graphURI);
+            if (scope == MetadataStore.SCHEMAS || scope == MetadataStore.REASONING)
+                query.addGraphURI(schema);
+
+            queryString = query.toString();
+            if (query.hasGroupBy())
+                if (query.getGroupBy().isEmpty())
+                    queryString = query.toString().substring(0, query.toString().indexOf("GROUP BY"));
+
+        log.log(Level.INFO, queryString);
+
+            qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
+
+            if (query.isSelectType())
+                results = qexec.execSelect();
+        } catch (Exception e) {
             log.log(Level.SEVERE, e.toString());
-            return results; // Return empty results
         }
 
-        if (scope == MetadataStore.INSTANCES || scope == MetadataStore.REASONING)
-            query.addGraphURI(graphURI);
-        if (scope == MetadataStore.SCHEMAS || scope == MetadataStore.REASONING)
-            query.addGraphURI(schema);
-
-        queryString = query.toString();
-        if (query.hasGroupBy())
-            if (query.getGroupBy().isEmpty())
-                queryString = query.toString().substring(0, query.toString().indexOf("GROUP BY"));
-
-        //log.log(Level.INFO, queryString);
-
-        qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
-
-        if (query.isSelectType())
-            results = qexec.execSelect();
+        if (cache!=null)
+            cache.put(queryString, results);
 
         return results;
-	}
+    }
 	
     /** Perform input SPARQL ASK query and return result as boolean
      * @return boolean
@@ -252,7 +272,7 @@ public class VirtuosoStore implements MetadataStore
         query.addGraphURI(graphURI);
         query.addGraphURI(schema);
         queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+query.toString();
-        //log.log(Level.INFO, "VirtuosoStore.query: "+query.toString());
+        log.log(Level.INFO, "VirtuosoStore.query: "+query.toString());
 
         qexec = VirtuosoQueryExecutionFactory.create(query.toString(), graph);
 
@@ -274,9 +294,9 @@ public class VirtuosoStore implements MetadataStore
         ByteArrayOutputStream out = new ByteArrayOutputStream();
     	String format = "RDF/XML"; //Default
     	
-    	if (contentType.indexOf("application/n-triples")>=0)
+    	if (contentType.contains("application/n-triples"))
     		format = "N-TRIPLE";
-    	else if (contentType.indexOf("application/n3")>=0)
+    	else if (contentType.contains("application/n3"))
     		format = "N3";
     	
     	try
@@ -348,7 +368,6 @@ public class VirtuosoStore implements MetadataStore
 	/**
      * Remove the input metadata from the store.
      * TODO: Remove triples also from schema graph, check if it is class, property,...?
-     * @return java.lang.String
      * @param metadata java.io.InputStream
      */
     public void remove(InputStream metadata, String contentType)

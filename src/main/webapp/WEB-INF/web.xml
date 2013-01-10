@@ -8,22 +8,21 @@
 <!-- DataStore Configuration. Options: Virtuoso, Jena File/Database, OWLIM. -->
 
 <!-- JENA FILE MODEL -->
-
-    <!--context-param>
+    <context-param>
       <param-name>store_class</param-name>
       <param-value>net.rhizomik.rhizomer.store.jena.JenaStore</param-value>
     </context-param>
     <context-param>
       <param-name>file_name</param-name>
-      <param-value>rhizomikstore.rdf</param-value>
+      <param-value>nasa-apollo.rdf</param-value>
     </context-param>
     <context-param>
       <param-name>dir_name</param-name>
       <param-value>/metadata</param-value>
     </context-param>
-        -->
+
 <!-- Virtuoso MODEL -->
-    <context-param>
+<!--    <context-param>
       <param-name>store_class</param-name>
       <param-value>net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore</param-value>
     </context-param>
@@ -41,9 +40,12 @@
     </context-param>    
     <context-param>
       <param-name>db_graph</param-name>
-      <!--param-value>http://rhizomik.net/linkedmdb/</param-value-->
-      <param-value>http://dbpedia.org</param-value>
+      <param-value>http://rhizomik.net/</param-value>
     </context-param>
+    <context-param>
+      <param-name>cache_size</param-name>
+      <param-value>0</param-value>
+    </context-param -->
   <!-- By default, the VirtuosoStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
     <!--context-param>
       <param-name>db_schema</param-name>
@@ -214,15 +216,19 @@
     <servlet-class>net.rhizomik.rhizomer.agents.RhizomerStatic</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
-  
-  <servlet>
+  <servlet-mapping>
+    <servlet-name>RhizomerStatic</servlet-name>
+    <url-pattern>/servlet/static</url-pattern>
+  </servlet-mapping>
+
+  <!-- servlet>
   	<servlet-name>ServiceProxy</servlet-name>
   	<servlet-class>net.rhizomik.rhizomer.service.ServiceProxy</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ServiceProxy</servlet-name>
     <url-pattern>/serviceproxy</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping -->
   
 <!-- Rhizomer Browsing and HTML Management Servlets-->
   <servlet>
@@ -241,13 +247,21 @@
     <servlet-name>save</servlet-name>
     <servlet-class>net.rhizomik.wiki.Save</servlet-class>
   </servlet>
-  
+  <servlet-mapping>
+    <servlet-name>save</servlet-name>
+    <url-pattern>/servlet/save</url-pattern>
+  </servlet-mapping>
+
   <servlet>
     <description>Servlet for deleting HTML content</description>
     <display-name>Delete HTML Servlet</display-name>
     <servlet-name>delete</servlet-name>
     <servlet-class>net.rhizomik.wiki.Delete</servlet-class>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>delete</servlet-name>
+    <url-pattern>/servlet/delete</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <description>JSP for viewing HTML content</description>
@@ -255,6 +269,10 @@
     <servlet-name>view.jsp</servlet-name>
     <jsp-file>/WEB-INF/jsp/view.jsp</jsp-file>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>view.jsp</servlet-name>
+    <url-pattern>/jsp/view.jsp</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <description>JSP for editing HTML content</description>
@@ -262,6 +280,10 @@
     <servlet-name>edit.jsp</servlet-name>
     <jsp-file>/WEB-INF/jsp/edit.jsp</jsp-file>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>edit.jsp</servlet-name>
+    <url-pattern>/jsp/edit.jsp</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <description>JSP for creating HTML content</description>
@@ -269,6 +291,10 @@
     <servlet-name>new.jsp</servlet-name>
     <jsp-file>/WEB-INF/jsp/new.jsp</jsp-file>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>new.jsp</servlet-name>
+    <url-pattern>/jsp/new.jsp</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <description>JSP for deleting HTML content</description>
@@ -276,6 +302,10 @@
     <servlet-name>delete.jsp</servlet-name>
     <jsp-file>/WEB-INF/jsp/delete.jsp</jsp-file>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>delete.jsp</servlet-name>
+    <url-pattern>/jsp/delete.jsp</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <description>JSP for HTML content history management</description>
@@ -283,6 +313,10 @@
     <servlet-name>history.jsp</servlet-name>
     <jsp-file>/WEB-INF/jsp/history.jsp</jsp-file>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>history.jsp</servlet-name>
+    <url-pattern>/jsp/history.jsp</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <description>JSP for Faceted Browsing</description>
@@ -290,6 +324,10 @@
     <servlet-name>facets.jsp</servlet-name>
     <jsp-file>/facets.jsp</jsp-file>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>facets.jsp</servlet-name>
+    <url-pattern>/facets.jsp</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <description>JSP for Treemap</description>
@@ -298,19 +336,19 @@
     <jsp-file>/treemap.jsp</jsp-file>
   </servlet>
 
-    <servlet>
-        <description>JSP for Sitemap</description>
-        <display-name>Sitemap JSP</display-name>
-        <servlet-name>sitemap.jsp</servlet-name>
-        <jsp-file>/sitemap.jsp</jsp-file>
-    </servlet>
+  <servlet>
+    <description>JSP for Sitemap</description>
+    <display-name>Sitemap JSP</display-name>
+    <servlet-name>sitemap.jsp</servlet-name>
+    <jsp-file>/sitemap.jsp</jsp-file>
+  </servlet>
 
-    <servlet>
-        <description>JSP for Site Index</description>
-        <display-name>Site Index JSP</display-name>
-        <servlet-name>siteindex.jsp</servlet-name>
-        <jsp-file>/siteindex.jsp</jsp-file>
-    </servlet>
+  <servlet>
+    <description>JSP for Site Index</description>
+    <display-name>Site Index JSP</display-name>
+    <servlet-name>siteindex.jsp</servlet-name>
+    <jsp-file>/siteindex.jsp</jsp-file>
+  </servlet>
   
   <jsp-config>
 		<jsp-property-group>

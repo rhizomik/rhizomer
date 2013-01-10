@@ -1,13 +1,12 @@
 package net.rhizomik.rhizomer.autoia.classes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 public class HierarchyNode implements Comparable{
@@ -230,8 +229,10 @@ public class HierarchyNode implements Comparable{
 			
 			if (levels>1 && this.getChilds().size()>0)
 			{
-				if (this.uri.indexOf("#Other")>=0)
+				if (this.uri.indexOf("#Other")>=0){
+                    System.out.println(this.uri + " - " + this.label);
 					out.append("<a class=\"yui3-menu-label\" href=\"#"+label+"-options\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
+                }
 				else
 				{
 					out.append("<span class=\"yui3-menu-label\">");
@@ -365,20 +366,47 @@ public class HierarchyNode implements Comparable{
 
         if (levels>=1)
         {
-            out.append("<a href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
+            out.append("<a id=\""+this.getUri()+"\" class=\"sitemap-root\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
 
             if(this.hasChilds()){
                 out.append("<ul class=\"sub\">");
+                java.util.Collections.sort(this.getChilds());
                 for(HierarchyNode n : this.getChilds())
                 {
                     out.append("<li class=\"inline\">");
-                    n.printAsUl(req, levels-1, out);
+                    String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+n.uri.replace("#", "%23")+">}";
+                    String clabel = n.label;
+                    int cpos;
+                    if ((cpos = clabel.indexOf('@')) > 0)
+                        clabel = clabel.substring(0, cpos);
+                    out.append("<a id=\""+n.getUri()+"\" class=\"sitemap\" href=\""+clink+"\">"+clabel+" <span class=\"menu_instances\">("+n.getNumInstances()+")</span></a>, ");
+                    //n.printAsUl(req, levels-1, out);
                     out.append("</li>");
                 }
                 out.append("</ul>");
             }
         }
 
+    }
+
+    public StringBuffer printAsJSON(){
+        String uri = this.getUri();
+        int instances = this.getNumInstances();
+        String label = this.getLabel();
+
+        StringBuffer out = new StringBuffer();
+
+        out.append("\n{ data :{\"instances\": "+instances+", \"$area\": "+instances+"}, \"id\":\""+uri+"\", \"name\":\""+label.replace("'","\'")+"\"," +
+
+                "\"children\":[");
+
+        for(HierarchyNode child : this.getChilds()){
+            out.append(child.printAsJSON());
+        }
+
+        out.append("]},");
+
+        return out;
     }
 
 }

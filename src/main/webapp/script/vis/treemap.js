@@ -28,15 +28,21 @@ function initTreeMap(json){
         titleHeight: 15,
         //enable animations
         animate: false,
-        constrained: true,
-        levelsToShow: 1,
+        constrained: false,
+        levelsToShow: 2,
         //box offsets
-        offset: 1,
+        offset: 2,
         Label: {
             type: 'HTML',
             //size: 9,
-            textBaseline: 'middle',
+            textBaseline: 'alphabetic',
             //family: 'Tahoma, Verdana, Arial'
+        },
+        Node: {
+            CanvasStyles: {
+                shadowBlur: 0,
+                shadowColor: '#333333'
+            }
         },
         //Attach left and right click events
         Events: {
@@ -99,11 +105,17 @@ function initTreeMap(json){
         //Add the name of the node in the correponding label
         //This method is called once, on label creation.
         onCreateLabel: function(domElement, node){
-            console.log(node);
+            domElement.innerHTML = node.name;
+            /*
+            if(node.id == "root")
+                domElement.innerHTML = node.name + " - " + node.data.instances;
+            else
+                domElement.innerHTML = node.name + "<br/>" + node.data.instances;
+            */
             //var label = document.createElement('span');
             //label.innerHTML = node.name;
             //domElement.innerHTML = label;
-            domElement.innerHTML = node.name + "<br/>" + node.data.instances;
+
             /*
              if(node.id != "root"){
              if(tm.clickedNode){
@@ -118,14 +130,14 @@ function initTreeMap(json){
             var style = domElement.style;
             style.display = '';
             style.color = '#000000';
-            style.fontSize = '14px';
+            /*style.fontSize = '11px';*/
 
-            style.border = '2px solid transparent';
+            style.border = '1px solid transparent';
             domElement.onmouseover = function() {
-                style.border = '2px solid #9FD4FF';
+                style.border = '1px solid #9FD4FF';
             };
             domElement.onmouseout = function() {
-                style.border = '2px solid transparent';
+                style.border = '1px solid transparent';
             };
 
         },

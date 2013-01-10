@@ -10,17 +10,25 @@
 
     <%
 
-        MenuManager manager = MenuManager.getInstance(config);
+        //HierarchyMenu originalMenu = (HierarchyMenu) session.getAttribute("originalMenu");
 
-        String path = config.getServletContext().getRealPath("WEB-INF");
-        String menuFile = (String) config.getServletContext().getAttribute("menuFile");
+        /*
+        MenuManager manager = MenuManager.getInstance(config);
+        HierarchyManagerSPARQL hm = manager.getManager();
+        HierarchyMenu hmenu = hm.getHierarchyMenu();
+        */
+
+        String json = originalMenu.printAsJSON();
+
+        //String path = config.getServletContext().getRealPath("WEB-INF");
+        //String menuFile = (String) config.getServletContext().getAttribute("menuFile");
 
     %>
 
 
     <script type="text/javascript">
 
-        var hierarchy = <%= manager.getJSON(path+"/"+menuFile)%>;
+        var hierarchy = <%= json %>;
 
         $j(document).ready(function() {
             //countNumMaxInstances(hierarchy);
@@ -29,7 +37,7 @@
             hierarchy.data.instances = totalArea;
             treatNode(hierarchy);
             countChilds(hierarchy);
-            countSubclassesInstances(hierarchy);
+            //countSubclassesInstances(hierarchy);
             initTreeMap(hierarchy);
         });
 

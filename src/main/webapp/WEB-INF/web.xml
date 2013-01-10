@@ -8,14 +8,14 @@
 <!-- DataStore Configuration. Options: Virtuoso, Jena File/Database, OWLIM. -->
 
 <!-- JENA FILE MODEL -->
-    <!--
-    <context-param>
+
+    <!--context-param>
       <param-name>store_class</param-name>
       <param-value>net.rhizomik.rhizomer.store.jena.JenaStore</param-value>
     </context-param>
     <context-param>
       <param-name>file_name</param-name>
-      <param-value>nasa-apollo.rdf</param-value>
+      <param-value>rhizomikstore.rdf</param-value>
     </context-param>
     <context-param>
       <param-name>dir_name</param-name>

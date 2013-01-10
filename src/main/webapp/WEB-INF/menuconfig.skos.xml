@@ -5,7 +5,8 @@
 	<numitemsglobal>8</numitemsglobal>
 	<numitemslocal>15</numitemslocal>
 	<sort>alphabetical</sort>
-	<sort>instances</sort>
+    <store>xml</store>
+    <!--sort>instances</sort-->
 
 	<blacklist>
 	</blacklist>	

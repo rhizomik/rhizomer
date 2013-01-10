@@ -341,6 +341,16 @@ ul.inline , ul.inline li{
     margin-left:150px;
 }
 
-.inline{
-    display: inline;
+li .inline{
+    display: inline-block;
+    margin-right:10px;
+}
+
+a.sitemap{
+    font-weight: bold;
+}
+
+a.sitemap-root{
+    font-weight:bold;
+    font-size:12px;
 }

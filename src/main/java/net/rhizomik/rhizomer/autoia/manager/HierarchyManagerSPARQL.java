@@ -1,17 +1,16 @@
 package net.rhizomik.rhizomer.autoia.manager;
 
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Literal;
+import net.rhizomik.rhizomer.agents.RhizomerRDF;
+import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
+import net.rhizomik.rhizomer.store.MetadataStore;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.logging.Logger;
-
-import net.rhizomik.rhizomer.agents.RhizomerRDF;
-import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
-
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
-import net.rhizomik.rhizomer.store.MetadataStore;
 
 
 public class HierarchyManagerSPARQL extends HierarchyManager 
@@ -96,11 +95,13 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         while(results.hasNext()){
 			   QuerySolution row = results.next();
 			   String uri = row.get("root").toString();
+               System.out.println(uri);
 			   HierarchyNode node = new HierarchyNode(uri);
 			   if (row.contains("label"))
 				   node.setLabel(row.get("label").toString());
 			   roots.add(node);
 		}
+        System.out.println("End roots");
         return roots;
     }
     

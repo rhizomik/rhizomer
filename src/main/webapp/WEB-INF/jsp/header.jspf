@@ -97,58 +97,38 @@
 	<%
 
         HierarchyMenu menu = null;
+        HierarchyMenu originalMenu = null;
         if(session.getAttribute("menu")==null)
         {
             MenuManager menuMng = MenuManager.getInstance(config);
             HierarchyManagerSPARQL manager = menuMng.getManager();
-
-            String path = config.getServletContext().getRealPath("WEB-INF");
-            MenuConfig menuConfig = new MenuConfig(path+"/menuconfig.xml");
-            manager.setMenuConfig(menuConfig);
+            originalMenu = manager.getHierarchyMenu();
             menu = manager.generateFullMenu(null);
             session.setAttribute("menu",menu);
+            session.setAttribute("originalMenu",originalMenu);
         }
-        else
+        else{
             menu = (HierarchyMenu) session.getAttribute("menu");
+            originalMenu = (HierarchyMenu) session.getAttribute("originalMenu");
+        }
         menu.sort(2);
 
         /*
-		// Menu for class hierarchy
-		HierarchyMenu menu = null;
-        if(session.getAttribute("menu")==null)
-        {
-            String path = config.getServletContext().getRealPath("WEB-INF");
-            String menuFile = (String) config.getServletContext().getAttribute("menuFile");
-            HierarchyManagerSPARQL manager = new HierarchyManagerSPARQL();
-            manager.readXML(path+"/"+menuFile);
-            MenuConfig menuConfig = new MenuConfig(path+"/menuconfig.xml");
-            manager.setMenuConfig(menuConfig);
-            menu = manager.generateFullMenu(null);
-            session.setAttribute("menu",menu);
-        }
-        else
-        	menu = (HierarchyMenu) session.getAttribute("menu");
-        menu.sort(2);
-        */
-
         //SKOS menu for subjects taxonomy
+        */
         /*
 		HierarchyMenu menuSKOS = null;
         if(session.getAttribute("menuSKOS")==null)
         {
-            String path = config.getServletContext().getRealPath("WEB-INF");
-            String menuFileSKOS = (String) config.getServletContext().getAttribute("menuFileSKOS");
-            HierarchyManagerSKOS manager = new HierarchyManagerSKOS();
-            manager.readXML(path+"/"+menuFileSKOS);
-            MenuConfig menuConfig = new MenuConfig(path+"/menuconfig.skos.xml");
-            manager.setMenuConfig(menuConfig);
-            menuSKOS = manager.generateFullMenu(null);
+            MenuManager menuMng = MenuManager.getInstance(config);
+            HierarchyManagerSKOS skosManager = menuMng.getSKOSManager();
+            menuSKOS = skosManager.generateFullMenu(null);
             session.setAttribute("menuSKOS",menuSKOS);
         }
         else
         	menuSKOS = (HierarchyMenu) session.getAttribute("menuSKOS");
         menuSKOS.sort(2);
-          */
+        */
         /*
         if(session.getAttribute("service")==null){
             ServiceManager serviceManager = new ServiceManager();

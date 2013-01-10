@@ -1,14 +1,9 @@
 package net.rhizomik.rhizomer.autoia.classes;
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 public class HierarchyMenu {
@@ -126,6 +121,7 @@ public class HierarchyMenu {
         StringBuffer out = new StringBuffer();
         String previousURI = "";
         out.append("<ul>");
+        java.util.Collections.sort(first.getChilds());
         for(HierarchyNode child : first.getChilds())
         {
             if (!child.getUri().equals(previousURI)) // Patch to avoid duplicate nodes when multiple parents for node
@@ -155,6 +151,26 @@ public class HierarchyMenu {
 		}
 		return out;
 	}
+
+    public String printAsJSON(){
+        StringBuffer out = new StringBuffer();
+        out.append("{\"id\": \"root\", \"name\": \"Classes\", \"$area\": 0, \"data\": {\"instances\": 0, \"size\": 0}, \"children\": [");
+        for(HierarchyNode node : first.getChilds()){
+            String uri = node.getUri();
+            int instances = node.getNumInstances();
+            String label = node.getLabel();
+
+            out.append("\n{ data :{\"instances\": "+instances+", \"$area\": "+instances+"}, \"id\": \""+uri+"\" ,  \"name\":\""+label.replace("'","\'")+"\"," +
+
+                    "\"children\":[");
+
+            out.append(node.printAsJSON());
+            out.append("]},");
+        }
+        out.append("]}");
+
+        return out.toString();
+    }
 	
 	private boolean isUriInNamespace(HierarchyNode node){
 		if (this.config!=null)

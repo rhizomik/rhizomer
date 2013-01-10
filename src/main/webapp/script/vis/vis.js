@@ -83,6 +83,7 @@ function treatNode(node){
         }
     }
     node.data.$color = generate_color();
+
     node.children = new_childs;
     if(selected_nodes.length > 0){
         var other = {data : {'$area':instanceCount, 'instances' : instanceCount, '$color' : generate_color()}, children : [], id : 'other'+other_num, name : 'Other '+name};
@@ -90,6 +91,7 @@ function treatNode(node){
         other.children = selected_nodes;
         node.children.push(other);
     }
+
 }
 
 function countChilds(node){

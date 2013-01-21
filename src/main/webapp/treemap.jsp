@@ -4,7 +4,8 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/script/vis/d3.v2.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/script/vis/jit.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/script/vis/vis.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/script/vis/treemapUtils.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/script/vis/cie.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/script/vis/treemap.js"></script>
 
 
@@ -35,7 +36,7 @@
             totalArea = countInstances(hierarchy);
             hierarchy.data.$area = totalArea;
             hierarchy.data.instances = totalArea;
-            treatNode(hierarchy);
+            treatHierarchy(hierarchy);
             countChilds(hierarchy);
             //countSubclassesInstances(hierarchy);
             initTreeMap(hierarchy);
@@ -46,5 +47,7 @@
 <div id="status" style="width:100%; height:20px; text-align:center; font-size:14px; margin-bottom:20px;">
 
 </div>
-<div id="vis"  class="treemap">
+
+<div style="text-align:center;">
+    <div id="vis"  class="treemap"></div>
 </div>

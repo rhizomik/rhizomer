@@ -1,9 +1,6 @@
 package net.rhizomik.rhizomer.autoia.classes;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class HierarchyMenu {
@@ -39,6 +36,23 @@ public class HierarchyMenu {
 	public MenuConfig getConfig() {
 		return config;
 	}
+
+    public List<String> getInitials(){
+        List<String> initials = new ArrayList<String>();
+        List<HierarchyNode> nodes = new ArrayList<HierarchyNode>(map.values());
+        java.util.Collections.sort(nodes);
+        for(HierarchyNode node : nodes){
+            String label = node.getLabel();
+            String initial = label.substring(0,1);
+            if(!initials.contains(initial))
+                initials.add(initial);
+        }
+        return initials;
+    }
+
+    public Map<String, HierarchyNode> getMapNodes(){
+        return map;
+    }
 
     public HierarchyNode getFirst() {
         return first;
@@ -116,7 +130,7 @@ public class HierarchyMenu {
 		return out;
 	}
 
-    public StringBuffer printAsSitemap(HttpServletRequest req, int levels)
+    public StringBuffer printAsSitemap(HttpServletRequest req, int levels, String mode)
     {
         StringBuffer out = new StringBuffer();
         String previousURI = "";
@@ -126,9 +140,12 @@ public class HierarchyMenu {
         {
             if (!child.getUri().equals(previousURI)) // Patch to avoid duplicate nodes when multiple parents for node
             {
-                out.append("<li>");
-                child.printAsSitemap(req, levels, out);
-                out.append("</li>");
+                //out.append("<li>");
+                if(mode.equals("full")){
+                    child.printAsFullSitemap(req ,out);
+                }
+                else
+                    child.printAsSitemap(req, levels, out);
                 previousURI = child.getUri();
             }
         }
@@ -159,6 +176,9 @@ public class HierarchyMenu {
             String uri = node.getUri();
             int instances = node.getNumInstances();
             String label = node.getLabel();
+            int pos;
+            if ((pos = label.indexOf('@')) > 0)
+                label = label.substring(0, pos);
 
             out.append("\n{ data :{\"instances\": "+instances+", \"$area\": "+instances+"}, \"id\": \""+uri+"\" ,  \"name\":\""+label.replace("'","\'")+"\"," +
 

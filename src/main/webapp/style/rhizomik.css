@@ -338,10 +338,17 @@ ul.inline , ul.inline li{
 }
 
 #sitemap{
-    margin-left:150px;
+    margin-left:100px;
+    margin-right:100px;
+    font-size:12px;
+}
+
+#sitemap ul li{
+    padding-bottom:5px;
 }
 
 li .inline{
+    padding-bottom:0px;
     display: inline-block;
     margin-right:10px;
 }
@@ -353,4 +360,36 @@ a.sitemap{
 a.sitemap-root{
     font-weight:bold;
     font-size:12px;
+}
+
+.siteindex_letter{
+    /*color: #02327A;*/
+    font-size:14px;
+    background-color: #E9F0F5;
+    padding-left: 6px;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    margin-bottom:0px;
+}
+
+.siteindex_letter_list{
+    font-size:12px;
+    text-decoration:underline;
+    border: 1px solid #CCC;
+    margin-bottom:6px;
+    margin-top:0px;
+}
+
+.siteindex_letter_list li{
+    padding-bottom:5px;
+    color: #333;
+    list-style:disc outside;
+}
+
+.siteindex_letter_list .top{
+    color: #333;
+    background-color: #EFEFEF;
+    background-image: none;
+    padding: .1em 0 .1em 50%;
+    list-style-type: none;
 }

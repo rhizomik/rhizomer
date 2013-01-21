@@ -1,5 +1,6 @@
 var labelType, useGradients, nativeTextSupport, animate;
 var tm;
+var clickedNode = null;
 
 (function() {
     var ua = navigator.userAgent,
@@ -25,7 +26,7 @@ function initTreeMap(json){
         //where to inject the visualization
         injectInto: 'vis',
         //parent box title heights
-        titleHeight: 15,
+        titleHeight: 20,
         //enable animations
         animate: false,
         constrained: false,
@@ -57,6 +58,7 @@ function initTreeMap(json){
                 }
                 */
                 if(node){ tm.enter(node);
+                    clickedNode = node;
                     showStatus(node);
                 }
                 /*
@@ -93,65 +95,55 @@ function initTreeMap(json){
                     html += "Number of instances: " + data.instances;
                     html += "<br/>Subclasses: " + data.num_childs;
                 }
-                //html += "Subclasses: " + node.children.length;
-                /*
-                 if(data.image) {
-                 html += "<img src=\""+ data.image +"\" class=\"album\" />";
-                 }
-                 */
                 tip.innerHTML =  html;
             }
         },
         //Add the name of the node in the correponding label
         //This method is called once, on label creation.
         onCreateLabel: function(domElement, node){
-            domElement.innerHTML = node.name;
-            /*
-            if(node.id == "root")
-                domElement.innerHTML = node.name + " - " + node.data.instances;
-            else
-                domElement.innerHTML = node.name + "<br/>" + node.data.instances;
-            */
-            //var label = document.createElement('span');
-            //label.innerHTML = node.name;
-            //domElement.innerHTML = label;
-
-            /*
-             if(node.id != "root"){
-             if(tm.clickedNode){
-             if(tm.clickedNode.id != node.id)
-             domElement.innerHTML += "<br/>" + node.data.playcount;
-             }
-             else
-             domElement.innerHTML += "<br/>" + node.data.playcount;
-             }
-             */
-
             var style = domElement.style;
             style.display = '';
             style.color = '#000000';
             /*style.fontSize = '11px';*/
 
-            style.border = '1px solid transparent';
+            style.border = '2px solid transparent';
             domElement.onmouseover = function() {
-                style.border = '1px solid #9FD4FF';
+                style.border = '2px solid #ffffff';
             };
             domElement.onmouseout = function() {
-                style.border = '1px solid transparent';
+                style.border = '2px solid transparent';
             };
-
         },
-        /*
-         onPlaceLabel: function(domElement, node){
-         var style = domElement.style,
-         width = node.getData('width'),
-         height = node.getData('height');
-         //alert(node.id + " " +height);
-         style.display = '';
-         //style.width = width + 'px';
-         style.height = height + 'px';
-         }
-         */
+        onPlaceLabel: function (domElement, node) {
+            if(node.id == "root" || (tm.clickedNode!=null && tm.clickedNode.id == node.id)){
+                domElement.innerHTML = "<div class=\"root\">"+node.name+"</div>";
+            }
+            else if(!tm.leaf(node)){
+                var pt = (Math.round(node.data.$width/node.name.length));
+                if(pt<4)
+                    pt = 0;
+                else if(pt>12)
+                    pt = 12;
+
+                domElement.innerHTML = "<div style=\"font-size:"+pt+"pt\" class=\"top\">"+node.name+"</div>";
+                //else
+                  //  domElement.innerHTML = "<div class=\"top\">"+node.name+"</div>";
+            }
+
+            else{
+                if(node.data.$width == 0 || isNaN(node.data.$width))
+                    var pt = 0;
+                else{
+                    var pt = (Math.round(node.data.$width/node.name.length));
+                    var vpt = (Math.round(node.data.$height/node.name.length));
+                    pt = Math.min(pt, vpt);
+
+                    if(pt<4)
+                        pt = 0;
+                }
+                domElement.innerHTML = "<div class=\"middle\" style=\"font-size:"+pt+"pt\">"+node.name+"</div>";
+            }
+        },
     });
     tm.loadJSON(json);
     tm.refresh();

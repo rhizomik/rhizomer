@@ -27,6 +27,10 @@ public class HierarchyNode implements Comparable{
 		
 		
 		public String getLabel() {
+            label = Character.toUpperCase(label.charAt(0)) + label.substring(1);
+            int pos;
+            if ((pos = label.indexOf('@')) > 0)
+                label = label.substring(0, pos);
 			return label;
 		}
 
@@ -222,7 +226,7 @@ public class HierarchyNode implements Comparable{
 			String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
 			String query = "SELECT ?r WHERE { ?r ";
 			
-			String label = this.label;
+			String label = this.getLabel();
 			int pos;
 			if ((pos = label.indexOf('@')) > 0)
 				label = label.substring(0, pos);
@@ -268,7 +272,7 @@ public class HierarchyNode implements Comparable{
 			
 			String onclick = "javascript:rhz.listResources('"+query+"'); return false;";
 			
-			String label = this.label;
+			String label = this.getLabel();
 			int pos;
 			if ((pos = label.indexOf('@')) > 0)
 				label = label.substring(0, pos);
@@ -357,15 +361,15 @@ public class HierarchyNode implements Comparable{
         //TODO: IMPORTANT! Make link to facets.jsp independent from where the app is installed!
         //String link = req.getContextPath()+"/facets.jsp?uri="+this.uri.replace("#", "%23");
         String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
-        String query = "SELECT ?r WHERE { ?r ";
 
-        String label = this.label;
+        String label = this.getLabel();
         int pos;
         if ((pos = label.indexOf('@')) > 0)
             label = label.substring(0, pos);
 
         if (levels>=1)
         {
+            out.append("<li>");
             out.append("<a id=\""+this.getUri()+"\" class=\"sitemap-root\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
 
             if(this.hasChilds()){
@@ -373,26 +377,68 @@ public class HierarchyNode implements Comparable{
                 java.util.Collections.sort(this.getChilds());
                 for(HierarchyNode n : this.getChilds())
                 {
-                    out.append("<li class=\"inline\">");
-                    String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+n.uri.replace("#", "%23")+">}";
-                    String clabel = n.label;
-                    int cpos;
-                    if ((cpos = clabel.indexOf('@')) > 0)
-                        clabel = clabel.substring(0, cpos);
-                    out.append("<a id=\""+n.getUri()+"\" class=\"sitemap\" href=\""+clink+"\">"+clabel+" <span class=\"menu_instances\">("+n.getNumInstances()+")</span></a>, ");
-                    //n.printAsUl(req, levels-1, out);
-                    out.append("</li>");
+                    if(n.isAbstractNode()){
+                        for(HierarchyNode nc : n.getChilds()){
+                            out.append("<li class=\"inline\">");
+                            String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+nc.uri.replace("#", "%23")+">}";
+                            String clabel = nc.getLabel();
+                            int cpos;
+                            if ((cpos = clabel.indexOf('@')) > 0)
+                                clabel = clabel.substring(0, cpos);
+                            out.append("<a id=\""+n.getUri()+"\" class=\"sitemap\" href=\""+clink+"\">"+clabel+" <span class=\"menu_instances\">("+nc.getNumInstances()+")</span></a>, ");
+                            out.append("</li>");
+                        }
+                    }
+                    else{
+                        out.append("<li class=\"inline\">");
+                        String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+n.uri.replace("#", "%23")+">}";
+                        String clabel = n.getLabel();
+                        int cpos;
+                        if ((cpos = clabel.indexOf('@')) > 0)
+                            clabel = clabel.substring(0, cpos);
+                        out.append("<a id=\""+n.getUri()+"\" class=\"sitemap\" href=\""+clink+"\">"+clabel+" <span class=\"menu_instances\">("+n.getNumInstances()+")</span></a>, ");
+                        out.append("</li>");
+                    }
                 }
                 out.append("</ul>");
             }
+            out.append("</li>");
         }
+    }
 
+    public void printAsFullSitemap(HttpServletRequest req, StringBuffer out)
+    {
+        //TODO: IMPORTANT! Make link to facets.jsp independent from where the app is installed!
+        //String link = req.getContextPath()+"/facets.jsp?uri="+this.uri.replace("#", "%23");
+        String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
+
+        String label = this.getLabel();
+        int pos;
+        if ((pos = label.indexOf('@')) > 0)
+            label = label.substring(0, pos);
+
+        out.append("<li>");
+        out.append("<a id=\""+this.getUri()+"\" class=\"sitemap-root\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
+
+        if(this.hasChilds()){
+            out.append("<ul>");
+            java.util.Collections.sort(this.getChilds());
+            for(HierarchyNode n : this.getChilds())
+            {
+                n.printAsFullSitemap(req, out);
+            }
+            out.append("</ul>");
+        }
+        out.append("</li>");
     }
 
     public StringBuffer printAsJSON(){
         String uri = this.getUri();
         int instances = this.getNumInstances();
         String label = this.getLabel();
+        int pos;
+        if ((pos = label.indexOf('@')) > 0)
+            label = label.substring(0, pos);
 
         StringBuffer out = new StringBuffer();
 

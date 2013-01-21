@@ -19,6 +19,7 @@ import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
 import com.hp.hpl.jena.vocabulary.XSD;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
@@ -419,6 +420,7 @@ public class HierarchyManager
         for(HierarchyNode node : menu.getNodes()){
             Resource klass = model.createResource(node.getUri());
             klass.addProperty(distinctSubjects,Integer.toString(node.getNumInstances()),XSDDatatype.XSDinteger);
+            klass.addProperty(RDFS.label,node.getLabel());
             dataset.addProperty(classPartition,klass);
             writeVoidNode(model, klass, node);
         }
@@ -434,7 +436,8 @@ public class HierarchyManager
         Property classPartition = model.createProperty("http://rdfs.org/ns/void#classPartition");
         for(HierarchyNode child : node.getChilds()){
             Resource klass = model.createResource(child.getUri());
-            klass.addProperty(distinctSubjects,Integer.toString(node.getNumInstances()),XSDDatatype.XSDinteger);
+            klass.addProperty(distinctSubjects,Integer.toString(child.getNumInstances()),XSDDatatype.XSDinteger);
+            klass.addProperty(RDFS.label,child.getLabel());
             resource.addProperty(classPartition,klass);
             writeVoidNode(model, klass, child);
         }
@@ -460,14 +463,10 @@ public class HierarchyManager
     private HierarchyNode getVoidNode(Resource r){
         String uri = r.getURI();
         int instances = r.getProperty(distinctSubjects).getInt();
-        //String label = xmlNode.getAttributes().getNamedItem("label").getTextContent();
-
-        //Parxe temporal
-        //label = FacetUtil.makeLabel(label);
-
+        String label = r.getProperty(RDFS.label).getString();
         HierarchyNode node = new HierarchyNode(uri);
+        node.setLabel(label);
         node.setNumInstances(instances);
-        //node.setLabel(label);
         return node;
     }
 

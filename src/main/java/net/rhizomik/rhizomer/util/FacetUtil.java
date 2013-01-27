@@ -7,7 +7,9 @@ import java.net.URLEncoder;
 public class FacetUtil {
 	
 	public static String makeLabel(String uri){
-		String label = null;
+		String label = "null";
+        if (uri==null) return label;
+
 		String[] uriSplitted = uri.split("#");
 		if(uriSplitted.length>1)
 			label = uriSplitted[uriSplitted.length-1];

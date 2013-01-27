@@ -178,6 +178,7 @@ public class TypeDetector {
         ResultSet results = RhizomerRDF.instance().querySelect(queryString, MetadataStore.REASONING);
         String typeVar = results.getResultVars().get(0);
         String facetTypes = "";
+        int countFacetTypes = 0;
         while(results.hasNext()){
         	QuerySolution row = results.next();
             if (row.get(typeVar)!=null) {
@@ -188,11 +189,12 @@ public class TypeDetector {
                     !range.contains("http://www.w3.org/1999/02/22-rdf-syntax-ns#Resource") ) {
                     if (facetTypes.length() > 0) facetTypes += " || ";
                     facetTypes += "?subclass = <"+range+">";
+                    countFacetTypes++;
                 }
             }
         }
         log.log(Level.INFO, "Facet types: "+facetTypes);
-        if (facetTypes.length()>0) {
+        if (countFacetTypes>1) {
             queryString = makeQueryForSuperClass(facetTypes);
             results = RhizomerRDF.instance().querySelect(queryString, MetadataStore.REASONING);
             String classVar = results.getResultVars().get(0);
@@ -202,9 +204,9 @@ public class TypeDetector {
                     range = row.get(classVar).toString();
             }
         }
+        log.log(Level.INFO, "Facet range: "+range);
         return range;
     }
-    
 
     public String detectType() {
         String queryString = makeQueryForValues(uri, property);

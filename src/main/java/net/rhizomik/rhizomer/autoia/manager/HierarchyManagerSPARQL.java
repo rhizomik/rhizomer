@@ -1,17 +1,19 @@
 package net.rhizomik.rhizomer.autoia.manager;
 
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
-import net.rhizomik.rhizomer.agents.RhizomerRDF;
-import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
-import net.rhizomik.rhizomer.store.MetadataStore;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.rhizomik.rhizomer.agents.RhizomerRDF;
+import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
+
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Literal;
+import net.rhizomik.rhizomer.store.MetadataStore;
 
 public class HierarchyManagerSPARQL extends HierarchyManager 
 {
@@ -95,13 +97,13 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         while(results.hasNext()){
 			   QuerySolution row = results.next();
 			   String uri = row.get("root").toString();
-               System.out.println(uri);
+               log.log(Level.INFO, "Root class: "+uri);
 			   HierarchyNode node = new HierarchyNode(uri);
 			   if (row.contains("label"))
 				   node.setLabel(row.get("label").toString());
 			   roots.add(node);
 		}
-        System.out.println("End roots");
+        log.log(Level.INFO, "End roots");
         return roots;
     }
     
@@ -178,6 +180,41 @@ public class HierarchyManagerSPARQL extends HierarchyManager
 			childInstances += child.getOwnedInstances();
 			calculateInstances(child);
 		}
-	}    
+	}
 
+    public static void main(String[] args) throws Exception
+    {
+        if (args.length < 1)
+        {
+            System.err.println("Usage: ClassMenu.sh (build|recount)");
+            System.exit(-1);
+        }
+
+        Properties props = new Properties();
+        props.put("store_class", "net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore");
+        props.put("db_graph", "http://rhizomik.net/");
+        //props.put("db_schema", "http://dbpedia.org/schema/");
+        props.put("db_url", "jdbc:virtuoso://localhost:1111");
+        props.put("db_user", "user");
+        props.put("db_pass", "password");
+        RhizomerRDF.instance().addStore(props);
+
+        int menuHash = props.getProperty("db_graph").hashCode();
+        HierarchyManagerSPARQL manager = new HierarchyManagerSPARQL();
+
+
+        if (args[0].equalsIgnoreCase("build"))
+            manager.readModel();
+        else if (args[0].equalsIgnoreCase("recount"))
+        {
+            manager.readXML("menu-"+menuHash+".xml");
+            manager.countInstances();
+        }
+        else
+        {
+            System.err.println("Usage: ClassMenu.sh (build|recount)");
+            System.exit(-1);
+        }
+        manager.writeXMLFile("menu-"+menuHash+".xml");
+    }
 }

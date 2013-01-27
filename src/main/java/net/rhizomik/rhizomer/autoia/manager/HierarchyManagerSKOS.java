@@ -230,9 +230,9 @@ public class HierarchyManagerSKOS extends HierarchyManager
     	props.put("store_class", "net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore");
     	props.put("db_graph", "http://dbpedia.org");
     	//props.put("db_schema", "http://dbpedia.org/schema/");
-    	props.put("db_url", "jdbc:virtuoso://omediadis.udl.cat:1111");
+    	props.put("db_url", "jdbc:virtuoso://localhost:1111");
     	props.put("db_user", "rhizomer");
-    	props.put("db_pass", "griho");
+    	props.put("db_pass", "rhizomer");
     	RhizomerRDF.instance().addStore(props);
     	
     	int menuHash = props.getProperty("db_graph").hashCode();

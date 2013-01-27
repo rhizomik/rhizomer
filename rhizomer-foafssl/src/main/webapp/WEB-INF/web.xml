@@ -28,19 +28,19 @@
     </context-param>
     <context-param>
       <param-name>db_url</param-name>
-      <param-value>jdbc:virtuoso://asera.ii.uam.es:1111</param-value>
+      <param-value>jdbc:virtuoso://localhost:1111</param-value>
     </context-param>
     <context-param>
       <param-name>db_user</param-name>
-      <param-value>dba</param-value>
+      <param-value>user</param-value>
     </context-param>
     <context-param>
       <param-name>db_pass</param-name>
-      <param-value>gestora1</param-value>
+      <param-value>password</param-value>
     </context-param>    
     <context-param>
       <param-name>db_graph</param-name>
-      <param-value>http://es.dbpedia.org</param-value>
+      <param-value>http://dbpedia.org</param-value>
     </context-param>
 -->  <!-- By default, the VirtuosoStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
     <!--context-param>
@@ -96,35 +96,7 @@
       <param-name>db_model</param-name>
       <param-value>rhizomer</param-value>
     </context-param>
--->    					
-  
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>restricted content</web-resource-name>
-      <url-pattern>/html/admin/*</url-pattern>
-      <url-pattern>/fckeditor/*</url-pattern>
-      <url-pattern>/html/private/*</url-pattern>
-      <url-pattern>/WEB-INF/jsp/new.jsp</url-pattern>
-      <url-pattern>/WEB-INF/jsp/edit.jsp</url-pattern>
-      <url-pattern>/WEB-INF/jsp/history.jsp</url-pattern>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>rhizomer</role-name>
-    </auth-constraint>
-  </security-constraint>
-
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>restricted metadata</web-resource-name>
-      <url-pattern>/*</url-pattern>
-      <http-method>PUT</http-method>
-      <http-method>POST</http-method>
-      <http-method>DELETE</http-method>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>rhizomer</role-name>
-    </auth-constraint>
-  </security-constraint>
+-->
   
   <security-constraint>
     <web-resource-collection>
@@ -167,9 +139,10 @@
         <url-pattern>/WEB-INF/jsp/edit.jsp</url-pattern>
         <url-pattern>/WEB-INF/jsp/history.jsp</url-pattern>
     </filter-mapping>
+
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Entire  Application</web-resource-name>
+            <web-resource-name>restricted content</web-resource-name>
             <url-pattern>/html/admin/*</url-pattern>
             <url-pattern>/fckeditor/*</url-pattern>
             <url-pattern>/html/private/*</url-pattern>
@@ -182,7 +155,20 @@
         </user-data-constraint>
     </security-constraint>
 
-  <!-- URLRewrite filter, fix old-style URLs, rules in urlrewrite.xml -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>restricted metadata</web-resource-name>
+            <url-pattern>/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <!-- URLRewrite filter, fix old-style URLs, rules in urlrewrite.xml -->
 
   <filter>
         <filter-name>UrlRewriteFilter</filter-name>

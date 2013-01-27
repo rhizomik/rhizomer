@@ -10,18 +10,24 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Rhizomik</title>
 
-	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js" charset="utf-8"></script>
-	
+    <script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js" charset="utf-8"></script>
+
+    <!--script src="<%=request.getContextPath()%>/script/yui-min.js" charset="utf-8"></script-->
+    <!--script type="text/javascript">
+        YUI_config = {
+            //base: "<%=request.getContextPath()%>/script/yui3/build/"
+        };
+    </script-->
+
 	<!-- YUI 2 Loading... --> 
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/yuiloader-dom-event.js"></script>
 	<script type="text/javascript">
 	(function() { 
 	    var loader = new YAHOO.util.YUILoader({
-		    base: "",
-	        //base: "<%=request.getContextPath()%>/script/yui/build/", 
+            base: "",  // "<%=request.getContextPath()%>/script/yui2/build/",
 	        require: ["button","connectioncore","container","datasource","element","resize","tabview","autocomplete","animation"], 
 	        loadOptional: false, 
-	        combine: true, 
+	        combine: true,
 	        filter: "MIN", 
 	        allowRollup: true, 
 	        onSuccess: function() { 

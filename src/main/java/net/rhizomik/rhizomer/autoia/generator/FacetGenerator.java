@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -157,10 +158,10 @@ public class FacetGenerator {
         "}"+NL+
         "GROUP BY ?x ORDER BY DESC(?n) LIMIT 1";
 
-    public FacetGenerator(ServletConfig config) throws ClassNotFoundException, SQLException{
-
-    	String path = config.getServletContext().getRealPath("WEB-INF");
+    public FacetGenerator(ServletConfig config) throws ClassNotFoundException, SQLException {
+    	String path = config.getServletContext().getRealPath("WEB-INF")+"/";
 		String datasetId = "";
+
 		if (config.getServletContext().getInitParameter("db_graph")!=null)
 			datasetId = config.getServletContext().getInitParameter("db_graph");
 		else if (config.getServletContext().getInitParameter("db_url")!=null)
@@ -168,30 +169,48 @@ public class FacetGenerator {
 		else if (config.getServletContext().getInitParameter("file_name")!=null)
 			datasetId = config.getServletContext().getInitParameter("file_name");
 		int facetHash = datasetId.hashCode();
-		String filePath = path+="/facets-"+facetHash+".db";
+        createDB(path, facetHash);
+    }
 
-		if(!fileExists(filePath)){
-	        Class.forName("org.sqlite.JDBC"); // TODO: get db class from web.xml
-	    	conn = DriverManager.getConnection("jdbc:sqlite:"+filePath);
-	    	System.out.println("File \""+filePath+"\" created, generating facets");
-	    	Statement stat = conn.createStatement();
-	        stat.execute("CREATE TABLE if not exists class_summary(class varchar(255), num_instances int, " +
-	        		"primary key(class))");
-	        /*stat.execute("CREATE TABLE if not exists property_summary(id int auto_increment, " +
-	        		"class varchar(255), property varchar(255), num_instances int, different_values int, " +
-	        		"entropy float, value_range varchar(255), value_type varchar(255), primary key(id))");
-	        */
-	        stat.execute("CREATE TABLE if not exists property_summary(id int auto_increment, " +
-	        		"class varchar(255), property varchar(255), num_instances int, different_values int, " +
-	        		"max_value int, max_cardinality int, value_range varchar(255), value_type varchar(255), is_inverse boolean, primary key(id))");
-	        stat.close();
-	        generateFacets();
-		}
-		else
-			System.out.println("File \""+filePath+"\" already exists");
+    public FacetGenerator(Properties props) throws ClassNotFoundException, SQLException {
+        String path = "";
+        String datasetId = "";
+
+        if (props.getProperty("db_graph")!=null)
+            datasetId = props.getProperty("db_graph");
+        else if (props.getProperty("db_url")!=null)
+            datasetId = props.getProperty("db_url");
+        else if (props.getProperty("file_name")!=null)
+            datasetId = props.getProperty("file_name");
+        int facetHash = datasetId.hashCode();
+        createDB(path, facetHash);
     }
 
     public FacetGenerator() {}
+
+    private void createDB(String path, int facetHash) throws ClassNotFoundException, SQLException {
+        String filePath = path+="facets-"+facetHash+".db";
+
+        if(!fileExists(filePath)) {
+            Class.forName("org.sqlite.JDBC"); // TODO: get db class from web.xml
+            conn = DriverManager.getConnection("jdbc:sqlite:" + filePath);
+            System.out.println("File \""+filePath+"\" created, generating facets");
+            Statement stat = conn.createStatement();
+            stat.execute("CREATE TABLE if not exists class_summary(class varchar(255), num_instances int, " +
+                    "primary key(class))");
+            /*stat.execute("CREATE TABLE if not exists property_summary(id int auto_increment, " +
+                    "class varchar(255), property varchar(255), num_instances int, different_values int, " +
+                    "entropy float, value_range varchar(255), value_type varchar(255), primary key(id))");
+            */
+            stat.execute("CREATE TABLE if not exists property_summary(id int auto_increment, " +
+                    "class varchar(255), property varchar(255), num_instances int, different_values int, " +
+                    "max_value int, max_cardinality int, value_range varchar(255), value_type varchar(255), is_inverse boolean, primary key(id))");
+            stat.close();
+            generateFacets();
+        }
+        else
+            System.out.println("File \""+filePath+"\" already exists");
+    }
 
     private void generateFacets() throws SQLException{
     	ArrayList<String> classes = getClasses();
@@ -231,10 +250,12 @@ public class FacetGenerator {
         f.format(queryForSubClasses, vars);
         ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
         ArrayList<String> subclasses = new ArrayList<String>();
-        while(results.hasNext()){
-            QuerySolution row = results.next();
-            subclasses.add(row.get("subclass").toString());
-        }
+        try {
+            while(results.hasNext()){
+                QuerySolution row = results.next();
+                subclasses.add(row.get("subclass").toString());
+            }
+        } catch (Exception e) {}
         return subclasses;
     }
 
@@ -553,5 +574,28 @@ public class FacetGenerator {
         return out.toString();
     }
 
+    public void destroy() throws SQLException {
+        conn.close();
+    }
 
+    public static void main(String[] args) throws Exception
+    {
+        Properties props = new Properties();
+        props.put("store_class", "net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore");
+        props.put("db_graph", "http://dbpedia.org");
+        //props.put("db_schema", "http://dbpedia.org/schema/");
+        props.put("db_url", "jdbc:virtuoso://omediadis.udl.cat:1111");
+        props.put("db_user", "rhizomer");
+        props.put("db_pass", "griho");
+        props.put("cache_size", "10000");
+
+        RhizomerRDF.instance().addStore(props);
+
+        File facetsDB = new File("facets-"+props.getProperty("db_graph").hashCode()+".db");
+        if (facetsDB.exists())
+            facetsDB.delete();
+
+        int menuHash = props.getProperty("db_graph").hashCode();
+        FacetGenerator generator = new FacetGenerator(props);
+    }
 }

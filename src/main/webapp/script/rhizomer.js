@@ -65,11 +65,11 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
         YUI().use('io-base', function (Y) {
             var cfg = {
                 method: 'GET',
+                headers: {'Accept': contenttype},
                 on: {
                     success: function(tid, response) { callback(response.responseText); },
                     failure: function(tid, response) { onFailure(response); }
                 } };
-            Y.io.header('Accept', contenttype);
             Y.io(url, cfg);
         });
 	};
@@ -80,11 +80,11 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
             var cfg = {
                 method: 'PUT',
                 data: content,
+                headers: {'Content-Type': contenttype},
                 on: {
                     success: function(tid, response) { callback(response.responseText); },
                     failure: function(tid, response) { onFailure(response); }
                 } };
-            Y.io.header('Content-Type', contenttype);
             Y.io(url+'?uri='+uri, cfg);
         });
 	};
@@ -95,11 +95,11 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
             var cfg = {
                 method: 'POST',
                 data: content,
+                headers: {'Content-Type': contenttype},
                 on: {
                     success: function(tid, response) { callback(response.responseText); },
                     failure: function(tid, response) { onFailure(response); }
                 } };
-            Y.io.header('Content-Type', contenttype);
             Y.io(url, cfg);
         });
 	};

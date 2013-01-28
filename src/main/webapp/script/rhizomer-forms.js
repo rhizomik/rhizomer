@@ -110,8 +110,11 @@ YUI().use('autocomplete', 'autocomplete-highlighters', 'autocomplete-filters', '
 		
 		function tempLocalUri (type, label)
         {
-            return "http://rhizomik.net/" +
-                    type.toLowerCase().replace(/ */g,"") + "/" + 
+            var typeString = "resource";
+            if (type!=null)
+                    typeString = type.toLowerCase().replace(/ */g,""); 
+
+            return "http://rhizomik.net/" + typeString + "/" +
                     label.toLowerCase().replace(/ */g,""); 
         };
 		

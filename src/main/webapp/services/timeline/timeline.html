@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>RDF to Timeline Form</title>
+</head>
+<body>
+<h1>RDF to Timeline Form</h1>
+<form method="post" action="timeline.jsp" name="render" target="_blank" accept-charset="UTF-8">
+    <p>Input RDF or URI pointing to RDF content:</p>
+    <p><textarea cols="80" rows="10" name="rdf" id="rdf"><rdf:RDF
+            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns:dc="http://purl.org/dc/elements/1.1/"
+            xmlns:rss="http://purl.org/rss/1.0/"
+            xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+            xmlns:wgs84="http://www.w3.org/2003/01/geo/wgs84_pos#">
+        <rss:item rdf:about="http://rhizomik.net/blog/2011/05/25/paper-at-wims11/">
+            <dc:date>2011-05-25</dc:date>
+            <rdfs:label>WIMS'11 Paper</rdfs:label>
+            <wgs84:long>7.100413</wgs84:long>
+            <dc:creator>
+                <rdf:Description rdf:about="http://rhizomik.net/~roberto/">
+                    <rdfs:label>Roberto García</rdfs:label>
+                </rdf:Description>
+            </dc:creator>
+            <rss:title>Paper presented at WIMS'11</rss:title>
+            <rss:link>http://rhizomik.net/blog/2011/05/25/paper-at-wims11/</rss:link>
+            <wgs84:lat>61.229778</wgs84:lat>
+            <rss:description>The paper 'Publishing and Interacting with Linked Data' presented at the International Conference on Web Intelligence, Mining and Semantics (WIMS'11), Sogndal, Austria</rss:description>
+        </rss:item>
+    </rdf:RDF>
+    </textarea></p>
+    <input type="submit" name="Submit" value="Submit" />
+</form>
+</body>
+</html>

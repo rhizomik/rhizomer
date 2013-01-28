@@ -4,6 +4,12 @@
 <%@page import="com.hp.hpl.jena.query.*"%>
 <%@page import="com.hp.hpl.jena.vocabulary.*"%>
 <%@page import="com.hp.hpl.jena.query.ResultSet"%>
+<%@ page import="java.net.URL" %>
+<%@ page import="com.hp.hpl.jena.util.FileUtils" %>
+<%@ page import="java.net.HttpURLConnection" %>
+<%@ page import="java.io.StringReader" %>
+<%@ page import="java.net.MalformedURLException" %>
+<%@ page import="java.io.IOException" %>
 <%
     response.setCharacterEncoding("UTF-8");
 
@@ -48,14 +54,55 @@
     	}
     }
 
+    class RequestModelReader
+    {
+        private HttpServletRequest request;
+        private RequestModelReader(HttpServletRequest request)
+        {
+            this.request = request;
+        }
+
+        Model readModelFromRequest() throws IOException
+        {
+            Model model = ModelFactory.createMemModelMaker().createDefaultModel();
+
+            // Check if input RDF comes through an attribute or form parameter
+            String rdf = (String) request.getSession().getAttribute("rdf");
+            if (rdf == null)
+                rdf = (String) request.getParameter("rdf");
+
+            if (rdf != null)
+            {
+                // First try to interpret the rdf parameter/attribute as URL to load RDF from
+                String format = null;
+                try
+                {
+                    URL rdfURL = new URL(rdf);
+                    format = FileUtils.guessLang(rdf);
+                    HttpURLConnection urlConn = (HttpURLConnection)rdfURL.openConnection();
+                    urlConn.setRequestProperty("Accept", "application/rdf+xml, text/plain;q=0.5, text/rdf+n3;q=0.6");
+                    model.read(urlConn.getInputStream(), rdf, format);
+                }
+                // If not an URL, load RDF from rdf parameter/attribute
+                catch (MalformedURLException e)
+                {
+                    model.read(new StringReader(rdf), "", format);
+                }
+            }
+            // If there is no rdf parameter/attribute, read RDF from request input stream
+            else
+                model.read(request.getInputStream(), "RDF/XML");
+            return model;
+        }
+    }
+
 	// Get list of previously drawn events from session, or create it
     HashMap<String,TimeLineEvent> events = new HashMap<String,TimeLineEvent>();
     if (session.getAttribute("TimeLineEvents") != null)
         events = (HashMap<String,TimeLineEvent>)session.getAttribute("TimeLineEvents");
 
-	Model model = ModelFactory.createMemModelMaker().createDefaultModel();
-	try { model.read(request.getInputStream(), "RDF/XML"); }
-	catch (Exception e) {}
+    RequestModelReader reader = new RequestModelReader(request);
+	Model model = reader.readModelFromRequest();
 
 	// Add events with DTSTART and DTEND or DATE, if already present remove
 	Query query = QueryFactory.create(queryString);

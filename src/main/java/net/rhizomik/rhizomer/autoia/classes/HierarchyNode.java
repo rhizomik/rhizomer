@@ -76,7 +76,7 @@ public class HierarchyNode implements Comparable{
 						this.label = "Other " + this.uri;
 				}
 			}
-			if (this.label == "Other Other")
+			if (this.label.equals("Other Other"))
 				this.label = "Others";	
 		}
 		
@@ -233,9 +233,11 @@ public class HierarchyNode implements Comparable{
 			
 			if (levels>1 && this.getChilds().size()>0)
 			{
-				if (this.uri.indexOf("#Other")>=0){
-                    System.out.println(this.uri + " - " + this.label);
-					out.append("<a class=\"yui3-menu-label\" href=\"#"+label+"-options\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
+                if(this.isAbstractNode()){
+                    link = req.getContextPath()+"/sitemap.jsp#"+getUri().hashCode();
+                    out.append("<a class=\"yui3-menu-label\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
+                    //if (this.uri.indexOf("#Other")>=0){
+//					out.append("<a class=\"yui3-menu-label\" href=\"#"+label+"-options\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
                 }
 				else
 				{
@@ -258,8 +260,15 @@ public class HierarchyNode implements Comparable{
 						   "	</div>\n" + 
 						   "</div>");
 			}
-			else
-				out.append("<a class=\"yui3-menuitem-content\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
+			else{
+                if(this.isAbstractNode()){
+                    link = req.getContextPath()+"/sitemap.jsp#"+this.getParent().getUri().hashCode();
+                    System.out.println(this.parent.getUri()+ " - " + this.uri + " - " + this.label + " - " + this.getNumInstances());
+                }
+                //else
+                out.append("<a class=\"yui3-menuitem-content\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
+
+            }
 		}
 
 		public void printAsUl(HttpServletRequest req, int levels, StringBuffer out, String property) 
@@ -356,7 +365,7 @@ public class HierarchyNode implements Comparable{
 			return null;
 		}
 
-        public void printAsSitemap(HttpServletRequest req, int levels, StringBuffer out)
+        public void printAsSitemap(HttpServletRequest req, StringBuffer out)
     {
         //TODO: IMPORTANT! Make link to facets.jsp independent from where the app is installed!
         //String link = req.getContextPath()+"/facets.jsp?uri="+this.uri.replace("#", "%23");
@@ -367,43 +376,40 @@ public class HierarchyNode implements Comparable{
         if ((pos = label.indexOf('@')) > 0)
             label = label.substring(0, pos);
 
-        if (levels>=1)
-        {
-            out.append("<li>");
-            out.append("<a id=\""+this.getUri()+"\" class=\"sitemap-root\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
+        out.append("<li class=\"sitemap-root\" id=\""+this.getUri().hashCode()+"\" >");
+        out.append("<a href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
 
-            if(this.hasChilds()){
-                out.append("<ul class=\"sub\">");
-                java.util.Collections.sort(this.getChilds());
-                for(HierarchyNode n : this.getChilds())
-                {
-                    if(n.isAbstractNode()){
-                        for(HierarchyNode nc : n.getChilds()){
-                            out.append("<li class=\"inline\">");
-                            String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+nc.uri.replace("#", "%23")+">}";
-                            String clabel = nc.getLabel();
-                            int cpos;
-                            if ((cpos = clabel.indexOf('@')) > 0)
-                                clabel = clabel.substring(0, cpos);
-                            out.append("<a id=\""+n.getUri()+"\" class=\"sitemap\" href=\""+clink+"\">"+clabel+" <span class=\"menu_instances\">("+nc.getNumInstances()+")</span></a>, ");
-                            out.append("</li>");
-                        }
-                    }
-                    else{
+        if(this.hasChilds()){
+            out.append("<ul class=\"sub\">");
+            java.util.Collections.sort(this.getChilds());
+            for(HierarchyNode n : this.getChilds())
+            {
+                if(n.isAbstractNode()){
+                    for(HierarchyNode nc : n.getChilds()){
                         out.append("<li class=\"inline\">");
-                        String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+n.uri.replace("#", "%23")+">}";
-                        String clabel = n.getLabel();
+                        String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+nc.uri.replace("#", "%23")+">}";
+                        String clabel = nc.getLabel();
                         int cpos;
                         if ((cpos = clabel.indexOf('@')) > 0)
                             clabel = clabel.substring(0, cpos);
-                        out.append("<a id=\""+n.getUri()+"\" class=\"sitemap\" href=\""+clink+"\">"+clabel+" <span class=\"menu_instances\">("+n.getNumInstances()+")</span></a>, ");
+                        out.append("<a id=\""+n.getUri()+"\" class=\"sitemap\" href=\""+clink+"\">"+clabel+" <span class=\"menu_instances\">("+nc.getNumInstances()+")</span></a>, ");
                         out.append("</li>");
                     }
                 }
-                out.append("</ul>");
+                else{
+                    out.append("<li class=\"inline\">");
+                    String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+n.uri.replace("#", "%23")+">}";
+                    String clabel = n.getLabel();
+                    int cpos;
+                    if ((cpos = clabel.indexOf('@')) > 0)
+                        clabel = clabel.substring(0, cpos);
+                    out.append("<a id=\""+n.getUri()+"\" class=\"sitemap\" href=\""+clink+"\">"+clabel+" <span class=\"menu_instances\">("+n.getNumInstances()+")</span></a>, ");
+                    out.append("</li>");
+                }
             }
-            out.append("</li>");
+            out.append("</ul>");
         }
+        out.append("</li>");
     }
 
     public void printAsFullSitemap(HttpServletRequest req, StringBuffer out)
@@ -442,7 +448,7 @@ public class HierarchyNode implements Comparable{
 
         StringBuffer out = new StringBuffer();
 
-        out.append("\n{ data :{\"instances\": "+instances+", \"$area\": "+instances+"}, \"id\":\""+uri+"\", \"name\":\""+label.replace("'","\'")+"\"," +
+        out.append("\n{ data :{\"parent\":\""+parent.getLabel()+"\" , \"instances\": "+instances+", \"$area\": "+instances+"},  \"id\":\""+uri+"\", \"name\":\""+label.replace("'","\'")+"\"," +
 
                 "\"children\":[");
 

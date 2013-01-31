@@ -1,4 +1,5 @@
 #vis{
+    margin-top:-20px;
     /*width:1000px;*/
     height:600px;
     text-align:center;
@@ -11,7 +12,8 @@
     font-size: 0.9em;
     text-align: center;
     background-color: black;
-
+    margin-left: auto ;
+    margin-right: auto ;
 }
 
 /*
@@ -78,4 +80,30 @@ svg { display:block; overflow:auto; }
 
 .tip-text{
     font-size:14px;
+}
+
+#treemap_status{
+    position:relative;
+    width:100%;
+    text-align:center;
+    font-size:14px;
+    z-index:1;
+    height:20px;
+    background-color: #6e6e6e;
+}
+
+.treemap_breadcrumbs{
+    width:100%;
+    height:20px;
+    background-color: #6e6e6e;
+    color: white;
+    line-height:20px;
+    font-size:14px;
+    font-weight:bold;
+    border:none;
+}
+
+.treemap_breadcrumbs a{
+    color: white;
+    text-decoration:underline;
 }

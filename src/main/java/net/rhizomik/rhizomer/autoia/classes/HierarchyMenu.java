@@ -130,11 +130,14 @@ public class HierarchyMenu {
 		return out;
 	}
 
-    public StringBuffer printAsSitemap(HttpServletRequest req, int levels, String mode)
+    public StringBuffer printAsSitemap(HttpServletRequest req, String mode)
     {
         StringBuffer out = new StringBuffer();
         String previousURI = "";
-        out.append("<ul>");
+        if(mode.equals("full"))
+            out.append("<ul id=\"tree\">");
+        else
+            out.append("<ul>");
         java.util.Collections.sort(first.getChilds());
         for(HierarchyNode child : first.getChilds())
         {
@@ -145,7 +148,7 @@ public class HierarchyMenu {
                     child.printAsFullSitemap(req ,out);
                 }
                 else
-                    child.printAsSitemap(req, levels, out);
+                    child.printAsSitemap(req, out);
                 previousURI = child.getUri();
             }
         }
@@ -180,7 +183,7 @@ public class HierarchyMenu {
             if ((pos = label.indexOf('@')) > 0)
                 label = label.substring(0, pos);
 
-            out.append("\n{ data :{\"instances\": "+instances+", \"$area\": "+instances+"}, \"id\": \""+uri+"\" ,  \"name\":\""+label.replace("'","\'")+"\"," +
+            out.append("\n{ data :{\"parent\":\"root\", \"instances\": "+instances+", \"$area\": "+instances+"}, \"id\": \""+uri+"\" , \"name\":\""+label.replace("'","\'")+"\"," +
 
                     "\"children\":[");
 

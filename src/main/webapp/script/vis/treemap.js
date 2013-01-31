@@ -1,6 +1,7 @@
 var labelType, useGradients, nativeTextSupport, animate;
 var tm;
 var clickedNode = null;
+var treemapHistory = new Array();
 
 (function() {
     var ua = navigator.userAgent,
@@ -49,17 +50,52 @@ function initTreeMap(json){
         Events: {
             enable: true,
             onClick: function(node) {
-                /*
-                if(node.data.num_childs>0){
+                    /*
+                    if(node.data.num_childs>0){
+                        tm.enter(node);
+                    }
+                    else{
+                        alert("Navigate to "+node.name);
+                    }
+                    */
+                if(node){
+                    if(tm.clickedNode == null || tm.clickedNode.id == "root"){
+                        if(node.data.parent == "root"){
+                            treemapHistory.push(node.name);
+                        }
+                        else if(node.data.parent == treemapHistory[treemapHistory.length-1]){
+                            treemapHistory.push(node.name);
+                        }
+                        else{
+                            treemapHistory.push(node.data.parent);
+                            treemapHistory.push(node.name);
+                        }
+                    }
+                    else{
+                        if(node.data.parent == treemapHistory[treemapHistory.length-1]){
+                            treemapHistory.push(node.name);
+                        }
+                        else{
+                            treemapHistory.push(node.data.parent);
+                            treemapHistory.push(node.name);
+                        }
+                    }
+
+                    console.log(treemapHistory);
+                    //console.log(tm.clickedNode);
+                    /*
+                    if(clickedNode==null)
+                            ;
+                    else if(node.parent == clickedNode.id)
+                        alert("igual");
+                    else
+                        alert("not parent");
+                    */
+                    //console.log(node);
                     tm.enter(node);
-                }
-                else{
-                    alert("Navigate to "+node.name);
-                }
-                */
-                if(node){ tm.enter(node);
                     clickedNode = node;
-                    showStatus(node);
+                    showStatus();
+                    tm.refresh();
                 }
                 /*
                 if(tm.leaf(node)){
@@ -71,10 +107,11 @@ function initTreeMap(json){
 
             },
             onRightClick: function(node) {
+                treemapHistory.pop();
                 tm.out();
-                //clearStatus();
-                showStatus(tm.clickedNode);
-                //console.log(tm.clickedNode);
+                tm.refresh();
+                console.log(treemapHistory);
+                showStatus();
             },
         },
         duration: 1000,
@@ -116,11 +153,15 @@ function initTreeMap(json){
         },
         onPlaceLabel: function (domElement, node) {
             if(node.id == "root" || (tm.clickedNode!=null && tm.clickedNode.id == node.id)){
-                domElement.innerHTML = "<div class=\"root\">"+node.name+"</div>";
+                //domElement.style.backgroundColor="white";
+                //domElement.style.height="15px";
+                //domElement.style.display="none";
+                /*domElement.innerHTML = "<div class=\"root\">"+node.name+"</div>";*/
+                domElement.innerHTML = "";
             }
             else if(!tm.leaf(node)){
                 var pt = (Math.round(node.data.$width/node.name.length));
-                if(pt<4)
+                if(pt<6)
                     pt = 0;
                 else if(pt>12)
                     pt = 12;
@@ -138,7 +179,7 @@ function initTreeMap(json){
                     var vpt = (Math.round(node.data.$height/node.name.length));
                     pt = Math.min(pt, vpt);
 
-                    if(pt<4)
+                    if(pt<6)
                         pt = 0;
                 }
                 domElement.innerHTML = "<div class=\"middle\" style=\"font-size:"+pt+"pt\">"+node.name+"</div>";
@@ -147,4 +188,5 @@ function initTreeMap(json){
     });
     tm.loadJSON(json);
     tm.refresh();
+    showStatus();
 }

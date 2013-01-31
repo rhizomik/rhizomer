@@ -44,7 +44,7 @@
 
     </script>
 
-<div id="status" style="width:100%; height:20px; text-align:center; font-size:14px; margin-bottom:20px;">
+<div id="treemap_status">
 
 </div>
 

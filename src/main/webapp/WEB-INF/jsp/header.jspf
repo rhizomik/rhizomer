@@ -150,9 +150,9 @@
                         <div class="yui3-menu-content">
                         <ul>
                             <li class="yui3-menuitem">
-                                <a class="yui3-menuitem-content" href="sitemap.jsp">Site map</a>
-                                <a class="yui3-menuitem-content" href="siteindex.jsp">Site index</a>
-                                <a class="yui3-menuitem-content" href="treemap.jsp">Treemap</a>
+                                <a class="yui3-menuitem-content" href="/sitemap.jsp">Site map</a>
+                                <a class="yui3-menuitem-content" href="/siteindex.jsp">Site index</a>
+                                <a class="yui3-menuitem-content" href="/treemap.jsp">Treemap</a>
                             </li>
                         </ul>
                         </div>

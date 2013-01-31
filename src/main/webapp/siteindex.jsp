@@ -79,7 +79,28 @@
         }
 
     %>
-        <li><a href="<%=link%>"><%= node.getLabel()%> (<%=node.getNumInstances()%>)</a></li>
+        <li><a class="fold" id="<%=node.getUri().hashCode()%>"><%= node.getLabel()%> (<%=node.getNumInstances()%>)</a>
+        <div id="<%=node.getUri().hashCode()%>_div" style="display:none;">
+            <% if(node.getParent()!=null){
+
+            %>
+            <span style="font-weight:bold;"><%=node.getLabel()%></span><br/>
+            Parent: <%=node.getParent().getLabel()%><br/>
+            <%
+            }
+            %>
+            <%
+                if(node.hasChilds()){
+                    %>Subclasses: <%
+
+                    for(HierarchyNode child : node.getChilds()){
+                        %><%=child.getLabel()%>, <%
+                    }
+                }
+            %>
+        </div>
+
+        </li>
     <%
     previousLetter=letter;
     }
@@ -94,5 +115,64 @@
 
     </div>
 
+    <div id="tooltip"></div>
+
+    <script>
+        YUI().use('overlay', 'event', 'widget-anim', function (Y) {
+
+            var waitingToShow = false,
+
+            var tooltip = new Y.Overlay({
+                srcNode: "#tooltip",
+                visible: false
+            }).plug(Y.Plugin.WidgetAnim);
+            tooltip.anim.get('animHide').set('duration', 0.01);
+            tooltip.anim.get('animShow').set('duration', 0.15);
+            tooltip.render();
+
+            // handler that positions and shows the tooltip
+            var onMousemove = function (e) {
+                var i;
+                if (tooltip.get('visible') === false) {
+                    // while it's still hidden, move the tooltip adjacent to the cursor
+                    Y.one('#tooltip').setStyle('opacity', '0');
+                    tooltip.move([(e.pageX + 10), (e.pageY + 20)]);
+                }
+                if (waitingToShow === false) {
+                    // wait half a second, then show tooltip
+                    setTimeout(function(){
+                        Y.one('#tooltip').setStyle('opacity', '1');
+                        tooltip.show();
+                    }, 500);
+
+                    // while waiting to show tooltip, don't let other
+                    // mousemoves try to show tooltip too.
+                    waitingToShow = true;
+                    div = e.currentTarget.one('div');
+                    id = div.generateID();
+                    d = $j("#"+id);
+                    tooltip.setStdModContent('body', d.html());
+                }
+            }
+
+            // handler that hides the tooltip
+            var onMouseleave = function (e) {
+
+                // this check prevents hiding the tooltip
+                // when the cursor moves over the tooltip itself
+                if ((e.relatedTarget) && (e.relatedTarget.hasClass('yui3-widget-bd') === false)) {
+                    tooltip.hide();
+                    waitingToShow = false;
+                }
+            }
+
+            //Y.delegate('mousemove', onMousemove, '.lists', 'li');
+            //Y.delegate('mouseleave', onMouseleave, '.lists', 'li');
+            Y.delegate('mouseover', onMousemove, '#siteindex', 'li');
+            Y.delegate('mouseleave', onMouseleave, '#siteindex', 'li');
+            Y.one('#tooltip').on('mouseleave', onMouseleave);
+
+        });
+    </script>
 
 </div>

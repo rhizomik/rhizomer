@@ -3,8 +3,8 @@ var other_num = 1;
 var rest_num = 1;
 var totalArea = 0;
 var name;
-var colors = d3.scale.category20c();
-var colors2 = d3.scale.category20();
+var colors = d3.scale.category20();
+var colors2 = d3.scale.category20b();
 var i = 0;
 var max = 0;
 
@@ -15,15 +15,40 @@ var max = 0;
  }
  */
 
-function showStatus(node){
-    var html = "<div style=\"font-weight:bold;\">"+node.name + ": " + node.data.instances+" instances</div>";
-    html += "<div style=\"font-weight:bold;\"><a href=\"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+node.id+">}\">Browse resources</a> - <a href=\"javascript:backLevel();\">Back to previous level</a></div>";
-    $j("#status").html(html);
+function showStatus(){
+    var html = "<div class=\"treemap_breadcrumbs\">";
+    x = treemapHistory.length;
+    if(x==0)
+        html += "Classes";
+    else
+        html += "<a href=\"javascript:backNode("+x+")\">Classes</a> > ";
+    for(var i=0; i<treemapHistory.length; i++){
+        x = treemapHistory.length-i-1;
+        if(i==treemapHistory.length-1)
+            //html += "<a href=\"javascript:backNode("+x+")\">" + treemapHistory[i] + "</a> / ";
+            html += "<a href=\"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+tm.clickedNode.id+">}\">"+ treemapHistory[i] +" ("+ tm.clickedNode.data.instances +")</a>";
+        else
+            html += "<a href=\"javascript:backNode("+x+")\">" + treemapHistory[i] + "</a> > ";
+    }
+    /*
+    html += "<div style=\"font-weight:bold;\">"+node.name + ": " + node.data.instances+" instances</div>";
+    */
+    html += "</div>"
+    $j("#treemap_status").html(html);
+}
+
+function backNode(i){
+    for(x=0; x<i; x++){
+        treemapHistory.pop();
+        tm.out();
+    }
+    tm.refresh();
+    showStatus();
 }
 
 function backLevel(){
     tm.out();
-    showStatus(tm.clickedNode);
+    showStatus();
 }
 
 function clearStatus(){

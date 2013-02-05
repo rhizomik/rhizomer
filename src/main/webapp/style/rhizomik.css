@@ -44,6 +44,7 @@ img {
 	font-size: 13px;
 	margin-top: 20px;
 	font-weight: bold;
+    z-index:1000;
 }
 #header #menu-skos {
     display: none;
@@ -376,6 +377,15 @@ ul.inline , ul.inline li{
 
 }
 
+#siteindex h2.alphabet{
+    font-weight:normal;
+}
+
+#siteindex h2.alphabet a.active{
+    font-weight:bold;
+    text-decoration:underline;
+}
+
 /* SITE MAP */
 
 .treeview, .treeview ul {
@@ -473,4 +483,8 @@ sitemap-root{
     -webkit-border-radius: 2px;
     -moz-box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
     -webkit-box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+}
+
+.yui3-menu-content, .yui3-menuitem .yui3-menuitem-content{
+    z-index:1000;
 }

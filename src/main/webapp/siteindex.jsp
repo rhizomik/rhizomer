@@ -31,7 +31,7 @@
     for(Character c : letters){
         if(initials.contains(c.toString())){
 
-        %><a style="text-decoration: underline;" href="#<%=c%>"><%=c%></a> | <%
+        %><a class="active" href="#<%=c%>"><%=c%></a> | <%
 
         }
         else{
@@ -120,8 +120,7 @@
     <script>
         YUI().use('overlay', 'event', 'widget-anim', function (Y) {
 
-            var waitingToShow = false,
-
+            var waitingToShow = false;
             var tooltip = new Y.Overlay({
                 srcNode: "#tooltip",
                 visible: false

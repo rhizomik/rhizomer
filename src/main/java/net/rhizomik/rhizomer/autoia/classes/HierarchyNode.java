@@ -31,6 +31,8 @@ public class HierarchyNode implements Comparable{
             int pos;
             if ((pos = label.indexOf('@')) > 0)
                 label = label.substring(0, pos);
+            if (this.label.equals("Other Other") || this.uri.equals("Other##Other"))
+                this.label = "Others";
 			return label;
 		}
 
@@ -76,7 +78,7 @@ public class HierarchyNode implements Comparable{
 						this.label = "Other " + this.uri;
 				}
 			}
-			if (this.label.equals("Other Other"))
+			if (this.label.equals("Other Other") || this.uri.equals("Other##Other"))
 				this.label = "Others";	
 		}
 		

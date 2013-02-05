@@ -144,7 +144,7 @@
 					<a class="yui3-menuitem-content" href="<%=request.getContextPath()%>/">About</a>
 				</li>
 				<%=menu.printAsUl(request, 2)%>
-                <li class="yui3-menuitem">
+                <!--li class="yui3-menuitem">
                     <span class="yui3-menu-label">Overview</span>
                     <div class="yui3-menu">
                         <div class="yui3-menu-content">
@@ -157,7 +157,7 @@
                         </ul>
                         </div>
                     </div>
-                </li>
+                </li-->
 				<li class="yui3-menuitem">
 					<a class="yui3-menuitem-content" href="mailto:contact at rhizomik dot net">Contact</a>
 				</li>

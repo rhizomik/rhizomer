@@ -155,7 +155,7 @@ public class VirtuosoStore implements MetadataStore
             	queryString = queryString.replace(", 'i'", "");
             }*/
             
-            log.log(Level.INFO, "VirtuosoStore.query: "+queryString);
+            //log.log(Level.INFO, "VirtuosoStore.query: "+queryString);
             
             qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
         
@@ -222,7 +222,7 @@ public class VirtuosoStore implements MetadataStore
             if (query.getGroupBy().isEmpty())
                 queryString = query.toString().substring(0, query.toString().indexOf("GROUP BY"));
 
-        log.log(Level.INFO, queryString);
+        //log.log(Level.INFO, queryString);
 
         qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
 
@@ -252,7 +252,7 @@ public class VirtuosoStore implements MetadataStore
         query.addGraphURI(graphURI);
         query.addGraphURI(schema);
         queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+query.toString();
-        log.log(Level.INFO, "VirtuosoStore.query: "+query.toString());
+        //log.log(Level.INFO, "VirtuosoStore.query: "+query.toString());
 
         qexec = VirtuosoQueryExecutionFactory.create(query.toString(), graph);
 

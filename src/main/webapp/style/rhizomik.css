@@ -26,9 +26,17 @@ img {
 	margin-top: 10px;
 	float: right;
 }
+#header #overview {
+    float: right;
+    clear: none;
+    font-size: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
 #header #login {
 	float: right;
-	clear: both;
+	clear: none;
+    font-weight: bold;
 	font-size: 10px;
 	margin-top: 10px;
 	margin-right: 10px;
@@ -59,10 +67,10 @@ img {
 	float: left;
 	padding: 10px;
 	width: 250px;
-	margin-top:50px;
+	/*margin-top:50px;*/
 }
 #metadata {
-	margin-top: 32px;
+	margin-top: 0px;
 	border-width: 1px;
 	border-style: dashed;
 	border-color: #CCCCCC;

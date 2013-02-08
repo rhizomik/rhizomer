@@ -1,8 +1,10 @@
+<%@ page import="net.rhizomik.rhizomer.autoia.manager.MenuManager" %>
 <%@ page import="net.rhizomik.rhizomer.autoia.classes.HierarchyMenu" %>
 <%@ page import="net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSPARQL" %>
 <%@ page import="net.rhizomik.rhizomer.autoia.classes.MenuConfig" %>
 <%@ page import="net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSKOS" %>
-<%@ page import="net.rhizomik.rhizomer.autoia.manager.MenuManager" %>
+<%@ page import="net.rhizomik.rhizomer.service.Service" %>
+<%@ page import="net.rhizomik.rhizomer.service.ServiceManager" %>
 <%@page pageEncoding="UTF-8"%><%@page contentType="text/html;charset=UTF-8"%><?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd"> 
 <html xml:lang="en" version="XHTML+RDFa 1.0" xmlns="http://www.w3.org/1999/xhtml">
@@ -10,7 +12,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Rhizomik</title>
 
-    <script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js" charset="utf-8"></script>
+    <script src="http://yui.yahooapis.com/3.8.1/build/yui/yui-min.js" charset="utf-8"></script>
 
     <!--script src="<%=request.getContextPath()%>/script/yui-min.js" charset="utf-8"></script-->
     <!--script type="text/javascript">
@@ -92,14 +94,18 @@
 </head>
 <body class="yui-skin-sam yui3-skin-sam">
 <div id="header">
-	<div id="login">
+    <div id="login">
 	<% if (request.getUserPrincipal() == null) { %>
-		<a href="<%=request.getContextPath()%>/html/admin/login.jsp">login</a>
+		<a href="<%=request.getContextPath()%>/html/admin/login.jsp">Login</a>
 	<% } else { %>
-	   		<div id="username"><a href="<%=request.getContextPath()%>/html/admin/"><%=request.getUserPrincipal().getName()%></a></div>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/html/admin/logout.jsp">logout</a>
+	   		<div id="username"><a href="<%=request.getContextPath()%>/html/admin/"><%=request.getUserPrincipal().getName()%></a></div>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/html/admin/logout.jsp">Logout</a>
 	<% } %>
 	</div>
- 	
+    <div id="overview">
+        <a href="<%=request.getContextPath()%>/sitemap.jsp">Site map</a> -
+        <a href="<%=request.getContextPath()%>/siteindex.jsp">Site index</a> -
+        <a href="<%=request.getContextPath()%>/treemap.jsp">Treemap</a>
+    </div>
 	<%
 
         HierarchyMenu menu = null;
@@ -135,13 +141,12 @@
         	menuSKOS = (HierarchyMenu) session.getAttribute("menuSKOS");
         menuSKOS.sort(2);
         */
-        /*
+
         if(session.getAttribute("service")==null){
             ServiceManager serviceManager = new ServiceManager();
             serviceManager.readServiceList();
             session.setAttribute("service",serviceManager.getServiceList());
         }
-        */
 	%>
 	<div id="menu-class" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
 		<div class="yui3-menu-content">
@@ -150,20 +155,6 @@
 					<a class="yui3-menuitem-content" href="<%=request.getContextPath()%>/">About</a>
 				</li>
 				<%=menu.printAsUl(request, 2)%>
-                <!--li class="yui3-menuitem">
-                    <span class="yui3-menu-label">Overview</span>
-                    <div class="yui3-menu">
-                        <div class="yui3-menu-content">
-                        <ul>
-                            <li class="yui3-menuitem">
-                                <a class="yui3-menuitem-content" href="/sitemap.jsp">Site map</a>
-                                <a class="yui3-menuitem-content" href="/siteindex.jsp">Site index</a>
-                                <a class="yui3-menuitem-content" href="/treemap.jsp">Treemap</a>
-                            </li>
-                        </ul>
-                        </div>
-                    </div>
-                </li-->
 				<li class="yui3-menuitem">
 					<a class="yui3-menuitem-content" href="mailto:contact at rhizomik dot net">Contact</a>
 				</li>

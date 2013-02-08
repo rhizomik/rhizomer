@@ -1,8 +1,4 @@
-<hr/>
 <div id="wikifoot">
-    <div style="font-size:14px; margin-top:10px; text-align:right; margin-right:10px;">
-        <a href="/sitemap.jsp">Site map</a> | <a href="/siteindex.jsp">Site index</a> | <a href="/treemap.jsp">Treemap</a>
-    </div>
 	<div id="wikifootlogo">
 		<a href="http://rhizomik.net">
 			<img src="<%=request.getContextPath()%>/images/rhizomer.small.png" alt="Rhizomik"/><br/>Powered by Rhizomik</a>

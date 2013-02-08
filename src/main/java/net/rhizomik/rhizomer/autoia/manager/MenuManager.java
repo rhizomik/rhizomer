@@ -65,14 +65,14 @@ public class MenuManager {
                 manager.readXML(path+"/menu-"+menuHash+".xml");
         }
         else if(store.equals("void")){
-            File fvoid = new File(path+"/"+menuHash+".void");
+            File fvoid = new File(path+"/menu-"+menuHash+".void");
             if(!fvoid.exists()){
                 manager.readModel();
                 //manager.readXML(path+"/menu-"+menuHash+".xml");
-                manager.writeVoid(path+"/"+menuHash+".void");
+                manager.writeVoid(path+"/menu-"+menuHash+".void");
             }
             else
-               manager.readVoid(path+"/"+menuHash+".void");
+               manager.readVoid(path+"/menu-"+menuHash+".void");
         }
 	}
 

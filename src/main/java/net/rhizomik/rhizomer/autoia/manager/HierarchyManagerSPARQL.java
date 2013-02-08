@@ -158,9 +158,11 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         		node.setNumInstances(numInstances.getInt());
         	}
         }
+        /* Això seria per si no hi hagués inferència i s'han de sumar instàncies dels fills.
         for(HierarchyNode node : menu.getNodes()){
 			calculateInstances(node);
 		}
+		*/
     }
     
     private void calculateInstances(HierarchyNode node){

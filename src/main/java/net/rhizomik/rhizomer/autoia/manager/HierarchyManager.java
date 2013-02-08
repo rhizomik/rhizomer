@@ -1,9 +1,22 @@
 package net.rhizomik.rhizomer.autoia.manager;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.util.FileManager;
+import com.hp.hpl.jena.util.iterator.Filter;
+import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
+import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
+import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
+import net.rhizomik.rhizomer.autoia.classes.MenuConfig;
+import net.rhizomik.rhizomer.util.FacetUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,27 +27,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.util.FileManager;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
-import com.hp.hpl.jena.vocabulary.XSD;
-import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
-import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
-import net.rhizomik.rhizomer.autoia.classes.MenuConfig;
-import net.rhizomik.rhizomer.util.FacetUtil;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.util.iterator.Filter;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class HierarchyManager 
@@ -121,10 +117,45 @@ public class HierarchyManager
 	public HierarchyMenu getHierarchyMenu() {
 		return menu;
 	}
+
+    public HierarchyMenu generateMenu2(){
+        return this.generateFullMenu2(7,7,null);
+    }
 	
 	public HierarchyMenu generateFullMenu(String uri){
 		return this.generateFullMenu(menu.getConfig().getNumItemsGlobal(),menu.getConfig().getNumItemsLocal(),uri);
 	}
+
+
+    public HierarchyMenu generateFullMenu2(int numItemsGlobal, int numItemsLocal, String uri){
+        if(uri == null)
+            uri = "http://www.w3.org/2002/07/owl#Thing";
+        HierarchyNode base = menu.getFirst(); //getByUri(uri);
+        out = new HierarchyMenu();
+        menu.clearEmpty();
+        base.sort("instances",10);
+        List<HierarchyNode> childs = base.getChilds();
+        if(numItemsGlobal < childs.size()){
+            for(int i=0;i<childs.size();i++){
+                HierarchyNode child = childs.get(i);
+                if(i<numItemsGlobal)
+                    out.addNode(child);
+                else if(i==numItemsGlobal){
+                    if(i==base.getChilds().size())
+                        out.addNode(base.getChilds().get(i));
+                    else{
+                        HierarchyNode other = getOtherGlobal();
+                        other.addChild(child);
+                    }
+                }
+                else{
+                    HierarchyNode other = getOtherGlobal();
+                    other.addChild(child);
+                }
+            }
+        }
+        return out;
+    }
 	
 	
 	public HierarchyMenu generateFullMenu(int numItemsGlobal, int numItemsLocal, String uri){

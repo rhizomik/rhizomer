@@ -42,10 +42,12 @@ public class HierarchyMenu {
         List<HierarchyNode> nodes = new ArrayList<HierarchyNode>(map.values());
         java.util.Collections.sort(nodes);
         for(HierarchyNode node : nodes){
-            String label = node.getLabel();
-            String initial = label.substring(0,1);
-            if(!initials.contains(initial))
-                initials.add(initial);
+            if(node.getNumInstances()>0){
+                String label = node.getLabel();
+                String initial = label.substring(0,1);
+                if(!initials.contains(initial))
+                    initials.add(initial);
+            }
         }
         return initials;
     }

@@ -32,13 +32,11 @@
         var hierarchy = <%= json %>;
 
         $j(document).ready(function() {
-            //countNumMaxInstances(hierarchy);
             totalArea = countInstances(hierarchy);
             hierarchy.data.$area = totalArea;
             hierarchy.data.instances = totalArea;
             treatHierarchy(hierarchy);
             countChilds(hierarchy);
-            //countSubclassesInstances(hierarchy);
             initTreeMap(hierarchy);
         });
 

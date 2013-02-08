@@ -55,54 +55,58 @@
     String previousLetter = null;
 
     for(HierarchyNode node : nodes){
-        String link = request.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+node.getUri().replace("#", "%23")+">}";
-        String label = node.getLabel();
-        String letter = label.substring(0,1);
-        if(previousLetter==null){
+        if(node.getNumInstances()>0){
+            String link = request.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+node.getUri().replace("#", "%23")+">}";
+            String label = node.getLabel();
+            String letter = label.substring(0,1);
+
+            if(previousLetter==null){
             %>
-            <h3 id="<%=letter%>" class="siteindex_letter"><%=letter%></h3>
-            <div class="siteindex_letter_list">
-            <ul>
-            <%
-        }
-        else if(!letter.equals(previousLetter)){
-            %>
-                </ul>
-                <div class="top">
-                    <a href="#top">&uarr; Top</a>
-                </div>
-                </div>
-              <h3 id="<%=letter%>" class="siteindex_letter"><%=letter%></h3>
+                <h3 id="<%=letter%>" class="siteindex_letter"><%=letter%></h3>
                 <div class="siteindex_letter_list">
                 <ul>
             <%
-        }
-
-    %>
-        <li><a class="fold" id="<%=node.getUri().hashCode()%>"><%= node.getLabel()%> (<%=node.getNumInstances()%>)</a>
-        <div id="<%=node.getUri().hashCode()%>_div" style="display:none;">
-            <% if(node.getParent()!=null){
-
+            }
+            else if(!letter.equals(previousLetter)){
             %>
-            <span style="font-weight:bold;"><%=node.getLabel()%></span><br/>
-            Parent: <%=node.getParent().getLabel()%><br/>
+                </ul>
+                <div class="top">
+                <a href="#top">&uarr; Top</a>
+                </div>
+                </div>
+                <h3 id="<%=letter%>" class="siteindex_letter"><%=letter%></h3>
+                <div class="siteindex_letter_list">
+                <ul>
+            <%
+            }
+            %>
+            <li><a class="fold" id="<%=node.getUri().hashCode()%>"><%= node.getLabel()%> (<%=node.getNumInstances()%>)</a>
+            <div id="<%=node.getUri().hashCode()%>_div" style="display:none;">
+            <%
+            if(node.getParent()!=null){
+            %>
+                <span style="font-weight:bold;"><%=node.getLabel()%></span><br/>
+                Parent: <%=node.getParent().getLabel()%><br/>
             <%
             }
             %>
             <%
-                if(node.hasChilds()){
-                    %>Subclasses: <%
-
-                    for(HierarchyNode child : node.getChilds()){
-                        %><%=child.getLabel()%>, <%
-                    }
-                }
+            if(node.hasChilds()){
             %>
-        </div>
-
-        </li>
-    <%
-    previousLetter=letter;
+                Subclasses:
+            <%
+                for(HierarchyNode child : node.getChilds()){
+            %>
+                <%=child.getLabel()%>,
+            <%
+                }
+            }
+            %>
+            </div>
+            </li>
+            <%
+                previousLetter=letter;
+        }
     }
 
     %>

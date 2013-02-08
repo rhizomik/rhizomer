@@ -4,7 +4,7 @@ var rest_num = 1;
 var totalArea = 0;
 var name;
 var colors = d3.scale.category20();
-var colors2 = d3.scale.category20b();
+var colors2 = d3.scale.category20c();
 var i = 0;
 var max = 0;
 
@@ -26,7 +26,7 @@ function showStatus(){
         x = treemapHistory.length-i-1;
         if(i==treemapHistory.length-1)
             //html += "<a href=\"javascript:backNode("+x+")\">" + treemapHistory[i] + "</a> / ";
-            html += "<a href=\"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+tm.clickedNode.id+">}\">"+ treemapHistory[i] +" ("+ tm.clickedNode.data.instances +")</a>";
+            html += "<a href=\"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+tm.clickedNode.data.uri+">}\">"+ treemapHistory[i] +" ("+ tm.clickedNode.data.instances +")</a>";
         else
             html += "<a href=\"javascript:backNode("+x+")\">" + treemapHistory[i] + "</a> > ";
     }
@@ -66,9 +66,10 @@ function countNumMaxInstances(node){
 function countInstances(node){
     var count=0;
     for(var i=0; i<node.children.length; i++){
-        instances = parseInt(node.children[i].data.$area);
+        instances = parseInt(node.children[i].data.instances);
         if(instances==0){
             instances = countInstances(node.children[i]);
+            if(node.id=="http://dbpedia.org/ontology/Agent")
             node.children[i].data.$area = instances;
             node.children[i].data.instances = instances;
         }
@@ -94,8 +95,10 @@ function propagateCount(node){
 function treatHierarchy(hierarchy){
     hierarchy.data.$color = "#6e6e6e";
     for(var i=0 ;i<hierarchy.children.length; i++){
+        countSubclassesInstances(hierarchy.children[i]);
         treatNode(hierarchy.children[i])
     }
+
 }
 
 function treatNode(node){
@@ -132,7 +135,6 @@ function treatNode(node){
             treatChildNode(node.children[i], color_scale);
         //}
     }
-
     /*node.children = new_childs;
     if(selected_nodes.length > 0){
         var other = {data : {'$area':instanceCount, 'instances' : instanceCount, '$color' : generate_color()}, children : [], id : 'other'+other_num, name : 'Other '+name};
@@ -141,6 +143,20 @@ function treatNode(node){
         node.children.push(other);
     }
     */
+}
+
+function countSubclassesInstances(node){
+    var count = 0;
+    for(var i=0; i<node.children.length; i++)
+        count += parseInt(node.children[i].data.instances);
+    if(count != parseInt(node.data.instances) && node.children.length>0){
+        var diff = parseInt(node.data.instances) - count;
+        var rest = {data : {'uri': node.data.uri, 'parent': node.name, '$area': diff, 'instances': diff,'num_childs': 0}, children : [], id : node.id+"_other", name : "Other " + node.name};
+        node.children.push(rest);
+        rest_num++;
+    }
+    for(var i=0; i<node.children.length; i++)
+        countSubclassesInstances(node.children[i]);
 }
 
 function getMinSizeChild(node){
@@ -170,20 +186,6 @@ function countChilds(node){
     node.data.num_childs = node.children.length;
     for(var i=0; i<node.children.length; i++)
         countChilds(node.children[i]);
-}
-
-function countSubclassesInstances(node){
-    var count = 0;
-    for(var i=0; i<node.children.length; i++)
-        count += parseInt(node.children[i].data.instances);
-    if(count != parseInt(node.data.instances) && node.children.length>0){
-        var diff = parseInt(node.data.instances) - count;
-        var rest = {data : {'$area': diff, 'instances': diff, '$color' : generate_color(), 'num_childs': 0}, children : [], id : 'rest'+rest_num, name : node.name};
-        node.children.push(rest);
-        rest_num++;
-    }
-    for(var i=0; i<node.children.length; i++)
-        countSubclassesInstances(node.children[i]);
 }
 
 

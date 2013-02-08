@@ -140,11 +140,15 @@ public class HierarchyNode implements Comparable{
 		}
 
 		public int getNumInstances() {
-			int total = this.numInstances;
-			for(HierarchyNode n : childs){
-				total += n.getNumInstances();
-			}
-			return total;
+            if(!this.isAbstractNode())
+                return this.numInstances;
+            else{
+                int total=0;
+			    for(HierarchyNode n : childs){
+				    total += n.getNumInstances();
+			    }
+			    return total;
+            }
 		}
 
 		public HierarchyNode getLastParent() {
@@ -265,7 +269,6 @@ public class HierarchyNode implements Comparable{
 			else{
                 if(this.isAbstractNode()){
                     link = req.getContextPath()+"/sitemap.jsp#"+this.getParent().getUri().hashCode();
-                    System.out.println(this.parent.getUri()+ " - " + this.uri + " - " + this.label + " - " + this.getNumInstances());
                 }
                 //else
                 out.append("<a class=\"yui3-menuitem-content\" href=\""+link+"\">"+label+" <span class=\"menu_instances\">("+this.getNumInstances()+")</span></a>");
@@ -326,7 +329,7 @@ public class HierarchyNode implements Comparable{
 		}
 		
 		
-		protected void sort(String sort, int levels){
+		public void sort(String sort, int levels){
 			
 			Comparator c = new Comparator(){
 				public int compare(Object o1, Object o2) {
@@ -450,7 +453,7 @@ public class HierarchyNode implements Comparable{
 
         StringBuffer out = new StringBuffer();
 
-        out.append("\n{ data :{\"parent\":\""+parent.getLabel()+"\" , \"instances\": "+instances+", \"$area\": "+instances+"},  \"id\":\""+uri+"\", \"name\":\""+label.replace("'","\'")+"\"," +
+        out.append("\n{ data :{\"uri\" :\""+this.getUri()+"\" , \"parent\":\""+parent.getLabel()+"\" , \"instances\": "+instances+", \"$area\": "+instances+"},  \"id\":\""+uri+"\", \"name\":\""+label.replace("'","\'")+"\"," +
 
                 "\"children\":[");
 

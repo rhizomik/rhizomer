@@ -15,12 +15,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeMultimap;
 
 import net.rhizomik.rhizomer.autoia.classes.FacetProperties;
 import net.rhizomik.rhizomer.autoia.classes.FacetValue;
+import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
+import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
 import net.rhizomik.rhizomer.autoia.manager.FacetManager;
 
 public class RhizomerFacets extends HttpServlet {
@@ -66,6 +69,12 @@ public class RhizomerFacets extends HttpServlet {
         String mode = request.getParameter("mode");
         String facetURI = request.getParameter("facetURI");
 
+        HttpSession session = request.getSession(true);
+
+        HierarchyMenu menu = (HierarchyMenu) session.getAttribute("originalMenu");
+        HierarchyNode node = menu.getByUri(facetURI);
+        int numInstances = node.getNumInstances();
+
         FacetProperties properties;
 
         try {
@@ -89,7 +98,7 @@ public class RhizomerFacets extends HttpServlet {
             
             StringBuffer propertiesOut = properties.printJSON();
             StringBuffer output = new StringBuffer();
-            output.append("{\"properties\": " + propertiesOut + "}");
+            output.append("{\"numInstances\" : " + numInstances + ", \"properties\": " + propertiesOut + "}");
             PrintWriter out = response.getWriter();
             out.println(output);
 

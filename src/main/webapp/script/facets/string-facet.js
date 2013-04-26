@@ -32,13 +32,17 @@ facet.StringFacet = function(property, fm, typeUri){
     
 	that.render = function (target){
 		that.renderBase(target);
-		that.renderString(that.getId()+"_toggle");
-		that.renderValueList(that.getId()+"_div");
+		/*that.renderString(that.getId()+"_toggle");*/
+        that.renderString(that.getId()+"_facet");
+        /*that.renderString(target);*/
+        /*that.renderValueList(target);*/
+		that.renderValueList(that.getId()+"_facet");
 		that.renderEnd(target);		
 	};
 	
 	that.renderString = function (target){
-        var inputElDefault = "Search "+makeLabel(property.range)+" values...";
+        /*var inputElDefault = "Search "+makeLabel(property.range)+" values...";*/
+        var inputElDefault = "Search "+makeLabel(property.range)+"...";
 
 		var html = "<div class=\"facet_form\">";
 		html += "<input class=\"text-box\" type=\"text\" id=\""+that.getId()+"_search\" value=\""+inputElDefault+"\" />";
@@ -56,7 +60,7 @@ facet.StringFacet = function(property, fm, typeUri){
 		that.autoComplete.resultTypeList = false;
         that.autoComplete.textboxFocusEvent.subscribe(function(sType, aArgs) {
             var inputEl = aArgs[0].getInputEl();
-            if (inputEl.value.indexOf("Search ")>=0 && inputEl.value.indexOf("values...")>0)
+            if (inputEl.value.indexOf("Search ")>=0)
                 inputEl.value = "";
             facetBrowser.setAutoCompleteProperty((this.getInputEl().id).replace("_search",""));
         });
@@ -67,7 +71,8 @@ facet.StringFacet = function(property, fm, typeUri){
         });
 		
 		that.autoComplete.formatResult = function(oResultData, sQuery, sResultMatch) {
-			    return (sResultMatch + " (" +  oResultData.n + ")");
+			    //return (sResultMatch + " (" +  oResultData.n + ")");
+            return (sResultMatch);
 			};
 		
 		that.autoComplete.maxResultsDisplayed = 20;
@@ -78,14 +83,14 @@ facet.StringFacet = function(property, fm, typeUri){
 			$j("#"+facetBrowser.getAutoCompletePropertyID()+"_search_loading").append("<img class=\"autocompleting\" src=\"images/black-loader.gif\"/>");
 			var query = 
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
-				"SELECT ?uri ?label (COUNT(?uri) AS ?n) \n"+
+				"SELECT distinct(?uri) ?label \n"+
 				"WHERE{"+
 				"?[variable] a <[uri]>; <[property]> ?uri . \n"+
 				facetBrowser.makeRestrictions(facetBrowser.getAutoCompletePropertyURI())+
 				"OPTIONAL{ \n"+
 				"?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
 				"FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+  
-				"} GROUP BY ?uri ?label ORDER BY DESC (?n)";
+				"}";
 			query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
 			query = query.replace(/\[uri\]/g, facetBrowser.getActiveManager().getTypeUri());
 			query = query.replace(/\[variable\]/g, facetBrowser.getActiveManager().getVariable());

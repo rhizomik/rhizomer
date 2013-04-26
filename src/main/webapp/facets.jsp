@@ -6,14 +6,18 @@
 
 %>
 
-	<link href="<%=request.getContextPath()%>/style/widgets.css" type="text/css" rel="stylesheet" />
+    <script src="<%=request.getContextPath()%>/script/jquery.blockUI.js"></script>
+
+
+    <link href="<%=request.getContextPath()%>/style/facets.css" type="text/css" rel="stylesheet" />
+    <link href="<%=request.getContextPath()%>/style/popover.css" type="text/css" rel="stylesheet" />
+
 	<link href="<%=request.getContextPath()%>/style/charts.css" type="text/css" rel="stylesheet" />
+
+    <script src="<%=request.getContextPath()%>/script/facets/popover.js"></script>
 	<script src="<%=request.getContextPath()%>/script/util/dom.js"></script>
 	<script src="<%=request.getContextPath()%>/script/util/namespaces.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/DefaultNSPrefixes.js"></script>
-	<%--<script src="<%=request.getContextPath()%>/script/widgets/histogram-widget.js"></script>
-	<script src="<%=request.getContextPath()%>/script/widgets/slider-widget.js"></script>
-	<script src="<%=request.getContextPath()%>/script/facets/range-facet.js"></script> --%>
 	<script src="<%=request.getContextPath()%>/script/facets/facet-utils.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/facet-browser.js"></script>
 	<script src="<%=request.getContextPath()%>/script/facets/facet-manager.js"></script>
@@ -56,7 +60,6 @@
 		var parser = new facet.UrlParser(query);
 		facetBrowser = new facet.FacetBrowser(parser);
 		facetBrowser.loadFacets();
-
 	}
 
 //]]>
@@ -74,11 +77,21 @@
 		</ul>
 		<div class="yui-content">
 		<div>
-			<div id="active_facets">
-			</div>
-			<div id="related">
-			</div>
-			<div style="clear:right;"></div>
+            <div id="context">
+                <div id="breadcrumbs"></div>
+                <div id="connections">
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle">Connections <b class="caret"></b>&nbsp;</a>
+                        </li>
+                    </ul>
+                </div>
+                <br/><br/>
+
+                <div id="active_facets">
+                </div>
+
+            </div>
 			<div id="metadata">
  				Retrieving data...
 			</div>

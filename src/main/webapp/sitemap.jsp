@@ -3,19 +3,32 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/script/jquery.treeview.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/script/jquery.hashchange.js"></script>
 
+<%
 
-<div id="sitemap">
+    String mode = request.getParameter("mode");
+    System.out.println(mode);
+%>
+
+    <div id="sitemap">
 
     <h1 style="text-align:center; margin-bottom:0px;">SITE MAP</h1>
 
     <div style="text-align:center; margin-top:0px; font-size:14px;">
-        <a href="?mode=summary">Summarized</a> |
-        <a href="?mode=full">Full</a>
+        <%
+        if(mode==null || mode.equals("summary")){
+        %>
+        Summarized |
+        <a style="text-decoration:underline;" href="?mode=full">Full</a>
+        <% }
+        else{
+        %>
+        <a style="text-decoration: underline;" href="?mode=summary">Summarized</a> |
+        Full
+        <% }
+        %>
     </div>
 
     <%
-
-        String mode = request.getParameter("mode");
 
         if(mode==null || mode.equals("summary")){
     %>

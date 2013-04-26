@@ -111,7 +111,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 		if(queryValues.length>0){
 			var query = "SELECT ?r ?label where{?r <http://www.w3.org/2000/01/rdf-schema#label> ?label . FILTER(?r = " + queryValues.join(" || ?r = ") + ")}"; 
 			rhz.sparqlJSON(query, function(out){
-				data = out.evalJSON();
+				data = JSON.parse(out);
 				for(i=0; i<data.results.bindings.length; i++){
 					r = data.results.bindings[i].r.value;
 					var label = data.results.bindings[i].label.value;				
@@ -121,7 +121,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 					fm.setSelectedFacetLabel(id,r,label);
 				}
 			});
-		}
+		}      re
 	};
 	
 	self.addInitValue = function(value){
@@ -139,8 +139,13 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	self.renderBase = function(target){
 		var html = "<div id=\""+id+"_facet\" class=\"facet\">";
 		html += "<div id=\""+id+"_title\" class=\"facet_header\">";
-		html += "<span id=\""+id+"_toggle\" class=\"facet_title\">" +
+        html += "<h4>"+label+"</h4>";
+		/*html += "<span id=\""+id+"_toggle\" class=\"facet_title\">" +
 				"<h4 onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">"+label+"</h4></span>";
+          */
+        $j("#"+target).append(html);
+
+        /*
         html += "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
 		html += "<span id=\""+id+"_inversepivot\" class=\"pivot\">Filter "+makeLabel(range)+"</span>";
 		html += "<div class=\"clear\"></div>";
@@ -150,15 +155,25 @@ facet.InverseFacet = function(property, inVariable, classURI){
 		$j("#"+target).append(html);
 		$j("#"+id+"_inversepivot").click(function (){
 			self.pivotInverseFacet();
-		});		
+		});
+				*/
 	};
 	
 	self.renderValueList = function(target){
-		var html = "<div id=\""+id+"_values\"><ul id=\""+id+"_ul\" class=\"values\"></ul>";
+        var html = "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
+        html += "<span id=\""+id+"_inversepivot\" class=\"pivot\">Filter "+makeLabel(range)+"</span>";
+        html += "<div class=\"clear\"></div>";
+        html += "</div>";
+        html +="<div id=\""+id+"_loading\"></div>";
+        html +="<div class=\"facet_options\" id=\""+id+"_div\">";
+		html += "<div id=\""+id+"_values\"><ul id=\""+id+"_ul\" class=\"values\"></ul>";
 		html += "<div class=\"more\"><a id=\""+id+"_more\" href=\"#\" >more values</a></div>";
-		html+="</div>"
+		html+="</div></div>"
 		$j("#"+target).append(html);
-		$j("#"+id+"_more").click(function (){
+        $j("#"+id+"_inversepivot").click(function (){
+            self.pivotInverseFacet();
+        });
+        $j("#"+id+"_more").click(function (){
 			self.getMoreValues();
 		});
 	};
@@ -171,12 +186,14 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	self.toggleFacet = function(){
 		if(opened){
 			opened = false;
-			$j("#"+id+"_div").hide();
+            $j("#"+id+"_showvalues").removeClass("showvalues_opened");
+            $j("#"+id+"_div").hide();
 			$j("#"+id+"_loading").empty().hide();
 		}
 		else{
 			opened = true;
-			if(numValues==0)
+            $j("#"+id+"_showvalues").addClass("showvalues_opened");
+            if(numValues==0)
 				self.getMoreValues();
 			else
 				$j("#"+id+"_div").show();	
@@ -241,7 +258,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	};
 	
 	self.processMoreValues = function(output){
-		data = output.evalJSON();
+		data = JSON.parse(output);
 		if(data.results.bindings.length > 0){
 			$j("#"+id+"_facet").show();
 			$j.each(data.results.bindings, function(i, option){
@@ -282,8 +299,14 @@ facet.InverseFacet = function(property, inVariable, classURI){
 
 	self.render = function (target){
 		self.renderBase(target);
-		self.renderString(self.getId()+"_toggle");
-		self.renderValueList(self.getId()+"_div");
+        self.renderString(self.getId()+"_facet");
+        self.renderValueList(self.getId()+"_facet");
+        /*
+        self.renderString(target);
+        self.renderValueList(target);
+        */
+		/*self.renderString(self.getId()+"_toggle");
+		self.renderValueList(self.getId()+"_div");*/
 		self.renderEnd(target);		
 	};	
 	
@@ -294,10 +317,12 @@ facet.InverseFacet = function(property, inVariable, classURI){
     	}
     	return query;
 	};	
-	
+
+    /*
 	self.inversePivotFacet = function(){
 		facetBrowser.inversePivotFacet(inverseClassUri, uri, classURI);
 	};
+	*/
 
     self.handler = function(sType, aArgs) {
         var myAC = aArgs[0]; // reference back to the AC instance
@@ -308,8 +333,9 @@ facet.InverseFacet = function(property, inVariable, classURI){
     };
 
     self.renderString = function (target){
+        var inputElDefault = "Search "+makeLabel(property.range)+"...";
         var html = "<div class=\"facet_form\">";
-        html += "<input class=\"text-box\" type=\"text\" id=\""+self.getId()+"_search\" value=\"Search "+makeLabel(range)+" values...\" />";
+        html += "<input class=\"text-box\" type=\"text\" id=\""+self.getId()+"_search\" value=\"Search "+makeLabel(range)+"...\" />";
         html += "<div class=\"search_loading\" id=\""+self.getId()+"_search_loading\"></div>";
         html += "<div id=\""+self.getId()+"_container\">";
         html += "</div>";
@@ -324,7 +350,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
         self.autoComplete.resultTypeList = false;
         self.autoComplete.textboxFocusEvent.subscribe(function(sType, aArgs) {
             var inputEl = aArgs[0].getInputEl();
-            if (inputEl.value.indexOf("Search ")>=0 && inputEl.value.indexOf("values...")>0)
+            if (inputEl.value.indexOf("Search ")>=0)
                 inputEl.value = "";
             facetBrowser.setAutoCompleteProperty((this.getInputEl().id).replace("_search",""));
         });
@@ -335,7 +361,8 @@ facet.InverseFacet = function(property, inVariable, classURI){
         });
 
         self.autoComplete.formatResult = function(oResultData, sQuery, sResultMatch) {
-            return (sResultMatch + " (" +  oResultData.n + ")");
+            //return (sResultMatch + " (" +  oResultData.n + ")");
+            return (sResultMatch);
         };
 
         self.autoComplete.maxResultsDisplayed = 20;
@@ -346,14 +373,14 @@ facet.InverseFacet = function(property, inVariable, classURI){
             $j("#"+facetBrowser.getAutoCompletePropertyID()+"_search_loading").append("<img class=\"autocompleting\" src=\"images/black-loader.gif\"/>");
             var query =
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
-                    "SELECT ?uri ?label (COUNT(?uri) AS ?n) \n"+
+                    "SELECT distinct(?uri) ?label \n"+
                     "WHERE{"+
                     "?[variable] a <[uri]>. ?uri <[property]> ?[variable] . \n"+
                     facetBrowser.makeRestrictions(facetBrowser.getAutoCompletePropertyURI())+
                     "OPTIONAL{ \n"+
                     "?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
                     "FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+
-                    "} GROUP BY ?uri ?label ORDER BY DESC (?n)";
+                    "}";
             query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
             query = query.replace(/\[uri\]/g, facetBrowser.getActiveManager().getTypeUri());
             query = query.replace(/\[variable\]/g, facetBrowser.getActiveManager().getVariable());

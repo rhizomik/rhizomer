@@ -9,22 +9,33 @@ p {
 }
 body {
 	font-size: 11px;
-	font-family: "Lucida Sans Unicode" ;
-	background-image: url(../images/rhizomik.jpg);
-	background-repeat: no-repeat;
-	background-color: white;
-    background-position: -200px 0px;
-} 
+	/*font-family: "Lucida Sans Unicode" ;*/
+    font-family: sans-serif;
+    /*background-image: url(../images/rhizomik.jpg);
+  background-repeat: no-repeat;
+  background-color: white;
+  background-position: -200px 0px;*/
+}
+
+#header #logo{
+    float:left;
+}
+
 td {
 	font-size: 11px;
-	font-family: "Lucida Sans Unicode";
+	/*font-family: "Lucida Sans Unicode";*/
+    font-family: sans-serif;
 }
 img {
 	border: 0px;
 }
 #header {
 	margin-top: 10px;
-	float: right;
+	/*float: right;*/
+}
+
+#header #right{
+    float:right;
 }
 #header #overview {
     float: right;
@@ -58,7 +69,6 @@ img {
     display: none;
 }
 #body {
-	margin-top: 10px;
 	float: left;
 	width: 100%;
 	overflow: hidden;
@@ -91,9 +101,11 @@ img {
 #content a {
 	text-decoration: underline;
 }
+/*
 #content a:visited {
 	color:#80708E;
 }
+*/
 #content .yui-content {
 	border-color: #CCCCCC;
 	background-color: #F0F0F0;
@@ -151,6 +163,8 @@ img {
 
 /* Facets styling */
 
+
+/*
 .facet_options {
 	margin-top:-10px;
     margin-bottom:10px;
@@ -158,9 +172,10 @@ img {
 	border-width: 1px;
 	display:none;
 }
+*/
 
 .facet_title_show{
-	background-image: url("//z.bstatic.com/static/img/experiments/icon_open.gif"); /*Canviar per imatge local */
+	background-image: url("//z.bstatic.com/static/img/experiments/icon_open.gif");
 	background-repeat: no-repeat;	
 }
 
@@ -192,20 +207,24 @@ img {
 	margin-left:20px;
 }
 
+/*
 .facet_form {
 	margin: 5px;
 	margin-bottom:30px;
 	width:210px;
 }
+*/
 
+/* copied
 .text-box{
 	color:grey;
- 	background-image:url('http://www.imdb.com/images/searchlink.png'); /*Canviar per imatge local!*/
+ 	background-image:url('http://www.imdb.com/images/searchlink.png');
   	background-repeat:no-repeat;
   	margin-left:-15px;
     padding-left:15px;
   	border:1px solid grey;
 }
+*/
 
 .more{
 	text-align:right;
@@ -226,17 +245,19 @@ img {
     margin-top:3px;
     cursor:pointer;    
 }
-
+/*
 .filter_by{
 	float:left; 
 	font-weight:bold; 
 	margin-bottom:10px;
 }
-
+*/
+/*
 .reset_facets{
 	text-align:right;
 	text-decoration:underline;
 }
+*/
 
 .selected_facet span{
 	font-weight:bold;
@@ -259,7 +280,7 @@ img {
     border: 0 none;
     padding-left: 20px;		
 	font-weight: bold;
-	background-image: url("//y.bstatic.com/static/img/experiments/icon_shut.gif"); /*Canviar per imatge local */
+	background-image: url("//y.bstatic.com/static/img/experiments/icon_shut.gif");
     background-repeat: no-repeat;
     margin:0;
   	float: left;
@@ -280,16 +301,19 @@ div.clear {
   float: right;
   cursor:pointer;
 }
-
+/* copied
 .showvalues {
     float: left;
     cursor:pointer;
 }
+*/
 
+/*
 .facet_header {
   background-color: #F0F0F0;	
   margin-bottom:10px;	
 }
+*/
 
 #active_facets ul{
 	margin-top:0px;
@@ -320,6 +344,8 @@ ul.inline , ul.inline li{
 	margin-top:10px;
 	margin-bottom:5px;
     font-size: 12px;
+    clear:right;
+    margin-left:12px;
 }
 
 .search_loading{
@@ -339,12 +365,16 @@ ul.inline , ul.inline li{
 }
 
 #related{
-    display: none;
+    display: block;
     background: none repeat scroll 0 0 white;
     border: 1px solid;
     float: right;
     padding: 20px;
+    height:30px;
+    overflow:auto;
 }
+
+
 
 /* SITE INDEX */
 
@@ -495,4 +525,17 @@ sitemap-root{
 
 .yui3-menu-content, .yui3-menuitem .yui3-menuitem-content{
     z-index:1000;
+}
+
+#header #search {
+    text-align:right;
+    float: right;
+    font-size: 10px;
+    margin-right: 10px;
+    margin-top:3px;
+}
+
+#header #search form, #header #search #input{
+    margin-top:0px;
+    padding-top:0px;
 }

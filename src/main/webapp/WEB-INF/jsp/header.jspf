@@ -56,11 +56,13 @@
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/rhizomer-transform.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/rhizomer-forms.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/script/autocomplete.js"></script>
+    <!--script type="text/javascript" src="<%=request.getContextPath()%>/script/search.js"></script-->
 	
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/dispatcher-min.js"></script>
 
-	<script src="<%=request.getContextPath()%>/script/prototype.js"></script>
-	<script src="<%=request.getContextPath()%>/script/jquery-1.4.2.min.js"></script>
+	<!--script src="<%=request.getContextPath()%>/script/prototype.js"></script-->
+	<!--script src="<%=request.getContextPath()%>/script/jquery-1.4.2.min.js"></script-->
+    <script src="http://code.jquery.com/jquery.js"></script>
 	
 	<script type="text/javascript">
 		$j = jQuery.noConflict();
@@ -94,82 +96,96 @@
 </head>
 <body class="yui-skin-sam yui3-skin-sam">
 <div id="header">
-    <div id="login">
-	<% if (request.getUserPrincipal() == null) { %>
-		<a href="<%=request.getContextPath()%>/html/admin/login.jsp">Login</a>
-	<% } else { %>
-	   		<div id="username"><a href="<%=request.getContextPath()%>/html/admin/"><%=request.getUserPrincipal().getName()%></a></div>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/html/admin/logout.jsp">Logout</a>
-	<% } %>
-	</div>
-    <div id="overview">
-        <a href="<%=request.getContextPath()%>/sitemap.jsp">Site map</a> -
-        <a href="<%=request.getContextPath()%>/siteindex.jsp">Site index</a> -
-        <a href="<%=request.getContextPath()%>/treemap.jsp">Treemap</a>
+    <div id="logo">
+        <a href="/"><img src="<%=request.getContextPath()%>/images/rhizomik2.jpg"/></a>
     </div>
-	<%
+    <div id="right">
+        <div id="login">
+        <% if (request.getUserPrincipal() == null) { %>
+            <a href="<%=request.getContextPath()%>/html/admin/login.jsp">Login</a>
+        <% } else { %>
+                <div id="username"><a href="<%=request.getContextPath()%>/html/admin/"><%=request.getUserPrincipal().getName()%></a></div>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/html/admin/logout.jsp">Logout</a>
+        <% } %>
+        </div>
 
-        HierarchyMenu menu = null;
-        HierarchyMenu originalMenu = null;
-        if(session.getAttribute("menu")==null)
-        {
-            MenuManager menuMng = MenuManager.getInstance(config);
-            HierarchyManagerSPARQL manager = menuMng.getManager();
-            originalMenu = manager.getHierarchyMenu();
-            menu = manager.generateFullMenu(null);
-            session.setAttribute("menu",menu);
-            session.setAttribute("originalMenu",originalMenu);
-        }
-        else{
-            menu = (HierarchyMenu) session.getAttribute("menu");
-            originalMenu = (HierarchyMenu) session.getAttribute("originalMenu");
-        }
-        menu.sort(2);
+        <div id="overview">
+            <a href="<%=request.getContextPath()%>/sitemap.jsp">Site map</a> -
+            <a href="<%=request.getContextPath()%>/siteindex.jsp">Site index</a> -
+            <a href="<%=request.getContextPath()%>/treemap.jsp">Treemap</a>
+        </div>
 
-        /*
-        //SKOS menu for subjects taxonomy
-        */
-        /*
-		HierarchyMenu menuSKOS = null;
-        if(session.getAttribute("menuSKOS")==null)
-        {
-            MenuManager menuMng = MenuManager.getInstance(config);
-            HierarchyManagerSKOS skosManager = menuMng.getSKOSManager();
-            menuSKOS = skosManager.generateFullMenu(null);
-            session.setAttribute("menuSKOS",menuSKOS);
-        }
-        else
-        	menuSKOS = (HierarchyMenu) session.getAttribute("menuSKOS");
-        menuSKOS.sort(2);
-        */
+        <div id="search" class="yui-ac">
+            <!--form action=""-->
+                <input id="search_input" type="text" name="text" value=""/>
+            <!--/form-->
+        </div>
 
-        if(session.getAttribute("service")==null){
-            ServiceManager serviceManager = new ServiceManager();
-            serviceManager.readServiceList();
-            session.setAttribute("service",serviceManager.getServiceList());
-        }
-	%>
-	<div id="menu-class" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
-		<div class="yui3-menu-content">
-			<ul>
-				<li class="yui3-menuitem">
-					<a class="yui3-menuitem-content" href="<%=request.getContextPath()%>/">About</a>
-				</li>
-				<%=menu.printAsUl(request, 2)%>
-				<li class="yui3-menuitem">
-					<a class="yui3-menuitem-content" href="mailto:contact at rhizomik dot net">Contact</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<!--div id="menu-skos" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
-		<div class="yui3-menu-content">
-			<ul>
-				<li class="yui3-menuitem">
-					<a class="yui3-menuitem-content">Topics:</a>
-				</li-->
-				<!--%=menuSKOS.printAsUl(request, 2, "http://purl.org/dc/terms/subject")%-->
-			<!--/ul>
-		</div>
-	</div-->
+
+        <%
+
+            HierarchyMenu menu = null;
+            HierarchyMenu originalMenu = null;
+            if(session.getAttribute("menu")==null)
+            {
+                MenuManager menuMng = MenuManager.getInstance(config);
+                HierarchyManagerSPARQL manager = menuMng.getManager();
+                originalMenu = manager.getHierarchyMenu();
+                menu = manager.generateFullMenu(null);
+                session.setAttribute("menu",menu);
+                session.setAttribute("originalMenu",originalMenu);
+            }
+            else{
+                menu = (HierarchyMenu) session.getAttribute("menu");
+                originalMenu = (HierarchyMenu) session.getAttribute("originalMenu");
+            }
+            menu.sort(2);
+
+            /*
+            //SKOS menu for subjects taxonomy
+            */
+            /*
+            HierarchyMenu menuSKOS = null;
+            if(session.getAttribute("menuSKOS")==null)
+            {
+                MenuManager menuMng = MenuManager.getInstance(config);
+                HierarchyManagerSKOS skosManager = menuMng.getSKOSManager();
+                menuSKOS = skosManager.generateFullMenu(null);
+                session.setAttribute("menuSKOS",menuSKOS);
+            }
+            else
+                menuSKOS = (HierarchyMenu) session.getAttribute("menuSKOS");
+            menuSKOS.sort(2);
+            */
+
+            if(session.getAttribute("service")==null){
+                ServiceManager serviceManager = new ServiceManager();
+                serviceManager.readServiceList();
+                session.setAttribute("service",serviceManager.getServiceList());
+            }
+        %>
+        <div id="menu-class" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
+            <div class="yui3-menu-content">
+                <ul>
+                    <li class="yui3-menuitem">
+                        <a class="yui3-menuitem-content" href="<%=request.getContextPath()%>/">About</a>
+                    </li>
+                    <%=menu.printAsUl(request, 2)%>
+                    <li class="yui3-menuitem">
+                        <a class="yui3-menuitem-content" href="mailto:contact at rhizomik dot net">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--div id="menu-skos" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
+            <div class="yui3-menu-content">
+                <ul>
+                    <li class="yui3-menuitem">
+                        <a class="yui3-menuitem-content">Topics:</a>
+                    </li-->
+                    <!--%=menuSKOS.printAsUl(request, 2, "http://purl.org/dc/terms/subject")%-->
+                <!--/ul>
+            </div>
+        </div-->
+    </div>
 </div>
 <div id="body">

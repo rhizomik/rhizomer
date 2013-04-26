@@ -152,15 +152,23 @@ public class VirtuosoStore implements MetadataStore
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try
         {
+
             Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
             query.addGraphURI(graphURI);
             query.addGraphURI(schema);
             //if (!query.hasLimit())
             //	query.setLimit(SPARQL_LIMIT);
-            queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+query.toString();
+
+            queryString = query.toString();
+            if (query.hasGroupBy())
+                if (query.getGroupBy().isEmpty())
+                    queryString = query.toString().substring(0, query.toString().indexOf("GROUP BY"));
+
+            //queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+query.toString();
+            queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+queryString;
             if (query.isDescribeType())
             	queryString = "DEFINE sql:describe-mode \"CBDL\"\n"+queryString;
-            
+
             /*if (queryString.indexOf("regex")>0)
             {
             	queryString = queryString.replace("regex","bif:contains");
@@ -169,7 +177,7 @@ public class VirtuosoStore implements MetadataStore
             	queryString = queryString.replace(", 'i'", "");
             }*/
             
-            log.log(Level.INFO, "VirtuosoStore.query: "+queryString);
+            log.log(Level.INFO, "VirtuosoStore.query2: "+queryString);
             
             qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
         

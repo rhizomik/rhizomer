@@ -13,7 +13,8 @@ facet.FacetManager = function (uri, inVariable){
 	var defaultLabels = {};
 	var pivotedFacets = {};
 	var label = makeLabel(uri);
-		
+    var numInstances = 0;
+
 	self.getVariable = function(){
 		return variable;
 	};
@@ -25,6 +26,10 @@ facet.FacetManager = function (uri, inVariable){
 	self.getLabel = function(){
 		return label;
 	};
+
+    self.setNumInstances = function(inNumInstances){
+        numInstances = inNumInstances;
+    };
 	
 	self.needsToPrint = function(){
 		if(!$j.isEmptyObject(selectedFacets))
@@ -41,6 +46,10 @@ facet.FacetManager = function (uri, inVariable){
 		}
 		return navigableFacets;
 	};
+
+    self.getPivotedFacets = function(){
+      return pivotedFacets;
+    };
 	
 	self.addPivotedFacet = function(propertyURI, range, pivotedVar){
         var obj = {};
@@ -142,10 +151,12 @@ facet.FacetManager = function (uri, inVariable){
 	self.renderFacets = function(target){
 		html = "<div class='filter_by'>Filter <strong>"+label+"</strong> by:</div>";
 		html += "<div class='reset_facets'><a href=''>Reset filters</a></div>";
+        html += "<div class='facet_list'>";
 		$j("#"+target).html(html);		
 		for(f in facets){
 			facets[f].render(target);
 		}
+        $j("#"+target).append("</div>");
 	};
 	
 	self.toggleFacet = function(id) {
@@ -193,9 +204,11 @@ facet.FacetManager = function (uri, inVariable){
 		facet.setSelected(true);
 		facetBrowser.reloadFacets();
 		facet.setSelected(false);
-		facetBrowser.printActive();
+		//facetBrowser.printActive();
+        facetBrowser.printBreadcrumbs();
 	};
-	
+
+    /*
 	self.printActiveInit = function(){
 		$j("#active_facets").empty();
 		if(!$j.isEmptyObject(selectedFacets)){
@@ -212,10 +225,15 @@ facet.FacetManager = function (uri, inVariable){
 			}
 		}
 	};
+	*/
 	
 	self.printActive = function(main){
-		if(main)
-			var html = "Showing <b>"+label+"</b> ";		
+        console.log(label);
+        console.log(self.getPivotedFacets());
+		if(main){
+            var numResults = facetBrowser.getNumResults();
+			var html = "Showing "+numResults+" <b>"+label+"</b> filtered from "+numInstances + " ";
+        }
 		else
 			var html = "<a href=\"javascript:facetBrowser.pivotFacet('','','"+typeUri+"');\">"+label+"</a> ";
 		if(!$j.isEmptyObject(selectedFacets)){
@@ -230,8 +248,8 @@ facet.FacetManager = function (uri, inVariable){
 					if(i>0)
 						html += " or ";
 					value = selectedFacets[f][key];
-					html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+typeUri+"','"+f+"','"+value.uri+"'); return false;\">";
-					html += value.label+ " [x]</a>";
+                    html += "<b>"+value.label+"&nbsp;</b>"
+					html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+typeUri+"','"+f+"','"+value.uri+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
 					i++;
 				}
 				x++;
@@ -239,58 +257,18 @@ facet.FacetManager = function (uri, inVariable){
 		}
 		return html;
 	};
-	
-	self.printActive2 = function(){
-		var html = "";
-		if(!$j.isEmptyObject(selectedFacets) || !$j.isEmptyObject(pivotedFacets)){
-			html += "<span class=\"class_active\">"+label+"</span>";
-			if(typeUri==facetBrowser.getMainManager().getTypeUri()){
-				if(typeUri!=facetBrowser.getActiveManager().getTypeUri())
-					html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('','"+typeUri+"');\"><img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_99.gif\"/> Go to</a></span>";
-				html += "<span style=\"margin-left:20px;\"><a href=\"\">Reset all filters[x]</a></span>";
-			}
-			else if(typeUri!=facetBrowser.getActiveManager().getTypeUri()){
-				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.pivotFacet('','"+typeUri+"');\"><img src=\"http://www.freeiconsweb.com/Icons/16x16_arrow_icons/arrow_99.gif\"/> Go to</a></span>";
-				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.deletePivotFacet('"+typeUri+"');\">[x]</a></span>";
-			}
-			else{
-				html += "<span style=\"margin-left:20px;\"><a href=\"javascript:facetBrowser.deletePivotFacet('"+typeUri+"');\">[x]</a></span>";
-			}
-			html += "<ul>";		
-			if(!$j.isEmptyObject(selectedFacets)){
-				for(f in selectedFacets){
-					html += "<li><span>"+facets[facetIds[f]].getLabel()+"</span>";
-					html += "<ul class=\"inline\">";
-					for(key in selectedFacets[f]){
-						value = selectedFacets[f][key];
-						html += "<li id=\""+makeLabel(value.uri)+"\"><a onclick=\"javascript:facetBrowser.removeProperty('"+typeUri+"','"+f+"','"+value.uri+"'); return false;\">";
-						html += value.label+ " [x]</a></li>";
-					}			
-					html += "</ul></li>";
-				}
-			}
-			for(m in pivotedFacets){
-				var tmp = facetBrowser.getManager(pivotedFacets[m].range).printActive();
-				if(tmp){
-					html += "<li>";
-					html += tmp;
-					html += "</li>";
-				}
-			}
-			html += "</ul>";
-		}
-		return html;
-	};		
+
 	
 	self.reloadFacets = function(){
+        var constraints = facetBrowser.makeRestrictions();
 		var query = "SELECT DISTINCT ?"+variable+" "+
 			"WHERE { "+
 			"?"+variable+" a <"+typeUri+"> . ";
-		query += facetBrowser.makeRestrictions();
+		query += constraints;
 		query += "}";
 		//alert(query);
 		rhz.listResourcesNoHistory(query);
-		self.reloadProperties();		
+		self.reloadProperties();
 	};	
 	
 	self.reloadProperties = function(){
@@ -340,7 +318,8 @@ facet.FacetManager = function (uri, inVariable){
 		rhz.getFacets(parameters, 
 				function(output) 
 				{
-					var response = output.evalJSON();		
+					var response = JSON.parse(output);
+                    numInstances = response.numInstances;
 					$j.each(response.properties, 
 						function(i, property)
 						{

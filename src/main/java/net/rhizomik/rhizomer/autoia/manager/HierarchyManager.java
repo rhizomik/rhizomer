@@ -154,7 +154,34 @@ public class HierarchyManager
                 }
             }
         }
+
+        for(HierarchyNode child : out.getNodes()){
+            generateSubMenus(child,numItemsLocal);
+        }
         return out;
+    }
+
+    private void generateSubMenus(HierarchyNode node, int numItemsLocal){
+        List<HierarchyNode> childs = node.getChilds();
+        if(numItemsLocal < childs.size()){
+            for(int i=0;i<childs.size();i++){
+                HierarchyNode child = childs.get(i);
+                if(i<numItemsLocal)
+                    out.addNode(child);
+                else if(i==numItemsLocal){
+                    if(i==childs.size())
+                        out.addNode(child);
+                    else{
+                        HierarchyNode other = getOtherLocal(node);
+                        other.addChild(child);
+                    }
+                }
+                else{
+                    HierarchyNode other = getOtherLocal(node);
+                    other.addChild(child);
+                }
+            }
+        }
     }
 	
 	

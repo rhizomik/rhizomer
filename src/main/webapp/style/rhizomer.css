@@ -10,7 +10,8 @@
 .yui-skin-sam .yui-tt .bd {
     color: black !important;
     background-color: lightgrey !important;
-    font-family: "Lucida Sans Unicode" !important;
+    /*font-family: "Lucida Sans Unicode" !important;*/
+    font-family: sans-serif;
     border: 1px solid gray !important;
 }
 
@@ -45,8 +46,9 @@
 }
 #metadata input, #metadata select, #metadata textarea, .semform input, .semform select, .semform textarea {
 	font-size: 10px;
-	font-family: "Lucida Sans Unicode";
-	border-width: 1px;
+    /*font-family: "Lucida Sans Unicode";*/
+    font-family: sans-serif;
+    border-width: 1px;
 	border-style: solid;
 	border-color: #CCCCCC;
 }
@@ -76,23 +78,27 @@
 }
 #metadata p, .rdf2html p {
 	font-size: 10px;
-	font-family: "Lucida Sans Unicode" ;
-	text-align: justify;
+	/*font-family: "Lucida Sans Unicode" ;*/
+    font-family: sans-serif;
+    text-align: justify;
 } 
 #metadata ol, .rdf2html ol {
 	font-size: 10px;
-	font-family: "Lucida Sans Unicode" ;
-	text-align: justify;
+	/*font-family: "Lucida Sans Unicode" ;*/
+    font-family: sans-serif;
+    text-align: justify;
 }
 #metadata ul, .rdf2html ul {
 	font-size: 10px;
-	font-family: "Lucida Sans Unicode" ;
-	text-align: justify;
+	/*font-family: "Lucida Sans Unicode" ;*/
+    font-family: sans-serif;
+    text-align: justify;
 }
 #metadata td, #metadata th, .rdf2html td, .rdf2html th {
 	font-size: 10px;
-	font-family: "Lucida Sans Unicode";
-	vertical-align: baseline;
+	/*font-family: "Lucida Sans Unicode";*/
+    font-family: sans-serif;
+    vertical-align: baseline;
 }
 #metadata td.actions {
 	text-align: right;
@@ -198,7 +204,8 @@
 	text-decoration: none;
 	color:#80708E;
 	font-size: 10px;
-	font-family: "Lucida Sans Unicode";
+	/*font-family: "Lucida Sans Unicode";*/
+    font-family: sans-serif;
 }
 #footlogo {
 	position: relative;

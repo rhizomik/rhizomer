@@ -90,7 +90,7 @@ facet.Facet = function(property, inVariable, classURI)
 		if(queryValues.length>0){
 			var query = "SELECT ?r ?label where{?r <http://www.w3.org/2000/01/rdf-schema#label> ?label . FILTER(?r = " + queryValues.join(" || ?r = ") + ")}"; 
 			rhz.sparqlJSON(query, function(out){
-				data = out.evalJSON();
+				data = JSON.parse(out);
 				for(i=0; i<data.results.bindings.length; i++){
 					r = data.results.bindings[i].r.value;
 					var label = data.results.bindings[i].label.value;				
@@ -118,8 +118,14 @@ facet.Facet = function(property, inVariable, classURI)
 	self.renderBase = function(target){
 		var html = "<div id=\""+id+"_facet\" class=\"facet\">";
 		html += "<div id=\""+id+"_title\" class=\"facet_header\">";
-		html += "<span id=\""+id+"_toggle\" class=\"facet_title\">" +
-				"<h4 onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">"+label+"</h4></span>";
+        html += "<h4>"+label+"</h4></div></div>";
+
+        $j("#"+target).append(html);
+
+        /*html += "<span id=\""+id+"_toggle\" class=\"facet_title\">" +
+                "<h4 onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">"+label+"</h4></span>";
+        */
+        /*
         html += "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
 		if(self.isNavigable())
             html += "<span id=\""+id+"_pivot\" class=\"pivot\">Filter "+makeLabel(range)+"</span>";
@@ -131,31 +137,46 @@ facet.Facet = function(property, inVariable, classURI)
 		$j("#"+id+"_pivot").click(function (){
 			self.pivotFacet();
 		});
+		*/
 	};
 	
 	self.renderValueList = function(target){
-		var html = "<div id=\""+id+"_values\"><ul id=\""+id+"_ul\" class=\"values\"></ul>";
+        var html = "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Show values</span>";
+        if(self.isNavigable())
+            html += "<span id=\""+id+"_pivot\" class=\"pivot\">Filter "+makeLabel(range)+"</span>";
+        html += "<div class=\"clear\"></div>";
+        /*html += "</div>";*/
+        html += "<div id=\""+id+"_loading\"></div>";
+        html += "<div class=\"facet_options\" id=\""+id+"_div\">";
+
+
+		html += "<div id=\""+id+"_values\"><ul id=\""+id+"_ul\" class=\"values\"></ul>";
 		html += "<div class=\"more\"><a id=\""+id+"_more\" href=\"#\" >more values</a></div>";
 		html+="</div>"
 		$j("#"+target).append(html);
+        $j("#"+id+"_pivot").click(function (){
+            self.pivotFacet();
+        });
 		$j("#"+id+"_more").click(function (){
 			self.getMoreValues();
 		});
 	};
 	
 	self.renderEnd = function(target){
-		html ="</div><div class=\"facet_sep\"></div>";
+		html ="<div class=\"facet_sep\"></div>";
 		$j("#"+target).append(html);	
 	};	
 	
 	self.toggleFacet = function(){
 		if(opened){
 			opened = false;
-			$j("#"+id+"_div").hide();
+            $j("#"+id+"_showvalues").removeClass("showvalues_opened");
+            $j("#"+id+"_div").hide();
 			$j("#"+id+"_loading").empty().hide();
 		}
 		else{
 			opened = true;
+            $j("#"+id+"_showvalues").addClass("showvalues_opened");
 			if(numValues==0)
 				self.getMoreValues();
 			else
@@ -221,7 +242,7 @@ facet.Facet = function(property, inVariable, classURI)
 	};
 	
 	self.processMoreValues = function(output){
-		data = output.evalJSON();
+		data = JSON.parse(output);
 		if(data.results.bindings.length > 0){
 			$j("#"+id+"_facet").show();
 			$j.each(data.results.bindings, function(i, option){

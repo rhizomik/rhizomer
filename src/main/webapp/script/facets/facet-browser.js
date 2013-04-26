@@ -14,6 +14,8 @@ facet.FacetBrowser = function(inParser){
 	var varCount = 1;
 	var autoCompleteProperty = null;
 	var activeLabel = null;
+    var numResults = 0;
+    var totalResults = 0;
 	
 	self.loadFacets = function(){
 		parser.parse();
@@ -31,7 +33,9 @@ facet.FacetBrowser = function(inParser){
 		rhz.getFacets(parameters, 
 				function(output) 
 				{
-					var response = output.evalJSON();		
+					//var response = output.evalJSON();
+                    var response = JSON.parse(output);
+                    mainManager.setNumInstances(response.numInstances);
 					$j.each(response.properties, 
 						function(i, property)
 						{
@@ -43,8 +47,12 @@ facet.FacetBrowser = function(inParser){
 					managers[activeURI].manager.reloadFacets();
 					fm = managers[activeURI].manager;
 					//self.printActiveFilters();
-					self.printRelated();
+                    self.printBreadcrumbs();
+                    /*
 					self.printActive();
+                    self.printPath();
+                    self.printRelated();
+                    */
 				}
 		);
 	};
@@ -60,6 +68,10 @@ facet.FacetBrowser = function(inParser){
 	self.getMainManager = function(){
 		return mainManager;
 	};
+
+    self.getNumResults = function(){
+        return numResults;
+    }
 	
 	self.setDefaultFilters = function(){
 		restrictions = parser.getRestrictions();
@@ -104,12 +116,14 @@ facet.FacetBrowser = function(inParser){
 		// mainManager.deletePivotedFacet(uri);
 		activeManager.renderFacets("facets");		
 		mainManager.reloadFacets();
-		self.printActive();
+		self.printBreadcrumbs();
 	};
-	
+
+    /*
 	self.printActiveFilters = function(){
 		activeManager.printActiveInit();
 	};
+	*/
 	
 	self.filterInitProperty = function(variable, property, value){
 		uri = vars_uris[variable];
@@ -126,7 +140,20 @@ facet.FacetBrowser = function(inParser){
 		vars_uris[variable] = range;
 		varCount++;
 	};
-	
+
+    self.printBreadcrumbs = function(){
+        /*self.printPath();*/
+        /*
+        $j("#context").block({
+            message: 'Processing... <img src="/images/black-loader.gif"/>',
+            css: { border: '1px solid grey', backgroundColor: '#ffffff' }
+        });
+        */
+        $j.blockUI();
+        self.printActive();
+        //self.printRelated();
+    };
+
 	self.makeRestrictions = function(uri){
 		var query = "";
 		for(var m in managers){
@@ -134,40 +161,141 @@ facet.FacetBrowser = function(inParser){
 		}
 		return query;
 	};
+
+    self.printActive = function(){
+        countQuery = "SELECT (COUNT(DISTINCT(?"+mainManager.getVariable()+")) as ?count) "+
+            "WHERE { "+
+            "?"+mainManager.getVariable()+" a <"+mainManager.getTypeUri()+"> . ";
+        countQuery += self.makeRestrictions();
+        countQuery += "}";
+
+        console.log(countQuery);
+
+
+        rhz.sparqlJSON(countQuery, function(out){
+            data = JSON.parse(out);
+            numResults = data.results.bindings[0].count.value;
+            self.printActiveCallback();
+        });
+    };
 	
-	self.printActive = function(){
+	self.printActiveCallback = function(){
 		$j("#active_facets").empty();
-		$j("#active_facets").append("<span><a href=\"\">Reset all filters[x]</a></span><br/><br/>");
+		//$j("#active_facets").append("<span><a href=\"\">Reset all filters[x]</a></span><br/><br/>");
 		var html = mainManager.printActive(true);
 		for(m in managers){
 			if(managers[m].manager!=mainManager){
+                pivotedText = " is actor of "+makeLabel(managers[m].propertyURI, false);
 				html += "<br/>has "+makeLabel(managers[m].propertyURI, false)+" ";
 				html += managers[m].manager.printActive(false);
 				
 			}
 		}
+        html += "<span style=\"margin-left:10px;\"><a href=\"\">Reset all filters <img src='/images/delete_blue.png'/></a></span>";
 		$j("#active_facets").append(html);
+        self.printRelated();
 	};
+
+
+
+    self.printPath = function (counts){
+        var html = "<ul><li><a href=\"/\">Home</a></li>";
+        for(m in managers){
+            html += "<li class=\"path\"><span>>></span></li>";
+            if(managers[m].manager==mainManager)
+                html += "<li class='active'><span>"+managers[m].manager.getLabel()+" ("+self.getNumResults()+")</span></li>";
+            else
+                html += "<li><a href=\"javascript:facetBrowser.pivotActiveFacet('"+m+"')\">"+managers[m].manager.getLabel()+"</a></li>";
+        }
+        html += "</ul>";
+        $j("#breadcrumbs").html(html);
+    };
+
+    self.printRelatedCallback = function(){
+        self.printPath();
+        var html = "";
+        var navigableFacets = mainManager.getNavigableFacets();
+        var links = {};
+        for(f in navigableFacets){
+            links[navigableFacets[f].getRange()] = true;
+            if(navigableFacets[f].isInverse())
+                html += "<li><a href=\"javascript:facetBrowser.pivotInverseFacet('"+navigableFacets[f].getClassUri()+"','"+navigableFacets[f].getUri()+"','"+navigableFacets[f].getRange()+"');\">"+makeLabel(navigableFacets[f].getRange())+"</a></li>";
+            else
+                html += "<li><a href=\"javascript:facetBrowser.pivotFacet('','"+navigableFacets[f].getUri()+"','"+navigableFacets[f].getRange()+"');\">"+navigableFacets[f].getLabel()+"</a></li>";
+        }
+
+        for(m in managers){
+            if(managers[m].manager!=mainManager && !links[m])
+                html += "<li><a href=\"javascript:facetBrowser.pivotFacet('','','"+m+"');\">"+managers[m].manager.getLabel();+"XX</a></li>";
+        }
+
+        html += "</ul>";
+
+        $j("#connections").popover('destroy');
+        $j("#connections").popover({
+            offset: 10,
+            title: 'Connections to related resources',
+            animation: true,
+            trigger: 'manual',
+            html: true,
+            placement: "bottom",
+            content: html,
+            template: '<div id="connections-popover" class="popover" onmouseover="$j(this).mouseleave(function() {$j(this).hide(); });"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>'
+
+        }).click(function(e) {
+                e.preventDefault() ;
+            }).mouseenter(function(e) {
+                $j(this).popover('show');
+            });
+        /*
+         $j("#connections").mouseout(function(e){
+         if ($j('#connections-popover').is(':hover')) {
+         alert("hello");
+         }
+         else
+         $j(this).popover('hide');
+         });
+         */
+        $j.unblockUI();
+        /*$j("#context").unblock();*/
+    };
 	
 	self.printRelated = function(){
-		$j("#related").html("<h4>Navigate to:</h4><ul>");
-		var html = "";
-		var navigableFacets = mainManager.getNavigableFacets();
-		var links = {};
-		for(f in navigableFacets){
-			links[navigableFacets[f].getRange()] = true;			
-			if(navigableFacets[f].isInverse())
-				html += "<li><a href=\"javascript:facetBrowser.inversePivotFacet('"+navigableFacets[f].getRange()+"','"+navigableFacets[f].getUri()+"','"+navigableFacets[f].getClassUri()+"');\">"+makeLabel(navigableFacets[f].getRange())+"</a></li>";
-			else
-				html += "<li><a href=\"javascript:facetBrowser.pivotFacet('','"+navigableFacets[f].getUri()+"','"+navigableFacets[f].getRange()+"');\">"+navigableFacets[f].getLabel()+"</a></li>";
-		}
-		for(m in managers){
-			if(managers[m].manager!=mainManager && !links[m])
-				html += "<li><a href=\"javascript:facetBrowser.pivotFacet('','','"+m+"');\">"+managers[m].manager.getLabel();+"</a></li>";
-		}
-		html += "</ul>";
-		$j("#related").append(html);
-	};
+        /*
+        var filter = "";
+        for(m in managers){
+            if(managers[m].manager!=mainManager){
+                if(filter=="")
+                    filter="FILTER(?c=<"+m+">";
+                else
+                    filter+=" || ?c=<"+m+">";
+            }
+        }
+        filter += ")";
+        var counts = {};
+        if(filter!=")"){
+
+            var query = "SELECT ?c (COUNT(DISTINCT(?pr)) as ?count) "
+            query += "WHERE {?pr a ?c . "+filter;
+            query += "?"+mainManager.getVariable()+" a <"+mainManager.getTypeUri()+"> . ";
+            query += self.makeRestrictions();
+            query += "?"+mainManager.getVariable()+" ?p ?pr } GROUP BY ?c";
+            console.log(query);
+
+            rhz.sparqlJSON(query, function(out){
+                data = JSON.parse(out);;
+                for(i=0; i<data.results.bindings.length; i++){
+                    var c = data.results.bindings[i].c.value;
+                    var count = data.results.bindings[i].count.value;
+                    counts[c] = count;
+                }
+                self.printRelatedCallback(counts);
+            });
+        }
+        else*/
+            self.printRelatedCallback();
+
+    };
 	
 	self.setAutoCompleteProperty = function(id){
 		autoCompleteProperty = id;
@@ -180,14 +308,23 @@ facet.FacetBrowser = function(inParser){
     self.getAutoCompletePropertyURI = function(){
         return activeManager.getUriById(autoCompleteProperty);
     };
+
+    self.pivotActiveFacet = function(range){
+        activeManager = managers[range].manager;
+        activeManager.renderFacets("facets");
+        activeManager.reloadFacets();
+        mainManager = activeManager;
+        self.printBreadcrumbs();
+    };
 	
 	self.pivotFacet = function(classURI, propertyURI, range){
-		if(managers[range]){
+        $j('#connections').popover('hide');
+        if(managers[range]){
 			activeManager = managers[range].manager;
 			activeManager.renderFacets("facets");
 			activeManager.reloadFacets();
 			mainManager = activeManager;
-			self.printRelated();
+			//self.printRelated();
 		}
 		else{	        
 			activeManager.addPivotedFacet(propertyURI, range, "r"+varCount);
@@ -197,16 +334,21 @@ facet.FacetBrowser = function(inParser){
 			activeManager.loadFacets();
 			mainManager = activeManager;
 		}
+        self.printBreadcrumbs();
+        /*
 		self.printActive();
+        self.printPath();
+        */
 	};
 	
 	self.pivotInverseFacet = function(classURI, propertyURI, range){
+        $j('#connections').popover('hide');
 		if(managers[range]){
 			activeManager = managers[range].manager;
 			activeManager.renderFacets("facets");
 			activeManager.reloadFacets();
 			mainManager = activeManager;
-			self.printRelated();
+			//self.printRelated();
 		}
 		else{
             activeManager.addPivotedInverseFacet(propertyURI, range, "r"+varCount);
@@ -216,7 +358,11 @@ facet.FacetBrowser = function(inParser){
 			activeManager.loadFacets();
             mainManager = activeManager;
         }
+        self.printBreadcrumbs();
+        /*
         self.printActive();
+        self.printPath();
+        */
     };
 	
 	return self;

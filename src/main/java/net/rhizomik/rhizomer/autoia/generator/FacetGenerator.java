@@ -25,7 +25,18 @@ public class FacetGenerator {
 	
     private String NL = System.getProperty("line.separator");
     private static final Logger log = Logger.getLogger(FacetGenerator.class.getName());
-    private Connection conn;    
+
+
+    private static String[] omitClasses = {
+            "http://www.w3.org/2002/07/owl#Nothing",
+            "http://www.w3.org/2002/07/owl#Thing"};
+    private static String[] omitNamespaces = {
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "http://www.w3.org/2002/07/owl#",
+            "http://www.w3.org/2000/01/rdf-schema#",
+            "http://www.w3.org/2001/XMLSchema#"};
+
+    private Connection conn;
     
     private String queryForClasses = 
 	    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
@@ -214,11 +225,9 @@ public class FacetGenerator {
 
     private void generateFacets() throws SQLException{
     	ArrayList<String> classes = getClasses();
-    	ArrayList<String> omitClasses = new ArrayList<String>();
-        omitClasses.add("http://www.w3.org/2002/07/owl#Thing");
-        omitClasses.add("http://www.w3.org/2002/07/owl#Nothing");
+
     	for(String classUri : classes){
-    		if(!omitClasses.contains(classUri)){
+    		if(!isInOmitClasses(classUri) && !isInOmitNamespaces(classUri)){
     			System.out.println("Generating facets for "+classUri);
     			generateFacetsForClass(classUri);
     		}
@@ -232,6 +241,21 @@ public class FacetGenerator {
 		return f.exists();
     }
 
+    boolean isInOmitClasses(String classUri){
+        for(String omittedClass: omitClasses){
+            if (classUri.equals(omittedClass))
+                return true;
+        }
+        return false;
+    }
+
+    boolean isInOmitNamespaces(String classUri){
+        for(String namespace: omitNamespaces){
+            if (classUri.startsWith(namespace))
+                return true;
+        }
+        return false;
+    }
 
     private ArrayList<String> getClasses(){
     	ArrayList<String> classes = new ArrayList<String>();

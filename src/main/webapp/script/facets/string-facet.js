@@ -11,12 +11,29 @@ facet.StringFacet = function(property, fm, typeUri){
 		return { results: rsArray, error: false};
 	};
 	that.dataSource.responseSchema = {fields : ["label","uri","n"]};
+
+
+    that.printActive = function(){
+        html = "<b>"+that.getLabel()+"</b> is ";
+        var i=0;
+        values = that.getSelectedValues();
+        console.log(values);
+        for(uri in values){
+            if(i>0)
+                html += " or ";
+            html += "<b>"+values[uri].label+"&nbsp;</b>"
+            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+that.getClassURI()+"','"+that.getId()+"','"+escape(uri)+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+            i++;
+        }
+        return html;
+    }
+
 		
 	that.handler = function(sType, aArgs) {
         var myAC = aArgs[0]; // reference back to the AC instance
         var elLI = aArgs[1]; // reference to the selected LI element
         var oData = aArgs[2]; // object literal of selected item's result data
-        facetBrowser.filterProperty(facetBrowser.getAutoCompletePropertyID(),oData.uri,oData.label);
+        facetBrowser.filterProperty(facetBrowser.getAutoCompletePropertyID(),escape(oData.uri),escape(oData.label));
         $j("#"+that.getId()+"_search").val("");
     };
     

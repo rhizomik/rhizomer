@@ -74,6 +74,8 @@ public class RhizomerFacets extends HttpServlet {
         HierarchyMenu menu = (HierarchyMenu) session.getAttribute("originalMenu");
         HierarchyNode node = menu.getByUri(facetURI);
         int numInstances = node.getNumInstances();
+        node.sort("instances",1);
+        ArrayList<HierarchyNode> childs = (ArrayList<HierarchyNode>) node.getChilds();
 
         FacetProperties properties;
 
@@ -90,17 +92,65 @@ public class RhizomerFacets extends HttpServlet {
                 omitProperties.add("http://data.linkedmdb.org/resource/movie/film_cut");
                  */
                 properties = fm.getProperties(facetURI, omitProperties);
+                StringBuffer propertiesOut = properties.printJSON();
+                StringBuffer output = new StringBuffer();
+
+                /* Childs */
+                StringBuffer childsOut = new StringBuffer();
+                String delim = "";
+                childsOut.append("[");
+                for(HierarchyNode child : childs){
+                    childsOut.append(delim);
+                    childsOut.append("{\"uri\" : \""+child.getUri()+"\", \"label\" : \""+child.getLabel()+"\", " +
+                            "\"instances\" : "+child.getNumInstances()+"}");
+                    delim = ",";
+                }
+                childsOut.append("]");
+
+                /* Breadcrumbs */
+                StringBuffer breadcrumbsOut = new StringBuffer();
+                delim = "";
+                breadcrumbsOut.append("[");
+                for(HierarchyNode parent : menu.getBreadcrumbs(facetURI)){
+
+                    ArrayList<HierarchyNode> nodeChilds = (ArrayList<HierarchyNode>) parent.getChilds();
+                    StringBuffer nodeChildsOut = new StringBuffer();
+                    String delim2 = "";
+                    nodeChildsOut.append("[");
+                    for(HierarchyNode child : nodeChilds){
+                        nodeChildsOut.append(delim2);
+                        nodeChildsOut.append("{\"uri\" : \""+child.getUri()+"\", \"label\" : \""+child.getLabel()+"\", " +
+                                "\"instances\" : "+child.getNumInstances()+"}");
+                        delim2 = ",";
+                    }
+                    nodeChildsOut.append("]");
+
+                    breadcrumbsOut.append(delim);
+                    breadcrumbsOut.append("{\"uri\" : \""+parent.getUri()+"\", \"childs\" : "+ nodeChildsOut+ ", \"label\" : \""+parent.getLabel()+"\", " +
+                            "\"instances\" : "+parent.getNumInstances()+"}");
+                    delim = ",";
+                }
+                breadcrumbsOut.append("]");
+
+                output.append("{\"breadcrumbs\" : "+breadcrumbsOut+ ", \"childs\" : "+childsOut+ ", \"numInstances\" : " + numInstances + ", \"properties\": " + propertiesOut + "}");
+                PrintWriter out = response.getWriter();
+                System.out.println(output);
+                out.println(output);
+
             } else if ("charts".equals(mode)) {
                 properties = fm.getNumericProperties(facetURI);
-            } else {
+                StringBuffer propertiesOut = properties.printJSON();
+                StringBuffer output = new StringBuffer();
+                output.append("{\"properties\": " + propertiesOut + "}");
+                PrintWriter out = response.getWriter();
+                System.out.println(output);
+                out.println(output);
+            } else if ("more-facets".equals(mode)){
+
+            }
+            else{
                 throw new ServletException("Bad mode: " + mode);
             }
-            
-            StringBuffer propertiesOut = properties.printJSON();
-            StringBuffer output = new StringBuffer();
-            output.append("{\"numInstances\" : " + numInstances + ", \"properties\": " + propertiesOut + "}");
-            PrintWriter out = response.getWriter();
-            out.println(output);
 
         } catch (SQLException e) {
             e.printStackTrace();

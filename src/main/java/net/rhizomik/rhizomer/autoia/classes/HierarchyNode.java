@@ -1,12 +1,14 @@
 package net.rhizomik.rhizomer.autoia.classes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.net.URLEncoder;
 
 
 public class HierarchyNode implements Comparable{
@@ -15,7 +17,8 @@ public class HierarchyNode implements Comparable{
 
 		public static String ALPHABETICAL = "alphabetical";
 		public static String INSTANCES = "instances";
-	
+        public static String FACETS = "/facets.jsp";
+
 		protected String uri;
 		protected List<String> aliases;
 		protected int numInstances;
@@ -23,8 +26,12 @@ public class HierarchyNode implements Comparable{
 		protected HierarchyNode parent;
 		protected HierarchyNode lastParent;
 		private boolean abstractNode;
-		protected String label; 
-		
+		protected String label;
+        protected HierarchyMenu menu;
+
+        public void setHierarchyMenu(HierarchyMenu menu){
+            this.menu = menu;
+        }
 		
 		public String getLabel() {
             label = Character.toUpperCase(label.charAt(0)) + label.substring(1);
@@ -35,6 +42,17 @@ public class HierarchyNode implements Comparable{
                 this.label = "Others";
 			return label;
 		}
+
+        public String getFacetsLink(){
+            String obj = "{\"type\":\""+this.uri+"\"}";
+            try {
+                obj = URLEncoder.encode(obj,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            String link = FACETS+"?p="+obj;
+            return link;
+        }
 
 		public void setLabel(String label) {
 			this.label = label;
@@ -81,7 +99,7 @@ public class HierarchyNode implements Comparable{
 			if (this.label.equals("Other Other") || this.uri.equals("Other##Other"))
 				this.label = "Others";	
 		}
-		
+
 		private void makeLabel(){
 			if(this.isAbstractNode())
 				makeLabelOther();
@@ -140,7 +158,7 @@ public class HierarchyNode implements Comparable{
 		}
 
 		public int getNumInstances() {
-            if(!this.isAbstractNode())
+            if(!this.uri.equals("http://www.w3.org/2002/07/owl#Thing") && !this.isAbstractNode())
                 return this.numInstances;
             else{
                 int total=0;
@@ -229,7 +247,8 @@ public class HierarchyNode implements Comparable{
 		{			
 			//TODO: IMPORTANT! Make link to facets.jsp independent from where the app is installed!
 			//String link = req.getContextPath()+"/facets.jsp?uri="+this.uri.replace("#", "%23");
-			String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
+			//String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
+            String link = req.getContextPath()+this.getFacetsLink();
 			String query = "SELECT ?r WHERE { ?r ";
 			
 			String label = this.getLabel();
@@ -327,31 +346,76 @@ public class HierarchyNode implements Comparable{
 			else
 				return this.label.compareToIgnoreCase(other.label);
 		}
-		
-		
-		public void sort(String sort, int levels){
-			
-			Comparator c = new Comparator(){
-				public int compare(Object o1, Object o2) {
-					HierarchyNode node = (HierarchyNode) o1;
-					HierarchyNode other = (HierarchyNode) o2;
-					if(other.isAbstractNode())
-						return -1;
-					if(node.getNumInstances()>other.getNumInstances())
-						return -1;
-					else
-						return 1;
-				}
-			};
-			if(sort.equals(this.ALPHABETICAL))
-				Collections.sort(this.childs);
-			else
-				Collections.sort(this.childs, c);
-			if(levels>=1){
-				for(HierarchyNode child : this.childs)
-					child.sort(sort, levels-1);
-			}			
-		}
+
+        public double getScore(){
+            double maxNumChilds = 20;
+            double wI = 0.9;
+            double wS = 0.1;
+            return wS*childs.size()/maxNumChilds+wI*numInstances/menu.getNumInstances();
+        }
+
+        public void sortTopK(){
+            Comparator c = new Comparator(){
+                public int compare(Object o1, Object o2) {
+                    HierarchyNode node = (HierarchyNode) o1;
+                    HierarchyNode other = (HierarchyNode) o2;
+
+                    if(node.getScore()>other.getScore())
+                        return -1;
+                    else
+                        return 1;
+
+                    /*if(other.isAbstractNode())
+                        return -1;
+                    if(node.getNumInstances()>other.getNumInstances())
+                        return -1;
+                    else
+                        return 1;
+                     */
+                }
+            };
+            Collections.sort(this.childs, c);
+        }
+
+
+    public void sort(String sort, int levels){
+
+        Comparator c = new Comparator(){
+            public int compare(Object o1, Object o2) {
+                HierarchyNode node = (HierarchyNode) o1;
+                HierarchyNode other = (HierarchyNode) o2;
+                if(other.isAbstractNode())
+                    return -1;
+                if(node.getNumInstances()>other.getNumInstances())
+                    return -1;
+                else
+                    return 1;
+            }
+        };
+
+        Comparator c2 = new Comparator(){
+            public int compare(Object o1, Object o2) {
+                HierarchyNode node = (HierarchyNode) o1;
+                HierarchyNode other = (HierarchyNode) o2;
+                if(node.getScore() > other.getScore())
+                    return -1;
+                else
+                    return 1;
+            }
+        };
+
+
+        if(sort.equals(this.ALPHABETICAL))
+            Collections.sort(this.childs);
+        else if(sort.equals(this.INSTANCES))
+            Collections.sort(this.childs, c);
+        else
+            Collections.sort(this.childs, c2);
+        if(levels>=1){
+            for(HierarchyNode child : this.childs)
+                child.sort(sort, levels-1);
+        }
+    }
 		
 		public int countChildsWithInstances(){
 			int total = 0;
@@ -374,7 +438,9 @@ public class HierarchyNode implements Comparable{
     {
         //TODO: IMPORTANT! Make link to facets.jsp independent from where the app is installed!
         //String link = req.getContextPath()+"/facets.jsp?uri="+this.uri.replace("#", "%23");
-        String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
+        //String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
+        String link = req.getContextPath()+this.getFacetsLink();
+
 
         String label = this.getLabel();
         int pos;
@@ -392,7 +458,8 @@ public class HierarchyNode implements Comparable{
                 if(n.isAbstractNode()){
                     for(HierarchyNode nc : n.getChilds()){
                         out.append("<li class=\"inline\">");
-                        String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+nc.uri.replace("#", "%23")+">}";
+                        String clink = req.getContextPath()+nc.getFacetsLink();
+                        //String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+nc.uri.replace("#", "%23")+">}";
                         String clabel = nc.getLabel();
                         int cpos;
                         if ((cpos = clabel.indexOf('@')) > 0)
@@ -403,7 +470,8 @@ public class HierarchyNode implements Comparable{
                 }
                 else{
                     out.append("<li class=\"inline\">");
-                    String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+n.uri.replace("#", "%23")+">}";
+                    String clink = req.getContextPath()+n.getFacetsLink();
+                    //String clink = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+n.uri.replace("#", "%23")+">}";
                     String clabel = n.getLabel();
                     int cpos;
                     if ((cpos = clabel.indexOf('@')) > 0)
@@ -421,7 +489,8 @@ public class HierarchyNode implements Comparable{
     {
         //TODO: IMPORTANT! Make link to facets.jsp independent from where the app is installed!
         //String link = req.getContextPath()+"/facets.jsp?uri="+this.uri.replace("#", "%23");
-        String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
+        //String link = req.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+this.uri.replace("#", "%23")+">}";
+        String link = req.getContextPath()+this.getFacetsLink();
 
         String label = this.getLabel();
         int pos;

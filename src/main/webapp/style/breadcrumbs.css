@@ -1,0 +1,216 @@
+/* Clear Fix */
+#breadcrumbs{
+    overflow:auto;
+    margin:0;
+    padding:0;
+    font-size:12px;
+    z-index:100000;
+}
+#breadcrumbs:after{
+    content:".";
+    display:block;
+    clear:both;
+    visibility:hidden;
+    line-height:0;
+    height:0;
+}
+
+#breadcrumbs{
+    display:inline-block;
+    overflow:visible;
+}
+html[xmlns] #breadcrumbs{
+    display:block;
+}
+* html #breadcrumbs{
+    height:1%;
+}
+
+/* Defaults */
+#breadcrumbs,
+#breadcrumbs *{
+    /*display:block;*/
+    margin:0;padding:0;
+    background-color:#FFF;
+    border:0 solid #000;
+    line-height:1;
+    vertical-align:baseline;
+    list-style:none;
+}
+
+
+/* Breadcrumb Division*/
+
+/* Top Level */
+#breadcrumbs,
+#breadcrumbs ol,
+#breadcrumbs ol li,
+#breadcrumbs ol li a{
+    height:28px;
+    line-height:28px;
+}
+#breadcrumbs ol li{
+    position:relative;
+    float:left;
+    padding:0 0 0 10px;
+    overflow:hidden;
+    cursor:pointer;
+}
+
+#breadcrumbs ol li.path, #breadcrumbs ol li.pivot-path{
+    cursor: default;
+}
+
+#breadcrumbs > ol > li:first-child{padding-left:0;}
+#breadcrumbs > ol > li:last-child{padding-right:0;}
+#breadcrumbs > ol > li:last-child:after{
+    padding-left:2px;
+}
+#breadcrumbs > ol > li:last-child:hover:after,
+#breadcrumbs > ol > li:last-child.hover:after{
+    padding-left:2px;
+}
+
+#breadcrumbs ol li a{
+    color:#000;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+#breadcrumbs > ol > li > a:after{
+    color:#999;
+    padding:0 0 0 10px;
+    /*content:"\3E\3E";*/
+}
+
+#breadcrumbs ol li a:active,
+#breadcrumbs ol li a:focus,
+#breadcrumbs ol li a:hover{color:#C00;}
+
+/* Sub Level */
+#breadcrumbs ul,
+#breadcrumbs ul li,
+#breadcrumbs ul li a{
+    height:12px;
+    line-height:12px;
+    font-size:12px;
+}
+#breadcrumbs ul{
+    display:none;
+    position:absolute;
+    top:28px;left:0;
+    overflow:auto;
+    overflow-x:hidden;
+    overflow-y:scroll;
+    padding:5px 0;
+    padding-right:15px;
+    width:250px;
+    /*width:auto;*/
+    min-width:100%;
+    /*height:125px;*/
+    height:auto;
+    border-width:0 1px 1px 1px;
+}
+#breadcrumbs ul li{
+    float:none;
+    padding:3px 11px;
+    cursor:default;
+}
+#breadcrumbs ul li a{}
+#breadcrumbs ul li a:active,
+#breadcrumbs ul li a:focus,
+#breadcrumbs ul li a:hover{color:#C00;}
+
+/* Drop Down Effect */
+#breadcrumbs ol li:hover,
+#breadcrumbs ol li.hover{
+    overflow:visible;
+    z-index:999996;
+}
+#breadcrumbs ol li:hover ul,
+#breadcrumbs ol li.hover ul{
+    display:block;
+    z-index:999997;
+}
+
+#breadcrumbs ol li:hover ul li,
+#breadcrumbs ol li.hover ul li{
+    position:relative;
+    z-index:999998;
+    font-size:10px;
+}
+#breadcrumbs ol li:hover ul li a,
+#breadcrumbs ol li.hover ul li a{
+    position:relative;
+    z-index:999999;
+    font-size:10px;
+}
+
+/* Reducing Effect */
+#breadcrumbs > ol > li,
+#breadcrumbs > ol > li > a:after{
+    opacity:1;
+    transition:opacity 0.25s ease;
+}
+#breadcrumbs > ol > li:hover ~ li,
+#breadcrumbs > ol > li.hover ~ li,
+#breadcrumbs > ol > li:hover ~ li > a:after,
+#breadcrumbs > ol > li.hover ~ li > a:after{
+    opacity:0.35;
+}
+
+#breadcrumbs > ol > li:hover > a:after,
+#breadcrumbs > ol > li.hover > a:after,
+#breadcrumbs > ol > li:hover ~ li > a:after,
+#breadcrumbs > ol > li.hover ~ li > a:after{
+    opacity:0.35;
+    /*content:"\3C";*/
+}
+
+#breadcrumbs > ol > li.active{
+    margin-left:5px;
+    padding-right:5px;
+    padding-left:5px;
+    background-color: #6495ED;
+    color:white;
+}
+
+li.pivot > a{
+    color:black;
+}
+
+/*
+li.pivot > a:before{
+	color:#999;
+	content:"\3E\00a0\00a0\00a0\00a0";
+}
+*/
+/*
+#breadcrumbs > ol > li:last-child > a:after{
+    content:none;
+}
+*/
+
+
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: top;
+    border: 0;
+    border-top: 4px solid #000000 !important;
+    border-right: 4px solid transparent !important;
+    border-left: 4px solid transparent !important;
+    content: "";
+    margin-top:6px;
+    margin-left:2px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+li.active > b.caret{
+    border-top: 4px solid #000000 !important;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    background-color:#6495ED !important;
+}

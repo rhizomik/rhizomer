@@ -56,19 +56,32 @@
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/rhizomer-transform.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/rhizomer-forms.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/script/autocomplete.js"></script>
-    <!--script type="text/javascript" src="<%=request.getContextPath()%>/script/search.js"></script-->
-	
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/dispatcher-min.js"></script>
 
 	<!--script src="<%=request.getContextPath()%>/script/prototype.js"></script-->
 	<!--script src="<%=request.getContextPath()%>/script/jquery-1.4.2.min.js"></script-->
     <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="<%=request.getContextPath()%>/script/jquery-ui-1.10.3.min.js"></script>
 	
 	<script type="text/javascript">
 		$j = jQuery.noConflict();
+
+        $j(function() {
+            /*
+            $j( document ).tooltip({
+                show: {
+                    effect: "slideDown",
+                    delay: 250
+                }
+            });
+            */
+        });
 	</script>
-	
- 	<script type="text/javascript">
+
+
+
+
+    <script type="text/javascript">
  		YUI({
 			modules: {
 				"node-menunav-core-css": {
@@ -91,8 +104,11 @@
  			}, "#menu-skos");
  		});
  	</script>
-	
-	
+
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/util/utils.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/search.js"></script>
+
+
 </head>
 <body class="yui-skin-sam yui3-skin-sam">
 <div id="header">
@@ -115,9 +131,7 @@
         </div>
 
         <div id="search" class="yui-ac">
-            <!--form action=""-->
-                <input id="search_input" type="text" name="text" value=""/>
-            <!--/form-->
+                <input id="search_input" type="text" name="text" value="Quick search..."/>
         </div>
 
 
@@ -170,9 +184,9 @@
                         <a class="yui3-menuitem-content" href="<%=request.getContextPath()%>/">About</a>
                     </li>
                     <%=menu.printAsUl(request, 2)%>
-                    <li class="yui3-menuitem">
+                    <!--li class="yui3-menuitem">
                         <a class="yui3-menuitem-content" href="mailto:contact at rhizomik dot net">Contact</a>
-                    </li>
+                    </li-->
                 </ul>
             </div>
         </div>
@@ -186,6 +200,8 @@
                 <!--/ul>
             </div>
         </div-->
+
+        <div id="subclasses"></div>
     </div>
 </div>
 <div id="body">

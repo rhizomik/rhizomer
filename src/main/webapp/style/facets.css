@@ -1,7 +1,8 @@
 #facets .filter_by{
     float:left;
-    font-size:12px;
+    font-size:14px;
     width:180px;
+    margin-bottom:5px;
 }
 
 #facets .reset_facets{
@@ -85,6 +86,7 @@
     margin-top:0px;
     padding-top:0px;
     font-size:10px;
+    color: #333333;
 }
 
 #facets .facet_form {
@@ -127,181 +129,13 @@
     padding: 9px 14px;
 }
 
-#breadcrumbs{
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-    font-size:12px;
-    font-family: sans-serif;
-    float:left;
+#subclasses{
+    text-align:left;
+    /*border-bottom:1px solid grey;*/
+    width:auto;
+    clear:right;
 }
 
-#breadcrumbs ul, #connections > ul{
-    list-style: none;
-    margin-left:0px;
-    padding-left:0px;
-    display: table;
+#sort a img{
+    vertical-align: middle;
 }
-
-
-#breadcrumbs ul > li, #connections ul > li{
-    float:left;
-    line-height:20px;
-    display: list-item;
-    list-style: none;
-}
-
-#breadcrumbs ul > li.path > span{
-    margin-left:0px;
-    margin-right:0px;
-    padding-left:0px;
-    padding-right:0px;
-}
-
-
-#breadcrumbs ul > li.path a:hover{
-    background-color:white;
-}
-
-#breadcrumbs ul > li > a, #breadcrumbs ul > li > a:visited, #breadcrumbs ul > li > span {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    padding-right: 12px;
-    padding-left: 12px;
-    margin-right: 2px;
-    line-height: 14px;
-    color: #08c;
-    text-decoration: none;
-}
-
-#breadcrumbs ul > li.active, #breadcrumbs ul > li.connections{
-    padding-left:5px;
-    padding-right:5px;
-}
-
-#breadcrumbs ul > li.active > span{
-    color: #ffffff;
-    background-color: #08c;
-}
-
-#connections{
-    font-size:12px;
-    float:right;
-    text-align:right;
-}
-
-#connections > ul > li > a{
-    padding-top: 8px;
-    padding-bottom: 8px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    padding-right: 2px;
-    padding-left: 15px;
-    margin-right: 12px;
-    line-height: 14px;
-    text-decoration: none;
-    color: #000000;
-    background-color: #69EAAC;
-}
-
-.caret{
-    display: inline-block;
-    width: 0;
-    height: 0;
-    vertical-align: top;
-    border-top: 4px solid #000000;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-    content: "";
-    font-weight:bold;
-    margin-left: 2px;
-    margin-top: 8px;
-    margin-right:10px;
-    border-top-color: #777777;
-    border-bottom-color: #777777;
-}
-
-/*
-body{
-    font-family:sans-serif;
-}
-
-#facets{
-    width:250px;
-    height:200px;
-}
-
-#facets .toggle_open{
-
-}
-
-#facets .common-values{
-    clear:both;
-    background-image: url('/images/toggle_close.png');
-    background-repeat: no-repeat;
-    padding-left:17px;
-    margin-top:5px;
-    padding-top:0px;
-    float:left;
-    cursor:pointer;
-}
-
-#facets .pivot-link{
-    margin-top:5px;
-    float: right;
-    cursor: pointer;
-}
-
-#facets .facet{
-    clear:both;
-    display:inline-block;
-    margin-bottom:20px;
-    padding-bottom:10px;
-    border-bottom: 2px solid #e3e3e3;
-}
-
-#facets .facet-sep{
-    display:inline-block;
-    clear:both;
-    margin-top:10px;
-    margin-bottom:10px;
-    border-top:2px solid grey;"
-}
-
-.facet-title{
-    font-size:12px;
-    font-weight:bold;
-    margin:0;
-    margin-left:10px;
-    padding: 0;
-    float:left;
-    width:100px;
-}
-
-.facet-search{
-    margin:0 0 0 0;
-    padding: 0 0 0 0;
-    float:right;
-    width:140px;
-}
-
-.facet-values{
-    border:1px solid grey;
-    margin:0 0 0 0;
-    padding: 0 0 0 0;
-    clear: both;
-    display: block;
-}
-
-.facet-options{
-    list-style: none;
-}
-
-*/

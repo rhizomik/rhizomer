@@ -142,6 +142,10 @@ rhizomik.Transform = function(baseURL)
             }
 		}
 		window.scroll(0,0);
+        /*
+        facetBrowser.makeInverseProperties();
+        facetBrowser.makeImages();
+        */
     };
     
     // Perform a transformation based on the RDF2FORM XSL
@@ -273,7 +277,7 @@ rhizomik.XMLFactory = function()
 		}
 		return xmlDoc;
 	};
-	    
+
     return self;
 };
 

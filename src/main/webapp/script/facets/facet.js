@@ -25,6 +25,10 @@ facet.Facet = function(property, inVariable, classURI)
 		return id;
 	};
 
+    self.getClassURI = function(){
+        return classURI;
+    };
+
 	self.getLabel = function(){
 		return label;
 	};
@@ -75,7 +79,8 @@ facet.Facet = function(property, inVariable, classURI)
 		else
 			return false;
 	};
-	
+
+    /*
 	self.printInitActiveLabels = function(){
 		var queryValues = new Array();
 		for(i=0; i<initValues.length; i++){
@@ -102,6 +107,7 @@ facet.Facet = function(property, inVariable, classURI)
 			});
 		}
 	};
+	*/
 	
 	self.addInitValue = function(value){
 		initValues.push(value);
@@ -143,7 +149,7 @@ facet.Facet = function(property, inVariable, classURI)
 	self.renderValueList = function(target){
         var html = "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Show values</span>";
         if(self.isNavigable())
-            html += "<span id=\""+id+"_pivot\" class=\"pivot\">Filter "+makeLabel(range)+"</span>";
+            html += "<span title=\"Switch to related "+makeLabel(range)+"\" id=\""+id+"_pivot\" class=\"ttip pivot\">See all "+makeLabel(range)+"</span>";
         html += "<div class=\"clear\"></div>";
         /*html += "</div>";*/
         html += "<div id=\""+id+"_loading\"></div>";
@@ -184,7 +190,7 @@ facet.Facet = function(property, inVariable, classURI)
 		}
 	};
 	
-	self.toggleValue = function(value){
+	self.toggleValue = function(value, label){
 		valueId = hex_md5(value);
 		if(selectedValues[value]){
 			delete selectedValues[value];
@@ -194,13 +200,25 @@ facet.Facet = function(property, inVariable, classURI)
 			return false;
 		}
 		else{
-			selectedValues[value] = true;
-			numSelectedValues++;
-			$j("#"+valueId).removeClass("item");
-			$j("#"+valueId).addClass("selected_item");
-			return valueList[value];
+            if(valueList[value]){
+			    selectedValues[value] = valueList[value];
+			    numSelectedValues++;
+			    $j("#"+valueId).removeClass("item");
+			    $j("#"+valueId).addClass("selected_item");
+			    return valueList[value];
+            }
+            else{
+                valueReturn = FacetValue(value, label, 0);
+                selectedValues[value] = valueReturn;
+                numSelectedValues++;
+                $j("#"+valueId).removeClass("item");
+                $j("#"+valueId).addClass("selected_item");
+                return valueReturn;
+            }
 		}	
-	};	
+	};
+
+    self.toggle
 	
 	self.reloadValues = function(restrictions){
 		$j("#"+id+"_div").css('display','none');
@@ -275,7 +293,7 @@ facet.Facet = function(property, inVariable, classURI)
 			cls = "selected_item";
 		else
 			cls = "item";
-		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+value+"'); return false;\">";
+		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+escape(value)+"'); return false;\">";
 		html += "<div class='item_text'>"+vlabel+" ("+instances+")</div></li>";
 		$j("#"+id+"_ul").append(html);
 		numValues++;

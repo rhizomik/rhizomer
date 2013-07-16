@@ -6,7 +6,7 @@ YUI().use("charts", "json", "node", function (Y) {
         "use strict";
 
         // The module depends on three global objects.
-        // - facetURI
+        // - facetURI  A
         // - fm
         // - rhz
         // THis is the single entry point for the module and expects rhz object has
@@ -197,6 +197,7 @@ YUI().use("charts", "json", "node", function (Y) {
 
         function queryForValues(callback) {
             var query = makeQuery(mediator);
+            console.log(query);
             rhz.sparqlJSON(query, function (output) {
                 var data = Y.JSON.parse(output),
                     translator = makeTranslatorValuesToProperties(mediator.formData.properties),
@@ -210,6 +211,7 @@ YUI().use("charts", "json", "node", function (Y) {
         // YUI3 Charts
 
         function showChartYUI3(chartData) {
+
             var myTooltip = {
                     styles: {
                         backgroundColor: "#333",
@@ -228,6 +230,7 @@ YUI().use("charts", "json", "node", function (Y) {
                     render: "#chart-viewer",
                     tooltip: myTooltip
                 });
+
         }
 
         return {

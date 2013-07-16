@@ -7,7 +7,7 @@ import java.net.URLEncoder;
 public class FacetUtil {
 	
 	public static String makeLabel(String uri){
-		String label = "null";
+		String label = null;
         if (uri==null) return label;
 
 		String[] uriSplitted = uri.split("#");
@@ -20,7 +20,9 @@ public class FacetUtil {
 			else
 				label = uri;							
 		}
-		return capitalizeString(label.replace("_", " "));
+        label = label.replace("_", " ");
+        label = label.replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2"); // Add Space after capital letter HelloWorld to Hello World
+		return capitalizeString(label);
 	}
 	
 	public static String makeInverseLabel(String uri, String inverseClassUri){

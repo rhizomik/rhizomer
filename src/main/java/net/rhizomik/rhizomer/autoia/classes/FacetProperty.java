@@ -42,6 +42,10 @@ public class FacetProperty implements Comparable{
 	private int numValues;
 	private int maxCardinality;
 
+    public FacetProperty(String uri){
+        this.uri = uri;
+    }
+
 	public FacetProperty(String uri, int numInstances, int numValues, int maxCardinality, String range, String dataType){
 		this.numInstances = numInstances;
 		this.numValues = numValues;
@@ -70,6 +74,10 @@ public class FacetProperty implements Comparable{
 	public String getClassUri(){
 		return this.classUri;
 	}
+
+    public void setLabel(String label){
+        this.label = label;
+    }
 	
 	public void setNumValues(int numValues){
 		this.numValues = numValues;

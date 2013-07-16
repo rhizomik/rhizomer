@@ -22,7 +22,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	 * Private Attributes
 	 */
 	// Browse mode: describe (full resource description) or construct (resource description summary)
-	var browseMode = "describe";
+	var browseMode = "construct";
 	// Base URL for Ajax connections and styles
 	var base = baseURL || "http://localhost:8080/rhizomer";
 	// Target element for result HTML
@@ -246,13 +246,28 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	// Generates "More..." link to get more results using the given list function
 	self.listMore = function(listFunction, query, offset)
 	{
+        var numResults = facetBrowser.getNumResults();
+        var numPages = parseInt(numResults / step);
+        var currentPage = offset/step + 1;
+        if(numResults%step>0)
+            numPages++;
 		query = query.replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 		var newOffset = parseInt(offset)+step;
-		var moreDivHTML = "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+newOffset+"); return false;\">More...</a>";
+        var html = "";
+        if(currentPage>1){
+            var peviousOffset = parseInt(offset)-step;
+            html += "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+peviousOffset+"); return false;\">Previous...</a>";
+        }
+        html += "&nbsp;&nbspPage "+currentPage+" of "+numPages + "&nbsp;&nbsp";
+
+        /*var moreDivHTML = previousDivHTML + "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+newOffset+"); return false;\">Next...</a>";*/
+        if(numPages>currentPage)
+            html += "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+newOffset+"); return false;\">Next...</a>";
 
 		var moreDiv = document.createElement("div");
 		moreDiv.setAttribute("class", "moreResults");
-		moreDiv.innerHTML = moreDivHTML;
+		/*moreDiv.innerHTML = moreDivHTML;*/
+        moreDiv.innerHTML = html;
 		target.appendChild(moreDiv);
 	};
 	// Like listResources but without keeping history
@@ -307,7 +322,10 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	{
 		self.showMessage("<p>Describe "+uri+"</p>\n"+waitImage);
 		queryHistory("DESCRIBE <"+uri+">",
-			function(out) {self.showMessage("<p>Showing...</p>\n"+waitImage); transform.rdf2html(out, target);});
+			function(out) {self.showMessage("<p>Showing...</p>\n"+waitImage); transform.rdf2html(out, target);
+                self.makeInverseProperties();
+                self.makeImages();
+            });
 		contentTabs.set('activeIndex', 0); // Show the first tab, where data is loaded
 	};
 	// SPARQL DESCRIBE query for all resources selected by the input query, like SELECT ?r WHERE...
@@ -324,7 +342,9 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		queryHistory(describeQuery,
 			  function(out) 
 			  {		self.showMessage("<p>Showing...</p>\n"+waitImage); 
-			        transform.rdf2html(out, target); 
+			        transform.rdf2html(out, target);
+                    self.makeInverseProperties();
+                    self.makeImages();
 			        self.listMore("describeResources", sparqlSelectQuery, offset); }
 			 );
 		contentTabs.set('activeIndex', 0); // Show the first tab, where data is loaded
@@ -444,11 +464,172 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 			function(out) {callback(out);});
 	};
         // Get numeric valued properties of selected type
-        self.getNumericProperties = function(facetURI, callback) 
-        {
-            var queryString = rhizomik.Utils.toQueryString({facetURI: facetURI, mode: "charts" });
-            post(base+"/facetProperties.jsp?"+queryString, "", "", callback);
-        }
+
+    self.getNumericProperties = function(facetURI, callback)
+    {
+        var queryString = rhizomik.Utils.toQueryString({facetURI: facetURI, mode: "charts" });
+        post(base+"/facetProperties.jsp?"+queryString, "", "", callback);
+    }
+
+    self.makeInverseProperties = function(){
+        var query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
+            "SELECT DISTINCT(?r) ?uri ?c ?labelc ?labelr ?p ?labelp \n"+
+            "WHERE{ ?r ?p ?uri . ?r a ?c \n";
+
+        query += ". FILTER(?c!=<http://www.w3.org/2002/07/owl#Thing>) ."+
+            "FILTER(LANG(?labelc)='en' || LANG(?labelc)='') ."+
+            "FILTER(LANG(?labelp)='en' || LANG(?labelp)='') ."+
+            "FILTER(LANG(?labelr)='en' || LANG(?labelr)='') .";
+
+        $j(".description").each(function(index){
+            var uri = $j(this).children("table").attr("about").toString();
+            if(index==0)
+                query += "FILTER(?uri=<"+uri+">";
+            else
+                query += " || ?uri=<"+uri+">";
+        });
+
+        query += ") OPTIONAL{?r rdfs:label ?labelr} OPTIONAL{?c rdfs:label ?labelc} OPTIONAL{?p rdfs:label ?labelp} \n" +
+            "} order by ?p";
+
+        console.log(query);
+
+        rhz.sparqlJSON(query, function(out){
+            var inverseProperties = {};
+            data = JSON.parse(out);
+            for(i=0; i<data.results.bindings.length; i++){
+                var uri = data.results.bindings[i].uri.value;
+                var r = data.results.bindings[i].r.value;
+                var c = data.results.bindings[i].c.value;
+                var p = data.results.bindings[i].p.value;
+                if(data.results.bindings[i].labelc)
+                    var labelc = data.results.bindings[i].labelc.value;
+                else
+                    var labelc = makeLabel(c)
+                if(data.results.bindings[i].labelr)
+                    var labelr = data.results.bindings[i].labelr.value;
+                else
+                    var labelr = makeLabel(r)
+                if(data.results.bindings[i].labelp)
+                    var labelp = data.results.bindings[i].labelp.value;
+                else
+                    var labelp = makeLabel(p)
+
+                var key = c+p;
+                if(uri in inverseProperties){
+                    if(key in inverseProperties[uri]){
+                        inverseProperties[uri][key]['values'].push({r:r,labelr:labelr});
+                    }
+                    else{
+                        obj = {c : c, p : p, labelc : labelc, labelp : labelp, values : [{r:r, labelr : labelr}]};
+                        inverseProperties[uri][key] = obj;
+                    }
+                }
+                else{
+                    inverseProperties[uri] = {};
+                    obj = {c : c, p : p, labelc : labelc, labelp : labelp, values : [{r:r, labelr : labelr}]};
+                    inverseProperties[uri][key] = obj;
+                }
+            }
+
+            $j(".description").each(function(index){
+                var uri = $j(this).children("table").attr("about").toString();
+                var label = $j(this).children("table").children("tbody").children("tr").children("th").children("a")[0].text;
+                html = "";
+                $j.each(inverseProperties[uri],function(i, property)
+                {
+                    var link = {type : property.c,
+                        filters : [
+                            {property : property.p,
+                                value : uri,
+                                label : label
+                            }
+                        ]};
+                    link = encodeURIComponent(JSON.stringify(link))
+                    html += "<tr><td><a href=\"facets.jsp?p="+link+"\">Is "+property.labelp+" of "+property.labelc+"</a></td>";
+                    html += "<td>";
+                    $j.each(property.values,function(i, value)
+                    {
+                        html+="<div class='property-object'>"+value.labelr+"</div><div class='connector'>,</div>";
+                    });
+                    html += "<a href=\"facets.jsp?p="+link+"\">Browse all</a></td></tr>";
+                });
+                $j(this).children("table").append(html);
+            });
+
+        });
+    };
+
+    self.makeImages = function(){
+        $j(".description").each(function(index){
+            var uri = $j(this).children("table").attr("about").toString();
+            var element = this;
+            pictureUri = self.getPictureUri(this, "http://dbpedia.org/ontology/thumbnail");
+            if(!pictureUri)
+                pictureUri = self.getPictureUri(this, "http://xmlns.com/foaf/0.1/depiction");
+
+            if(pictureUri){
+                $j.ajax({
+                    type: 'HEAD',
+                    url: pictureUri,
+                    success: function(){
+                        $j(element).children("table").css("width","80%").css("padding-right","25px");
+                        html = "<div style=\"float:right; padding-right:10px; padding-top: 10px; width:18%\"><img style=\"max-width:150px;\" src=\""+pictureUri+"\"></img></div>";
+                        $j(element).prepend(html);
+                    },
+                    error: function() {
+                        pictureUri = pictureUri.replace("/commons/","/en/");
+                        $j(element).children("table").css("width","80%").css("padding-right","25px");
+                        html = "<div style=\"float:right; padding-right:10px; padding-top: 10px; width:18%\"><img style=\"max-width:150px;\" src=\""+pictureUri+"\"></img></div>";
+                        $j(element).prepend(html);
+                    }
+                });
+            }
+            else{
+                pictureUri = self.getPictureUri(this, "http://dbpedia.org/property/hasPhotoCollection");
+                if(pictureUri){
+                    requestUri = "http://localhost:8080/proxy.jsp?url="+encodeURIComponent(pictureUri+"?format=rdf");
+                    console.log(requestUri);
+                    $j.ajax({
+                        type: 'GET',
+                        url: requestUri,
+                        success: function(data){
+                            elements = data.getElementsByTagName("rdf:Description");
+                            console.log(elements);
+                        },
+                        error: function(jqXHR, exception){
+                            if (jqXHR.status === 0) {
+                                console.log('Not connect.\n Verify Network.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Requested page not found. [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (exception === 'parsererror') {
+                                alert('Requested JSON parse failed.');
+                            } else if (exception === 'timeout') {
+                                alert('Time out error.');
+                            } else if (exception === 'abort') {
+                                alert('Ajax request aborted.');
+                            } else {
+                                alert('Uncaught Error.\n' + jqXHR.responseText);
+                            }
+                        }
+                    });
+                }
+            }
+
+
+
+        });
+    };
+
+    self.getPictureUri = function(element, property){
+        selector = property.replace(/[!"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g, '\\$&');
+        var picture_td = $j(element).children("table").find("tr."+selector).children("td")[1];
+        var picture_uri = $j($j(picture_td).children("div").children("a")[0]).attr("resource");
+        return picture_uri;
+    };
+
 	
 	return self;
 };

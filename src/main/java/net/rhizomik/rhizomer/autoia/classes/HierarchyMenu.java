@@ -11,6 +11,7 @@ public class HierarchyMenu {
     protected HierarchyNode first;
 	protected Map<String, HierarchyNode> map;
 	protected MenuConfig config;
+    protected int numInstances;
 	
 	public void setConfig(MenuConfig config) {
 		this.config = config;
@@ -36,6 +37,14 @@ public class HierarchyMenu {
 	public MenuConfig getConfig() {
 		return config;
 	}
+
+    public void calculateNumInstances(){
+        this.numInstances = first.getNumInstances();
+    }
+
+    public int getNumInstances(){
+        return this.numInstances;
+    }
 
     public List<String> getInitials(){
         List<String> initials = new ArrayList<String>();
@@ -83,6 +92,7 @@ public class HierarchyMenu {
 		if (!parent.getChilds().contains(node))
 		{
 	    		parent.addChild(node);
+                node.setHierarchyMenu(this);
 	    		map.put(node.getUri(), node);
 	    	}
 	}
@@ -93,12 +103,18 @@ public class HierarchyMenu {
 	
 	public void addNode(HierarchyNode node){
 		first.addChild(node);
+        node.setHierarchyMenu(this);
 		map.put(node.getUri(), node);
 	}
 	
 	public List<HierarchyNode> getNodes(){
 		return first.getChilds();
 	}
+
+    public List<HierarchyNode> getAllNodes(){
+        List<HierarchyNode> list = new ArrayList<HierarchyNode>(map.values());
+        return list;
+    }
 	
 	public HierarchyNode getByUri(String uri){
 		return map.get(uri);
@@ -108,6 +124,10 @@ public class HierarchyMenu {
 	public void sort(int levels){		
 		this.first.sort(this.config.getSort(), levels);
 	}
+
+    public void sortTopK(){
+        this.first.sortTopK();
+    }
 	
 	public void print(int levels){			
 		for(HierarchyNode child : this.first.getChilds()){
@@ -252,5 +272,43 @@ public class HierarchyMenu {
 		}
 		return false;
 	}
+
+    public boolean isChildOf(String childURI, String parentURI){
+        if(childURI.equals("http://www.w3.org/2002/07/owl#Thing"))
+            return false;
+        if(parentURI.equals("http://www.w3.org/2002/07/owl#Thing"))
+            return true;
+        HierarchyNode child = this.getByUri(childURI);
+        HierarchyNode parent = this.getByUri(parentURI);
+        if(parent==null)
+            return true;
+        if(child==null){
+            return false;
+        }
+        if(child.getParent().getUri().equals(parent.getUri())){
+            //System.out.println(child.getLabel() + " is child of "+parent.getLabel());
+            return true;
+        }
+
+        while(!child.getUri().equals("http://www.w3.org/2002/07/owl#Thing")){
+            if(child.getUri().equals(parent.getUri())){
+                //System.out.println(child.getLabel() + " is child of "+parent.getLabel());
+                return true;
+            }
+            child = child.getParent();
+        }
+        return false;
+    }
+
+    public List<HierarchyNode> getBreadcrumbs(String uri){
+        List<HierarchyNode> breadcrumbs = new ArrayList<HierarchyNode>();
+        HierarchyNode node = this.getByUri(uri);
+        HierarchyNode parent = node.getParent();
+        while(parent.getUri()!="http://www.w3.org/2002/07/owl#Thing"){
+            breadcrumbs.add(0, parent);
+            parent = parent.getParent();
+        }
+        return breadcrumbs;
+    }
 
 }

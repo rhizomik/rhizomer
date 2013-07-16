@@ -96,7 +96,22 @@ facet.InverseFacet = function(property, inVariable, classURI){
         else
             return false;
     };
-	
+
+    self.printActive = function(){
+        html = "<b>"+self.getLabel()+"</b> is ";
+        var i=0;
+        values = self.getSelectedValues();
+        console.log(values);
+        for(uri in values){
+            if(i>0)
+                html += " or ";
+            html += "<b>"+values[uri].label+"&nbsp;</b>"
+            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+self.getClassURI()+"','"+self.getId()+"','"+escape(uri)+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+            i++;
+        }
+        return html;
+    }
+	/*
 	self.printInitActiveLabels = function(){
 		var queryValues = new Array();
 		for(i=0; i<initValues.length; i++){
@@ -123,6 +138,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 			});
 		}      re
 	};
+	*/
 	
 	self.addInitValue = function(value){
 		initValues.push(value);
@@ -161,7 +177,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	
 	self.renderValueList = function(target){
         var html = "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
-        html += "<span id=\""+id+"_inversepivot\" class=\"pivot\">Filter "+makeLabel(range)+"</span>";
+        html += "<span title=\"Switch to related "+makeLabel(range)+"\" id=\""+id+"_inversepivot\" class=\"ttip pivot\">See all "+makeLabel(range)+"</span>";
         html += "<div class=\"clear\"></div>";
         html += "</div>";
         html +="<div id=\""+id+"_loading\"></div>";
@@ -291,7 +307,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 			cls = "selected_item";
 		else
 			cls = "item";
-		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+value+"'); return false;\">";
+		html = "<li class=\""+cls+"\" id=\""+hex_md5(value)+"\" onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+escape(value)+"'); return false;\">";
 		html += "<div class='item_text'>"+vlabel+" ("+instances+")</div></li>";
 		$j("#"+id+"_ul").append(html);
 		numValues++;

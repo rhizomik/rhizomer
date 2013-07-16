@@ -169,9 +169,9 @@
 		<xsl:variable name="resource">
 			<xsl:value-of select="@rdf:ID|@rdf:about|@rdf:aboutEach|@rdf:aboutEachPrefix|@rdf:bagID"/>
 		</xsl:variable>
-		<a class="generic" href="?query=DESCRIBE%20%3Fr%20WHERE%20%7B%20%3Fr%20%3Fp%20&lt;{$resource}&gt;%20%7D"
+		<!--a class="generic" href="?query=DESCRIBE%20%3Fr%20WHERE%20%7B%20%3Fr%20%3Fp%20&lt;{$resource}&gt;%20%7D"
 			onclick="javascript:rhz.listReferrers('{$resource}'); return false;"
-			title="Referrers for {$resource}" xmlns="http://www.w3.org/1999/xhtml">Referrers</a>
+			title="Referrers for {$resource}" xmlns="http://www.w3.org/1999/xhtml">Referrers</a-->
 
                 <xsl:for-each select="*[namespace-uri()='http://rhizomik.net/rhizomer/services#' and local-name()='hasService']">
                         <xsl:sort select="local-name()" order="ascending"/>

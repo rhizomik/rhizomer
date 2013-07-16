@@ -1,4 +1,4 @@
-/*
+ /*
  * Rhizomer AJAX
  *
  * Author: http://rhizomik.net/~roberto

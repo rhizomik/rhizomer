@@ -56,7 +56,8 @@
 
     for(HierarchyNode node : nodes){
         if(node.getNumInstances()>0){
-            String link = request.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+node.getUri().replace("#", "%23")+">}";
+            //String link = request.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+node.getUri().replace("#", "%23")+">}";
+            String link = request.getContextPath()+node.getFacetsLink();
             String label = node.getLabel();
             String letter = label.substring(0,1);
 
@@ -80,7 +81,7 @@
             <%
             }
             %>
-            <li><a class="fold" id="<%=node.getUri().hashCode()%>"><%= node.getLabel()%> (<%=node.getNumInstances()%>)</a>
+            <li><a href="<%=link%>" class="fold" id="<%=node.getUri().hashCode()%>"><%= node.getLabel()%> (<%=node.getNumInstances()%>)</a>
             <div id="<%=node.getUri().hashCode()%>_div" style="display:none;">
             <%
             if(node.getParent()!=null){

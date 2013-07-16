@@ -29,6 +29,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -125,7 +126,6 @@ public class HierarchyManager
 	public HierarchyMenu generateFullMenu(String uri){
 		return this.generateFullMenu(menu.getConfig().getNumItemsGlobal(),menu.getConfig().getNumItemsLocal(),uri);
 	}
-
 
     public HierarchyMenu generateFullMenu2(int numItemsGlobal, int numItemsLocal, String uri){
         if(uri == null)

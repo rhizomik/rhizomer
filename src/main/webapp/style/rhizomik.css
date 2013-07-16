@@ -8,9 +8,11 @@ p {
 	text-align: justify;
 }
 body {
+    line-height: 14px;
+    text-rendering: optimizelegibility;
 	font-size: 11px;
 	/*font-family: "Lucida Sans Unicode" ;*/
-    font-family: sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     /*background-image: url(../images/rhizomik.jpg);
   background-repeat: no-repeat;
   background-color: white;
@@ -24,7 +26,7 @@ body {
 td {
 	font-size: 11px;
 	/*font-family: "Lucida Sans Unicode";*/
-    font-family: sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 img {
 	border: 0px;
@@ -63,7 +65,7 @@ img {
 	font-size: 13px;
 	margin-top: 20px;
 	font-weight: bold;
-    z-index:1000;
+    /*z-index:1000;*/
 }
 #header #menu-skos {
     display: none;
@@ -71,7 +73,7 @@ img {
 #body {
 	float: left;
 	width: 100%;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 #left {
 	float: left;
@@ -95,7 +97,9 @@ img {
 	padding: 10px;
 }
 #content {
+    /*float:left;*/
 	margin-right: 10px;
+    width:auto;
 	margin-left: 275px;
 }
 #content a {
@@ -301,19 +305,16 @@ div.clear {
   float: right;
   cursor:pointer;
 }
-/* copied
-.showvalues {
-    float: left;
-    cursor:pointer;
-}
-*/
 
-/*
-.facet_header {
-  background-color: #F0F0F0;	
-  margin-bottom:10px;	
+
+#active_facets{
+    width:60%;
+    margin-top:10px;
+    margin-bottom:5px;
+    font-size: 12px;
+    margin-left:12px;
+    float:left;
 }
-*/
 
 #active_facets ul{
 	margin-top:0px;
@@ -338,14 +339,6 @@ ul.inline , ul.inline li{
 #active_facets .your_filters{
 	font-weight:bold;
 	text-decoration: underline;
-}
-
-#active_facets{
-	margin-top:10px;
-	margin-bottom:5px;
-    font-size: 12px;
-    clear:right;
-    margin-left:12px;
 }
 
 .search_loading{
@@ -527,6 +520,7 @@ sitemap-root{
     z-index:1000;
 }
 
+
 #header #search {
     text-align:right;
     float: right;
@@ -539,3 +533,96 @@ sitemap-root{
     margin-top:0px;
     padding-top:0px;
 }
+
+#content-center{
+    /*float:left;*/
+    /*width:auto;*/
+    margin-left: 270px;
+    margin-right:160px;
+    padding-right:0px;
+}
+
+#content-left {
+    float: left;
+    padding: 10px;
+    width: 250px;
+    /*margin-top:50px;*/
+}
+
+#content-right {
+    float: right;
+    width:150px;
+    margin-left:0px;
+    padding-left:0px;
+    margin-top:0px;
+    padding-top:0px;
+}
+
+#sort{
+    float:right;
+}
+
+#context{
+    overflow:auto;
+}
+
+#content-right .connections-header{
+    background-image: url("/images/bullet.gif");
+    background-repeat: no-repeat;
+    background-position: 0% 50%;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    width: auto;
+}
+
+#content-right h4{
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    font-size: 14px;
+    color: #333333;
+}
+
+#connections ul{
+    margin-top:10px;
+    padding-left:10px;
+    background-color: #F0F0F0;
+}
+
+#content-right li{
+    font-size:11px;
+    line-height:16px;
+    margin-left: 0;
+    display: table-row;
+}
+
+#content-right a{
+    color: #333333;
+}
+
+#active-connections{
+    margin-bottom:10px;
+}
+
+#active-connections ul{
+    padding-left:10px;
+    background-color: #87CEEB;
+    margin:0;
+}
+
+#active-connections ul > li{
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* HTML descriptions */
+.description th{
+    text-align:left;
+    font-size:14px !important;
+}
+
+.description span{
+    display:none;
+}
+

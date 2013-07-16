@@ -9,11 +9,11 @@ facet.FacetManager = function (uri, inVariable){
 	var facets = {};
 	var facetIds = {};
 	var selectedFacets = {};
-	var defaultFilters = {};
-	var defaultLabels = {};
 	var pivotedFacets = {};
 	var label = makeLabel(uri);
     var numInstances = 0;
+    var selectedResource = null;
+    var sortProperties = {};
 
 	self.getVariable = function(){
 		return variable;
@@ -37,6 +37,20 @@ facet.FacetManager = function (uri, inVariable){
 		else
 			return false;
 	};
+
+    self.getSortProperties = function(){
+        return sortProperties;
+    }
+
+    self.getActiveFacets = function(){
+        activeFacets = {};
+        for(f in facets){
+            if(facets[f].isActive()){
+                activeFacets[f] = facets[f];
+            }
+        }
+        return activeFacets;
+    }
 	
 	self.getNavigableFacets = function(){
 		var navigableFacets = {};
@@ -47,8 +61,23 @@ facet.FacetManager = function (uri, inVariable){
 		return navigableFacets;
 	};
 
+    self.resetFacet = function(facetID){
+        var facet = facets[facetIds[facetID]];
+        facet.reset();
+    }
+
     self.getPivotedFacets = function(){
       return pivotedFacets;
+    };
+
+    self.setSelectedResource = function(object){
+        selectedResource = object;
+    };
+
+    self.deleteSelectedResource = function(){
+        selectedResource = null;
+        facetBrowser.reloadFacets();
+        facetBrowser.printBreadcrumbs();
     };
 	
 	self.addPivotedFacet = function(propertyURI, range, pivotedVar){
@@ -88,53 +117,38 @@ facet.FacetManager = function (uri, inVariable){
 	self.getUriById = function (id){
 		return facets[facetIds[id]].getUri();
 	};
-	
-	/*
-	self.makeUrl = function(){
-		if(!$j.isEmptyObject(selectedFacets)){
-			//var url = "&f=";
-			var url = "";
-			for(f in selectedFacets){
-				for(key in selectedFacets[f]){
-					prefix = prefixes[getPrefix(facets[facetIds[f]].getUri())];
-					url += encodeURIComponent(facets[facetIds[f]].getUri());
-					value = selectedFacets[f][key];
-					url += "/"+encodeURIComponent(value.uri)+"/";
-				}			
-			}
-			return url;
-		}
-		else
-			return "";
-	};
-	*/	
-	
-	self.setDefaultFilters = function(){
-		restrictions = parser.getRestrictions();
-		for(i=0; i<restrictions.length; i++){
-			if(restrictions[i][0]!=null){
-				property = restrictions[i][1].replace('<','').replace('>','');
-				if(!property.startsWith("http://")){
-					tmp = property.split(":");
-					prefix = inverse_prefixes[tmp[0]];
-					property = prefix+tmp[1];
-				}
-				for(x=0;x<restrictions[i][3].length;x++){					
-					value = restrictions[i][3][x];
-					self.filterInitProperty(property, value);
-				}
-			}
-		}
-	};
-	
+
 	self.addFacet = function(property){
+        /*console.log(property.uri + " " + property.type);*/
         if(property.isInverse == "true"){
             facets[property.uri+property.range] = facet.InverseFacet(property, self.getVariable(), typeUri);
             facetIds[hex_md5(property.uri+property.range)] = property.uri+property.range;
         }
+
+        else if(property.type == "http://www.w3.org/2001/XMLSchema#integer" || property.type=="http://www.w3.org/2001/XMLSchema#float"
+            || property.type == "http://www.w3.org/2001/XMLSchema#double" || property.type=="http://www.w3.org/2001/XMLSchema#int"){
+
+                /*facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);*/
+                /*facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);*/
+                facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
+                facetIds[hex_md5(property.uri)] = property.uri;
+                sortProperties[property.uri] = property.label;
+        }
+
+        /*
+        else if(property.type == "http://www.w3.org/2001/XMLSchema#date"){
+            alert(property.uri + " date");
+        }
+        */
         else{
+            /*console.log(property.uri + " " + property.type);*/
             facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
             facetIds[hex_md5(property.uri)] = property.uri;
+                if(property.uri == "http://www.w3.org/2000/01/rdf-schema#label")
+                    sortProperties[property.uri] = "A-Z";
+                /*else
+                    sortProperties[property.uri] = property.label;
+                */
         }
 
 		/*
@@ -150,7 +164,7 @@ facet.FacetManager = function (uri, inVariable){
 	
 	self.renderFacets = function(target){
 		html = "<div class='filter_by'>Filter <strong>"+label+"</strong> by:</div>";
-		html += "<div class='reset_facets'><a href=''>Reset filters</a></div>";
+		/*html += "<div class='reset_facets'><a href=''>Reset filters</a></div>";*/
         html += "<div class='facet_list'>";
 		$j("#"+target).html(html);		
 		for(f in facets){
@@ -163,17 +177,21 @@ facet.FacetManager = function (uri, inVariable){
 		self.getFacetById(id).toggleFacet();
 	};
 	
-	self.filterInitProperty = function(propertyUri, propertyValue){
+	self.filterInitProperty = function(propertyUri, propertyValue, valueLabel){
 		var facet = facets[propertyUri];
 		facet.addInitValue(propertyValue);
-		var vlabel = makeLabel(propertyValue);
+        if(valueLabel)
+            var vlabel = valueLabel;
+        else
+		    var vlabel = makeLabel(propertyValue);
 		var fvalue = new FacetValue(propertyValue, vlabel, 0);
-		if(selectedFacets[propertyUri]){
-			selectedFacets[propertyUri][propertyValue] = fvalue;
+        facetID = hex_md5(propertyUri);
+		if(selectedFacets[facetID]){
+			selectedFacets[facetID][propertyValue] = fvalue;
 		}
 		else{
-			selectedFacets[propertyUri] = {};
-			selectedFacets[propertyUri][propertyValue] = fvalue;
+			selectedFacets[facetID] = {};
+			selectedFacets[facetID][propertyValue] = fvalue;
 		}
 	};
 	
@@ -183,8 +201,8 @@ facet.FacetManager = function (uri, inVariable){
 	
 	self.filterProperty = function(facetID, propertyValue, vlabel){
 		var facet = facets[facetIds[facetID]];
-		valueReturn = facet.toggleValue(propertyValue);
 		if(selectedFacets[facetID]){
+            valueReturn = facet.toggleValue(propertyValue);
 			if(valueReturn){
 				selectedFacets[facetID][propertyValue] = valueReturn;
 			}
@@ -196,8 +214,10 @@ facet.FacetManager = function (uri, inVariable){
 			}
 		}
 		else{
-			if(vlabel)
+			/*if(vlabel)
 				valueReturn = new FacetValue(propertyValue, vlabel, 0);
+				*/
+            valueReturn = facet.toggleValue(propertyValue, vlabel);
 			selectedFacets[facetID] = {};
 			selectedFacets[facetID][propertyValue] = valueReturn;
 		}
@@ -207,59 +227,47 @@ facet.FacetManager = function (uri, inVariable){
 		//facetBrowser.printActive();
         facetBrowser.printBreadcrumbs();
 	};
-
-    /*
-	self.printActiveInit = function(){
-		$j("#active_facets").empty();
-		if(!$j.isEmptyObject(selectedFacets)){
-			$j("#active_facets").append("<div>Your filters:</div>");
-			for(f in selectedFacets){
-				html = "<div class=\"selected_facet\"><span>"+facets[facetIds[f]].getLabel()+"</span>";
-				html += "<ul id=\""+facets[facetIds[f]].getId()+"_active\">";
-				html += "</ul></div>";
-				$j("#active_facets").append(html);
-			}
-			
-			for(f in selectedFacets){
-				facets[facetIds[f]].printInitActiveLabels();
-			}
-		}
-	};
-	*/
 	
 	self.printActive = function(main){
-        console.log(label);
+        self.getActiveFacets();
+        /*console.log(label);
         console.log(self.getPivotedFacets());
+        */
 		if(main){
             var numResults = facetBrowser.getNumResults();
-			var html = "Showing "+numResults+" <b>"+label+"</b> filtered from "+numInstances + " ";
+			var html = "Showing "+numResults+" <b>"+label+"</b> filtered from "+numInstances + "<br/>";
         }
 		else
 			var html = "<a href=\"javascript:facetBrowser.pivotFacet('','','"+typeUri+"');\">"+label+"</a> ";
-		if(!$j.isEmptyObject(selectedFacets)){
-			html += "where "			
-			var x=0;
-			for(f in selectedFacets){
-				if(x>0)
-					html += " and ";
-				html += "<b>"+facets[facetIds[f]].getLabel()+"</b> is ";
-				var i=0;
-				for(key in selectedFacets[f]){
-					if(i>0)
-						html += " or ";
-					value = selectedFacets[f][key];
-                    html += "<b>"+value.label+"&nbsp;</b>"
-					html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+typeUri+"','"+f+"','"+value.uri+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
-					i++;
-				}
-				x++;
-			}
-		}
+
+        activeFacets = self.getActiveFacets();
+
+        if(!$j.isEmptyObject(activeFacets) || !$j.isEmptyObject(selectedResource)){
+            html += "where ";
+
+            if(!$j.isEmptyObject(selectedResource)){
+                html+= "<b>"+label+"</b> is <b>"+selectedResource.label+"&nbsp;</b>";
+                html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeSelectedResource('"+typeUri+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+            }
+
+            if(!$j.isEmptyObject(selectedResource) && !$j.isEmptyObject(activeFacets))
+                html+= " and ";
+
+            var x=0;
+            for(f in activeFacets){
+                if(x>0)
+                    html += " and ";
+                html += activeFacets[f].printActive();
+                x++;
+            }
+        }
+
 		return html;
 	};
 
 	
 	self.reloadFacets = function(){
+        /*
         var constraints = facetBrowser.makeRestrictions();
 		var query = "SELECT DISTINCT ?"+variable+" "+
 			"WHERE { "+
@@ -267,9 +275,28 @@ facet.FacetManager = function (uri, inVariable){
 		query += constraints;
 		query += "}";
 		//alert(query);
-		rhz.listResourcesNoHistory(query);
+        if(listResources)
+		    rhz.listResourcesNoHistory(query);
+		   */
 		self.reloadProperties();
-	};	
+	};
+
+    self.reloadResources = function(property, sort){
+        var constraints = facetBrowser.makeRestrictions();
+        var query = "SELECT DISTINCT ?"+variable+" "+
+            "WHERE { "+
+            "?"+variable+" a <"+typeUri+"> . ";
+        query += constraints;
+        if(property!="uri")
+            query += "?"+variable+" <"+property+"> ?sort";
+        query += "}";
+        if(property=="uri")
+            query += "ORDER BY "+sort+"(?"+variable+")";
+        else
+            query += "ORDER BY "+sort+"(?sort)";
+        console.log(query);
+        rhz.listResourcesNoHistory(query);
+    };
 	
 	self.reloadProperties = function(){
 		var f;
@@ -301,8 +328,12 @@ facet.FacetManager = function (uri, inVariable){
                 query += " ?"+variable+" <"+facets[m].getUri()+"> ?"+pivotedFacets[m].pivotedVar+" .";
             query += " ?"+variable+" a <"+typeUri+"> .";
 		}
+        //console.log(selectedResource);
+        if(selectedResource)
+            query += "FILTER(?"+variable+"=<"+selectedResource.uri+">) .";
+        //console.log(query);
 		return query;
-	};	
+	};
 	
 	self.makeSPARQL = function(){
 		return activeManager.makeSPARQL();
@@ -326,8 +357,9 @@ facet.FacetManager = function (uri, inVariable){
 							self.addFacet(property);
 						});
 					self.renderFacets("facets");
-					addToggle();  
-					self.reloadFacets();
+					/*addToggle();*/
+					self.reloadFacets(true);
+                    facetBrowser.printSort();
 					facetBrowser.printRelated();
 				}
 		);

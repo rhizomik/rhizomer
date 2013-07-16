@@ -518,7 +518,7 @@ facet.FacetBrowser = function(options){
         self.printBreadcrumbs();
         /*
         self.printActive();
-        self.printPath();
+        self.printPath();       r
         */
     };
 

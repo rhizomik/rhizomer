@@ -1,6 +1,8 @@
 package net.rhizomik.rhizomer.agents;
 
+import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
 import net.rhizomik.rhizomer.autoia.generator.FacetGenerator;
+import net.rhizomik.rhizomer.autoia.generator.FacetGenerator2;
 import net.rhizomik.rhizomer.autoia.manager.MenuManager;
 import net.rhizomik.rhizomer.service.ServiceManager;
 
@@ -49,8 +51,17 @@ public class Rhizomer extends HttpServlet
         	store.addStore(config);
 			transformer = new RDF2HTMLTransformer(getServletContext().getRealPath("/"));
         	MenuManager menuMng = MenuManager.getInstance(config);
-        	//menuMng.getMenu();
-        	FacetGenerator fg = new FacetGenerator(config);
+
+            HierarchyMenu menu = menuMng.getManager().getHierarchyMenu();
+            FacetGenerator fg = new FacetGenerator(config);
+
+            /* Work in progress
+            menu.calculateNumInstances();
+            menu.getFirst().sort("score",1);
+            menu.print(1);
+            //menuMng.getMenu();
+            //FacetGenerator2 fg2 = new FacetGenerator2(config);
+            */
         }
         catch(Exception e)
         { throw new ServletException(e); }

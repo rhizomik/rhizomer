@@ -39,22 +39,21 @@
 		// The default get metadata for current URI (and its HTML representation)
 		var location = window.document.location;
 		var current = location.protocol+"//"+location.host+location.pathname;
-		var alternativeQuery = null;
-
-		// Define alternative query when search not specified, get RSS items
-		if (location.search=="")
-			alternativeQuery = "DESCRIBE ?r WHERE {?r a <"+facetURI+">} LIMIT 25";
-
 		// Define Rhizomer endpoint
 		var endpoint = '<%=request.getScheme()+"://"+request.getServerName()+
 							":"+request.getServerPort()+request.getContextPath()%>';
 
 		rhz = new rhizomik.Rhizomer(endpoint,
-			document.getElementById("metadata"), alternativeQuery);
+			document.getElementById("metadata"));
 
-        var parameters = JSON.parse('<%=parameters%>');
+        var hash = window.location.hash.substring(1);
+        var parameters = JSON.parse(decodeURIComponent(hash));
+        dhtmlHistory.add(hash, {type: 'facets', parameters: parameters});
+        /*var parameters = JSON.parse('<%=parameters%>');*/
+        /*dhtmlHistory.add("history"+hex_md5(parameters), {type: 'facets', parameters: parameters});*/
+
 		facetBrowser = new facet.FacetBrowser(parameters);
-		facetBrowser.loadFacets();
+		facetBrowser.loadFacets(false);
     }
 
 //]]>

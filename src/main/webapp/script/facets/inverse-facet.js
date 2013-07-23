@@ -100,51 +100,17 @@ facet.InverseFacet = function(property, inVariable, classURI){
     self.printActive = function(){
         html = "<b>"+self.getLabel()+"</b> is ";
         var i=0;
-        values = self.getSelectedValues();
-        console.log(values);
-        for(uri in values){
+        var values = self.getSelectedValues();
+        for(var v in values){
             if(i>0)
                 html += " or ";
-            html += "<b>"+values[uri].label+"&nbsp;</b>"
-            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+self.getClassURI()+"','"+self.getId()+"','"+escape(uri)+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+            html += "<b>"+values[v].label+"&nbsp;</b>"
+            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+self.getClassURI()+"','"+self.getId()+"','"+escape(v)+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
             i++;
         }
         return html;
-    }
-	/*
-	self.printInitActiveLabels = function(){
-		var queryValues = new Array();
-		for(i=0; i<initValues.length; i++){
-			if(initValues[i].startsWith("http://"))
-				queryValues.push("<"+initValues[i]+">");
-			else{
-				html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+initValues[i]+"'); return false;\">";
-				html += makeLabel(initValues[i])+ " [x]</a></li>";
-				$j("#"+id+"_active").append(html);						
-			}
-		}
-		if(queryValues.length>0){
-			var query = "SELECT ?r ?label where{?r <http://www.w3.org/2000/01/rdf-schema#label> ?label . FILTER(?r = " + queryValues.join(" || ?r = ") + ")}"; 
-			rhz.sparqlJSON(query, function(out){
-				data = JSON.parse(out);
-				for(i=0; i<data.results.bindings.length; i++){
-					r = data.results.bindings[i].r.value;
-					var label = data.results.bindings[i].label.value;				
-					html = "<li><a onclick=\"javascript:facetBrowser.filterProperty('"+id+"','"+r+"'); return false;\">";
-					html += label+ " [x]</a></li>";
-					$j("#"+id+"_active").append(html);		
-					fm.setSelectedFacetLabel(id,r,label);
-				}
-			});
-		}      re
-	};
-	*/
-	
-	self.addInitValue = function(value){
-		initValues.push(value);
-		self.toggleValue(value);
-	};
-	
+    };
+
 	self.resetFacet = function(){
 		numValues = 0;
 		selected = false;
@@ -216,7 +182,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 		}
 	};
 	
-	self.toggleValue = function(value){
+	self.toggleValue = function(value, label){
 		valueId = hex_md5(value);
 		if(selectedValues[value]){
 			delete selectedValues[value];
@@ -226,11 +192,24 @@ facet.InverseFacet = function(property, inVariable, classURI){
 			return false;
 		}
 		else{
-			selectedValues[value] = true;
-			numSelectedValues++;
-			$j("#"+valueId).removeClass("item");
-			$j("#"+valueId).addClass("selected_item");
-			return valueList[value];
+            if(valueList[value]){
+                selectedValues[value] = valueList[value];
+                numSelectedValues++;
+                $j("#"+valueId).removeClass("item");
+                $j("#"+valueId).addClass("selected_item");
+                return valueList[value];
+            }
+            else{
+                console.log(label);
+                valueReturn = new FacetValue(value, label, 0);
+                console.log("Value return");
+                console.log(valueReturn);
+                selectedValues[value] = valueReturn;
+                numSelectedValues++;
+                $j("#"+valueId).removeClass("item");
+                $j("#"+valueId).addClass("selected_item");
+                return valueReturn;
+            }
 		}	
 	};	
 	
@@ -327,10 +306,13 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	};	
 	
 	self.makeSPARQL = function (varCount, varName){
-		var query = "";
-    	for(value in self.getSelectedValues()){
-    		query+= "<"+value+"> <"+self.getUri()+"> ?"+varName + " . ";
-    	}
+        var query = "?"+varName+"var"+varCount+" <"+uri+"> ?"+varName + " . FILTER( "
+
+        for(value in self.getSelectedValues()){
+            query+="str(?"+varName+"var"+varCount+")=\""+addSlashes(value)+"\" ||";
+        }
+        query = query.substring(0,query.length-2);
+        query += ") ."
     	return query;
 	};	
 

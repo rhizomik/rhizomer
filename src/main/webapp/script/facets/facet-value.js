@@ -1,11 +1,14 @@
 function FacetValue(uri, label, instances){
-	this.uri = uri;
-	this.label = label;
-	this.instances = instances;
-	
-	this.setLabel = function(inLabel){
-		this.label = inLabel;
+
+    var self = this;
+
+	self.uri = uri;
+    self.label = label;
+    self.instances = instances;
+
+    self.setLabel = function(inLabel){
+        self.label = inLabel;
 	};
 	
-	return this;
+	return self;
 };

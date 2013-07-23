@@ -4,7 +4,7 @@ facet = {};
 var fm;
 var facetBrowser;
 
-facet.FacetBrowser = function(options){
+facet.FacetBrowser = function(parameters){
 	var self = this;
 	/*var parser = inParser;*/
 	var managers = {};
@@ -20,16 +20,16 @@ facet.FacetBrowser = function(options){
     var childs = null;
     var breadcrumbs = null;
     /* NOU: Parametres JSON a la url */
-    var selectedResource = options.focus || null;
-    var uri = options.type;
-    var filters = options.filters;
-	
-	self.loadFacets = function(){
+    var selectedResource = parameters.focus || null;
+    var uri = parameters.type;
+    var filters = parameters.filters;
+
+    self.loadFacets = function(makeHistory){
 		/*parser.parse();*/
 		/*activeURI = parser.getActiveUri();*/
         /*activeVar = parser.getVariable();*/
         activeVar = "r1";
-        activeURI = options.type;
+        activeURI = uri;
 
 		self.addManager(activeURI, "", activeVar);
 		mainManager = managers[activeURI].manager;
@@ -49,7 +49,6 @@ facet.FacetBrowser = function(options){
                     mainManager.setNumInstances(response.numInstances);
                     childs = response.childs;
                     breadcrumbs = response.breadcrumbs;
-                    console.log(breadcrumbs);
 					$j.each(response.properties, 
 						function(i, property)
 						{
@@ -62,12 +61,29 @@ facet.FacetBrowser = function(options){
 					managers[activeURI].manager.reloadFacets();
 					fm = managers[activeURI].manager;
                     self.printBreadcrumbs();
-                    self.listResources();
+                    self.listResources(makeHistory);
                     /*self.printSubCategories();*/
                     self.printSort();
 				}
 		);
 	};
+
+    self.loadHistory = function(parameters){
+        selectedResource = parameters.focus || null;
+        uri = parameters.type;
+        filters = parameters.filters;
+        self.loadFacets(false);
+    };
+
+    self.updateHash = function(){
+        var filters = mainManager.makeHash();
+        var parameters = {type : uri,
+            filters : filters
+        };
+        var hash = encodeURIComponent(JSON.stringify(parameters));
+        console.log(hash);
+        dhtmlHistory.add(hash, {type: 'facets', parameters: parameters});
+    };
 
     self.getUri = function(){
         return uri;
@@ -164,17 +180,7 @@ facet.FacetBrowser = function(options){
 
     self.printBreadcrumbs = function(){
         $j.blockUI();
-        /*
-        if(!listResources){
-            numResults = 1;
-            html = mainManager.printActive(true);
-            html += "<span style=\"margin-left:10px;\"><a href=\"\">Reset all filters <img src='/images/delete_blue.png'/></a></span>";
-            $j("#active_facets").append(html);
-            self.printRelated();
-        }
-        else
-        */
-            self.printActive();
+        self.printActive();
     };
 
 	self.makeRestrictions = function(uri){
@@ -187,36 +193,6 @@ facet.FacetBrowser = function(options){
 		return query;
 	};
 
-    self.printPagination = function(listFunction, query, offset){
-        var numResults = facetBrowser.getNumResults();
-        var numPages = parseInt(numResults / step);
-        var currentPage = offset/step;
-
-        if(numResults%step>0)
-            numPages++;
-        query = query.replace(/"/g, "&quot;").replace(/'/g, "&apos;");
-        var nextOffset = parseInt(offset)+step;
-        var html = "<div class='moreResults'>";
-        if(offset>step){
-            var peviousOffset = parseInt(offset)-step;
-            html += "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+peviousOffset+"); return false;\">Previous...</a>";
-        }
-
-        html += "Page "+currentPage+" of "+numPages + "&nbsp";
-
-        /*var moreDivHTML = previousDivHTML + "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+newOffset+"); return false;\">Next...</a>";*/
-        html += "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+nextOffset+"); return false;\">Next...</a>";
-        html += "</div>";
-        var moreDiv = document.createElement("div");
-        moreDiv.setAttribute("class", "moreResults");
-        /*moreDiv.innerHTML = moreDivHTML;*/
-        moreDiv.innerHTML = html;
-        console.log(html);
-        $j("#metadata").append(html);
-        /*target.appendChild(moreDiv)*/
-
-    };
-
     self.printActive = function(){
         countQuery = "SELECT (COUNT(DISTINCT(?"+mainManager.getVariable()+")) as ?count) "+
             "WHERE { "+
@@ -224,14 +200,11 @@ facet.FacetBrowser = function(options){
         countQuery += self.makeRestrictions();
         countQuery += "}";
 
-        /*console.log(countQuery);*/
-
 
         rhz.sparqlJSON(countQuery, function(out){
             data = JSON.parse(out);
             numResults = data.results.bindings[0].count.value;
             self.printActiveCallback();
-            /*self.listResources();*/
         });
     };
 	
@@ -252,16 +225,19 @@ facet.FacetBrowser = function(options){
 	};
 
 
-    self.listResources = function(){
+    self.listResources = function(makeHistory){
         var resource = self.getSelectedResource();
         if(!$j.isEmptyObject(resource)){
             rhz.describeResource(resource.uri);
         }
         else{
             query = self.makeSPARQL();
-            console.log(query);
+            /*console.log(query);*/
             rhz.listResourcesNoHistory(query);
         }
+        if(makeHistory)
+            self.updateHash();
+
     };
 
 
@@ -465,7 +441,6 @@ facet.FacetBrowser = function(options){
     };
 	
 	self.pivotFacet = function(classURI, propertyURI, range){
-        $j('#connections').popover('hide');
         if(managers[range]){
 			activeManager = managers[range].manager;
 			activeManager.renderFacets("facets");
@@ -480,26 +455,12 @@ facet.FacetBrowser = function(options){
 			activeManager = managers[range].manager;
 			activeManager.loadFacets();
 			mainManager = activeManager;
-            /*
-            $j("#breadcrumbs > ul > li.active").removeClass("active");
-            html = "<li class=\"path\"><span>>></span></li>";
-            html += "<li><span>Actor (203434)</span></li>";
-            $j("#breadcrumbs > ul").append(html);
-            $j("#breadcrumbs > ul > li").last().addClass("active", 500, "linear");
-            */
-
 		}
-
         self.printBreadcrumbs();
-
-        /*
-		self.printActive();
-        self.printPath();
-        */
+        self.listResources(true);
 	};
 	
 	self.pivotInverseFacet = function(classURI, propertyURI, range){
-        $j('#connections').popover('hide');
 		if(managers[range]){
 			activeManager = managers[range].manager;
 			activeManager.renderFacets("facets");
@@ -516,10 +477,7 @@ facet.FacetBrowser = function(options){
             mainManager = activeManager;
         }
         self.printBreadcrumbs();
-        /*
-        self.printActive();
-        self.printPath();       r
-        */
+        self.listResources(true);
     };
 
     self.printSubCategories = function(){
@@ -584,6 +542,7 @@ facet.FacetBrowser = function(options){
     };
 
     self.sort = function(sort){
+        /* CANVIAR PER METODE PROPI */
         var sortProperty = $j("#sort_property").val();
         activeManager.reloadResources(sortProperty, sort)
     };

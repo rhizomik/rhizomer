@@ -178,6 +178,7 @@ facet.FacetManager = function (uri, inVariable){
 	};
 	
 	self.filterInitProperty = function(propertyUri, propertyValue, valueLabel){
+        /*
 		var facet = facets[propertyUri];
 		facet.addInitValue(propertyValue);
         if(valueLabel)
@@ -193,6 +194,9 @@ facet.FacetManager = function (uri, inVariable){
 			selectedFacets[facetID] = {};
 			selectedFacets[facetID][propertyValue] = fvalue;
 		}
+        console.log(selectedFacets);
+        */
+        self.filterProperty(hex_md5(propertyUri), propertyValue, valueLabel);
 	};
 	
 	self.setSelectedFacetLabel = function(facetID, propertyValue, propertyLabel){
@@ -200,9 +204,10 @@ facet.FacetManager = function (uri, inVariable){
 	};
 	
 	self.filterProperty = function(facetID, propertyValue, vlabel){
+        console.log(vlabel);
 		var facet = facets[facetIds[facetID]];
 		if(selectedFacets[facetID]){
-            valueReturn = facet.toggleValue(propertyValue);
+            valueReturn = facet.toggleValue(propertyValue, vlabel);
 			if(valueReturn){
 				selectedFacets[facetID][propertyValue] = valueReturn;
 			}
@@ -224,7 +229,7 @@ facet.FacetManager = function (uri, inVariable){
 		facet.setSelected(true);
 		facetBrowser.reloadFacets();
 		facet.setSelected(false);
-		//facetBrowser.printActive();
+        facetBrowser.listResources(true);
         facetBrowser.printBreadcrumbs();
 	};
 	
@@ -237,8 +242,10 @@ facet.FacetManager = function (uri, inVariable){
             var numResults = facetBrowser.getNumResults();
 			var html = "Showing "+numResults+" <b>"+label+"</b> filtered from "+numInstances + "<br/>";
         }
-		else
-			var html = "<a href=\"javascript:facetBrowser.pivotFacet('','','"+typeUri+"');\">"+label+"</a> ";
+		else{
+			var html = "<a href=\"javascript:facetBrowser.pivotFacet('','','"+typeUri+"');\">"+label+"</a>&nbsp;";
+            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.deletePivotFacet('"+typeUri+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+        }
 
         activeFacets = self.getActiveFacets();
 
@@ -267,17 +274,6 @@ facet.FacetManager = function (uri, inVariable){
 
 	
 	self.reloadFacets = function(){
-        /*
-        var constraints = facetBrowser.makeRestrictions();
-		var query = "SELECT DISTINCT ?"+variable+" "+
-			"WHERE { "+
-			"?"+variable+" a <"+typeUri+"> . ";
-		query += constraints;
-		query += "}";
-		//alert(query);
-        if(listResources)
-		    rhz.listResourcesNoHistory(query);
-		   */
 		self.reloadProperties();
 	};
 
@@ -338,6 +334,36 @@ facet.FacetManager = function (uri, inVariable){
 	self.makeSPARQL = function(){
 		return activeManager.makeSPARQL();
 	};
+
+    self.makeHash = function(uri){
+        var f;
+        var filters = [];
+        for(f in facets){
+            if(facets[f].isActive() && f != uri){
+                values = facets[f].getSelectedValues();
+                for(v in values){
+                    var value = values[v];
+                    filters.push(
+                        {property : f,
+                            value : value.uri,
+                            label : value.label
+                        }
+                    );
+                }
+            }
+        }
+        return filters;
+        /*
+        for(m in pivotedFacets) {
+            if (facets[m].isInverse())
+                query += " ?"+pivotedFacets[m].pivotedVar+" <"+facets[m].getUri()+"> ?"+variable+" .";
+            else
+                query += " ?"+variable+" <"+facets[m].getUri()+"> ?"+pivotedFacets[m].pivotedVar+" .";
+            query += " ?"+variable+" a <"+typeUri+"> .";
+        }
+        */
+
+    };
 	
 	self.loadFacets = function(){
 		facets = {};

@@ -108,11 +108,12 @@ facet.Facet = function(property, inVariable, classURI)
 		}
 	};
 	*/
-	
+	/*
 	self.addInitValue = function(value){
 		initValues.push(value);
 		self.toggleValue(value);
 	};
+	*/
 	
 	self.resetFacet = function(){
 		numValues = 0;
@@ -208,7 +209,7 @@ facet.Facet = function(property, inVariable, classURI)
 			    return valueList[value];
             }
             else{
-                valueReturn = FacetValue(value, label, 0);
+                valueReturn = new FacetValue(value, label, 0);
                 selectedValues[value] = valueReturn;
                 numSelectedValues++;
                 $j("#"+valueId).removeClass("item");
@@ -218,8 +219,6 @@ facet.Facet = function(property, inVariable, classURI)
 		}	
 	};
 
-    self.toggle
-	
 	self.reloadValues = function(restrictions){
 		$j("#"+id+"_div").css('display','none');
 		$j("#"+id+"_loading").append("<img class=\"waitImage\" src=\"images/black-loader.gif\"/>");

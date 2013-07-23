@@ -120,7 +120,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	// By default, on successful query add response to history
 	function defaultOnResponse(query, response)
 	{
-		dhtmlHistory.add("history"+hex_md5(query), {query: query, response: response});
+		dhtmlHistory.add("history"+hex_md5(query), {type: 'resources', query: query, response: response});
 	};
 	// Send query and add result to history
 	function queryHistory(expression, callback, contentype)
@@ -145,7 +145,12 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		if (historyData)
 		{
 			last = historyData;
-			transform.rdf2html(historyData.response, target, last.query);
+
+            if(historyData.type=="resources")
+			    transform.rdf2html(historyData.response, target, last.query);
+            else{
+                facetBrowser.loadHistory(historyData.parameters);
+            }
 		}
 		else if (defaultQuery != null) // Issue default query
 		{
@@ -492,7 +497,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
         query += ") OPTIONAL{?r rdfs:label ?labelr} OPTIONAL{?c rdfs:label ?labelc} OPTIONAL{?p rdfs:label ?labelp} \n" +
             "} order by ?p";
 
-        console.log(query);
+        /*console.log(query);*/
 
         rhz.sparqlJSON(query, function(out){
             var inverseProperties = {};
@@ -589,7 +594,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
                 pictureUri = self.getPictureUri(this, "http://dbpedia.org/property/hasPhotoCollection");
                 if(pictureUri){
                     requestUri = "http://localhost:8080/proxy.jsp?url="+encodeURIComponent(pictureUri+"?format=rdf");
-                    console.log(requestUri);
+                    /*console.log(requestUri);*/
                     $j.ajax({
                         type: 'GET',
                         url: requestUri,

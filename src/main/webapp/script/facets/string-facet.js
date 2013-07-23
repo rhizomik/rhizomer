@@ -16,13 +16,13 @@ facet.StringFacet = function(property, fm, typeUri){
     that.printActive = function(){
         html = "<b>"+that.getLabel()+"</b> is ";
         var i=0;
-        values = that.getSelectedValues();
+        var values = that.getSelectedValues();
         console.log(values);
-        for(uri in values){
+        for(v in values){
             if(i>0)
                 html += " or ";
-            html += "<b>"+values[uri].label+"&nbsp;</b>"
-            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+that.getClassURI()+"','"+that.getId()+"','"+escape(uri)+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+            html += "<b>"+values[v].label+"&nbsp;</b>"
+            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+that.getClassURI()+"','"+that.getId()+"','"+escape(v)+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
             i++;
         }
         return html;

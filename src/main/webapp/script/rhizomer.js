@@ -551,13 +551,13 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
                             }
                         ]};
                     link = encodeURIComponent(JSON.stringify(link))
-                    html += "<tr><td><a href=\"facets.jsp?p="+link+"\">Is "+property.labelp+" of "+property.labelc+"</a></td>";
+                    html += "<tr><td><a href=\"facets.jsp?q="+uri+"#"+link+"\">Is "+property.labelp+" of "+property.labelc+"</a></td>";
                     html += "<td>";
                     $j.each(property.values,function(i, value)
                     {
                         html+="<div class='property-object'>"+value.labelr+"</div><div class='connector'>,</div>";
                     });
-                    html += "<a href=\"facets.jsp?p="+link+"\">Browse all</a></td></tr>";
+                    html += "<a href=\"facets.jsp?q="+uri+"#"+link+"\">Browse all</a></td></tr>";
                 });
                 $j(this).children("table").append(html);
             });

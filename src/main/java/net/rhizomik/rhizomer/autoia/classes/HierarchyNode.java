@@ -50,7 +50,7 @@ public class HierarchyNode implements Comparable{
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            String link = FACETS+"?p="+obj;
+            String link = FACETS+"?q="+this.uri+"#"+obj;
             return link;
         }
 

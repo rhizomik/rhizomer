@@ -110,14 +110,14 @@ public class RhizomerAutocompleteSearch extends HttpServlet {
 
         for(AutoCompleteOption option : options){
             String obj = "{\"type\":\""+option.getKlass()+"\","+
-            "\"focus\":{\"uri\":\""+option.getUri()+"\", \"label\":\""+option.getLabel()+"\"}}";
+            "\"focus\":{\"uri\":\""+option.getUri()+"\",\"label\":\""+option.getLabel()+"\"}}";
 
             try {
                 obj = URLEncoder.encode(obj, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            String link = request.getContextPath()+"/facets.jsp?p="+obj;
+            String link = request.getContextPath()+"/facets.jsp?q="+option.getKlass()+"#"+obj;
 
             //String link = request.getContextPath()+"/facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+option.getKlass().replace("#", "%23")+">}&o="+option.getUri().replace("#", "%23");
             output.append("{\"label\" : \""+option.getLabel().replace("\"","\\\"")+"\", \"link\" : \""+link+"\", \"c\" : \""+option.getKlass()+"\"},");

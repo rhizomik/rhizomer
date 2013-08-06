@@ -5,6 +5,8 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import net.rhizomik.rhizomer.agents.RhizomerRDF;
 import net.rhizomik.rhizomer.store.MetadataStore;
+import net.rhizomik.rhizomer.store.jena.JenaStore;
+import net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -41,6 +43,10 @@ public class TypeDetector {
 
     private static final Logger log = Logger.getLogger(TypeDetector.class.getName());
     private static String NL = System.getProperty("line.separator");
+
+    private static int FACET_VALUES_AMOUNT = 5;
+    private static int FACET_TYPES_AMOUNT = 5;
+
 	private static String queryForValues = 
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
@@ -52,7 +58,7 @@ public class TypeDetector {
         "   FILTER(?o!=\"\") ."+NL+
     	"}"+NL+
     	"GROUP BY ?o"+NL+
-    	"ORDER BY DESC(?n) LIMIT 5";
+    	"ORDER BY DESC(?n) LIMIT "+FACET_VALUES_AMOUNT;
 	
 	private static String queryForPivotingFacets = 
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
@@ -79,7 +85,7 @@ public class TypeDetector {
         "   ?type a ?class.\n" +
         "   FILTER ( !isBlank(?type) && (?class = owl:Class || ?class = rdfs:Class) ) } \n"+
         "GROUP BY ?type"+NL+
-        "ORDER BY DESC(?n) LIMIT 5";
+        "ORDER BY DESC(?n) LIMIT "+FACET_TYPES_AMOUNT;
 
     private static String queryForInverseFacetTypes =
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
@@ -92,7 +98,7 @@ public class TypeDetector {
         "   ?type a ?class.\n" +
         "   FILTER ( !isBlank(?type) && (?class = owl:Class || ?class = rdfs:Class) ) } \n"+
         "GROUP BY ?type"+NL+
-        "ORDER BY DESC(?n) LIMIT 5";
+        "ORDER BY DESC(?n) LIMIT "+FACET_TYPES_AMOUNT;
 
     private static String queryForSuperClassInversePropertyPath =
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
@@ -156,7 +162,11 @@ public class TypeDetector {
 
     private String makeQueryForSuperClass(String facetTypes){
         Formatter f = new Formatter();
-        f.format(queryForSuperClass, facetTypes);
+        MetadataStore store = RhizomerRDF.instance().getStore();
+        if (store instanceof VirtuosoStore || store instanceof JenaStore)
+            f.format(queryForSuperClass, facetTypes);
+        else
+            f.format(queryForSuperClassInversePropertyPath, facetTypes);
         return f.toString();
     }
 
@@ -165,6 +175,19 @@ public class TypeDetector {
         Object[] vars = {uri, property};
         f.format(queryForValues, vars);
         return f.toString();
+    }
+
+    private String buildFacetTypesList(String range, String facetTypes) {
+        MetadataStore store = RhizomerRDF.instance().getStore();
+        if (store instanceof VirtuosoStore || store instanceof JenaStore) {
+            if (facetTypes.length() > 0) facetTypes += " || ";
+            facetTypes += "?subclass = <"+range+">";
+        }
+        else {
+            if (facetTypes.length() > 0) facetTypes += ", ";
+            facetTypes += "<"+range+">";
+        }
+        return facetTypes;
     }
     
     public String detectRange(){
@@ -187,8 +210,7 @@ public class TypeDetector {
                     !range.contains("http://www.w3.org/2002/07/owl#Class") &&
                     !range.contains("http://www.w3.org/2000/01/rdf-schema#Resource") &&
                     !range.contains("http://www.w3.org/1999/02/22-rdf-syntax-ns#Resource") ) {
-                    if (facetTypes.length() > 0) facetTypes += " || ";
-                    facetTypes += "?subclass = <"+range+">";
+                    facetTypes = buildFacetTypesList(range, facetTypes);
                     countFacetTypes++;
                 }
             }

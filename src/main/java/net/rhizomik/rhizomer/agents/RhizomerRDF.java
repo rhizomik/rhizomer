@@ -55,37 +55,42 @@ public class RhizomerRDF
     {
     	store = MetadataStoreFactory.getMetadataStore(props);
     }
+
+    public MetadataStore getStore()
+    {
+        return store;
+    }
  
     public void destroy()
     {
-    	store.close();
+    	getStore().close();
     }
     
     public String store (InputStream input, String contenttype) throws IOException
     {
     	String storedData = "";
-    	storedData = store.store(input, contenttype);
+    	storedData = getStore().store(input, contenttype);
     	return storedData;
     }
 
 	public void remove(URI uri) 
 	{
-		store.remove(uri);
+		getStore().remove(uri);
 	}
 	
 	public String query(String query) 
 	{
-		return store.query(query);
+		return getStore().query(query);
 	}
 	
 	public ResultSet querySelect(String query, int scope)
 	{
-		return store.querySelect(query, scope);
+		return getStore().querySelect(query, scope);
 	}
 	
 	public boolean queryAsk(String query)
 	{
-		return store.queryAsk(query);
+		return getStore().queryAsk(query);
 	}
 	
 	public String getMetadata(HttpServletRequest request)
@@ -96,7 +101,7 @@ public class RhizomerRDF
     	if (request.getParameter("query") != null)
     	{
     		String query = request.getParameter("query");
-        	rdf = store.query(query);
+        	rdf = getStore().query(query);
         	String userAgent = request.getHeader("User-Agent").toLowerCase();
         	String botsRegex = "^$|.*bot.*|.*crawler.*|.*spider.*|.*slurp.*|.*ask.*|.*teoma.*";
         	
@@ -104,7 +109,10 @@ public class RhizomerRDF
         	// retrieve metadata from the URL and filter it by requerying it
         	// Do not try to do so if the URI queried is from this webapp or from a bot/crawler
         	// TODO: In order to check the latter, include also servlet name, port,...
-        	if (rdf.indexOf("rdf:about=")<0 && query.matches("DESCRIBE <.*>") &&
+            // TODO: improve way to check that there is no metadata locally,
+            // currently just checking returned RDF/XML smaller than 500 chars, which corresponds roughly
+            // to metadata just containing the resource label
+        	if (rdf.length()<500 && query.matches("DESCRIBE <.*>") &&
         		query.indexOf(request.getServerName())<0 && !userAgent.matches(botsRegex))
         	{
         		int uriStart = query.indexOf('<')+1;
@@ -162,7 +170,7 @@ public class RhizomerRDF
                 query = query + " <"+requestURI+">";
             }
     			
-    		rdf = store.query(query);
+    		rdf = getStore().query(query);
     	}
     	return rdf;
 	}
@@ -175,9 +183,8 @@ public class RhizomerRDF
     	if (request.getParameter("query") != null)
     	{
     		String query = request.getParameter("query");
-        	json = store.queryJSON(query);
+        	json = getStore().queryJSON(query);
     	}
     	return json;
 	}
-
 }

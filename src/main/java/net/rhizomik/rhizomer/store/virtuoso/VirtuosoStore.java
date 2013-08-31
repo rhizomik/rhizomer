@@ -164,18 +164,15 @@ public class VirtuosoStore implements MetadataStore
                 if (query.getGroupBy().isEmpty())
                     queryString = query.toString().substring(0, query.toString().indexOf("GROUP BY"));
 
-            //queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+query.toString();
             queryString = "DEFINE input:inference \""+ruleSet+"\"\n"+queryString;
             if (query.isDescribeType())
             	queryString = "DEFINE sql:describe-mode \"CBDL\"\n"+queryString;
 
-            /*if (queryString.indexOf("regex")>0)
+            // Replace contains with bif:contains to profit from Virtuoso free text indexing
+            if (queryString.indexOf("contains(")>0)
             {
-            	queryString = queryString.replace("regex","bif:contains");
-            	queryString = queryString.replace(" '", " \"'");
-            	queryString = queryString.replace("',", "'\",");
-            	queryString = queryString.replace(", 'i'", "");
-            }*/
+            	queryString = queryString.replaceAll("contains(","bif:contains(");
+            }
             
             log.log(Level.INFO, "VirtuosoStore.query2: "+queryString);
             

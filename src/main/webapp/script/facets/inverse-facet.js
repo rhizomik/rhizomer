@@ -1,5 +1,5 @@
 facet.InverseFacet = function(property, inVariable, classURI){
-		
+
 	var self = new facet.Facet(property, fm, classURI);
 
 	/**
@@ -377,7 +377,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
                     facetBrowser.makeRestrictions(facetBrowser.getAutoCompletePropertyURI())+
                     "OPTIONAL{ \n"+
                     "?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
-                    "FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+
+                    "FILTER (contains(str(?label), '[query]') || contains(str(?uri), '[query]')) \n"+
                     "}";
             query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
             query = query.replace(/\[uri\]/g, facetBrowser.getActiveManager().getTypeUri());

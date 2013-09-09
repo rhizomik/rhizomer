@@ -485,8 +485,8 @@ public class HierarchyManager
 
         PrintStream p = new PrintStream(filename);
 
-        //model.write(System.out,"RDF/XML-ABBREV");
         model.write(p, "RDF/XML-ABBREV");
+        p.close();
     }
 
     public void writeVoidNode(Model model, Resource resource, HierarchyNode node){

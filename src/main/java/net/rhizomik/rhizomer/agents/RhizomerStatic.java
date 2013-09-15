@@ -49,6 +49,8 @@ public class RhizomerStatic extends HttpServlet
     	RequestDispatcher d = null;
     	if (request.getPathInfo().endsWith(".jsp"))
     		d = getServletConfig().getServletContext().getNamedDispatcher("jsp");
+        else if (request.getPathInfo().endsWith("/"))
+            d = request.getRequestDispatcher("index.html");
     	else
     		d = getServletConfig().getServletContext().getNamedDispatcher("default");
     	d.forward(request, response);

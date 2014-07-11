@@ -57,7 +57,7 @@ facet.NumberFacet = function(property, fm, typeUri){
     that.printActive = function(){
         html = "<b>"+that.getLabel()+"</b> is ";
         html += from + " - " + to + "&nbsp;";
-        html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeRangeProperty('"+that.getClassURI()+"','" +that.getId()+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+        html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeRangeProperty('"+that.getClassURI()+"','" +that.getId()+"'); return false;\"><img src='images/delete_blue.png'/></a>";
         return html;
     };
 

@@ -52,7 +52,7 @@ public class RDF2HTMLTransformer
         URIResolver resolver = new URIResolverImpl(base);
 		TransformerFactory factory = TransformerFactory.newInstance();
 		factory.setURIResolver(resolver);
-        FileInputStream rdf2htmlFile = new FileInputStream(base + "style/rdf2html.xsl");
+        FileInputStream rdf2htmlFile = new FileInputStream(base + "/style/rdf2html.xsl");
 		transformer = factory.newTransformer(new StreamSource(rdf2htmlFile));
 	}
 	
@@ -60,7 +60,7 @@ public class RDF2HTMLTransformer
 	{
 		String direction = null;
 		String orderProperty = null;
-		String language = (String) request.getSession().getAttribute("language");
+		String language = (String) request.getSession(false).getAttribute("language");
 		
 		if (request.getParameter("query") != null)
     	{

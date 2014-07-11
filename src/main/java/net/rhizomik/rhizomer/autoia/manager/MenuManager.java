@@ -39,7 +39,7 @@ public class MenuManager {
 
     public void getMenu() throws Exception{
 
-		String path = config.getServletContext().getRealPath("WEB-INF");
+		String path = config.getServletContext().getRealPath("/WEB-INF");
 		
 		String datasetId = "";
 		if (config.getServletContext().getInitParameter("db_graph")!=null)

@@ -30,6 +30,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import net.rhizomik.rhizomer.agents.RhizomerRDF;
 import net.rhizomik.rhizomer.service.Service;
 import net.rhizomik.rhizomer.store.MetadataStore;
@@ -65,11 +67,18 @@ private String rhizomerServiceBaseUri = "http://rhizomik.net/rhizomer/services#"
                 + "?r ?p ?o FILTER (!isBlank(?r) && ?p!=rdfs:label)"
             + "}";
     
-    public ServiceManager(){
-        this.serviceList = new ArrayList<Service>();
+    public ServiceManager(HttpSession session) {
+        if (session.getAttribute("service") == null) {
+            readServiceList();
+            session.setAttribute("service", getServiceList());
+        }
+        else
+            this.serviceList = (ArrayList<Service>)session.getAttribute("service");
+
     }
     
-    public void readServiceList(){
+    public void readServiceList() {
+        this.serviceList = new ArrayList<Service>();
         ResultSet results = RhizomerRDF.instance().querySelect(queryForServices, MetadataStore.REASONING);
         while(results.hasNext()){
             QuerySolution row = results.next();
@@ -99,7 +108,7 @@ private String rhizomerServiceBaseUri = "http://rhizomik.net/rhizomer/services#"
             { model.read(new StringReader(subrdf), ""); } 
             catch (Exception e) {}
             
-            ArrayList<Service> serList = (ArrayList<Service>) request.getSession().getAttribute("service");
+            ArrayList<Service> serList = (ArrayList<Service>) request.getSession(false).getAttribute("service");
             Query query = QueryFactory.create(queryForResources);
             QueryExecution qexec = QueryExecutionFactory.create(query, model);
             ResultSet results = qexec.execSelect();

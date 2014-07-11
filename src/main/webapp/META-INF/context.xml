@@ -1,4 +1,4 @@
-<!--Context debug="0" reloadable="true" crossContext="true"-->
+<Context debug="0" reloadable="true" crossContext="true">
 	<!--Realm className="org.apache.catalina.realm.MemoryRealm" pathname="webapps/rhizomer/META-INF/users.xml"/-->
 	<!-- Realm className="com.sun.enterprise.security.auth.realm.file.FileRealm" pathname="config/keyfile"/ -->
-<!--/Context-->
+</Context>

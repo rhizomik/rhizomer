@@ -244,7 +244,7 @@ facet.FacetManager = function (uri, inVariable){
         }
 		else{
 			var html = "<a href=\"javascript:facetBrowser.pivotFacet('','','"+typeUri+"');\">"+label+"</a>&nbsp;";
-            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.deletePivotFacet('"+typeUri+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.deletePivotFacet('"+typeUri+"'); return false;\"><img src='images/delete_blue.png'/></a>";
         }
 
         activeFacets = self.getActiveFacets();
@@ -254,7 +254,7 @@ facet.FacetManager = function (uri, inVariable){
 
             if(!$j.isEmptyObject(selectedResource)){
                 html+= "<b>"+label+"</b> is <b>"+selectedResource.label+"&nbsp;</b>";
-                html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeSelectedResource('"+typeUri+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+                html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeSelectedResource('"+typeUri+"'); return false;\"><img src='images/delete_blue.png'/></a>";
             }
 
             if(!$j.isEmptyObject(selectedResource) && !$j.isEmptyObject(activeFacets))

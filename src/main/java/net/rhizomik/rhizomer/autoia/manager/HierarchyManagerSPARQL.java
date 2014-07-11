@@ -32,7 +32,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         "       FILTER (?root!=?super && ?super!=owl:Thing &&?super!=rdfs:Resource && !isBlank(?super))"+NL+
         "   }"+NL+
         "   OPTIONAL { ?root rdfs:label ?label FILTER(LANG(?label)='en' || LANG(?label)='')}"+NL+
-        "   FILTER (!bound(?super) && isURI(?root) && !isBlank(?root) && ?root!=owl:Thing )"+NL+
+        "   FILTER (!bound(?super) && !isBlank(?root) && ?root!=owl:Thing )"+NL+
         "}";
 	
 	protected String queryForRootsMinus = 
@@ -160,11 +160,10 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         		node.setNumInstances(numInstances.getInt());
         	}
         }
-        /* Això seria per si no hi hagués inferència i s'han de sumar instàncies dels fills.
+        // Això seria per si no hi hagués inferència i s'han de sumar instàncies dels fills.
         for(HierarchyNode node : menu.getNodes()){
 			calculateInstances(node);
 		}
-		*/
     }
     
     private void calculateInstances(HierarchyNode node){
@@ -172,7 +171,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
 		for(HierarchyNode child : node.getChilds()){
 			childInstances += child.getOwnedInstances();
 		}
-		int total = node.getOwnedInstances()-childInstances;
+		int total = node.getOwnedInstances()+childInstances;
 		if(total<0) 
 			total = 0;
 		node.setNumInstances(total);

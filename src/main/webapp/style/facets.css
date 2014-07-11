@@ -27,7 +27,7 @@
 
 #facets span.pivot{
     margin-top:2px;
-    background-image: url("/images/pivot_white.png");
+    background-image: url("../images/pivot_white.png");
     background-repeat: no-repeat;
     background-position: 100% 50%;
     padding-right: 19px;
@@ -42,34 +42,34 @@
     clear:both;
     float: left;
     cursor:pointer;
-    background-image: url("/images/open_white.png");
+    background-image: url("../images/open_white.png");
     background-repeat: no-repeat;
     padding-left:15px;
 }
 
 #facets .showvalues:hover{
     cursor:pointer;
-    background-image: url("/images/open_blue.png");
+    background-image: url("../images/open_blue.png");
     background-repeat: no-repeat;
     text-decoration: underline;
 }
 
 #facets .showvalues_opened{
     cursor:pointer;
-    background-image: url("/images/close_white.png");
+    background-image: url("../images/close_white.png");
     background-repeat: no-repeat;
     text-decoration: underline;
 }
 
 #facets .showvalues_opened:hover{
     cursor:pointer;
-    background-image: url("/images/close_blue.png");
+    background-image: url("../images/close_blue.png");
     background-repeat: no-repeat;
     text-decoration: underline;
 }
 
 #facets .facet_header {
-    background-image: url("/images/bullet.gif");
+    background-image: url("../images/bullet.gif");
     background-repeat: no-repeat;
     background-position: 0% 50%;
     padding-left:10px;
@@ -103,7 +103,7 @@
 
 #facets .text-box{
     color:grey;
-    background-image:url('http://www.imdb.com/images/searchlink.png');
+    background-image:url('../images/searchlink.png');
     background-repeat:no-repeat;
     margin-left:0px;
     padding-left:15px;

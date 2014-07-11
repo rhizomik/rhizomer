@@ -170,7 +170,7 @@ public class FacetGenerator {
         "GROUP BY ?x ORDER BY DESC(?n) LIMIT 1";
 
     public FacetGenerator(ServletConfig config) throws ClassNotFoundException, SQLException {
-    	String path = config.getServletContext().getRealPath("WEB-INF")+"/";
+    	String path = config.getServletContext().getRealPath("/WEB-INF")+"/";
 		String datasetId = "";
 
 		if (config.getServletContext().getInitParameter("db_graph")!=null)
@@ -531,11 +531,11 @@ public class FacetGenerator {
         System.out.println("COUNT MAX CARDINALITY: "+ classUri + " - "+ property);
         maxCardinality = this.countMaxCardinalityForInverseProperty(classUri, property);
 
-        if(isInverseFunctionalForValues(classUri, property))
+        /*if(isInverseFunctionalForValues(classUri, property))
         {
             System.out.println("Inverse functional property for "+ property +" for class "+ classUri);
             maxValue = 1;
-        }
+        }*/
 
         boolean isInverse = true;
         insertFacetData(st, classUri, property, range, instances, values, maxValue, maxCardinality, isInverse);
@@ -556,11 +556,11 @@ public class FacetGenerator {
         System.out.println("COUNT MAX CARDINALITY: "+ classUri + " - "+ property);
         maxCardinality = this.countMaxCardinalityForProperty(classUri, property);
 
-        if(isInverseFunctionalForValues(classUri, property))
+        /*if(isInverseFunctionalForValues(classUri, property))
         {
             System.out.println("Inverse functional property for "+ property +" for class "+ classUri);
             maxValue = 1;
-        }
+        }*/
 
         boolean isInverse = false;
         insertFacetData(st, classUri, property, range, instances, values, maxValue, maxCardinality, isInverse);

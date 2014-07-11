@@ -9,26 +9,6 @@
   <url>http://maven.apache.org</url>
     <build>
         <finalName>rhizomer-sesamesotre</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
     <dependencies>
         <dependency>
@@ -51,32 +31,42 @@
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-repository-manager</artifactId>
-			<version>2.6.0</version>
+			<version>2.7.7</version>
 		</dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-repository-api</artifactId>
+            <version>2.7.7</version>
+        </dependency>
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-queryresultio-sparqljson</artifactId>
-			<version>2.6.0</version>
+			<version>2.7.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-rio-rdfxml</artifactId>
-			<version>2.6.0</version>
+			<version>2.7.7</version>
 		</dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-rio-n3</artifactId>
+            <version>2.7.7</version>
+        </dependency>
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-queryresultio-sparqlxml</artifactId>
-			<version>2.6.0</version>
+			<version>2.7.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-http-client</artifactId>
-			<version>2.6.0</version>
+			<version>2.7.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-queryparser-sparql</artifactId>
-			<version>2.6.0</version>
+			<version>2.7.7</version>
 		</dependency>
         <dependency>
             <groupId>com.hp.hpl.jena</groupId>
@@ -84,26 +74,6 @@
             <version>2.8.7</version>
         </dependency>
     </dependencies>
-    <dependencyManagement>
-    	<dependencies>
-    	</dependencies>
-    </dependencyManagement>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    <repositories>
-        <repository>
-            <id>javax.net repo</id>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-		<repository>
-			<id>aduna-repo</id>
-			<name>Aduna Repository</name>
-			<url>http://repo.aduna-software.org/maven2/releases</url>
-		</repository>
-    </repositories>
-    <pluginRepositories>
-    </pluginRepositories>
 </project>
 
 

@@ -218,7 +218,7 @@ facet.FacetBrowser = function(parameters){
 				html += managers[m].manager.printActive(false);
 			}
 		}
-        html += "<span style=\"margin-left:10px;\"><a href=\"\">Reset all filters <img src='/images/delete_blue.png'/></a></span>";
+        html += "<span style=\"margin-left:10px;\"><a href=\"\">Reset all filters <img src='images/delete_blue.png'/></a></span>";
 		$j("#active_facets").append(html);
         self.printRelated();
         /*self.printPagination("listResources",self.makeSPARQL(),10);*/
@@ -523,8 +523,8 @@ facet.FacetBrowser = function(parameters){
     self.printSort = function(){
         $j("#sort").empty();
         html = "<span style=\"font-weight:bold;\">Sort by: </span><select onchange=\"javascript:facetBrowser.sort('asc');\" id='sort_property'></select>";
-        html += "<a href=\"javascript:facetBrowser.sort('asc');\"><img src='/images/sort_ascending.png' alt='Sort ascensing'/></a>&nbsp;";
-        html += "<a href=\"javascript:facetBrowser.sort('desc');\"><img src='/images/sort_descending.png' alt='Sort descending'/></a>";
+        html += "<a href=\"javascript:facetBrowser.sort('asc');\"><img src='images/sort_ascending.png' alt='Sort ascensing'/></a>&nbsp;";
+        html += "<a href=\"javascript:facetBrowser.sort('desc');\"><img src='images/sort_descending.png' alt='Sort descending'/></a>";
         $j("#sort").append(html);
         var sortProperties = activeManager.getSortProperties();
         if(sortProperties["http://www.w3.org/2000/01/rdf-schema#label"]){

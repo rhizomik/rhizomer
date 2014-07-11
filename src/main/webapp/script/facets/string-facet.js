@@ -22,7 +22,7 @@ facet.StringFacet = function(property, fm, typeUri){
             if(i>0)
                 html += " or ";
             html += "<b>"+values[v].label+"&nbsp;</b>"
-            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+that.getClassURI()+"','"+that.getId()+"','"+escape(v)+"'); return false;\"><img src='/images/delete_blue.png'/></a>";
+            html += "<a class=\"pointer\" onclick=\"javascript:facetBrowser.removeProperty('"+that.getClassURI()+"','"+that.getId()+"','"+escape(v)+"'); return false;\"><img src='images/delete_blue.png'/></a>";
             i++;
         }
         return html;

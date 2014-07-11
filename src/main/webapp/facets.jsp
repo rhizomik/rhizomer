@@ -46,7 +46,7 @@
 		rhz = new rhizomik.Rhizomer(endpoint,
 			document.getElementById("metadata"));
 
-        var hash = window.location.hash.substring(1);
+        var hash = window.location.href.substring(window.location.href.lastIndexOf('#')+1);
         var parameters = JSON.parse(decodeURIComponent(hash));
         dhtmlHistory.add(hash, {type: 'facets', parameters: parameters});
         /*var parameters = JSON.parse('<%=parameters%>');*/

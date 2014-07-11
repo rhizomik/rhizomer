@@ -58,10 +58,8 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/script/autocomplete.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/script/dispatcher-min.js"></script>
 
-	<!--script src="<%=request.getContextPath()%>/script/prototype.js"></script-->
-	<!--script src="<%=request.getContextPath()%>/script/jquery-1.4.2.min.js"></script-->
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="<%=request.getContextPath()%>/script/jquery-ui-1.10.3.min.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/jquery.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/script/jquery-ui-1.10.3.min.js"></script>
 	
 	<script type="text/javascript">
 		$j = jQuery.noConflict();
@@ -77,9 +75,6 @@
             */
         });
 	</script>
-
-
-
 
     <script type="text/javascript">
  		YUI({
@@ -134,7 +129,6 @@
                 <input id="search_input" type="text" name="text" value="Quick search..."/>
         </div>
 
-
         <%
 
             HierarchyMenu menu = null;
@@ -171,22 +165,22 @@
             menuSKOS.sort(2);
             */
 
-            if(session.getAttribute("service")==null){
-                ServiceManager serviceManager = new ServiceManager();
+            /*if(session.getAttribute("service")==null){
+                ServiceManager serviceManager = new ServiceManager(null);
                 serviceManager.readServiceList();
                 session.setAttribute("service",serviceManager.getServiceList());
-            }
+            }*/
         %>
         <div id="menu-class" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
             <div class="yui3-menu-content">
                 <ul>
-                    <li class="yui3-menuitem">
-                        <a class="yui3-menuitem-content" href="<%=request.getContextPath()%>/">About</a>
-                    </li>
-                    <%=menu.printAsUl(request, 2)%>
                     <!--li class="yui3-menuitem">
-                        <a class="yui3-menuitem-content" href="mailto:contact at rhizomik dot net">Contact</a>
+                        <a class="yui3-menuitem-content" href="<%=request.getContextPath()%>/">About</a>
                     </li-->
+                    <%=menu.printAsUl(request, 2)%>
+                    <li class="yui3-menuitem">
+                        <a class="yui3-menuitem-content" href="mailto:contact at rhizomik dot net">Contact</a>
+                    </li>
                 </ul>
             </div>
         </div>

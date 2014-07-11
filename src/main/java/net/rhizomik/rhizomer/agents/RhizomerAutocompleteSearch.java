@@ -32,7 +32,7 @@ public class RhizomerAutocompleteSearch extends HttpServlet {
         String query = request.getParameter("q");
         int numResults = 15;
         System.out.println(query);
-        HierarchyMenu menu = (HierarchyMenu) request.getSession(true).getAttribute("originalMenu");
+        HierarchyMenu menu = (HierarchyMenu) request.getSession(false).getAttribute("originalMenu");
         ArrayList<HierarchyNode> selectedNodes = new ArrayList<HierarchyNode>();
         for(HierarchyNode node : menu.getAllNodes()){
             if(node.getLabel().toLowerCase().contains(query.toLowerCase())){
@@ -61,16 +61,17 @@ public class RhizomerAutocompleteSearch extends HttpServlet {
         String queryForInstances =
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
             "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
+            "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
             "SELECT DISTINCT ?uri ?label ?c"+NL+
                 "WHERE {"+NL+
                 "   ?uri rdf:type ?c . "+NL+
                 "   ?uri rdfs:label ?label . "+NL+
-                "   ?label <bif:contains> '\""+query+"\"' ."+NL+
+                "   FILTER(contains(str(?label), \""+query+"\") || contains(str(?uri), \""+query+"\")) ."+NL+
                 /*"    FILTER( NOT EXISTS {" +NL+
                 "   ?sub rdfs:subClassOf ?c ." + NL +
                 "   })" + NL +*/
-                "FILTER(?c!=<http://www.w3.org/2002/07/owl#Class> && ?c!=<http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> && ?c!=<http://www.w3.org/2002/07/owl#ObjectProperty>)"+
-        "} order by ?uri LIMIT 50";
+                "FILTER(?c!=owl:Class && ?c!=rdf:Property && ?c!=owl:ObjectProperty)"+NL+
+                "} ORDER BY ?uri LIMIT 50";
         ResultSet results = RhizomerRDF.instance().querySelect(queryForInstances, MetadataStore.REASONING);
         List<AutoCompleteOption> options = new ArrayList<AutoCompleteOption>();
         String lastUri = null;

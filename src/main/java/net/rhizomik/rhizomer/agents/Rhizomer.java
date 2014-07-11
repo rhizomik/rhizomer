@@ -2,7 +2,7 @@ package net.rhizomik.rhizomer.agents;
 
 import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
 import net.rhizomik.rhizomer.autoia.generator.FacetGenerator;
-import net.rhizomik.rhizomer.autoia.generator.FacetGenerator2;
+//import net.rhizomik.rhizomer.autoia.generator.FacetGenerator2;
 import net.rhizomik.rhizomer.autoia.manager.MenuManager;
 import net.rhizomik.rhizomer.service.ServiceManager;
 
@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -92,6 +93,7 @@ public class Rhizomer extends HttpServlet
     	// Content negotiation
     	String accept = request.getHeader("Accept");
     	String requestedWith = request.getHeader("X-Requested-With");
+        HttpSession session = request.getSession();
     	
     	if (accept!=null && accept.indexOf("application/json")>=0)
     	{
@@ -108,8 +110,8 @@ public class Rhizomer extends HttpServlet
     	else if (accept!=null && accept.indexOf("application/rdf+xml")>=0)
     	{
         	String rdf = store.getMetadata(request);
-                ServiceManager serviceManager = new ServiceManager();
-                rdf = serviceManager.addServices(rdf,request);
+            ServiceManager serviceManager = new ServiceManager(session);
+            rdf = serviceManager.addServices(rdf,request);
         	response.setBufferSize(8192);
         	response.setCharacterEncoding("UTF-8");
     		response.setContentType("application/rdf+xml");
@@ -122,7 +124,7 @@ public class Rhizomer extends HttpServlet
     	else if (requestedWith!=null && requestedWith.equals("XMLHttpRequest"))
     	{
     		String rdf = store.getMetadata(request);
-                ServiceManager serviceManager = new ServiceManager();
+                ServiceManager serviceManager = new ServiceManager(session);
                 rdf = serviceManager.addServices(rdf,request);
         	response.setBufferSize(8192);
         	response.setCharacterEncoding("UTF-8");

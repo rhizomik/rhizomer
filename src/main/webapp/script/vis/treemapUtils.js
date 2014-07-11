@@ -17,6 +17,7 @@ var max = 0;
 
 function showStatus(){
     var html = "<div class=\"treemap_breadcrumbs\">";
+    var uriComp = encodeURIComponent("{\"type\":\""+tm.clickedNode.uri+"\"}");
     x = treemapHistory.length;
     if(x==0)
         html += "Classes";
@@ -24,9 +25,12 @@ function showStatus(){
         html += "<a href=\"javascript:backNode("+x+")\">Classes</a> > ";
     for(var i=0; i<treemapHistory.length; i++){
         x = treemapHistory.length-i-1;
-        if(i==treemapHistory.length-1)
-            //html += "<a href=\"javascript:backNode("+x+")\">" + treemapHistory[i] + "</a> / ";
-            html += "<a href=\"facets.jsp?q=SELECT ?r1 WHERE{?r1 a <"+tm.clickedNode.data.uri+">}\">"+ treemapHistory[i] +" ("+ tm.clickedNode.data.instances +")</a>";
+        if(i==treemapHistory.length-1) {
+            var uriComp = encodeURIComponent("{\"type\":\""+tm.clickedNode.id+"\"}");
+            //html += "<a href=\"javascript:backNode("+x+")\">" + treemapHistory
+            [i] + "</a> / ";
+            html += "<a href=\"facets.jsp?q="+tm.clickedNode.id+"#"+uriComp+"\">"+ treemapHistory[i] +" ("+ tm.clickedNode.data.instances +")</a>";
+        }
         else
             html += "<a href=\"javascript:backNode("+x+")\">" + treemapHistory[i] + "</a> > ";
     }

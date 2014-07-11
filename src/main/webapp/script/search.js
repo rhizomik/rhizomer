@@ -22,7 +22,7 @@ YUI().use('autocomplete', 'autocomplete-highlighters', 'datasource', 'datasource
 
     var ac = new Y.AutoComplete({
         inputNode			: "#search_input",
-        source			: "/autoCompleteSearch.jsp?q={query}",
+        source			: "../autoCompleteSearch.jsp?q={query}",
         render 			: true,
         resultFilters: ['charMatch', 'wordMatch'],
         resultHighlighter	: "phraseMatch",

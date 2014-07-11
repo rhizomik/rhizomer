@@ -23,7 +23,7 @@
 	<xsl:param name="language">en</xsl:param>
 	<xsl:param name="mode">rhizomer</xsl:param>
 	<xsl:param name="namespaces">false</xsl:param>
-	<xsl:param name="logo">false</xsl:param>
+	<xsl:param name="logo">true</xsl:param>
 	<xsl:param name="coNS">http://rhizomik.net/ontologies/2009/09/copyrightonto.owl#</xsl:param>
  	<xsl:param name="grNS">http://purl.org/goodrelations/v1#</xsl:param>
 
@@ -313,7 +313,9 @@
 				<xsl:call-template name="priceSpecification"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:call-template name="caserole-agent"/>
+                <xsl:if test="not(owl:complementOf)">
+                    <xsl:call-template name="caserole-agent"/>
+                </xsl:if>
 				<xsl:call-template name="verb"></xsl:call-template>
 				<xsl:call-template name="caserole-theme"/>
 				<xsl:call-template name="caserole-result"/>
@@ -478,17 +480,15 @@
 					<div class="connector"><xsl:text>, </xsl:text></div>
 				</xsl:if>
 			</xsl:for-each>
-			<!-- rdfs:subClassOf -->
+            <!-- owl:complementOf -->
+            <xsl:for-each select="owl:complementOf[@rdf:resource]">
+                <div class="connector"><xsl:text>not </xsl:text></div>
+                <xsl:call-template name="property-objects"/>
+                <xsl:call-template name="verb-thirdperson"/>
+            </xsl:for-each>
+            <!-- rdfs:subClassOf -->
 			<xsl:for-each select="rdfs:subClassOf[@rdf:resource]">
 				<xsl:call-template name="property-objects"/>
-				<xsl:call-template name="verb-thirdperson"/>
-			</xsl:for-each>
-			<xsl:for-each select="rdfs:subClassOf/rdf:Description">
-				<xsl:call-template name="resourceDetailLink">
-					<xsl:with-param name="property" select="'type'"/>
-					<xsl:with-param name="namespace" select="''"/>
-					<xsl:with-param name="localname" select="@rdf:about"/>
-				</xsl:call-template>
 				<xsl:call-template name="verb-thirdperson"/>
 			</xsl:for-each>
 			<xsl:for-each select="rdfs:subClassOf/owl:Class/owl:unionOf/*">
@@ -505,6 +505,14 @@
 					<xsl:with-param name="criteria" select="following-sibling::*"/>
 				</xsl:call-template>
 			</xsl:for-each>
+            <xsl:for-each select="rdfs:subClassOf/(rdf:Description|owl:Class)">
+                <xsl:call-template name="resourceDetailLink">
+                    <xsl:with-param name="property" select="'type'"/>
+                    <xsl:with-param name="namespace" select="''"/>
+                    <xsl:with-param name="localname" select="@rdf:about"/>
+                </xsl:call-template>
+                <xsl:call-template name="verb-thirdperson"/>
+            </xsl:for-each>
 		</div>
 	</xsl:template>
 	

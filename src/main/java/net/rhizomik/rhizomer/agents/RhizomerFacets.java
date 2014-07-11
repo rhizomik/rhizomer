@@ -25,6 +25,8 @@ import net.rhizomik.rhizomer.autoia.classes.FacetValue;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
 import net.rhizomik.rhizomer.autoia.manager.FacetManager;
+import net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSPARQL;
+import net.rhizomik.rhizomer.autoia.manager.MenuManager;
 
 public class RhizomerFacets extends HttpServlet {
 
@@ -43,7 +45,7 @@ public class RhizomerFacets extends HttpServlet {
 
     private String getFilePath() {
         ServletConfig config = getServletConfig();
-        String filePath = config.getServletContext().getRealPath("WEB-INF");
+        String filePath = config.getServletContext().getRealPath("/WEB-INF");
 
         String dataSetId = "";
         if (config.getServletContext().getInitParameter("db_graph")!=null)
@@ -69,9 +71,16 @@ public class RhizomerFacets extends HttpServlet {
         String mode = request.getParameter("mode");
         String facetURI = request.getParameter("facetURI");
 
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession(false);
 
         HierarchyMenu menu = (HierarchyMenu) session.getAttribute("originalMenu");
+
+        if (menu==null) {
+            MenuManager menuMng = MenuManager.getInstance(null);
+            HierarchyManagerSPARQL manager = menuMng.getManager();
+            menu = manager.getHierarchyMenu();
+        }
+
         HierarchyNode node = menu.getByUri(facetURI);
         int numInstances = node.getNumInstances();
         node.sort("instances",1);

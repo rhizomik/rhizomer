@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Copyright Ontology OWL/RDF License to Text translator</title>
+</head>
+<body>
+<h1>Copyright Ontology OWL/RDF License to Text translator</h1>
+<form method="post" action="read.jsp" name="render" target="_blank" accept-charset="UTF-8">
+    <p>Input RDF or URI pointing to RDF content:</p>
+    <p><textarea cols="80" rows="10" name="rdf" id="rdf"><rdf:RDF
+                xmlns:co="http://rhizomik.net/ontologies/2009/09/copyrightonto.owl#"
+                xmlns:owl="http://www.w3.org/2002/07/owl#"
+                xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+            <!-- Agreement -->
+            <co:Agree rdf:about="http://example.com/policy">
+                <co:agent><co:Person rdf:about="http://example.com/sony"/></co:agent>
+                <co:agent><co:Person rdf:about="http://example.com/billie"/> </co:agent>
+                <co:theme>
+                    <owl:Class>
+                        <rdfs:subClassOf>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <owl:Class rdf:about="http://w3.org/ns/odrl/vocab#play"/>
+                                    <owl:Class><owl:complementOf rdf:resource="http://w3.org/ns/odrl/vocab#mobile_ringtone"/></owl:Class>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                        </rdfs:subClassOf>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:hasValue rdf:resource="http://example.com/billie"/>
+                                <owl:onProperty rdf:resource="http://rhizomik.net/ontologies/2009/09/copyrightonto.owl#agent"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:hasValue>
+                                    <co:Creation rdf:about="http://example.com/music"/>
+                                </owl:hasValue>
+                                <owl:onProperty rdf:resource="http://rhizomik.net/ontologies/2009/09/copyrightonto.owl#theme"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </co:theme>
+            </co:Agree>
+        </rdf:RDF></textarea></p>
+    <input type="submit" name="Submit" value="Submit" />
+</form>
+</body>
+</html>

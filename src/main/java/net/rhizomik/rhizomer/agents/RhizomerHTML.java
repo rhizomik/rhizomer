@@ -56,24 +56,7 @@ public class RhizomerHTML extends HttpServlet
     	if (RhizomerStatic.isStaticResource(request.getPathInfo()))
     	{
     		RequestDispatcher d = getServletContext().getNamedDispatcher("RhizomerStatic");
-    		
-    		// Wrap request so files are served from /html/* if coming from a redirect
-    		HttpServletRequest wrapped = new HttpServletRequestWrapper(request) 
-    		{
-                public String getPathInfo() 
-                { 
-                	String path = ((HttpServletRequest)getRequest()).getRequestURI();
-                	path = path.substring(path.indexOf("/html"));
-                	if (path.indexOf("%7E")>0)
-            			path = path.substring(0, path.indexOf("%7E"))+"~"+
-        				 		path.substring(path.indexOf("%7E")+3, path.length());
-                	return path;
-                }
-    		};
-    		if (request.getPathInfo().endsWith(".jsp"))
-    			d.forward(request, response);
-    		else
-    			d.forward(wrapped, response);
+            d.forward(request, response);
             return;
     	}
     	
@@ -83,7 +66,7 @@ public class RhizomerHTML extends HttpServlet
     	
     	// Get the metadata associated with the requested URL
     	String rdf = store.getMetadata(request);
-        ServiceManager serviceManager = new ServiceManager();
+        ServiceManager serviceManager = new ServiceManager(request.getSession(false));
         rdf = serviceManager.addServices(rdf,request);
 
 		//Generate HTML views for the metadata and content, taking into account the preferred language

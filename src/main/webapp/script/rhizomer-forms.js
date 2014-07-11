@@ -440,21 +440,22 @@ YUI().use('autocomplete', 'autocomplete-highlighters', 'autocomplete-filters', '
 						"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"+
 						"SELECT DISTINCT ?uri ?label ?range ?rlabel WHERE { \n"+ 
 						"{ ?uri rdfs:domain ?d. <[types]> rdfs:subClassOf ?d. \n"+
-						"  OPTIONAL { ?uri rdfs:label ?label } \n"+
+		//				"  OPTIONAL { ?uri rdfs:label ?label } \n"+
 						"  OPTIONAL { ?uri rdfs:range ?range } \n"+
-						"  OPTIONAL { ?range rdfs:label ?rlabel } \n"+
+		//				"  OPTIONAL { ?range rdfs:label ?rlabel } \n"+
 						"  FILTER (?d != rdfs:Resource) } \n"+
 						"UNION { ?r rdf:type owl:Restriction; owl:onProperty ?uri. <[types]> rdfs:subClassOf ?r. \n"+ //OPTION(TRANSITIVE)
-						"  OPTIONAL { ?uri rdfs:label ?label } \n"+
+		//				"  OPTIONAL { ?uri rdfs:label ?label } \n"+
 						"  OPTIONAL { ?r owl:allValuesFrom ?range } \n"+
 						"  OPTIONAL { ?r owl:someValuesFrom ?range } \n"+
 		// TODO: owl:hasValue?
-						"  OPTIONAL { ?range rdfs:label ?rlabel } } \n"+
+		//				"  OPTIONAL { ?range rdfs:label ?rlabel }
+		                " } \n"+
 						"UNION { ?uri rdf:type ?t. \n"+
-						"  OPTIONAL { ?uri rdfs:label ?label } \n"+
+		//				"  OPTIONAL { ?uri rdfs:label ?label } \n"+
 						"  OPTIONAL { ?uri rdfs:domain ?d } \n"+
 						"  OPTIONAL { ?uri rdfs:range ?range } \n"+
-						"  OPTIONAL { ?range rdfs:label ?rlabel } \n"+
+		//				"  OPTIONAL { ?range rdfs:label ?rlabel } \n"+
 						"  FILTER ( (?d=rdfs:Resource || !bound(?d)) && \n"+
 						"           (?t = rdf:Property || ?t = owl:DatatypeProperty || ?t=owl:ObjectProperty || ?t=owl:AnnotationProperty) )} \n"+
 						"  } \n"+

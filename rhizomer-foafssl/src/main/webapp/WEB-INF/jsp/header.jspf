@@ -52,7 +52,7 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/script/dispatcher-min.js"></script>
 
     <script src="<%=request.getContextPath()%>/script/prototype.js"></script>
-    <script src="<%=request.getContextPath()%>/script/jquery-1.4.2.min.js"></script>
+    <script src="<%=request.getContextPath()%>/script/jquery.js"></script>
 
     <script type="text/javascript">
         $j = jQuery.noConflict();

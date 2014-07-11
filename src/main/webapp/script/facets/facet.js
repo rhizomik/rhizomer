@@ -260,7 +260,7 @@ facet.Facet = function(property, inVariable, classURI)
 	
 	self.processMoreValues = function(output){
 		data = JSON.parse(output);
-		if(data.results.bindings.length > 0){
+		if(data.results.bindings.length > 1){ //TODO: it seems that when no value 1 binding with value "0"
 			$j("#"+id+"_facet").show();
 			$j.each(data.results.bindings, function(i, option){
 				if(i<5){

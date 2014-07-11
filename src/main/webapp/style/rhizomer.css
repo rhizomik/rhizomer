@@ -126,7 +126,7 @@
 	font-weight: bold;
 }
 .edition {
-    display:none;
+    display: block;
 	float: right;
 	font-size: 9px;
 	margin-top: 4px;
@@ -182,9 +182,9 @@
 .description tr[class="http://www.w3.org/2000/01/rdf-schema#label"] {
         display: none;
 }
-//.description tr[class="http://www.w3.org/2002/07/owl#intersectionOf"] {
-//        display: none;
-//}
+/*.description tr[class="http://www.w3.org/2002/07/owl#intersectionOf"] {
+        display: none;
+}*/
 .description tr[class="http://www.w3.org/1999/02/22-rdf-syntax-ns#value"] td a.describe {
         display: none;
 }

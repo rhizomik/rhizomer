@@ -5,10 +5,15 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
     					http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
 <!-- DataStore Configuration. Options: Virtuoso, Jena File/Database, OWLIM. -->
 
 <!-- JENA FILE MODEL -->
-    <!--context-param>
+    <context-param>
       <param-name>store_class</param-name>
       <param-value>net.rhizomik.rhizomer.store.jena.JenaStore</param-value>
     </context-param>
@@ -19,10 +24,10 @@
     <context-param>
       <param-name>dir_name</param-name>
       <param-value>/metadata</param-value>
-    </context-param-->
+    </context-param>
 
 <!-- Virtuoso MODEL -->
-    <context-param>
+<!--    <context-param>
       <param-name>store_class</param-name>
       <param-value>net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore</param-value>
     </context-param>
@@ -40,15 +45,13 @@
     </context-param>    
     <context-param>
       <param-name>db_graph</param-name>
-      <!--param-value>http://dbpedia.org</param-value-->
-      <param-value>http://rhizomik.net/linkedmdb/</param-value>
-      <!--param-value>http://rhizomik.net/lleidaoberta/altres_administracions/</param-value-->
+      <param-value>http://dbpedia.org</param-value>
     </context-param>
     <context-param>
       <param-name>cache_size</param-name>
       <param-value>0</param-value>
     </context-param>
-  <!-- By default, the VirtuosoStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
+-->  <!-- By default, the VirtuosoStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
     <!--context-param>
       <param-name>db_schema</param-name>
       <param-value>http://rhizomik.net/schema/</param-value>
@@ -70,7 +73,7 @@
     <context-param>
       <param-name>db_graph</param-name>
       <param-value>http://rhizomik.net/</param-value>
-    </context-param>    
+    </context-param>
 --> <!-- By default, the SesameStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
     <!--context-param>
       <param-name>db_schema</param-name>
@@ -318,7 +321,7 @@
     <url-pattern>/jsp/new.jsp</url-pattern>
   </servlet-mapping>
 
-  <servlet>
+  <!--servlet>
     <description>JSP for deleting HTML content</description>
     <display-name>Delete HTML JSP</display-name>
     <servlet-name>delete.jsp</servlet-name>
@@ -327,9 +330,9 @@
   <servlet-mapping>
     <servlet-name>delete.jsp</servlet-name>
     <url-pattern>/jsp/delete.jsp</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping-->
 
-  <servlet>
+  <!--servlet>
     <description>JSP for HTML content history management</description>
     <display-name>History HTML JSP</display-name>  
     <servlet-name>history.jsp</servlet-name>
@@ -338,7 +341,7 @@
   <servlet-mapping>
     <servlet-name>history.jsp</servlet-name>
     <url-pattern>/jsp/history.jsp</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping-->
 
   <servlet>
     <description>JSP for Faceted Browsing</description>
@@ -386,8 +389,6 @@
 			<url-pattern>/WEB-INF/jsp/view.jsp</url-pattern>
 			<url-pattern>/WEB-INF/jsp/new.jsp</url-pattern>
 			<url-pattern>/WEB-INF/jsp/edit.jsp</url-pattern>
-			<url-pattern>/WEB-INF/jsp/delete.jsp</url-pattern>
-			<url-pattern>/WEB-INF/jsp/history.jsp</url-pattern>
 			<page-encoding>UTF-8</page-encoding>
 			<scripting-invalid>false</scripting-invalid>
 			<include-prelude>/WEB-INF/jsp/header.jspf</include-prelude>

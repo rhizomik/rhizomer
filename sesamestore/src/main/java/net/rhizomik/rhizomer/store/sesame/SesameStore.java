@@ -1,18 +1,9 @@
 package net.rhizomik.rhizomer.store.sesame;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.servlet.ServletConfig;
-
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFactory;
+import com.hp.hpl.jena.query.ResultSetFormatter;
 import net.rhizomik.rhizomer.store.MetadataStore;
-
 import org.openrdf.model.BNode;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
@@ -20,18 +11,7 @@ import org.openrdf.model.Value;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.model.impl.ValueFactoryImpl;
 import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.BooleanQuery;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.Query;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.parser.ParsedQuery;
-import org.openrdf.query.parser.sparql.SPARQLParser;
-import org.openrdf.query.parser.sparql.SPARQLUtil;
+import org.openrdf.query.*;
 import org.openrdf.query.resultio.sparqljson.SPARQLResultsJSONWriter;
 import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
 import org.openrdf.repository.Repository;
@@ -43,13 +23,20 @@ import org.openrdf.repository.manager.RepositoryManager;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
+import org.openrdf.rio.RDFParser;
+import org.openrdf.rio.rdfxml.RDFXMLParser;
 import org.openrdf.rio.rdfxml.util.RDFXMLPrettyWriter;
 import org.openrdf.sail.memory.MemoryStore;
 
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFactory;
-import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.sparql.lang.sparql_11.SPARQLParser11;
+import javax.servlet.ServletConfig;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * OWLIM implementation of the Rhizomer metadata store.
@@ -426,49 +413,40 @@ public class SesameStore implements MetadataStore
      */
     public String store(InputStream metadata, String contentType) 
     {
-	String response = "";
-	boolean loaded = false;
-	ByteArrayOutputStream out = new ByteArrayOutputStream();
-	RDFFormat format = RDFFormat.RDFXML; // Default
+        String response = "";
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-	if (contentType.indexOf("application/n-triples") >= 0)
-	    format = RDFFormat.NTRIPLES;
-	else if (contentType.indexOf("application/n3") >= 0)
-	    format = RDFFormat.N3;
+        RDFFormat format = RDFFormat.RDFXML; // Default
+        if (contentType.indexOf("application/n-triples") >= 0)
+            format = RDFFormat.NTRIPLES;
+        else if (contentType.indexOf("application/n3") >= 0)
+            format = RDFFormat.N3;
 
-	try 
-	{
-	    //TODO: if metadata to be added about classes and properties, add to schema graph instead of instance graph
-	    repositoryConnection.add(metadata, graphURI, format, new URIImpl(graphURI));
-	    repositoryConnection.commit();
-	    
-	    Repository tempRepository = new SailRepository(new MemoryStore());
-	    tempRepository.initialize();
-	    RepositoryConnection tempConnection = tempRepository.getConnection();
-	    tempConnection.add(metadata, graphURI, format, new URIImpl(graphURI));
-	    tempConnection.commit();
-	    tempConnection.export(new RDFXMLPrettyWriter(out), new URIImpl(graphURI));
-	    out.close();
-	    response = out.toString("UTF8");
-	} 
-	catch (Exception e) 
-	{
-	    log.log(Level.SEVERE, "Exception in SesameStore.store", e);
-	    response = e.toString();
-	}
-	
-	if (!loaded)
-	    try 
-	    { 
-		repositoryConnection.rollback(); 
-	    } 
-	    catch (RepositoryException e) 
-	    {
-		log.log(Level.SEVERE, "Exception in SesameStore.store", e);
-	    	response = e.toString();
-	    }
+        ByteArrayOutputStream copy = new ByteArrayOutputStream();
+        try {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = metadata.read(buffer)) > -1) {
+                copy.write(buffer, 0, len);
+            }
+            copy.flush();
 
-	return response;
+            //TODO: if metadata to be added about classes and properties, add to schema graph instead of instance graph
+            repositoryConnection.add(new ByteArrayInputStream(copy.toByteArray()), graphURI, format, new URIImpl(graphURI));
+            repositoryConnection.commit();
+
+            RDFParser parser = new RDFXMLParser();
+            parser.setRDFHandler(new RDFXMLPrettyWriter(out));
+            parser.parse(new ByteArrayInputStream(copy.toByteArray()), graphURI);
+            response = out.toString("UTF8");
+        }
+        catch (Exception e)
+        {
+            log.log(Level.SEVERE, "Exception in SesameStore.store", e);
+            response = e.toString();
+        }
+
+        return response;
     }
 
     /**
@@ -527,34 +505,33 @@ public class SesameStore implements MetadataStore
      */
     public void remove(java.net.URI uri) 
     {
-/*	boolean loaded = false;
-	try {
-	    log.log(Level.INFO, "SesameStore.remove: URI " + uri);
-	    Query query = prepareQuery("DESCRIBE <"+uri+">"); //TODO: check behaviour of DESCRIBE query in Sesame...
-	    ((GraphQuery) query).setIncludeInferred(true);
-	    
-	    RDFRemover remover = new RDFRemover(repositoryConnection);
-	    remover.enforceContext(new URIImpl(graphURI));
-	    
-	    ((GraphQuery) query).evaluate(remover);
-	    repositoryConnection.commit();
-	    loaded = true;
-	}
-	catch (Exception e) 
-	{
-	    log.log(Level.SEVERE, "Exception in SesameStore.remove", e);
-	}
-	
-	if (!loaded)
-	    try 
-	    { 
-		repositoryConnection.rollback(); 
-	    } 
-	    catch (RepositoryException e) 
-	    {
-		log.log(Level.SEVERE, "Exception in SesameStore.remove", e);
-	    }
-*/  }
+        Resource r = ValueFactoryImpl.getInstance().createURI(uri.toString());
+        remove(r);
+        try {
+            repositoryConnection.commit();
+        }
+        catch (RepositoryException e) {
+            log.log(Level.SEVERE, "Exception in SesameStore.remove", e);
+        }
+    }
+
+    public void remove(Resource r)
+    {
+        try {
+            RepositoryResult<Statement> triples =
+                repositoryConnection.getStatements(r, null, null, false, new URIImpl(graphURI), new URIImpl(schemaURI));
+            for(Statement s: triples.asList())
+            {
+                Value value = s.getObject();
+                if (value instanceof BNode)
+                    remove((Resource)value);
+                repositoryConnection.remove(s, new URIImpl(graphURI), new URIImpl(schemaURI));
+            }
+        }
+        catch (RepositoryException e) {
+            log.log(Level.SEVERE, "Exception in SesameStore.remove", e);
+        }
+    }
 
     /**
      * Remove the input metadata from the store. TODO: Are literals also

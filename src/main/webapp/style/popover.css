@@ -143,7 +143,7 @@
 }
 
 .popover-content li{
-    background:url(/images/bullet.gif) 0em 0.5em no-repeat;
+    background:url(../images/bullet.gif) 0em 0.5em no-repeat;
     /*padding-left: 0.8em;*/
     list-style: none;
     margin-bottom:0.5em;

@@ -67,7 +67,7 @@
             Model model = ModelFactory.createMemModelMaker().createDefaultModel();
 
             // Check if input RDF comes through an attribute or form parameter
-            String rdf = (String) request.getSession().getAttribute("rdf");
+            String rdf = (String) request.getSession(false).getAttribute("rdf");
             if (rdf == null)
                 rdf = (String) request.getParameter("rdf");
 

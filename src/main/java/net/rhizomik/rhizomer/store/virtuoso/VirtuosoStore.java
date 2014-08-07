@@ -168,11 +168,11 @@ public class VirtuosoStore implements MetadataStore
             if (query.isDescribeType())
             	queryString = "DEFINE sql:describe-mode \"CBDL\"\n"+queryString;
 
-            // Replace contains with bif:contains to profit from Virtuoso free text indexing
-            if (queryString.indexOf("contains(")>0)
+            // TODO: Replace contains with bif:contains to profit from Virtuoso free text indexing
+            /* if (queryString.indexOf("contains(")>0)
             {
-            	queryString = queryString.replaceAll("contains(","bif:contains(");
-            }
+            	queryString = queryString.replaceAll("contains\\(","bif:contains(");
+            } */
             
             log.log(Level.INFO, "VirtuosoStore.query2: "+queryString);
             
@@ -237,11 +237,21 @@ public class VirtuosoStore implements MetadataStore
                 query.addGraphURI(schema);
 
             queryString = query.toString();
+
+            if (scope == MetadataStore.REASONING)
+                queryString = "DEFINE input:inference \""+ruleSet+"\"\n" + queryString;
+
             if (query.hasGroupBy())
                 if (query.getGroupBy().isEmpty())
                     queryString = query.toString().substring(0, query.toString().indexOf("GROUP BY"));
 
-        log.log(Level.INFO, queryString);
+            //TODO: Replace contains with bif:contains to profit from Virtuoso free text indexing
+            /* if (queryString.indexOf("contains(")>0)
+            {
+                queryString = queryString.replaceAll("contains\\(","bif:contains(");
+            }*/
+
+            log.log(Level.INFO, queryString);
 
             qexec = VirtuosoQueryExecutionFactory.create(queryString, graph);
 

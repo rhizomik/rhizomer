@@ -97,6 +97,7 @@ facet.StringFacet = function(property, fm, typeUri){
 		that.autoComplete.queryDelay = 0.5;
 		that.autoComplete.typeAhead = false;
 		that.autoComplete.generateRequest = function(sQuery) {
+            $j("#"+facetBrowser.getAutoCompletePropertyID()+"_search_loading").empty();
 			$j("#"+facetBrowser.getAutoCompletePropertyID()+"_search_loading").append("<img class=\"autocompleting\" src=\"images/black-loader.gif\"/>");
 			var query = 
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
@@ -106,7 +107,7 @@ facet.StringFacet = function(property, fm, typeUri){
 				facetBrowser.makeRestrictions(facetBrowser.getAutoCompletePropertyURI())+
 				"OPTIONAL{ \n"+
 				"?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
-				"FILTER (contains(str(?label), '[query]') || contains(str(?uri), '[query]')) \n"+
+				"FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+  
 				"}";
 			query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
 			query = query.replace(/\[uri\]/g, facetBrowser.getActiveManager().getTypeUri());

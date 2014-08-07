@@ -12,7 +12,7 @@
     <link href="<%=request.getContextPath()%>/style/breadcrumbs.css" type="text/css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/style/popover.css" type="text/css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/style/charts.css" type="text/css" rel="stylesheet" />
-	<!--link href="<%=request.getContextPath()%>/style/jquery-ui-1.10.3.css" type="text/css" rel="stylesheet" /-->
+	<link href="<%=request.getContextPath()%>/style/jquery-ui-1.10.3.css" type="text/css" rel="stylesheet" />
     <script src="<%=request.getContextPath()%>/script/facets/popover.js"></script>
 	<script src="<%=request.getContextPath()%>/script/util/dom.js"></script>
 	<script src="<%=request.getContextPath()%>/script/util/namespaces.js"></script>
@@ -46,13 +46,17 @@
 		rhz = new rhizomik.Rhizomer(endpoint,
 			document.getElementById("metadata"));
 
-        var hash = window.location.href.substring(window.location.href.lastIndexOf('#')+1);
-        var parameters = JSON.parse(decodeURIComponent(hash));
+        var hash = window.location.hash;
+        var encondedParams = hash.substring(1);
+        if(encondedParams.indexOf("#")>=0)
+            encondedParams = encondedParams.substring(encondedParams.indexOf("#")+1);
+        var parameters = JSON.parse(decodeURIComponent(encondedParams));
         dhtmlHistory.add(hash, {type: 'facets', parameters: parameters});
         /*var parameters = JSON.parse('<%=parameters%>');*/
         /*dhtmlHistory.add("history"+hex_md5(parameters), {type: 'facets', parameters: parameters});*/
 
 		facetBrowser = new facet.FacetBrowser(parameters);
+        facetBrowser.setDefaultHash(hash, parameters);
 		facetBrowser.loadFacets(false);
     }
 

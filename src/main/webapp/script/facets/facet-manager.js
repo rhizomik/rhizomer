@@ -14,6 +14,9 @@ facet.FacetManager = function (uri, inVariable){
     var numInstances = 0;
     var selectedResource = null;
     var sortProperties = {};
+    var numVisibleFacets = 10;
+    var numActiveFacets = 1;
+    var numTotalFacets = 1;
 
 	self.getVariable = function(){
 		return variable;
@@ -120,17 +123,19 @@ facet.FacetManager = function (uri, inVariable){
 
 	self.addFacet = function(property){
         /*console.log(property.uri + " " + property.type);*/
+
+        if(property.range=="null")
+            property.range = property.type;
+
         if(property.isInverse == "true"){
             facets[property.uri+property.range] = facet.InverseFacet(property, self.getVariable(), typeUri);
             facetIds[hex_md5(property.uri+property.range)] = property.uri+property.range;
         }
 
-        else if(property.type == "http://www.w3.org/2001/XMLSchema#integer" || property.type=="http://www.w3.org/2001/XMLSchema#float"
-            || property.type == "http://www.w3.org/2001/XMLSchema#double" || property.type=="http://www.w3.org/2001/XMLSchema#int"){
-
-                /*facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);*/
-                /*facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);*/
-                facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
+        else if(property.range == "http://www.w3.org/2001/XMLSchema#integer" || property.range=="http://www.w3.org/2001/XMLSchema#float"
+            || property.range == "http://www.w3.org/2001/XMLSchema#double" || property.range=="http://www.w3.org/2001/XMLSchema#int"){
+                facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);
+                //facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
                 facetIds[hex_md5(property.uri)] = property.uri;
                 sortProperties[property.uri] = property.label;
         }
@@ -151,16 +156,21 @@ facet.FacetManager = function (uri, inVariable){
                 */
         }
 
-		/*
-		if(property.type == NS.xsd("integer"))
-			facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);
-		else if(property.type == NS.xsd("string"))
-			facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
-		else
-			facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
-		*/	
-		
-	};
+
+        if(numActiveFacets>numVisibleFacets){
+            if(property.isInverse == "true")
+                facets[property.uri+property.range].setVisible(false);
+            else
+                facets[property.uri].setVisible(false);
+        }
+        else{
+            numActiveFacets++;
+        }
+
+
+        numTotalFacets++;
+
+    };
 	
 	self.renderFacets = function(target){
 		html = "<div class='filter_by'>Filter <strong>"+label+"</strong> by:</div>";
@@ -171,12 +181,33 @@ facet.FacetManager = function (uri, inVariable){
 			facets[f].render(target);
 		}
         $j("#"+target).append("</div>");
+
+        if(numActiveFacets<numTotalFacets){
+            html = "<div class=\"more\"><span id=\"more_facets\">More filters...</span></div>";
+            $j("#"+target).append(html);
+        }
+
+        $j("#more_facets").click(function (){
+            var i=1;
+            $j(".facet:hidden").each(function (){
+                if(i<=numVisibleFacets){
+                    $j(this).show();
+                    numActiveFacets++;
+                }
+                i++;
+            });
+
+            if(numActiveFacets>=numTotalFacets)
+                $j("#more_facets").hide();
+        });
+
 	};
 	
 	self.toggleFacet = function(id) {
 		self.getFacetById(id).toggleFacet();
 	};
-	
+
+
 	self.filterInitProperty = function(propertyUri, propertyValue, valueLabel){
         /*
 		var facet = facets[propertyUri];
@@ -198,6 +229,7 @@ facet.FacetManager = function (uri, inVariable){
         */
         self.filterProperty(hex_md5(propertyUri), propertyValue, valueLabel);
 	};
+
 	
 	self.setSelectedFacetLabel = function(facetID, propertyValue, propertyLabel){
 		selectedFacets[facetID][propertyValue].setLabel(propertyLabel);

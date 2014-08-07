@@ -20,10 +20,19 @@ facet.Facet = function(property, inVariable, classURI)
 	var classURI = classURI
 	var type = property.type;
     var inverse = false;
+    var visible = true;
 
 	self.getId = function(){
 		return id;
 	};
+
+    self.setVisible = function(value){
+        visible = value;
+    };
+
+    self.isVisible = function(){
+        return visible;
+    };
 
     self.getClassURI = function(){
         return classURI;
@@ -74,7 +83,8 @@ facet.Facet = function(property, inVariable, classURI)
 	
 	self.isNavigable = function(){
 		if(range!="null" && range.indexOf("http://www.w3.org/2001/XMLSchema#")<0 &&
-           range.indexOf("http://www.w3.org/2000/01/rdf-schema#Literal")<0)
+           range.indexOf("http://www.w3.org/2000/01/rdf-schema#Literal")<0 && range!="http://www.w3.org/2000/01/rdf-schema#Resource"
+            && range!="http://www.w3.org/2000/01/rdf-schema#Class")
 			return true;
 		else
 			return false;
@@ -123,7 +133,10 @@ facet.Facet = function(property, inVariable, classURI)
 	};	
 	
 	self.renderBase = function(target){
-		var html = "<div id=\""+id+"_facet\" class=\"facet\">";
+        if(visible)
+		    var html = "<div id=\""+id+"_facet\" class=\"facet\">";
+        else
+            var html = "<div id=\""+id+"_facet\" class=\"facet\" style=\"display:none\">";
 		html += "<div id=\""+id+"_title\" class=\"facet_header\">";
         html += "<h4>"+label+"</h4></div></div>";
 
@@ -150,7 +163,7 @@ facet.Facet = function(property, inVariable, classURI)
 	self.renderValueList = function(target){
         var html = "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Show values</span>";
         if(self.isNavigable())
-            html += "<span title=\"Switch to related "+makeLabel(range)+"\" id=\""+id+"_pivot\" class=\"ttip pivot\">See all "+makeLabel(range)+"</span>";
+            html += "<span title=\"Filter related "+makeLabel(range)+"\" id=\""+id+"_pivot\" class=\"ttip pivot\">Filter "+makeLabel(range)+"</span>";
         html += "<div class=\"clear\"></div>";
         /*html += "</div>";*/
         html += "<div id=\""+id+"_loading\"></div>";
@@ -170,8 +183,10 @@ facet.Facet = function(property, inVariable, classURI)
 	};
 	
 	self.renderEnd = function(target){
+        /*
 		html ="<div class=\"facet_sep\"></div>";
-		$j("#"+target).append(html);	
+		$j("#"+target).append(html);
+			*/
 	};	
 	
 	self.toggleFacet = function(){
@@ -224,7 +239,9 @@ facet.Facet = function(property, inVariable, classURI)
 		$j("#"+id+"_loading").append("<img class=\"waitImage\" src=\"images/black-loader.gif\"/>");
 		$j("#"+id+"_loading").show();			
 		self.resetFacet();
-		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" + 
+		query =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
 		"SELECT ?o (COUNT(?o) AS ?n) ?label "+
 		"WHERE {"+
 		"	?"+variable+" a <"+classURI+"> . "+
@@ -245,7 +262,9 @@ facet.Facet = function(property, inVariable, classURI)
 		$j("#"+id+"_div").css('display','none');
 		$j("#"+id+"_loading").append("<img src=\"images/black-loader.gif\"/>");
 		$j("#"+id+"_loading").show();		
-		query ="PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+		query =
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
 			   "SELECT ?o (COUNT(?o) AS ?n) ?label "+
 		       "WHERE { "+
 		            "?"+variable+" a <"+classURI+"> . "+
@@ -260,7 +279,7 @@ facet.Facet = function(property, inVariable, classURI)
 	
 	self.processMoreValues = function(output){
 		data = JSON.parse(output);
-		if(data.results.bindings.length > 1){ //TODO: it seems that when no value 1 binding with value "0"
+		if(data.results.bindings.length > 0){
 			$j("#"+id+"_facet").show();
 			$j.each(data.results.bindings, function(i, option){
 				if(i<5){

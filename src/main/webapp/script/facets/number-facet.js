@@ -50,7 +50,8 @@ facet.NumberFacet = function(property, fm, typeUri){
         $j("#"+that.getId()+"_slider").slider('values', 0, that.getMin());
         that.setTo(that.getMax());
         $j("#"+that.getId()+"_slider").slider('values', 1, that.getMax());
-        facetBrowser.reloadFacets(false);
+        facetBrowser.reloadFacets();
+        facetBrowser.listResources(true);
         facetBrowser.printBreadcrumbs();
     };
 
@@ -71,14 +72,15 @@ facet.NumberFacet = function(property, fm, typeUri){
     that.renderNumber = function (target){
         html = "&nbsp;From&nbsp;<input type='text' value='"+min+"' style='width:50px;' id=\""+that.getId()+"_min\">";
         html += "&nbsp;To&nbsp;<input type='text' value='"+max+"' style='width:50px;' id=\""+that.getId()+"_max\">";
-        html += "<div id=\""+that.getId()+"_slider\" style=\"text-align:center; margin-top:5px; width:90%;\">";
+        html += "<div id=\""+that.getId()+"_slider\" style=\"text-align:center; margin-top:5px; margin-left:10px; width:90%;\">";
         $j("#"+target).append(html);
 
         $j("#"+that.getId()+"_slider" ).slider({ animate: "fast", max : max, min : min,
             range: true, values : [min,max],
             step : 0.01,
             stop: function( event, ui ) {
-                facetBrowser.reloadFacets(false);
+                facetBrowser.listResources(true);
+                facetBrowser.reloadFacets();
                 facetBrowser.printBreadcrumbs();
             },
             slide: function( event, ui ) {
@@ -113,9 +115,11 @@ facet.NumberFacet = function(property, fm, typeUri){
     }
 
     that.getEnds = function(){
-        var query = "SELECT (min(?o) as ?min) (max(?o) as ?max) " +
+        var query = "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
+            "SELECT (min(xsd:float(?o)) as ?min) (max(xsd:float(?o)) as ?max) " +
             "WHERE {?r a <"+that.getClassURI()+"> ." +
             "?r <"+that.getUri()+"> ?o }";
+        /*console.log(query);*/
         rhz.sparqlJSON(query, function(out){
             data = JSON.parse(out);
             min = parseFloat(data.results.bindings[0].min.value);
@@ -130,7 +134,7 @@ facet.NumberFacet = function(property, fm, typeUri){
     that.makeSPARQL = function (varCount, varName){
         if(that.isActive()){
             var query = "?"+varName+" <"+that.getUri()+"> ?"+varName+"var"+varCount+ " FILTER(";
-            query += "?"+varName+"var"+varCount+">="+from+" && ?"+varName+"var"+varCount+"<="+to+") . ";
+            query += "xsd:int(?"+varName+"var"+varCount+")>="+from+" && xsd:int(?"+varName+"var"+varCount+"<="+to+")) . ";
         }
         return query;
     };

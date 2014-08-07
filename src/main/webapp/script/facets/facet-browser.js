@@ -23,6 +23,7 @@ facet.FacetBrowser = function(parameters){
     var selectedResource = parameters.focus || null;
     var uri = parameters.type;
     var filters = parameters.filters;
+    var defaultHash = null;
 
     self.loadFacets = function(makeHistory){
 		/*parser.parse();*/
@@ -40,7 +41,7 @@ facet.FacetBrowser = function(parameters){
 		parameters["facetURI"] = activeURI;
 		activeLabel = makeLabel(activeURI);
 		parameters["mode"] = "facets";
-        $j.blockUI();
+        /*$j.blockUI();*/
         rhz.getFacets(parameters,
 				function(output) 
 				{
@@ -67,6 +68,11 @@ facet.FacetBrowser = function(parameters){
 				}
 		);
 	};
+
+    self.setDefaultHash = function(valueHash, valueParameters){
+        defaultHash = valueHash;
+        /*dhtmlHistory.add(valueHash, {type: 'facets', parameters: valueParameters});*/
+    };
 
     self.loadHistory = function(parameters){
         selectedResource = parameters.focus || null;
@@ -179,7 +185,7 @@ facet.FacetBrowser = function(parameters){
 	};
 
     self.printBreadcrumbs = function(){
-        $j.blockUI();
+        /*$j.blockUI();*/
         self.printActive();
     };
 
@@ -194,7 +200,9 @@ facet.FacetBrowser = function(parameters){
 	};
 
     self.printActive = function(){
-        countQuery = "SELECT (COUNT(DISTINCT(?"+mainManager.getVariable()+")) as ?count) "+
+        countQuery =
+            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+            "SELECT (COUNT(DISTINCT(?"+mainManager.getVariable()+")) as ?count) \n"+
             "WHERE { "+
             "?"+mainManager.getVariable()+" a <"+mainManager.getTypeUri()+"> . ";
         countQuery += self.makeRestrictions();
@@ -218,8 +226,8 @@ facet.FacetBrowser = function(parameters){
 				html += managers[m].manager.printActive(false);
 			}
 		}
-        html += "<span style=\"margin-left:10px;\"><a href=\"\">Reset all filters <img src='images/delete_blue.png'/></a></span>";
 		$j("#active_facets").append(html);
+        html += "<span style=\"margin-left:10px;\"><a href=\?q=reset#"+defaultHash+"\">Reset all filters <img src='images/delete_blue.png'/></a></span>";
         self.printRelated();
         /*self.printPagination("listResources",self.makeSPARQL(),10);*/
 	};
@@ -243,11 +251,13 @@ facet.FacetBrowser = function(parameters){
 
     self.makeSPARQL = function(){
         var constraints = facetBrowser.makeRestrictions();
-        var query = "SELECT DISTINCT ?"+activeManager.getVariable()+" "+
+        var query =
+            "SELECT DISTINCT ?"+activeManager.getVariable()+" "+
             "WHERE { "+
             "?"+activeManager.getVariable()+" a <"+activeManager.getTypeUri()+"> . ";
         query += constraints;
         query += "}";
+        console.log(query);
         return query;
     };
 
@@ -255,12 +265,12 @@ facet.FacetBrowser = function(parameters){
 
     self.printPath = function (){
         var html = "<ol>";
-        html += "<li><a href=\"/\" class=\"ttip\" title=\"Go to Homepage\">Home</a></li>";
+        html += "<li><a href=\".\" class=\"ttip\" title=\"Go to Homepage\">Home</a></li>";
 
         if(!$j.isEmptyObject(breadcrumbs) && breadcrumbs.length>0){
             $j.each(breadcrumbs,function(i, node){
                 var link = {type : node.uri};
-                link = "/facets.jsp?p="+encodeURIComponent(JSON.stringify(link))
+                link = "facets.jsp?q="+node.uri+"#"+encodeURIComponent(JSON.stringify(link))
                 html += "<li class=\"path\">&gt;&gt;</li>";
                 html += "<li><a class=\"ttip\" title=\"Back to "+node.label+" \" href=\""+link+"\">"+node.label;
 
@@ -271,7 +281,7 @@ facet.FacetBrowser = function(parameters){
                     html += "<ul>"
                     $j.each(node.childs,function(i, child){
                         var link = {type : child.uri};
-                        link = "/facets.jsp?p="+encodeURIComponent(JSON.stringify(link))
+                        link = "facets.jsp?q="+child.uri+"#"+encodeURIComponent(JSON.stringify(link))
                         html += "<li><a href='"+link+"'>"+child.label+"&nbsp;("+child.instances+")</a></li>";
                     });
                     html += "</ul>";
@@ -293,7 +303,7 @@ facet.FacetBrowser = function(parameters){
                         html += "<ul>"
                         $j.each(childs,function(i, child){
                             var link = {type : child.uri};
-                            link = "/facets.jsp?p="+encodeURIComponent(JSON.stringify(link))
+                            link = "facets.jsp?q="+child.uri+"#"+encodeURIComponent(JSON.stringify(link))
                             html += "<li><a href='"+link+"'>"+child.label+"&nbsp;("+child.instances+")</a></li>";
                         });
                         html += "</ul>";
@@ -304,7 +314,8 @@ facet.FacetBrowser = function(parameters){
 
             }
             else{
-                html += "<li class='pivot'><a class=\"ttip\" title=\"Switch to "+managers[m].manager.getLabel()+" and apply current filters \" href=\"javascript:facetBrowser.pivotActiveFacet('"+m+"')\">"+managers[m].manager.getLabel()+"</a>";
+                html += "<li class='pivot'><a class=\"ttip\" title=\"Switch to "+managers[m].manager.getLabel()+" and apply current filters \" href=\"javascript:facetBrowser.pivotFacet('','','"+m+"')\">"+managers[m].manager.getLabel()+"</a>";
+
 
                 if(managers[m].manager.getTypeUri() == self.getUri()){
                     if(!$j.isEmptyObject(childs) && childs.length>0){
@@ -312,7 +323,7 @@ facet.FacetBrowser = function(parameters){
                         html += "<ul>"
                         $j.each(childs,function(i, child){
                             var link = {type : child.uri};
-                            link = "/facets.jsp?p="+encodeURIComponent(JSON.stringify(link))
+                            link = "facets.jsp?q="+child.uri+"#"+encodeURIComponent(JSON.stringify(link))
                             html += "<li><a href='"+link+"'>"+child.label+"&nbsp;("+child.instances+")</a></li>";
                         });
                         html += "</ul>";
@@ -324,7 +335,11 @@ facet.FacetBrowser = function(parameters){
         }
         html += "</ol>";
         $j("#breadcrumbs").html(html);
-        $j(".ttip").tooltip({animation:true, delay: { show: 100, hide: 500 }});
+        $j(".ttip").tooltip({animation:true, delay: { show: 100, hide: 500 },
+            position: {
+            my: "center bottom-50",
+            at: "center top"}
+        });
         /*
         var html = "<ul><li><a class=\"ttip\" title=\"Go to Homepage\" href=\"/\">Home</a></li>";
         for(m in managers){
@@ -341,24 +356,20 @@ facet.FacetBrowser = function(parameters){
 
     self.printRelatedCallback = function(){
         self.printPath();
-        var connectionsHtml = "<div class=\"connections-header\"><h4>Active Connections</h4></div>";
-        var html = "<ul>";
+        var connectionsHtml = "";
+        var activeConnectionsHtml = "<div class=\"connections-header\"><h4>Back to...</h4></div><ul>";
+        var html = "";
         for(m in managers){
             if(managers[m].manager!=mainManager)
                 html += "<li><a class=\"ttip\" title=\"Switch to related "+managers[m].manager.getLabel()+"\" href=\"javascript:facetBrowser.pivotFacet('','','"+m+"');\">"+managers[m].manager.getLabel();+"</a></li>";
         }
-        html += "</ul>";
-        if(html!="<ul></ul>"){
-            connectionsHtml += html;
+        if(html!=""){
+            connectionsHtml = activeConnectionsHtml + html + "</ul>";
+            $j("#active-connections").html(connectionsHtml);
         }
-        else{
-            connectionsHtml += "No active connections. ";
-        }
-        $j("#active-connections").html(connectionsHtml);
 
-
-        var html = "<div class=\"connections-header\"><h4>More Connections</h4></div>";
-        html += "<span>Click to add connections to related resources</span>";
+        var html = "<div class=\"connections-header\"><h4>Related to...</h4></div>";
+        //html += "<span>Click to add connections to related resources</span>";
         html += "<ul>";
         var navigableFacets = mainManager.getNavigableFacets();
         var links = {};
@@ -376,10 +387,13 @@ facet.FacetBrowser = function(parameters){
 
         $j("#connections").html(html);
 
-        $j(".ttip").tooltip({animation:true, delay: { show: 100}});
+        $j(".ttip").tooltip({animation:true, delay: { show: 100, hide: 500 },
+            position: {
+                my: "center bottom-50",
+                at: "center bottom"}
+        });
 
-
-        $j.unblockUI();
+        /*$j.unblockUI();*/
 
     };
 	
@@ -489,7 +503,7 @@ facet.FacetBrowser = function(parameters){
             var more = "";
             $j.each(childs,function(i, child){
                 var link = {type : child.uri};
-                link = "/facets.jsp?p="+encodeURIComponent(JSON.stringify(link))
+                link = "facets.jsp?q="+child.uri+"#"+encodeURIComponent(JSON.stringify(link))
                 /*
                 if(divWidth-contentWidth<300){
                     more += "<li><a href='"+link+"'>"+child.label+"&nbsp;("+child.instances+")</a></li>";
@@ -523,8 +537,8 @@ facet.FacetBrowser = function(parameters){
     self.printSort = function(){
         $j("#sort").empty();
         html = "<span style=\"font-weight:bold;\">Sort by: </span><select onchange=\"javascript:facetBrowser.sort('asc');\" id='sort_property'></select>";
-        html += "<a href=\"javascript:facetBrowser.sort('asc');\"><img src='images/sort_ascending.png' alt='Sort ascensing'/></a>&nbsp;";
-        html += "<a href=\"javascript:facetBrowser.sort('desc');\"><img src='images/sort_descending.png' alt='Sort descending'/></a>";
+        html += "<a href=\"javascript:facetBrowser.sort('asc');\">ASC<img src='images/sort_ascending.png' alt='Sort ascensing'/></a>&nbsp;";
+        html += "<a href=\"javascript:facetBrowser.sort('desc');\">DESC<img src='images/sort_descending.png' alt='Sort descending'/></a>";
         $j("#sort").append(html);
         var sortProperties = activeManager.getSortProperties();
         if(sortProperties["http://www.w3.org/2000/01/rdf-schema#label"]){
@@ -542,7 +556,6 @@ facet.FacetBrowser = function(parameters){
     };
 
     self.sort = function(sort){
-        /* CANVIAR PER METODE PROPI */
         var sortProperty = $j("#sort_property").val();
         activeManager.reloadResources(sortProperty, sort)
     };

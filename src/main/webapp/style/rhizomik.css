@@ -308,7 +308,7 @@ div.clear {
 
 
 #active_facets{
-    width:60%;
+    width:55%;
     margin-top:10px;
     margin-bottom:5px;
     font-size: 12px;
@@ -365,6 +365,10 @@ ul.inline , ul.inline li{
     padding: 20px;
     height:30px;
     overflow:auto;
+}
+
+#more_facets{
+    cursor: pointer;
 }
 
 

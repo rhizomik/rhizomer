@@ -32,7 +32,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	// Wait image
 	var waitImage = "<img class='waitImage' src='"+baseURL+"/images/black-loader.gif'/>";
 	// Number of results per page
-	var step = 10;
+	var step = 15;
 	
 	// Last history step
 	var last = null;
@@ -226,13 +226,19 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	};
 	// List the basic information (labels and types) for resources selected by the input query, like SELECT ?r WHERE...
 	self.constructResources = function(sparqlSelectQuery, offset)
-	{		
+	{
 		if (!offset) offset = "0";
-		var selectVar = facetBrowser.getActiveManager().getVariable();
-		
+        if(facetBrowser == null)
+            var selectVar = "r1";
+        else
+		    var selectVar = facetBrowser.getActiveManager().getVariable();
+
+
 		self.showMessage("<p>List resources...</p>\n"+waitImage);
 		
-		queryHistory("CONSTRUCT {?"+selectVar+" a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
+		queryHistory(
+              "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+              "CONSTRUCT {?"+selectVar+" a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
 			  "              <http://www.w3.org/2000/01/rdf-schema#comment> ?c. \n"+
 			  "           ?type <http://www.w3.org/2000/01/rdf-schema#label> ?lt} \n"+
 			  "WHERE { ?"+selectVar+" a ?type \n" +
@@ -251,29 +257,34 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	// Generates "More..." link to get more results using the given list function
 	self.listMore = function(listFunction, query, offset)
 	{
-        var numResults = facetBrowser.getNumResults();
-        var numPages = parseInt(numResults / step);
-        var currentPage = offset/step + 1;
-        if(numResults%step>0)
-            numPages++;
-		query = query.replace(/"/g, "&quot;").replace(/'/g, "&apos;");
-		var newOffset = parseInt(offset)+step;
-        var html = "";
-        if(currentPage>1){
-            var peviousOffset = parseInt(offset)-step;
-            html += "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+peviousOffset+"); return false;\">Previous...</a>";
-        }
-        html += "&nbsp;&nbspPage "+currentPage+" of "+numPages + "&nbsp;&nbsp";
+            if(facetBrowser != null){
+                var numResults = facetBrowser.getNumResults();
+            }
+            else
+                var numResults = 100; /*Obtain results from query*/
+            var numPages = parseInt(numResults / step);
+            var currentPage = offset/step + 1;
+            if(numResults%step>0)
+                numPages++;
+            query = query.replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+            var newOffset = parseInt(offset)+step;
+            var html = "";
+            if(currentPage>1){
+                var peviousOffset = parseInt(offset)-step;
+                html += "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+addSlashes(query)+"', "+peviousOffset+"); return false;\">Previous...</a>";
+            }
+            html += "&nbsp;&nbspPage "+currentPage+" of "+numPages + "&nbsp;&nbsp";
 
-        /*var moreDivHTML = previousDivHTML + "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+newOffset+"); return false;\">Next...</a>";*/
-        if(numPages>currentPage)
-            html += "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+newOffset+"); return false;\">Next...</a>";
+            /*var moreDivHTML = previousDivHTML + "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+query+"', "+newOffset+"); return false;\">Next...</a>";*/
+            if(numPages>currentPage)
+                html += "<a href=\"#\" onclick=\"javascript:rhz."+listFunction+"('"+addSlashes(query)+"', "+newOffset+"); return false;\">Next...</a>";
 
-		var moreDiv = document.createElement("div");
-		moreDiv.setAttribute("class", "moreResults");
-		/*moreDiv.innerHTML = moreDivHTML;*/
-        moreDiv.innerHTML = html;
-		target.appendChild(moreDiv);
+            var moreDiv = document.createElement("div");
+            moreDiv.setAttribute("class", "moreResults");
+            /*moreDiv.innerHTML = moreDivHTML;*/
+            moreDiv.innerHTML = html;
+            target.appendChild(moreDiv);
+
 	};
 	// Like listResources but without keeping history
 	self.listResourcesNoHistory = function(sparqlSelectQuery, offset)
@@ -287,10 +298,15 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 	self.constructResourcesNoHistory = function(sparqlSelectQuery, offset)
 	{
 		if (!offset) offset = "0";
-		var selectVar = facetBrowser.getActiveManager().getVariable();
+        if(facetBrowser == null)
+            var selectVar = "r1";
+        else
+            var selectVar = facetBrowser.getActiveManager().getVariable();
 		self.showMessage("<p>List resources...</p>\n"+waitImage);
 		
-		queryNoHistory("CONSTRUCT {?"+selectVar+" a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
+		queryNoHistory(
+              "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+              "CONSTRUCT {?"+selectVar+" a ?type; <http://www.w3.org/2000/01/rdf-schema#label> ?l; \n"+
 			  "              <http://www.w3.org/2000/01/rdf-schema#comment> ?c. \n"+
 			  "           ?type <http://www.w3.org/2000/01/rdf-schema#label> ?lt} \n"+
 			  "WHERE { ?"+selectVar+" a ?type \n" +
@@ -339,9 +355,15 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		if (!offset) offset = "0";
 
 		self.showMessage("<p>Describe resources...</p>\n"+waitImage);
-		var selectVar = facetBrowser.getActiveManager().getVariable();
 
-		var describeQuery = "DESCRIBE ?"+selectVar+" WHERE { ?"+selectVar+" a ?type \n { " +
+        if(facetBrowser == null)
+            var selectVar = "r1";
+        else
+            var selectVar = facetBrowser.getActiveManager().getVariable();
+
+		var describeQuery =
+            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+            "DESCRIBE ?"+selectVar+" WHERE { ?"+selectVar+" a ?type \n { " +
 			sparqlSelectQuery + " LIMIT " + step + " OFFSET " + offset + " } } ";
 		
 		queryHistory(describeQuery,
@@ -360,10 +382,15 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 		if (!offset) offset = "0";
 		
 		self.showMessage("<p>Describe resources...</p>\n"+waitImage);
-        var selectVar = facetBrowser.getActiveManager().getVariable();
-		queryNoHistory("DESCRIBE ?"+selectVar+" \n"+
-				  "WHERE { ?"+selectVar+" a ?type \n" +
-				  "        { "+sparqlSelectQuery+" LIMIT "+step+" OFFSET "+offset+" } } ",
+        if(facetBrowser == null)
+            var selectVar = "r1";
+        else
+            var selectVar = facetBrowser.getActiveManager().getVariable();
+		queryNoHistory(
+            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n"+
+            "DESCRIBE ?"+selectVar+" \n"+
+	        "WHERE { ?"+selectVar+" a ?type \n" +
+		    "        { "+sparqlSelectQuery+" LIMIT "+step+" OFFSET "+offset+" } } ",
 			function(out) {self.showMessage("<p>Showing...</p>\n"+waitImage); 
 			               transform.rdf2html(out, target); 
 			               self.listMore("describeResourcesNoHistory", sparqlSelectQuery, offset); });
@@ -477,10 +504,14 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
     }
 
     self.makeInverseProperties = function(){
+
+        if (!$j(".description").length)
+            return;
+
         var query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
+            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
             "SELECT DISTINCT(?r) ?uri ?c ?labelc ?labelr ?p ?labelp \n"+
             "WHERE{ ?r ?p ?uri . ?r a ?c \n";
-
         query += ". FILTER(?c!=<http://www.w3.org/2002/07/owl#Thing>) ."+
             "FILTER(LANG(?labelc)='en' || LANG(?labelc)='') ."+
             "FILTER(LANG(?labelp)='en' || LANG(?labelp)='') ."+
@@ -495,7 +526,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
         });
 
         query += ") OPTIONAL{?r rdfs:label ?labelr} OPTIONAL{?c rdfs:label ?labelc} OPTIONAL{?p rdfs:label ?labelp} \n" +
-            "} order by ?p";
+            "} ORDER BY ?p";
 
         /*console.log(query);*/
 
@@ -557,7 +588,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
                     {
                         html+="<div class='property-object'>"+value.labelr+"</div><div class='connector'>,</div>";
                     });
-                    html += "<a href=\"facets.jsp?q="+uri+"#"+link+"\">Browse all</a></td></tr>";
+                    html += "<a style='font-size:12px; font-weight:bold;' href=\"facets.jsp?q="+uri+"#"+link+"\">See related "+property.labelc+"s</a></td></tr>";
                 });
                 $j(this).children("table").append(html);
             });
@@ -634,6 +665,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
         var picture_uri = $j($j(picture_td).children("div").children("a")[0]).attr("resource");
         return picture_uri;
     };
+
 
 	
 	return self;

@@ -1,5 +1,5 @@
 facet.InverseFacet = function(property, inVariable, classURI){
-
+		
 	var self = new facet.Facet(property, fm, classURI);
 
 	/**
@@ -128,7 +128,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
         $j("#"+target).append(html);
 
         /*
-        html += "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
+        html += "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Show values</span>";
 		html += "<span id=\""+id+"_inversepivot\" class=\"pivot\">Filter "+makeLabel(range)+"</span>";
 		html += "<div class=\"clear\"></div>";
 		html += "</div>";
@@ -142,8 +142,8 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	};
 	
 	self.renderValueList = function(target){
-        var html = "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Common values</span>";
-        html += "<span title=\"Switch to related "+makeLabel(range)+"\" id=\""+id+"_inversepivot\" class=\"ttip pivot\">See all "+makeLabel(range)+"</span>";
+        var html = "<span id=\""+id+"_showvalues\" class=\"showvalues\" onclick=\"facetBrowser.toggleFacet('"+id+"'); return false;\">Show values</span>";
+        html += "<span title=\"Filter related "+makeLabel(range)+"\" id=\""+id+"_inversepivot\" class=\"ttip pivot\">Filter "+makeLabel(range)+"</span>";
         html += "<div class=\"clear\"></div>";
         html += "</div>";
         html +="<div id=\""+id+"_loading\"></div>";
@@ -254,7 +254,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
 	
 	self.processMoreValues = function(output){
 		data = JSON.parse(output);
-		if(data.results.bindings.length > 1){ //TODO: it seems that when no value 1 binding with value "0"
+		if(data.results.bindings.length > 0){
 			$j("#"+id+"_facet").show();
 			$j.each(data.results.bindings, function(i, option){
 				if(i<5){
@@ -377,7 +377,7 @@ facet.InverseFacet = function(property, inVariable, classURI){
                     facetBrowser.makeRestrictions(facetBrowser.getAutoCompletePropertyURI())+
                     "OPTIONAL{ \n"+
                     "?uri rdfs:label ?label . FILTER(LANG(?label)='en' || LANG(?label)='') } . \n"+
-                    "FILTER (contains(str(?label), '[query]') || contains(str(?uri), '[query]')) \n"+
+                    "FILTER (REGEX(str(?label), '[query]','i') || REGEX(str(?uri), '[query]','i')) \n"+
                     "}";
             query = query.replace(/\[query\]/g, replaceDot(addSlashes(decodeURIComponent(sQuery))));
             query = query.replace(/\[uri\]/g, facetBrowser.getActiveManager().getTypeUri());

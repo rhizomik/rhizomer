@@ -66,7 +66,7 @@ public class RhizomerHTML extends HttpServlet
     	
     	// Get the metadata associated with the requested URL
     	String rdf = store.getMetadata(request);
-        ServiceManager serviceManager = new ServiceManager(request.getSession(false));
+        ServiceManager serviceManager = new ServiceManager(request.getSession());
         rdf = serviceManager.addServices(rdf,request);
 
 		//Generate HTML views for the metadata and content, taking into account the preferred language

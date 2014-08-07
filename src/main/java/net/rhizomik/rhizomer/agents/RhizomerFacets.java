@@ -71,7 +71,7 @@ public class RhizomerFacets extends HttpServlet {
         String mode = request.getParameter("mode");
         String facetURI = request.getParameter("facetURI");
 
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(); //TODO: improve session management...
 
         HierarchyMenu menu = (HierarchyMenu) session.getAttribute("originalMenu");
 

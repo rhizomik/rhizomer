@@ -107,8 +107,8 @@
 </head>
 <body class="yui-skin-sam yui3-skin-sam">
 <div id="header">
-    <div id="logo">
-        <a href="/"><img src="<%=request.getContextPath()%>/images/rhizomik2.jpg"/></a>
+    <div id="logo" style="margin-top:-10px; margin-left:-50px; margin-right:-100px;">
+        <a href="<%=request.getContextPath()%>/"><img src="<%=request.getContextPath()%>/images/rhizomik2.jpg"/></a>
     </div>
     <div id="right">
         <div id="login">
@@ -165,11 +165,9 @@
             menuSKOS.sort(2);
             */
 
-            /*if(session.getAttribute("service")==null){
-                ServiceManager serviceManager = new ServiceManager(null);
-                serviceManager.readServiceList();
-                session.setAttribute("service",serviceManager.getServiceList());
-            }*/
+            if(session.getAttribute("service")==null){
+                ServiceManager serviceManager = new ServiceManager(session);
+            }
         %>
         <div id="menu-class" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
             <div class="yui3-menu-content">

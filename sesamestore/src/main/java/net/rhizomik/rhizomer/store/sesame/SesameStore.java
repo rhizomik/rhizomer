@@ -62,18 +62,18 @@ public class SesameStore implements MetadataStore
 
     public void init(String manager_url, String repository_id, String db_graph, String db_schema) throws Exception 
     {
-	graphURI = db_graph;
-	// If schema for reasoning explicitly stated in web.xml, otherwise build from db_graph
-	if (db_schema!=null)
-	    schemaURI = db_schema;
-	else
-	    schemaURI = graphURI+(graphURI.endsWith("/")?"":"/")+"schema/";
-	
-	repositoryManager = new RemoteRepositoryManager(manager_url);
-	repositoryManager.initialize();
-	repository = repositoryManager.getRepository(repository_id);
-	repositoryConnection = repository.getConnection();
-	repositoryConnection.setAutoCommit(false);
+        graphURI = db_graph;
+        // If schema for reasoning explicitly stated in web.xml, otherwise build from db_graph
+        if (db_schema!=null)
+            schemaURI = db_schema;
+        else
+            schemaURI = graphURI+(graphURI.endsWith("/")?"":"/")+"schema/";
+
+        repositoryManager = new RemoteRepositoryManager(manager_url);
+        repositoryManager.initialize();
+        repository = repositoryManager.getRepository(repository_id);
+        repositoryConnection = repository.getConnection();
+        repositoryConnection.setAutoCommit(false);
     }
 
     public void init(ServletConfig config) throws Exception 

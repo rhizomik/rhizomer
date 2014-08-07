@@ -6,7 +6,7 @@ YUI().use("charts", "json", "node", function (Y) {
         "use strict";
 
         // The module depends on three global objects.
-        // - facetURI  A
+        // - facetURI
         // - fm
         // - rhz
         // THis is the single entry point for the module and expects rhz object has
@@ -162,13 +162,15 @@ YUI().use("charts", "json", "node", function (Y) {
             var variables = makeSelectQueryPart(),
                 values = makeValuesQueryPart(),
                 filterBlanks = makeFilterValuesQueryPart();
-            return " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-                " SELECT " + variables +
-                " WHERE {?r1 a <" + mediator.facetURI + "> . " +
-                         values + filterBlanks +
-                "        OPTIONAL{ ?r1 rdfs:label ?label " +
-                "                  FILTER(LANG(?label)='en' || LANG(?label)='')} ." +
-                         mediator.restrictions +
+            return
+                " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                " PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+                " SELECT " + variables + "\n" +
+                " WHERE {?r1 a <" + mediator.facetURI + "> . \n" +
+                         values + filterBlanks + "\n" +
+                "        OPTIONAL{ ?r1 rdfs:label ?label \n" +
+                "                  FILTER(LANG(?label)='en' || LANG(?label)='')} \n" +
+                         mediator.restrictions + "\n" +
                 " } ORDER BY ?label LIMIT " + mediator.formData.maxResults;
         }
 

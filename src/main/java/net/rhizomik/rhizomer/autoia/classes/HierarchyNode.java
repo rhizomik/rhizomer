@@ -227,7 +227,7 @@ public class HierarchyNode implements Comparable{
 			return abstractNode;
 		}
 		
-		public void print(int levels, int tab) {
+		public String print(int levels, int tab, String output) {
 			/*
 			if(this.getOwnedInstances()==0 && this.getChilds().size()==1){
 				this.getChilds().get(0).print(levels, tab);
@@ -235,13 +235,14 @@ public class HierarchyNode implements Comparable{
 			else{
 			*/
 				for(int i=1;i<tab;i++)
-					System.out.print("\t");
-				System.out.println(label+" = "+this.getNumInstances());
+					output += "\t";
+				output += label+" = "+this.getNumInstances()+"\n";
 				if(levels>1){
 					for(HierarchyNode n : childs){
-						n.print(levels-1, tab+1);
+						output = n.print(levels-1, tab+1, output);
 					}		
 				}
+                return output;
 			//}
 			
 		}

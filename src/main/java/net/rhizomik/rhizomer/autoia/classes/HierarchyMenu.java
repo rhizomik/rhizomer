@@ -129,10 +129,12 @@ public class HierarchyMenu {
         this.first.sortTopK();
     }
 	
-	public void print(int levels){			
+	public String print(int levels){
+        String output = "";
 		for(HierarchyNode child : this.first.getChilds()){
-			child.print(levels,1);
+			output += child.print(levels, 1, output);
 		}
+        return output;
 	}
 	
 	public StringBuffer printAsUl(HttpServletRequest req, int levels)

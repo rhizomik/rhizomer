@@ -26,15 +26,15 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
         "SELECT DISTINCT ?root ?label"+NL+
         "WHERE {"+NL+
-        "   ?root rdf:type ?class. FILTER (?class=owl:Class || ?class=rdfs:Class)"+NL+
+        "   { ?i rdf:type ?root } UNION { ?c rdfs:subClassOf ?root }"+NL+
         "   OPTIONAL {"+NL+
         "       ?root rdfs:subClassOf ?super."+NL+
         "       FILTER (?root!=?super && ?super!=owl:Thing &&?super!=rdfs:Resource && !isBlank(?super))"+NL+
         "   }"+NL+
         "   OPTIONAL { ?root rdfs:label ?label FILTER(LANG(?label)='en' || LANG(?label)='')}"+NL+
-        "   FILTER (!bound(?super) && !isBlank(?root) && ?root!=owl:Thing )"+NL+
+        "   FILTER (!bound(?super) && !isBlank(?root) && isURI(?root) && ?root!=owl:Thing )"+NL+
         "}";
-	
+
 	protected String queryForRootsMinus = 
 	"PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 	"PREFIX  owl:  <http://www.w3.org/2002/07/owl#>\n" + 
@@ -90,7 +90,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         countInstances();
     }
     
-    private ArrayList<HierarchyNode> getRootClasses(){
+    protected ArrayList<HierarchyNode> getRootClasses(){
 		ArrayList<HierarchyNode> roots = new ArrayList<HierarchyNode>();
 		
         ResultSet results = RhizomerRDF.instance().querySelect(queryForRoots, MetadataStore.REASONING);
@@ -143,7 +143,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
 	    { System.out.println(e); }
     }
     
-    private void countInstances(){
+    protected void countInstances(){
         ResultSet results = RhizomerRDF.instance().querySelect(queryForCount, MetadataStore.INSTANCES);
         // The second var is the count value
         String countVar = results.getResultVars().get(1);
@@ -168,17 +168,13 @@ public class HierarchyManagerSPARQL extends HierarchyManager
     
     private void calculateInstances(HierarchyNode node){
 		int childInstances = 0;
-		for(HierarchyNode child : node.getChilds()){
-			childInstances += child.getOwnedInstances();
-		}
+
+        for(HierarchyNode child : node.getChilds()){
+            calculateInstances(child);
+            childInstances += child.getOwnedInstances();
+        }
 		int total = node.getOwnedInstances()+childInstances;
-		if(total<0) 
-			total = 0;
 		node.setNumInstances(total);
-		for(HierarchyNode child : node.getChilds()){
-			childInstances += child.getOwnedInstances();
-			calculateInstances(child);
-		}
 	}
 
     public static void main(String[] args) throws Exception

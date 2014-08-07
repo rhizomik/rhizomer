@@ -44,7 +44,8 @@ public class FacetGenerator {
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
         "SELECT DISTINCT ?c"+NL+
         "WHERE {"+NL+
-        "   ?c rdf:type ?class. FILTER (!isBlank(?c) && (?class=owl:Class || ?class=rdfs:Class) )"+NL+
+        "   { ?i rdf:type ?c } UNION { ?subc rdfs:subClassOf ?c }"+NL+
+        "   FILTER (!isBlank(?c) && isURI(?c) )"+NL+
         "}";
 
     private String queryForSubClasses =
@@ -121,6 +122,7 @@ public class FacetGenerator {
 	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
+
         "SELECT (COUNT(distinct(?o)) AS ?n)"+NL+
         "WHERE {"+NL+
         "   ?x a <%1$s> ; <%2$s> ?o ."+NL+
@@ -381,7 +383,7 @@ public class FacetGenerator {
         Formatter f = new Formatter(queryString);
         Object[] vars = {makeTypesFilter(uri)};
         f.format(queryForProperties, vars);
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.INSTANCES);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
         HashMap<String, String> properties = new HashMap<String, String>();
         while(results!=null && results.hasNext()){
 			QuerySolution row = results.next();
@@ -401,7 +403,7 @@ public class FacetGenerator {
         Formatter f = new Formatter(queryString);
         Object[] vars = {makeTypesFilter(uri)};
         f.format(queryForInverseProperties, vars);
-        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.INSTANCES);
+        ResultSet results = RhizomerRDF.instance().querySelect(queryString.toString(), MetadataStore.REASONING);
         HashMap<String, String> properties = new HashMap<String, String>();
         while(results!=null && results.hasNext()){
             QuerySolution row = results.next();

@@ -5,7 +5,10 @@ import com.hp.hpl.jena.query.ResultSet;
 import net.rhizomik.rhizomer.autoia.classes.AutoComplete.AutoCompleteOption;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyMenu;
 import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
+import net.rhizomik.rhizomer.autoia.manager.HierarchyManagerSPARQL;
+import net.rhizomik.rhizomer.autoia.manager.MenuManager;
 import net.rhizomik.rhizomer.store.MetadataStore;
+import net.rhizomik.rhizomer.util.FacetUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,7 +35,12 @@ public class RhizomerAutocompleteSearch extends HttpServlet {
         String query = request.getParameter("q");
         int numResults = 15;
         System.out.println(query);
-        HierarchyMenu menu = (HierarchyMenu) request.getSession(false).getAttribute("originalMenu");
+        HierarchyMenu menu = (HierarchyMenu) request.getSession().getAttribute("originalMenu");
+        if (menu==null) {
+            MenuManager menuMng = MenuManager.getInstance(getServletConfig());
+            HierarchyManagerSPARQL manager = menuMng.getManager();
+            menu = manager.getHierarchyMenu();
+        }
         ArrayList<HierarchyNode> selectedNodes = new ArrayList<HierarchyNode>();
         for(HierarchyNode node : menu.getAllNodes()){
             if(node.getLabel().toLowerCase().contains(query.toLowerCase())){
@@ -64,14 +72,16 @@ public class RhizomerAutocompleteSearch extends HttpServlet {
             "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
             "SELECT DISTINCT ?uri ?label ?c"+NL+
                 "WHERE {"+NL+
-                "   ?uri rdf:type ?c . "+NL+
-                "   ?uri rdfs:label ?label . "+NL+
-                "   FILTER(contains(str(?label), \""+query+"\") || contains(str(?uri), \""+query+"\")) ."+NL+
+                //"   ?uri rdf:type ?c . "+NL+
+                "   ?uri a ?c; rdfs:label ?label . FILTER(contains(?label, \""+query+"\") ) "+NL+
+                //|| contains(str(?uri), \""+query+"\")) ."+NL+
                 /*"    FILTER( NOT EXISTS {" +NL+
                 "   ?sub rdfs:subClassOf ?c ." + NL +
-                "   })" + NL +*/
-                "FILTER(?c!=owl:Class && ?c!=rdf:Property && ?c!=owl:ObjectProperty)"+NL+
-                "} ORDER BY ?uri LIMIT 50";
+                "   })" + NL +
+                "FILTER(?c!=owl:Class && ?c!=rdf:Property && ?c!=owl:ObjectProperty)"+NL+*/
+                "} " +
+                //"ORDER BY ?uri " +
+                "LIMIT 50";
         ResultSet results = RhizomerRDF.instance().querySelect(queryForInstances, MetadataStore.REASONING);
         List<AutoCompleteOption> options = new ArrayList<AutoCompleteOption>();
         String lastUri = null;
@@ -80,7 +90,11 @@ public class RhizomerAutocompleteSearch extends HttpServlet {
         while(results.hasNext()){
             QuerySolution row = results.next();
             String uri = row.get("uri").toString();
-            String label = row.get("label").toString();
+            String label = "";
+            if (row.getLiteral("label")!=null)
+                label = row.getLiteral("label").toString();
+            else
+                label = FacetUtil.makeLabel(uri);
             int pos = 0;
             if ((pos = label.indexOf('@')) > 0)
                 label = label.substring(0, pos);

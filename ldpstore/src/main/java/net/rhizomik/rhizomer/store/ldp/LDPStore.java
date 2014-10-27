@@ -13,6 +13,12 @@ import java.util.Properties;
  * Created by davidkaste on 27/10/14.
  */
 public class LDPStore implements MetadataStore {
+
+    private URL baseURL = null;
+
+    public LDPStore () {
+        super();
+    }
     /**
      * Abstract method to initialise the metadata store using the parameters
      * from a servlet config .

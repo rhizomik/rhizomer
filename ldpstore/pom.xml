@@ -1,21 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>rhizomer</artifactId>
-        <groupId>net.rhizomik</groupId>
-        <version>0.5</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <groupId>net.rhizomik</groupId>
     <artifactId>rhizomer.ldpstore</artifactId>
-    <packaging>jar</packaging>
-
-    <name>rhizomer.ldpstore</name>
+    <version>0.1</version>
+    <packaging>pom</packaging>
+    <name>Rhizomer Linked Data Portal Store</name>
     <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>MVN Repo</id>
+            <url>http://mvnrepository.com</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -28,6 +30,22 @@
             <groupId>net.rhizomik</groupId>
             <artifactId>rhizomer</artifactId>
             <version>0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-core</artifactId>
+            <version>1.18.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.18.1</version>
         </dependency>
     </dependencies>
 </project>

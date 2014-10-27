@@ -242,7 +242,7 @@ facet.Facet = function(property, inVariable, classURI)
 		query =
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
         "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-		"SELECT ?o (COUNT(?o) AS ?n) ?label "+
+		"SELECT (str(?o) AS ?o) (COUNT(?o) AS ?n) ?label "+
 		"WHERE {"+
 		"	?"+variable+" a <"+classURI+"> . "+
 		"   ?"+variable+" <"+uri+"> ?o ."+
@@ -265,7 +265,7 @@ facet.Facet = function(property, inVariable, classURI)
 		query =
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-			   "SELECT ?o (COUNT(?o) AS ?n) ?label "+
+			   "SELECT (str(?o) AS ?o) (COUNT(?o) AS ?n) ?label "+
 		       "WHERE { "+
 		            "?"+variable+" a <"+classURI+"> . "+
 		            "?"+variable+" <"+uri+"> ?o . "+

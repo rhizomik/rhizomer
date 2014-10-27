@@ -1,0 +1,32 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix service: <http://rhizomik.net/rhizomer/services#> .
+@prefix owl-s: <http://www.daml.org/services/owl-s/1.1/Process.owl#> .
+
+<http://rhizomik.net/rhizomer/services/map/map> a owl-s:Process;
+    rdfs:label "Map";
+    service:endPoint "/services/map/map.jsp";
+    owl-s:hasInput """
+	            PREFIX georss: <http://www.georss.org/georss#> 
+	            PREFIX wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+	            PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+	            ASK WHERE {
+	            { ?r georss:point ?point. FILTER(?r =<[URI]>) } UNION 
+	            { ?r wgs84_pos:lat ?lat; wgs84_pos:long ?long. FILTER(?r =<[URI]>) } UNION
+	            { ?r vcard:geo ?geo. ?geo vcard:latitude ?lat; vcard:longitude ?long. FILTER(?r =<[URI]>) } }
+            """;
+    owl-s:hasOutput "text/html" .
+
+<http://rhizomik.net/rhizomer/services/timeline/timeline> a owl-s:Process;
+    rdfs:label "TimeLine";
+    service:endPoint "/services/timeline/timeline.jsp";
+    owl-s:hasInput """
+	            PREFIX cal: <http://www.w3.org/2002/12/cal/icaltzd#>
+	            PREFIX dc: <http://purl.org/dc/elements/1.1/>
+	            PREFIX dbp: <http://dbpedia.org/property/>
+	            ASK WHERE {
+	            {?r cal:dtsart ?start; cal:dtend ?end. FILTER(?r =<[URI]>) } UNION
+	            {?r dc:date ?date. FILTER(?r =<[URI]>) } UNION
+	            {?r dbp:birthDate ?date. FILTER(?r =<[URI]>) } }
+            """;
+    owl-s:hasOutput "text/html" .

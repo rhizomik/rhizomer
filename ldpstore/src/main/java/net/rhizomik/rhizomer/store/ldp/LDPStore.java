@@ -38,7 +38,7 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public void init(Properties props) throws Exception {
-
+        ;;
     }
 
     /**

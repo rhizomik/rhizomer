@@ -19,6 +19,8 @@ import com.sun.jersey.api.client.WebResource;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by David Castellà david.castella@udl.cat on 04/11/14.
@@ -26,6 +28,8 @@ import java.net.URL;
  */
 public class ResourceDripper {
     private OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
+
+    private static final Logger log = Logger.getLogger(ResourceDripper.class.getName());
 
     public ResourceDripper (String fileUri) {
         model.read(fileUri, "RDF/XML");
@@ -53,11 +57,20 @@ public class ResourceDripper {
         Client c = Client.create();
         ClientResponse cr;
 
-        wr = c.resource(serverUri.toString() + "/" + containerName + "/");
-        String identifier = resourceUri.split("/")[resourceUri.split("/").length - 1];
-        cr = wr.type("application/rdf+xml")
-                .header("Slug", identifier)
-                .post(ClientResponse.class, resourceRDF);
+        try {
+            wr = c.resource(serverUri.toString() + "/" + containerName + "/");
+            String identifier = resourceUri.split("/")[resourceUri.split("/").length - 1];
+            cr = wr.type("application/rdf+xml")
+                    .header("Slug", identifier)
+                    .post(ClientResponse.class, resourceRDF);
+
+            if (cr.getStatus() != 201) {
+                log.log(Level.SEVERE, "Failed : HTTP Error Code: " + cr.getStatus());
+                throw new RuntimeException("Failed : HTTP Error Code: " + cr.getStatus());
+            }
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        }
     }
 
     public void importResources2LDP (URL serverUri, String containerName, String classUri) {
@@ -71,13 +84,18 @@ public class ResourceDripper {
                 simpleImport2LDP(or.getURI(), resourceRDF, serverUri, containerName);
             }
         } catch (NullPointerException npe) {
+            log.log(Level.SEVERE, "There's no class with uri: <" + classUri + ">");
             System.out.println("There's no class with uri: <" + classUri + ">");
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.toString());
         }
     }
 
     public static void main(String[] args) throws MalformedURLException {
-        ResourceDripper rd = new ResourceDripper("file:///home/davidkaste/Documents/administracions-old.rdf");
+        log.setLevel(Level.ALL);
+        ResourceDripper rd = new ResourceDripper("file:///home/davidkaste/Documents/administracions-new.rdf");
         URL url = new URL("http://localhost:8080/marmotta/ldp");
         rd.importResources2LDP(url, "administracions", "http://schema.org/GovernmentOrganization");
+        rd.importResources2LDP(url, "administracions/address", "http://schema.org/PostalAddress");
     }
 }

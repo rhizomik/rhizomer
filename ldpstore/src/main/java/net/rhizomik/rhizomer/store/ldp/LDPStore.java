@@ -15,6 +15,7 @@ import java.util.Properties;
 public class LDPStore implements MetadataStore {
 
     private URL baseURL = null;
+    private String containerName = null;
 
     public LDPStore () {
         super();
@@ -38,7 +39,7 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public void init(Properties props) throws Exception {
-        ;;
+
     }
 
     /**

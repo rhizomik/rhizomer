@@ -5,17 +5,27 @@ import net.rhizomik.rhizomer.store.MetadataStore;
 
 import javax.servlet.ServletConfig;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
- * Created by davidkaste on 27/10/14.
+ * LDP implementation of the Rhizomer metadata store
+ *
+ * @author: David Castellà <david.castella@udl.cat>
+ * @version: 0.1
  */
 public class LDPStore implements MetadataStore {
 
-    private URL baseURL = null;
-    private String containerName = null;
+    private String baseURI = "";
+    private String containerName = "";
+    private String sparqlEndpoint = "";
+    private String rdfData = "";
+    private String rdfType = "";
+
+    private static final Logger log = Logger.getLogger(LDPStore.class.getName());
 
     public LDPStore () {
         super();
@@ -28,7 +38,36 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public void init(ServletConfig configResource) throws Exception {
+        if (configResource.getServletContext().getInitParameter("base_uri") == null)
+            throw new Exception("Missing parameter for LDP init: manager_url");
+        else if (configResource.getServletContext().getInitParameter("container_name") == null)
+            throw new Exception("Missing parameter for LDP init: container_name");
+        else if (configResource.getServletContext().getInitParameter("sparql_endpoint")==null)
+            throw new Exception("Missing parameter for LDP init: sparql_endpoint");
+        else if (configResource.getServletContext().getInitParameter("rdf_data")==null)
+            throw new Exception("Missing parameter for LDP init: rdf_data");
+        else if (configResource.getServletContext().getInitParameter("rdf_type")==null)
+            throw new Exception("Missing parameter for LDP init: rdf_type");
+        else
+        {
+            init(configResource.getServletContext().getInitParameter("base_uri"),
+                    configResource.getServletContext().getInitParameter("container_name"),
+                    configResource.getServletContext().getInitParameter("sparql_endpoint"),
+                    configResource.getServletContext().getInitParameter("rdf_data"),
+                    configResource.getServletContext().getInitParameter("rdf_type"));
+        }
+    }
 
+    private void init(String base_uri, String container_name, String sparql_endpoint, String rdf_data, String rdf_type) throws MalformedURLException {
+        ResourceDripper rd;
+        baseURI = base_uri;
+        containerName = container_name;
+        sparqlEndpoint = sparql_endpoint;
+        rdfData = rdf_data;
+        rdfType = rdf_type;
+
+        rd = new ResourceDripper(rdf_data);
+        rd.importResources2LDP(new URL(baseURI), containerName, rdfType);
     }
 
     /**
@@ -39,7 +78,24 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public void init(Properties props) throws Exception {
-
+        if (props.getProperty("base_uri") == null)
+            throw new Exception("Missing parameter for LDP init: base_uri");
+        else if (props.getProperty("container_name") == null)
+            throw new Exception("Missing parameter for LDP init: container_name");
+        else if (props.getProperty("sparql_endpoint")==null)
+            throw new Exception("Missing parameter for LDP init: sparql_endpoint");
+        else if (props.getProperty("rdf_data")==null)
+            throw new Exception("Missing parameter for LDP init: rdf_data");
+        else if (props.getProperty("rdf_type")==null)
+            throw new Exception("Missing parameter for LDP init: rdf_type");
+        else
+        {
+            init(props.getProperty("base_uri"),
+                    props.getProperty("container_name"),
+                    props.getProperty("sparql_endpoint"),
+                    props.getProperty("rdf_data"),
+                    props.getProperty("rdf_type"));
+        }
     }
 
     /**

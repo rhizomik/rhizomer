@@ -10,7 +10,29 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-<!-- DataStore Configuration. Options: Virtuoso, Jena File/Database, OWLIM. -->
+<!-- DataStore Configuration. Options: Virtuoso, Jena File/Database, OWLIM, LDP -->
+
+<!-- LDP MODEL -->
+    <!-- context-param>
+        <param-name>base_uri</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>container_name</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>sparql_endpoint</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>rdf_data</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>rdf_type</param-name>
+        <param-value></param-value>
+    </context-param -->
 
 <!-- JENA FILE MODEL -->
     <context-param>

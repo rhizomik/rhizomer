@@ -23,8 +23,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by David Castellà david.castella@udl.cat on 04/11/14.
+ * Rhizomer RDF resource harvester for LDP store
  *
+ * @author: David Castellà <david.castella@udl.cat>
+ * @version: 0.1
  */
 public class ResourceDripper {
     private OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);

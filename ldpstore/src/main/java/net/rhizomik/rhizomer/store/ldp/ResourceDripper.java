@@ -95,7 +95,7 @@ public class ResourceDripper {
 
     public static void main(String[] args) throws MalformedURLException {
         log.setLevel(Level.ALL);
-        ResourceDripper rd = new ResourceDripper("file:///home/davidkaste/Documents/administracions-new.rdf");
+        ResourceDripper rd = new ResourceDripper("");
         URL url = new URL("http://localhost:8080/marmotta/ldp");
         rd.importResources2LDP(url, "administracions", "http://schema.org/GovernmentOrganization");
         rd.importResources2LDP(url, "administracions/address", "http://schema.org/PostalAddress");

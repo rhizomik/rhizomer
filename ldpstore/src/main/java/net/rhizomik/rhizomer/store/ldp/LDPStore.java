@@ -1,6 +1,7 @@
 package net.rhizomik.rhizomer.store.ldp;
 
 import com.hp.hpl.jena.query.ResultSet;
+import com.sun.deploy.util.SessionState;
 import net.rhizomik.rhizomer.store.MetadataStore;
 
 import javax.servlet.ServletConfig;
@@ -10,6 +11,9 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import org.apache.marmotta.client.ClientConfiguration;
+import org.apache.marmotta.client.MarmottaClient;
 
 /**
  * LDP implementation of the Rhizomer metadata store
@@ -24,6 +28,8 @@ public class LDPStore implements MetadataStore {
     private String sparqlEndpoint = "";
     private String rdfData = "";
     private String rdfType = "";
+
+    private MarmottaClient mc;
 
     private static final Logger log = Logger.getLogger(LDPStore.class.getName());
 
@@ -56,6 +62,8 @@ public class LDPStore implements MetadataStore {
                     configResource.getServletContext().getInitParameter("rdf_data"),
                     configResource.getServletContext().getInitParameter("rdf_type"));
         }
+
+        initMarmotta();
     }
 
     private void init(String base_uri, String container_name, String sparql_endpoint, String rdf_data, String rdf_type) throws MalformedURLException {
@@ -68,6 +76,8 @@ public class LDPStore implements MetadataStore {
 
         rd = new ResourceDripper(rdf_data);
         rd.importResources2LDP(new URL(baseURI), containerName, rdfType);
+
+        initMarmotta();
     }
 
     /**
@@ -96,6 +106,12 @@ public class LDPStore implements MetadataStore {
                     props.getProperty("rdf_data"),
                     props.getProperty("rdf_type"));
         }
+        initMarmotta();
+    }
+
+    private void initMarmotta() {
+        ClientConfiguration cc = new ClientConfiguration(baseURI, "", "");
+        mc = new MarmottaClient(cc);
     }
 
     /**

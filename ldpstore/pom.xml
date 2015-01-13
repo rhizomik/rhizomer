@@ -63,5 +63,10 @@
             <artifactId>jena-text</artifactId>
             <version>LATEST</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.marmotta</groupId>
+            <artifactId>marmotta-client-java</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
 </project>

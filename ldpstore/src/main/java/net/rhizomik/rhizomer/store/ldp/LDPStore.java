@@ -1,8 +1,9 @@
 package net.rhizomik.rhizomer.store.ldp;
 
 import com.hp.hpl.jena.query.ResultSet;
-import com.sun.deploy.util.SessionState;
 import net.rhizomik.rhizomer.store.MetadataStore;
+import org.apache.marmotta.client.ClientConfiguration;
+import org.apache.marmotta.client.MarmottaClient;
 
 import javax.servlet.ServletConfig;
 import java.io.InputStream;
@@ -11,9 +12,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Logger;
-
-import org.apache.marmotta.client.ClientConfiguration;
-import org.apache.marmotta.client.MarmottaClient;
 
 /**
  * LDP implementation of the Rhizomer metadata store

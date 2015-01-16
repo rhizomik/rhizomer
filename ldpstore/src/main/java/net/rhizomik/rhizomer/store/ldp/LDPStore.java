@@ -4,13 +4,18 @@ import com.hp.hpl.jena.query.ResultSet;
 import net.rhizomik.rhizomer.store.MetadataStore;
 import org.apache.marmotta.client.ClientConfiguration;
 import org.apache.marmotta.client.MarmottaClient;
+import org.apache.marmotta.client.clients.SPARQLClient;
+import org.apache.marmotta.client.exception.MarmottaClientException;
+import org.apache.marmotta.client.model.sparql.SPARQLResult;
 
 import javax.servlet.ServletConfig;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -119,7 +124,20 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public String query(String query) {
-        return null;
+        String response;
+        SPARQLResult res;
+        SPARQLClient client = mc.getSPARQLClient();
+        try {
+            res = client.select(query);
+            response = res.toString();
+        } catch (MarmottaClientException mce) {
+            log.log(Level.SEVERE, "Exception in LDPStore.query for: " + query, mce);
+            response = mce.getMessage();
+        } catch (IOException ioe) {
+            log.log(Level.SEVERE, "IOException in LDPStore.query for: " + query, ioe);
+            response = ioe.getMessage();
+        }
+        return response;
     }
 
     /**
@@ -145,7 +163,19 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public ResultSet querySelect(String query, int scope) {
-        return null;
+        SPARQLClient client = mc.getSPARQLClient();
+        ResultSet response = null;
+        try {
+            SPARQLResult res = client.select(query);
+            // TODO response = SPARQLResult2ResultSet(res);
+        } catch (MarmottaClientException mce) {
+            log.log(Level.SEVERE, "Exception in LDPStore.query for: " + query, mce);
+            return null;
+        } catch (IOException ioe) {
+            log.log(Level.SEVERE, "IOException in LDPStore.query for: " + query, ioe);
+            return null;
+        }
+        return response;
     }
 
     /**
@@ -155,7 +185,18 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public boolean queryAsk(String query) {
-        return false;
+        SPARQLClient client = mc.getSPARQLClient();
+        boolean response;
+        try {
+            response = client.ask(query);
+        } catch (MarmottaClientException mce) {
+            log.log(Level.SEVERE, "MarmottaClientException in LDPStore.query for: " + query, mce);
+            response = false;
+        } catch (IOException ioe) {
+            log.log(Level.SEVERE, "IOException in LDPStore.query for: " + query, ioe);
+            response = false;
+        }
+        return response;
     }
 
     /**

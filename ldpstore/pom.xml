@@ -5,7 +5,7 @@
     <artifactId>rhizomer.ldpstore</artifactId>
     <version>0.1</version>
     <packaging>pom</packaging>
-    <name>Rhizomer Linked Data Portal Store</name>
+    <name>Rhizomer Linked Data Platform Store</name>
     <url>http://maven.apache.org</url>
 
     <properties>

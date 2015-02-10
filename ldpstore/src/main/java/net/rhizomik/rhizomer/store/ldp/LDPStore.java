@@ -15,8 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.querySelectMarmotta;
 
 /**
  * LDP implementation of the Rhizomer metadata store
@@ -34,7 +34,7 @@ public class LDPStore implements MetadataStore {
 
     private MarmottaClient mc;
 
-    private static final Logger log = Logger.getLogger(LDPStore.class.getName());
+    //private static final Logger log = Logger.getLogger(LDPStore.class.getName());
 
     public LDPStore () {
         super();
@@ -131,10 +131,10 @@ public class LDPStore implements MetadataStore {
             res = client.select(query);
             response = res.toString();
         } catch (MarmottaClientException mce) {
-            log.log(Level.SEVERE, "Exception in LDPStore.query for: " + query, mce);
+            //log.log(Level.SEVERE, "Exception in LDPStore.query for: " + query, mce);
             response = mce.getMessage();
         } catch (IOException ioe) {
-            log.log(Level.SEVERE, "IOException in LDPStore.query for: " + query, ioe);
+            //log.log(Level.SEVERE, "IOException in LDPStore.query for: " + query, ioe);
             response = ioe.getMessage();
         }
         return response;
@@ -165,16 +165,7 @@ public class LDPStore implements MetadataStore {
     public ResultSet querySelect(String query, int scope) {
         SPARQLClient client = mc.getSPARQLClient();
         ResultSet response = null;
-        try {
-            SPARQLResult res = client.select(query);
-            // TODO response = SPARQLResult2ResultSet(res);
-        } catch (MarmottaClientException mce) {
-            log.log(Level.SEVERE, "Exception in LDPStore.query for: " + query, mce);
-            return null;
-        } catch (IOException ioe) {
-            log.log(Level.SEVERE, "IOException in LDPStore.query for: " + query, ioe);
-            return null;
-        }
+        response = querySelectMarmotta(query, sparqlEndpoint);
         return response;
     }
 
@@ -190,10 +181,10 @@ public class LDPStore implements MetadataStore {
         try {
             response = client.ask(query);
         } catch (MarmottaClientException mce) {
-            log.log(Level.SEVERE, "MarmottaClientException in LDPStore.query for: " + query, mce);
+            //log.log(Level.SEVERE, "MarmottaClientException in LDPStore.query for: " + query, mce);
             response = false;
         } catch (IOException ioe) {
-            log.log(Level.SEVERE, "IOException in LDPStore.query for: " + query, ioe);
+            //log.log(Level.SEVERE, "IOException in LDPStore.query for: " + query, ioe);
             response = false;
         }
         return response;
@@ -207,6 +198,40 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public String store(InputStream metadata, String contentType) {
+        /*String response = "";
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        RDFFormat format = RDFFormat.RDFXML; // Default
+        if (contentType.indexOf("application/n-triples") >= 0)
+            format = RDFFormat.NTRIPLES;
+        else if (contentType.indexOf("application/n3") >= 0)
+            format = RDFFormat.N3;
+
+        ByteArrayOutputStream copy = new ByteArrayOutputStream();
+        try {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = metadata.read(buffer)) > -1) {
+                copy.write(buffer, 0, len);
+            }
+            copy.flush();
+
+            //TODO: if metadata to be added about classes and properties, add to schema graph instead of instance graph
+            repositoryConnection.add(new ByteArrayInputStream(copy.toByteArray()), graphURI, format, new URIImpl(graphURI));
+            repositoryConnection.commit();
+
+            RDFParser parser = new RDFXMLParser();
+            parser.setRDFHandler(new RDFXMLPrettyWriter(out));
+            parser.parse(new ByteArrayInputStream(copy.toByteArray()), graphURI);
+            response = out.toString("UTF8");
+        }
+        catch (Exception e)
+        {
+            //log.log(Level.SEVERE, "Exception in SesameStore.store", e);
+            response = e.toString();
+        }
+
+        return response;*/
         return null;
     }
 
@@ -217,6 +242,45 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public String store(URL metadataUrl) {
+        /*String response = "";
+        boolean loaded = false;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        RDFFormat format = RDFFormat.RDFXML; // Default
+
+        try
+        {
+            //TODO: if metadata to be added about classes and properties, add to schema graph instead of instance graph
+            repositoryConnection.add(metadataURL, graphURI, format, new URIImpl(graphURI));
+            repositoryConnection.commit();
+            loaded = true;
+
+            Repository tempRepository = new SailRepository(new MemoryStore());
+            tempRepository.initialize();
+            RepositoryConnection tempConnection = tempRepository.getConnection();
+            tempConnection.add(metadataURL, graphURI, format, new URIImpl(graphURI));
+            tempConnection.commit();
+            tempConnection.export(new RDFXMLPrettyWriter(out), new URIImpl(graphURI));
+            out.close();
+            response = out.toString("UTF8");
+        }
+        catch (Exception e)
+        {
+            log.log(Level.SEVERE, "Exception in SesameStore.store", e);
+            response = e.toString();
+        }
+
+        if (!loaded)
+            try
+            {
+                repositoryConnection.rollback();
+            }
+            catch (RepositoryException e)
+            {
+                log.log(Level.SEVERE, "Exception in SesameStore.store", e);
+                response = e.toString();
+            }
+
+        return response;*/
         return null;
     }
 
@@ -232,7 +296,7 @@ public class LDPStore implements MetadataStore {
     }
 
     /**
-     * Abstract method for removing the metadata coresponding to the
+     * Abstract method for removing the metadata corresponding to the
      * Concise Bounded Description for the resource from a metadata store.
      *
      * @param resource

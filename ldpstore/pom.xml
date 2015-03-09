@@ -19,6 +19,21 @@
         </repository>
     </repositories>
 
+    <developers>
+        <developer>
+            <name>David Castellà</name>
+            <email>david.castella@udl.cat</email>
+            <organization>Universitat de Lleida</organization>
+            <url>http://davidcastella.com</url>
+        </developer>
+        <developer>
+            <name>Roberto García</name>
+            <email>roberto.garcia@udl.cat</email>
+            <organization>Universitat de Lleida</organization>
+            <url>http://rhizomik.net/~roberto</url>
+        </developer>
+    </developers>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -78,6 +93,10 @@
                 <exclusion>
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

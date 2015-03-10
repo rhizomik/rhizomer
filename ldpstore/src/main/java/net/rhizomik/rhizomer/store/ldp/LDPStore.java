@@ -198,41 +198,7 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public String store(InputStream metadata, String contentType) {
-        /*String response = "";
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-        RDFFormat format = RDFFormat.RDFXML; // Default
-        if (contentType.indexOf("application/n-triples") >= 0)
-            format = RDFFormat.NTRIPLES;
-        else if (contentType.indexOf("application/n3") >= 0)
-            format = RDFFormat.N3;
-
-        ByteArrayOutputStream copy = new ByteArrayOutputStream();
-        try {
-            byte[] buffer = new byte[1024];
-            int len;
-            while ((len = metadata.read(buffer)) > -1) {
-                copy.write(buffer, 0, len);
-            }
-            copy.flush();
-
-            //TODO: if metadata to be added about classes and properties, add to schema graph instead of instance graph
-            repositoryConnection.add(new ByteArrayInputStream(copy.toByteArray()), graphURI, format, new URIImpl(graphURI));
-            repositoryConnection.commit();
-
-            RDFParser parser = new RDFXMLParser();
-            parser.setRDFHandler(new RDFXMLPrettyWriter(out));
-            parser.parse(new ByteArrayInputStream(copy.toByteArray()), graphURI);
-            response = out.toString("UTF8");
-        }
-        catch (Exception e)
-        {
-            //log.log(Level.SEVERE, "Exception in SesameStore.store", e);
-            response = e.toString();
-        }
-
-        return response;*/
-        return null;
+        return "done";
     }
 
     /**
@@ -280,8 +246,9 @@ public class LDPStore implements MetadataStore {
                 response = e.toString();
             }
 
-        return response;*/
-        return null;
+        return response;
+        return null;*/
+        return "done";
     }
 
     /**
@@ -292,7 +259,7 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public void remove(InputStream metadata, String contentType) {
-
+        int pass;
     }
 
     /**
@@ -303,7 +270,7 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public void remove(URI resource) {
-
+        int pass;
     }
 
     /**
@@ -311,6 +278,6 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public void close() {
-
+        int pass;
     }
 }

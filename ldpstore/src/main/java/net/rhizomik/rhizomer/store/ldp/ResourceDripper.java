@@ -60,8 +60,10 @@ public class ResourceDripper {
         ClientResponse cr;
 
         try {
-            wr = c.resource(serverUri.toString() + "/" + containerName + "/");
+            System.out.println(serverUri.toString() + "/" + containerName);
+            wr = c.resource(serverUri.toString() + "/" + containerName);
             String identifier = resourceUri.split("/")[resourceUri.split("/").length - 1];
+            System.out.println(identifier);
             cr = wr.type("application/rdf+xml")
                     .header("Slug", identifier)
                     .post(ClientResponse.class, resourceRDF);
@@ -95,9 +97,9 @@ public class ResourceDripper {
 
     public static void main(String[] args) throws MalformedURLException {
         log.setLevel(Level.ALL);
-        ResourceDripper rd = new ResourceDripper("");
+        ResourceDripper rd = new ResourceDripper("file:///home/davidkaste/Projects/rhizomer/src/main/webapp/metadata/nasa-apollo.rdf");
         URL url = new URL("http://localhost:8080/marmotta/ldp");
-        rd.importResources2LDP(url, "administracions", "http://schema.org/GovernmentOrganization");
-        rd.importResources2LDP(url, "administracions/address", "http://schema.org/PostalAddress");
+        rd.importResources2LDP(url, "missions", "http://purl.org/net/schemas/space/Mission");
+        //rd.importResources2LDP(url, "administracions/address", "http://schema.org/PostalAddress");
     }
 }

@@ -19,7 +19,7 @@
     </context-param>
     <context-param>
         <param-name>base_uri</param-name>
-        <param-value>http://ip6-localhost:8080/marmotta/ldp</param-value>
+        <param-value>http://localhost:8080/marmotta</param-value>
     </context-param>
     <context-param>
         <param-name>container_name</param-name>

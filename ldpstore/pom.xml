@@ -100,32 +100,45 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-fuseki</artifactId>
-            <version>LATEST</version>
+            <!--dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-fuseki</artifactId>
+                <version>1.0.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>jcl-over-slf4j</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+            </dependency-->
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-text</artifactId>
             <version>LATEST</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.marmotta</groupId>
             <artifactId>marmotta-client-java</artifactId>
-            <version>LATEST</version>
+            <version>3.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.4</version>
-
         </dependency>
     </dependencies>
 </project>

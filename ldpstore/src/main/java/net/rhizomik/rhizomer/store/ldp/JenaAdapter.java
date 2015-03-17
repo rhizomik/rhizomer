@@ -16,11 +16,11 @@ public abstract class JenaAdapter {
     public static ResultSet querySelectMarmotta(String query, String SPARQLEndpoint) {
         URIBuilder ub = new URIBuilder();
         Client c = Client.create();
-        WebResource wr = c.resource(SPARQLEndpoint + "select" + ub.addParameter("query", query).addParameter("output", "application/json"));
+        WebResource wr = c.resource(SPARQLEndpoint + "select" + ub.addParameter("query", query).addParameter("output", "application/sparql-results+xml"));
         wr.toString();
         String cr = wr.get(String.class);
         System.out.println(cr);
-        ResultSet ret = ResultSetFactory.fromJSON(new ByteArrayInputStream(cr.getBytes()));
+        ResultSet ret = ResultSetFactory.fromXML(new ByteArrayInputStream(cr.getBytes()));
         return ret;
     }
 }

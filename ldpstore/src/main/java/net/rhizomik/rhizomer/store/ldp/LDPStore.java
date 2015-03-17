@@ -77,8 +77,8 @@ public class LDPStore implements MetadataStore {
         rdfData = rdf_data;
         rdfType = rdf_type;
 
-        rd = new ResourceDripper(rdf_data);
-        rd.importResources2LDP(new URL(baseURI), containerName, rdfType);
+        /*rd = new ResourceDripper(rdf_data);
+        rd.importResources2LDP(new URL(baseURI), containerName, rdfType);*/
 
         initMarmotta();
     }

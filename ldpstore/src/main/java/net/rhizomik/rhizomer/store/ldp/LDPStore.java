@@ -16,6 +16,8 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
 
+import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.queryJSONMarmotta;
+import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.queryMarmotta;
 import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.querySelectMarmotta;
 
 /**
@@ -125,18 +127,7 @@ public class LDPStore implements MetadataStore {
     @Override
     public String query(String query) {
         String response;
-        SPARQLResult res;
-        SPARQLClient client = mc.getSPARQLClient();
-        try {
-            res = client.select(query);
-            response = res.toString();
-        } catch (MarmottaClientException mce) {
-            //log.log(Level.SEVERE, "Exception in LDPStore.query for: " + query, mce);
-            response = mce.getMessage();
-        } catch (IOException ioe) {
-            //log.log(Level.SEVERE, "IOException in LDPStore.query for: " + query, ioe);
-            response = ioe.getMessage();
-        }
+        response = queryMarmotta(query, sparqlEndpoint);
         return response;
     }
 
@@ -147,7 +138,9 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public String queryJSON(String query) {
-        return null;
+        String response;
+        response = queryJSONMarmotta(query, sparqlEndpoint);
+        return response;
     }
 
     /**
@@ -163,7 +156,6 @@ public class LDPStore implements MetadataStore {
      */
     @Override
     public ResultSet querySelect(String query, int scope) {
-        SPARQLClient client = mc.getSPARQLClient();
         ResultSet response = null;
         response = querySelectMarmotta(query, sparqlEndpoint);
         return response;

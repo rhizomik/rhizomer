@@ -23,4 +23,24 @@ public abstract class JenaAdapter {
         ResultSet ret = ResultSetFactory.fromXML(new ByteArrayInputStream(cr.getBytes()));
         return ret;
     }
+
+    public static String queryMarmotta(String query, String SPARQLEndpoint) {
+        URIBuilder ub = new URIBuilder();
+        Client c = Client.create();
+        WebResource wr = c.resource(SPARQLEndpoint + "select" + ub.addParameter("query", query).addParameter("output", "application/rdf+xml"));
+        wr.toString();
+        String cr = wr.get(String.class);
+        System.out.println(cr);
+        return cr;
+    }
+
+    public static String queryJSONMarmotta(String query, String SPARQLEndpoint) {
+        URIBuilder ub = new URIBuilder();
+        Client c = Client.create();
+        WebResource wr = c.resource(SPARQLEndpoint + "select" + ub.addParameter("query", query).addParameter("output", "application/json"));
+        wr.toString();
+        String cr = wr.get(String.class);
+        System.out.println(cr);
+        return cr;
+    }
 }

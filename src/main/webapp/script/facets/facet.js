@@ -242,15 +242,15 @@ facet.Facet = function(property, inVariable, classURI)
 		query =
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
         "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-		"SELECT (str(?o) AS ?o) (COUNT(?o) AS ?n) ?label "+
+		"SELECT (STR(?obj) AS ?o) ?label (COUNT(?obj) AS ?n) "+
 		"WHERE {"+
 		"	?"+variable+" a <"+classURI+"> . "+
-		"   ?"+variable+" <"+uri+"> ?o ."+
-		"   FILTER(?o!=\"\" && (!isBlank(?o) || bound(?label)) ) ."+
-		" OPTIONAL{ ?o rdfs:label ?label " +
+		"   ?"+variable+" <"+uri+"> ?obj ."+
+		"   FILTER(?obj!=\"\" && (!isBlank(?obj) || bound(?label)) ) ."+
+		" OPTIONAL{ ?obj rdfs:label ?label " +
 		"  FILTER(LANG(?label)='en' || LANG(?label)='')} ."+
 		restrictions+
-		" } GROUP BY ?o ?label ORDER BY DESC(?n) LIMIT 5";
+		" } GROUP BY ?obj ?label ORDER BY DESC(?n) LIMIT 5";
 		rhz.sparqlJSON(query, self.processMoreValues);
 	};
 	
@@ -265,15 +265,15 @@ facet.Facet = function(property, inVariable, classURI)
 		query =
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-			   "SELECT (str(?o) AS ?o) (COUNT(?o) AS ?n) ?label "+
+			   "SELECT (STR(?obj) AS ?o) ?label (COUNT(?obj) AS ?n) "+
 		       "WHERE { "+
 		            "?"+variable+" a <"+classURI+"> . "+
-		            "?"+variable+" <"+uri+"> ?o . "+
-		    		"   FILTER(?o!=\"\" && (!isBlank(?o) || bound(?label)) ) ."+
-		    		"OPTIONAL{ ?o rdfs:label ?label . " +
+		            "?"+variable+" <"+uri+"> ?obj . "+
+		    		"   FILTER(?obj!=\"\" && (!isBlank(?obj) || bound(?label)) ) ."+
+		    		"OPTIONAL{ ?obj rdfs:label ?label . " +
 		    		"FILTER(LANG(?label)='en' || LANG(?label)='')} " +
 		    		facetBrowser.makeRestrictions(uri)+
-		    		" } GROUP BY ?o ?label ORDER BY DESC(?n) LIMIT 6 OFFSET "+self.getCurrentValues();
+		    		" } GROUP BY ?obj ?label ORDER BY DESC(?n) LIMIT 6 OFFSET "+self.getCurrentValues();
 		rhz.sparqlJSON(query,self.processMoreValues);
 	};
 	

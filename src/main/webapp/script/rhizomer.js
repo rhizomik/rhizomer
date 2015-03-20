@@ -510,7 +510,7 @@ rhizomik.Rhizomer = function(baseURL, targetElem, defaultQuery)
 
         var query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-            "SELECT DISTINCT(?r) ?uri ?c ?labelc ?labelr ?p ?labelp \n"+
+            "SELECT DISTINCT ?r ?uri ?c ?labelc ?labelr ?p ?labelp \n"+
             "WHERE{ ?r ?p ?uri . ?r a ?c \n";
         query += ". FILTER(?c!=<http://www.w3.org/2002/07/owl#Thing>) ."+
             "FILTER(LANG(?labelc)='en' || LANG(?labelc)='') ."+

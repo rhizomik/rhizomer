@@ -46,7 +46,7 @@ public class FacetGenerator {
         "WHERE {"+NL+
         "   { ?i rdf:type ?c } UNION { ?subc rdfs:subClassOf ?c }"+NL+
         "   FILTER (!isBlank(?c) && isURI(?c) )"+NL+
-        "}";
+        "} GROUP BY ?c";
 
     private String queryForSubClasses =
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
@@ -55,7 +55,7 @@ public class FacetGenerator {
         "SELECT DISTINCT ?subclass"+NL+
         "WHERE {"+NL+
         "   ?subclass rdfs:subClassOf <%1$s>"+NL+
-        "}";
+        "} GROUP BY ?subclass";
     
     private String queryForCountInstancesProperty =
 	    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
@@ -500,7 +500,9 @@ public class FacetGenerator {
 		PreparedStatement st = conn.prepareStatement("INSERT INTO class_summary VALUES(?,?)");
 		st.setString(1, classUri);
 		st.setInt(2, total);
-		st.executeUpdate();
+		try { st.executeUpdate(); }
+        catch (Exception e) {log.log(Level.SEVERE, "Error generating facets for class "+classUri+"\n"+e.toString()); }
+
 
 		st = conn.prepareStatement("INSERT INTO property_summary VALUES(NULL,?,?,?,?,?,?,?,?,?)");
 		//PreparedStatement st = conn.prepareStatement("UPDATE property_summary SET num_instances = ? where class = ? and property = ?");

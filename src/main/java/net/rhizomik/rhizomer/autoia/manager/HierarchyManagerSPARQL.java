@@ -70,7 +70,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
     	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
-        "SELECT ?class (COUNT(?x) AS ?n)"+NL+
+        "SELECT DISTINCT ?class (COUNT(?x) AS ?n)"+NL+
         "WHERE {"+NL+
         "   ?x a ?class"+NL+
 		"}"+NL+

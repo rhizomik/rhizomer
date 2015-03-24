@@ -12,30 +12,30 @@
 
 <!-- DataStore Configuration. Options: Virtuoso, Jena File/Database, OWLIM, LDP -->
 
-<!-- LDP MODEL -->
+    <!-- LDP MODEL -->
     <context-param>
         <param-name>store_class</param-name>
         <param-value>net.rhizomik.rhizomer.store.ldp.LDPStore</param-value>
     </context-param>
     <context-param>
         <param-name>base_uri</param-name>
-        <param-value></param-value>
+        <param-value>http://localhost:8080/marmotta</param-value>
     </context-param>
     <context-param>
         <param-name>container_name</param-name>
-        <param-value></param-value>
+        <param-value>missions</param-value>
     </context-param>
     <context-param>
         <param-name>sparql_endpoint</param-name>
-        <param-value></param-value>
+        <param-value>http://ip6-localhost:8080/marmotta/sparql/</param-value>
     </context-param>
     <context-param>
         <param-name>rdf_data</param-name>
-        <param-value></param-value>
+        <param-value>file:///home/davidkaste/Projects/rhizomer/src/main/webapp/metadata/nasa-apollo.rdf</param-value>
     </context-param>
     <context-param>
         <param-name>rdf_type</param-name>
-        <param-value></param-value>
+        <param-value>http://purl.org/net/schemas/space/Mission</param-value>
     </context-param>
   
   <security-constraint>

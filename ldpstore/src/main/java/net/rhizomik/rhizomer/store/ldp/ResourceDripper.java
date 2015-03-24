@@ -4,17 +4,16 @@ import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.ontology.OntResource;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.xml.internal.bind.v2.runtime.property.PropertyFactory;
 
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -37,7 +36,24 @@ public class ResourceDripper {
         model.read(fileUri, "RDF/XML");
     }
 
-    private String describeURI(OntResource resource) {
+    /*private String describeURI(OntResource resource) {
+        String sparql;
+        Query q;
+        QueryExecution qe;
+        Model resultModel;
+        StringWriter out;
+
+        sparql = "DESCRIBE <" + resource.getURI() + ">";
+        q = QueryFactory.create(sparql);
+        qe = QueryExecutionFactory.create(q, resource.getModel());
+        resultModel = qe.execDescribe();
+        out = new StringWriter();
+        resultModel.write(out, "RDF/XML");
+
+        return out.toString();
+    }*/
+
+    private String describeURI(Resource resource) {
         String sparql;
         Query q;
         QueryExecution qe;
@@ -60,10 +76,10 @@ public class ResourceDripper {
         ClientResponse cr;
 
         try {
-            System.out.println(serverUri.toString() + "/" + containerName);
+            //System.out.println(serverUri.toString() + "/" + containerName);
             wr = c.resource(serverUri.toString() + "/" + containerName);
             String identifier = resourceUri.split("/")[resourceUri.split("/").length - 1];
-            System.out.println(identifier);
+            //System.out.println(identifier);
             cr = wr.type("application/rdf+xml")
                     .header("Slug", identifier)
                     .post(ClientResponse.class, resourceRDF);
@@ -78,11 +94,11 @@ public class ResourceDripper {
     }
 
     public void importResources2LDP (URL serverUri, String containerName, String classUri) {
-        final OntClass governmentOrganization;
+        final OntClass rdfClass;
         String resourceRDF;
         try {
-            governmentOrganization = model.getOntClass(classUri);
-            for ( final ExtendedIterator<? extends OntResource> gvs = governmentOrganization.listInstances(); gvs.hasNext(); ) {
+            rdfClass = model.getOntClass(classUri);
+            for ( final ExtendedIterator<? extends OntResource> gvs = rdfClass.listInstances(); gvs.hasNext(); ) {
                 OntResource or = gvs.next();
                 resourceRDF = describeURI(or);
                 simpleImport2LDP(or.getURI(), resourceRDF, serverUri, containerName);
@@ -95,11 +111,35 @@ public class ResourceDripper {
         }
     }
 
+    public void importResources2LDP(URL serverURI) {
+        String query;
+        Query q;
+        QueryExecution qe;
+        QuerySolution qs;
+
+        query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                "SELECT ?class ?instance WHERE { ?instance rdf:type ?class } ORDER BY ?class";
+        q = QueryFactory.create(query);
+        qe = QueryExecutionFactory.create(q, model);
+        ResultSet result = qe.execSelect();
+        while (result.hasNext()) {
+            qs = result.next();
+            String className = qs.getResource("?class").toString().split("/")[qs.getResource("?class").toString().split("/").length - 1];
+            if(className.contains("#")) {
+                className = className.split("#")[1];
+            }
+            simpleImport2LDP(qs.getResource("?instance").getURI(), describeURI(qs.getResource("?instance")), serverURI, className);
+            log.log(Level.INFO, "Importing resource with uri <" + qs.getResource("?instance").getURI() + "> to container " + className);
+        }
+
+    }
+
     public static void main(String[] args) throws MalformedURLException {
         log.setLevel(Level.ALL);
         ResourceDripper rd = new ResourceDripper("file:///home/davidkaste/Projects/rhizomer/src/main/webapp/metadata/nasa-apollo.rdf");
         URL url = new URL("http://localhost:8080/marmotta/ldp");
-        rd.importResources2LDP(url, "missions", "http://purl.org/net/schemas/space/Mission");
+        //rd.importResources2LDP(url, "missions", "http://purl.org/net/schemas/space/Mission");
+        rd.importResources2LDP(url);
         //rd.importResources2LDP(url, "administracions/address", "http://schema.org/PostalAddress");
     }
 }

@@ -9,15 +9,17 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.xml.internal.bind.v2.runtime.property.PropertyFactory;
+import org.apache.commons.codec.binary.Hex;
 
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,14 +76,18 @@ public class ResourceDripper {
         WebResource wr;
         Client c = Client.create();
         ClientResponse cr;
+        MessageDigest md;
+        String hexDump;
 
         try {
-            //System.out.println(serverUri.toString() + "/" + containerName);
             wr = c.resource(serverUri.toString() + "/" + containerName);
-            String identifier = resourceUri.split("/")[resourceUri.split("/").length - 1];
-            //System.out.println(identifier);
+            md = MessageDigest.getInstance("MD5");
+            md.reset();
+            md.update(resourceUri.getBytes("UTF-8"));
+            hexDump = Hex.encodeHexString(md.digest());
+            log.log(Level.INFO, "Digest: " + hexDump);
             cr = wr.type("application/rdf+xml")
-                    .header("Slug", identifier)
+                    .header("Slug", hexDump)
                     .post(ClientResponse.class, resourceRDF);
 
             if (cr.getStatus() != 201) {
@@ -90,6 +96,12 @@ public class ResourceDripper {
             }
         } catch (RuntimeException re) {
             re.printStackTrace();
+        } catch (NoSuchAlgorithmException nsae) {
+            log.log(Level.SEVERE, "MD5 isn't a valid algorithm");
+            nsae.printStackTrace();
+        } catch (UnsupportedEncodingException uee) {
+            log.log(Level.SEVERE, "UTF-8 is unsupported");
+            uee.printStackTrace();
         }
     }
 
@@ -118,7 +130,16 @@ public class ResourceDripper {
         QuerySolution qs;
 
         query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT ?class ?instance WHERE { ?instance rdf:type ?class } ORDER BY ?class";
+                "SELECT DISTINCT ?instance ?class WHERE { ?instance rdf:type ?class } ORDER BY ?class ?instance";
+        /*query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+                "SELECT ?r1 ?type\n" +
+                "WHERE { \n" +
+                "   ?r1 a ?type \n" +
+                "   OPTIONAL {\n" +
+                "      ?r1 a ?type2. ?type2 rdfs:subClassOf ?type. \n" +
+                "      FILTER (?type!=?type2 && !isBlank(?type2)) } \n" +
+                "   FILTER(!isBlank(?type) && bound(?type2))\n" +
+                "}";*/
         q = QueryFactory.create(query);
         qe = QueryExecutionFactory.create(q, model);
         ResultSet result = qe.execSelect();

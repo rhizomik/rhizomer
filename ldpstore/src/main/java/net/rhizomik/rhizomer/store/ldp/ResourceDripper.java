@@ -55,7 +55,8 @@ public class ResourceDripper {
         return out.toString();
     }*/
 
-    private String describeURI(Resource resource) {
+    /* Default package visibility */
+    String describeURI(Resource resource) {
         String sparql;
         Query q;
         QueryExecution qe;
@@ -72,6 +73,16 @@ public class ResourceDripper {
         return out.toString();
     }
 
+    private boolean isInserted(String uri) {
+        Client c = Client.create();
+        WebResource wr = c.resource(uri);
+        ClientResponse cr = wr.get(ClientResponse.class);
+        if(cr.getStatus() == 200) {
+            return true;
+        }
+        return false;
+    }
+
     private void simpleImport2LDP(String resourceUri, String resourceRDF, URL serverUri, String containerName) {
         WebResource wr;
         Client c = Client.create();
@@ -86,13 +97,15 @@ public class ResourceDripper {
             md.update(resourceUri.getBytes("UTF-8"));
             hexDump = Hex.encodeHexString(md.digest());
             log.log(Level.INFO, "Digest: " + hexDump);
-            cr = wr.type("application/rdf+xml")
-                    .header("Slug", hexDump)
-                    .post(ClientResponse.class, resourceRDF);
+            if(!isInserted(serverUri.toString() + "/" + containerName + "/" + hexDump)) {
+                cr = wr.type("application/rdf+xml")
+                        .header("Slug", hexDump)
+                        .post(ClientResponse.class, resourceRDF);
 
-            if (cr.getStatus() != 201) {
-                log.log(Level.SEVERE, "Failed : HTTP Error Code: " + cr.getStatus());
-                throw new RuntimeException("Failed : HTTP Error Code: " + cr.getStatus());
+                if (cr.getStatus() != 201) {
+                    log.log(Level.SEVERE, "Failed : HTTP Error Code: " + cr.getStatus());
+                    throw new RuntimeException("Failed : HTTP Error Code: " + cr.getStatus());
+                }
             }
         } catch (RuntimeException re) {
             re.printStackTrace();
@@ -129,17 +142,16 @@ public class ResourceDripper {
         QueryExecution qe;
         QuerySolution qs;
 
-        query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT DISTINCT ?instance ?class WHERE { ?instance rdf:type ?class } ORDER BY ?class ?instance";
-        /*query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-                "SELECT ?r1 ?type\n" +
-                "WHERE { \n" +
-                "   ?r1 a ?type \n" +
-                "   OPTIONAL {\n" +
-                "      ?r1 a ?type2. ?type2 rdfs:subClassOf ?type. \n" +
-                "      FILTER (?type!=?type2 && !isBlank(?type2)) } \n" +
-                "   FILTER(!isBlank(?type) && bound(?type2))\n" +
-                "}";*/
+        /*query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                "SELECT DISTINCT ?instance ?class WHERE { ?instance rdf:type ?class } ORDER BY ?class ?instance";*/
+        query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+                "SELECT DISTINCT ?i ?class\n" +
+                "WHERE {\n" +
+                "?i a ?class\n" +
+                "FILTER NOT EXISTS {\n" +
+                "?i a ?class2. ?class2 rdfs:subClassOf ?class.\n" +
+                "FILTER (?class!=?class2) }\n" +
+                "} ORDER BY ?i ?class";
         q = QueryFactory.create(query);
         qe = QueryExecutionFactory.create(q, model);
         ResultSet result = qe.execSelect();
@@ -149,15 +161,15 @@ public class ResourceDripper {
             if(className.contains("#")) {
                 className = className.split("#")[1];
             }
-            simpleImport2LDP(qs.getResource("?instance").getURI(), describeURI(qs.getResource("?instance")), serverURI, className);
-            log.log(Level.INFO, "Importing resource with uri <" + qs.getResource("?instance").getURI() + "> to container " + className);
+            simpleImport2LDP(qs.getResource("?i").getURI(), describeURI(qs.getResource("?i")), serverURI, className);
+            log.log(Level.INFO, "Importing resource with uri <" + qs.getResource("?i").getURI() + "> to container " + className);
         }
 
     }
 
     public static void main(String[] args) throws MalformedURLException {
         log.setLevel(Level.ALL);
-        ResourceDripper rd = new ResourceDripper("file:///home/davidkaste/Projects/rhizomer/src/main/webapp/metadata/nasa-apollo.rdf");
+        ResourceDripper rd = new ResourceDripper("file:///home/davidkaste/Projects/rhizomer/target/rhizomer/metadata/nasa-apollo.rdf");
         URL url = new URL("http://localhost:8080/marmotta/ldp");
         //rd.importResources2LDP(url, "missions", "http://purl.org/net/schemas/space/Mission");
         rd.importResources2LDP(url);

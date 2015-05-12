@@ -1,6 +1,7 @@
 package net.rhizomik.rhizomer.store.ldp;
 
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import net.rhizomik.rhizomer.store.MetadataStore;
 import org.apache.marmotta.client.ClientConfiguration;
 import org.apache.marmotta.client.MarmottaClient;
@@ -15,6 +16,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.queryJSONMarmotta;
 import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.queryMarmotta;
@@ -36,7 +39,7 @@ public class LDPStore implements MetadataStore {
 
     private MarmottaClient mc;
 
-    //private static final Logger log = Logger.getLogger(LDPStore.class.getName());
+    private static final Logger log = Logger.getLogger(LDPStore.class.getName());
 
     public LDPStore () {
         super();
@@ -127,6 +130,15 @@ public class LDPStore implements MetadataStore {
     @Override
     public String query(String query) {
         String response;
+        String uri = "";
+        String describeResult;
+        ResourceDripper rd = new ResourceDripper(this.rdfData);
+        if(query.contains("DESCRIBE <")) {
+            uri = query.substring(query.indexOf("<") + 1, query.indexOf(">") - 1);
+            log.log(Level.INFO, "Parsed URI: " + uri);
+            describeResult = rd.describeURI(ResourceFactory.createResource(uri));
+            return describeResult;
+        }
         response = queryMarmotta(query, sparqlEndpoint);
         return response;
     }

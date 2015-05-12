@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
  */
 public abstract class JenaAdapter {
     public static ResultSet querySelectMarmotta(String query, String SPARQLEndpoint) {
+        System.out.println(query);
         URIBuilder ub = new URIBuilder();
         Client c = Client.create();
         WebResource wr = c.resource(SPARQLEndpoint + "select" + ub.addParameter("query", query).addParameter("output", "application/sparql-results+xml"));

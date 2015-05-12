@@ -247,7 +247,7 @@ public class SesameStore implements MetadataStore
 	writer.close();
     }
     
-    private void buildCBDs(String[] uris, ByteArrayOutputStream out) 
+	private void buildCBDs(String[] uris, ByteArrayOutputStream out)
 	    throws QueryEvaluationException, RepositoryException, IOException, RDFHandlerException
     {
 	RDFXMLPrettyWriter writer = new RDFXMLPrettyWriter(out);
@@ -270,7 +270,7 @@ public class SesameStore implements MetadataStore
 	    writer.handleStatement(s);
 	    Value value = s.getObject();
 	    if (value instanceof BNode)
-		buildCBD((Resource)value, writer);
+			buildCBD((Resource)value, writer);
 	    else if (value instanceof Resource)
 	    {
 		RepositoryResult<Statement> labels = 

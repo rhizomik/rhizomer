@@ -27,7 +27,7 @@
     </context-param>
     <context-param>
         <param-name>sparql_endpoint</param-name>
-        <param-value>http://ip6-localhost:8080/marmotta/sparql/</param-value>
+        <param-value>http://localhost:8080/marmotta/sparql/</param-value>
     </context-param>
     <context-param>
         <param-name>rdf_data</param-name>

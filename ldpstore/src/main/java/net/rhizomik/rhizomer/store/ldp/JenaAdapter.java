@@ -29,9 +29,9 @@ public abstract class JenaAdapter {
         URIBuilder ub = new URIBuilder();
         Client c = Client.create();
         WebResource wr = c.resource(SPARQLEndpoint + "select" + ub.addParameter("query", query).addParameter("output", "application/rdf+xml"));
-        wr.toString();
+        //wr.toString();
         String cr = wr.get(String.class);
-        System.out.println(cr);
+        //System.out.println(cr);
         return cr;
     }
 

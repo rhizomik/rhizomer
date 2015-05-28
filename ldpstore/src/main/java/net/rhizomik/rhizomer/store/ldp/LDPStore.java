@@ -1,27 +1,34 @@
 package net.rhizomik.rhizomer.store.ldp;
 
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import net.rhizomik.rhizomer.store.MetadataStore;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.jena.riot.RDFLanguages;
 import org.apache.marmotta.client.ClientConfiguration;
 import org.apache.marmotta.client.MarmottaClient;
 import org.apache.marmotta.client.clients.SPARQLClient;
 import org.apache.marmotta.client.exception.MarmottaClientException;
-import org.apache.marmotta.client.model.sparql.SPARQLResult;
 
 import javax.servlet.ServletConfig;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.queryJSONMarmotta;
-import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.queryMarmotta;
-import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.querySelectMarmotta;
+import static net.rhizomik.rhizomer.store.ldp.JenaAdapter.*;
 
 /**
  * LDP implementation of the Rhizomer metadata store
@@ -122,6 +129,51 @@ public class LDPStore implements MetadataStore {
         mc = new MarmottaClient(cc);
     }
 
+    private String getMD5(String resourceUri) {
+        MessageDigest md = null;
+        String hexDump = "";
+        try {
+            md = MessageDigest.getInstance("MD5");
+            md.reset();
+            md.update(resourceUri.getBytes("UTF-8"));
+            hexDump = Hex.encodeHexString(md.digest());
+        } catch(NoSuchAlgorithmException nsae) {
+            log.log(Level.SEVERE, "Digest algorithm " + md.getAlgorithm() + " does not exist.");
+        } catch(UnsupportedEncodingException uee) {
+            log.log(Level.SEVERE, "UTF-8 encoding is not valid.");
+        }
+
+        return hexDump;
+    }
+
+    private Model getContainer(String uri) {
+        WebResource wr;
+        Client c = Client.create();
+        ClientResponse cr;
+
+        wr = c.resource(uri);
+        /*cr = wr.get(ClientResponse.class);
+        if(cr.getStatus() != 200) {
+            log.log(Level.SEVERE, "Failed : HTTP Error Code: " + cr.getStatus());
+            throw new RuntimeException("Failed : HTTP Error Code: " + cr.getStatus());
+        }*/
+
+
+        String response = wr.header("Accept", "application/rdf+xml").get(String.class);
+        return ModelFactory.createDefaultModel().read(new ByteArrayInputStream(response.getBytes()), RDFLanguages.strLangRDFXML);
+        //return ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM).read(response, RDFLanguages.strLangRDFXML);
+    }
+
+    private String describeJenaModel(Model model, String instanceUri) {
+        String queryString = "DESCRIBE <" + instanceUri + ">";
+        Query query = QueryFactory.create(queryString);
+        QueryExecution qexec = QueryExecutionFactory.create(query, model);
+        Model result = qexec.execDescribe();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        result.write(baos, RDFLanguages.strLangRDFXML);
+        return new String(baos.toByteArray(), StandardCharsets.UTF_8);
+    }
+
     /**
      * Abstract method for querying a metadata store.
      *
@@ -132,15 +184,70 @@ public class LDPStore implements MetadataStore {
         String response;
         String uri = "";
         String describeResult;
-        ResourceDripper rd = new ResourceDripper(this.rdfData);
-        if(query.contains("DESCRIBE <")) {
-            uri = query.substring(query.indexOf("<") + 1, query.indexOf(">") - 1);
-            log.log(Level.INFO, "Parsed URI: " + uri);
-            describeResult = rd.describeURI(ResourceFactory.createResource(uri));
-            return describeResult;
+        String dquery;
+        OntModel model;
+        Query q;
+        QueryExecution qe;
+        QuerySolution qs;
+        ResultSet result;
+        //ResourceDripper rd = new ResourceDripper(this.rdfData);
+        if(query.contains("DESCRIBE <")
+                && !query.equals("DESCRIBE <http://localhost:8000/html/> <http://localhost:8000/>")
+                /*&& !query.contains("dbpedia.org")*/) {
+            qs = getQuerySolution(query);
+            Model marmottaModel = getMarmottaModel(qs);
+            return describeJenaModel(marmottaModel, qs.getResource("?instance").getURI());
         }
         response = queryMarmotta(query, sparqlEndpoint);
         return response;
+    }
+
+    private Model getMarmottaModel(QuerySolution qs) {
+        String className = getClassName(qs.getResource("?class").toString().split("/")[qs.getResource("?class").toString().split("/").length - 1]);
+        log.log(Level.INFO, "Detected class: " + className);
+        log.log(Level.INFO, "Detected instance: " + qs.getResource("?instance").getURI());
+        log.log(Level.INFO, "MD5 digest of resource: " + getMD5(qs.getResource("?instance").getURI()));
+        // Get function
+        log.log(Level.INFO, "URI: " + baseURI + "/ldp/" +
+                className + "/" +
+                getMD5(qs.getResource("?instance").getURI()));
+        return getContainer(baseURI + "/ldp/" +
+                className + "/" +
+                getMD5(qs.getResource("?instance").getURI()));
+    }
+
+    private String getClassName(String s) {
+        String className = s;
+        if(className.contains("#")) {
+            className = className.split("#")[1];
+        }
+        return className;
+    }
+
+    private QuerySolution getQuerySolution(String query) {
+        String uri;
+        String describeResult;
+        OntModel model;
+        String dquery;
+        Query q;
+        QueryExecution qe;
+        ResultSet result;
+        QuerySolution qs;
+        uri = query.substring(query.indexOf("<") + 1, query.indexOf(">"));
+        log.log(Level.INFO, "Query: " + query);
+        log.log(Level.INFO, "Parsed URI: " + uri);
+        //describeResult = rd.describeURI(ResourceFactory.createResource(uri));
+        describeResult = queryMarmotta(query, this.sparqlEndpoint);
+        model = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
+        InputStream stream = new ByteArrayInputStream(describeResult.getBytes(StandardCharsets.UTF_8));
+        model.read(stream, "RDF/XML");
+        dquery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                "SELECT DISTINCT ?instance ?class WHERE { ?instance rdf:type ?class } ORDER BY ?class ?instance";
+        q = QueryFactory.create(dquery);
+        qe = QueryExecutionFactory.create(q, model);
+        result = qe.execSelect();
+        qs = result.next();
+        return qs;
     }
 
     /**

@@ -182,24 +182,22 @@ public class LDPStore implements MetadataStore {
     @Override
     public String query(String query) {
         String response;
-        String uri = "";
-        String describeResult;
-        String dquery;
-        OntModel model;
-        Query q;
-        QueryExecution qe;
         QuerySolution qs;
-        ResultSet result;
-        //ResourceDripper rd = new ResourceDripper(this.rdfData);
         if(query.contains("DESCRIBE <")
                 && !query.equals("DESCRIBE <http://localhost:8000/html/> <http://localhost:8000/>")
                 /*&& !query.contains("dbpedia.org")*/) {
             qs = getQuerySolution(query);
-            Model marmottaModel = getMarmottaModel(qs);
-            return describeJenaModel(marmottaModel, qs.getResource("?instance").getURI());
+            return getJenaModel(qs);
         }
         response = queryMarmotta(query, sparqlEndpoint);
         return response;
+    }
+
+    private String getJenaModel(QuerySolution qs) {
+        if(qs == null)
+            return "";
+        Model marmottaModel = getMarmottaModel(qs);
+        return describeJenaModel(marmottaModel, qs.getResource("?instance").getURI());
     }
 
     private Model getMarmottaModel(QuerySolution qs) {
@@ -232,7 +230,7 @@ public class LDPStore implements MetadataStore {
         Query q;
         QueryExecution qe;
         ResultSet result;
-        QuerySolution qs;
+        QuerySolution qs = null;
         uri = query.substring(query.indexOf("<") + 1, query.indexOf(">"));
         log.log(Level.INFO, "Query: " + query);
         log.log(Level.INFO, "Parsed URI: " + uri);
@@ -246,7 +244,9 @@ public class LDPStore implements MetadataStore {
         q = QueryFactory.create(dquery);
         qe = QueryExecutionFactory.create(q, model);
         result = qe.execSelect();
-        qs = result.next();
+        if(result.hasNext()) {
+            qs = result.next();
+        }
         return qs;
     }
 

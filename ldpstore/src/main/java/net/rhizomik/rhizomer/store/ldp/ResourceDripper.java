@@ -169,7 +169,7 @@ public class ResourceDripper {
 
     public static void main(String[] args) throws MalformedURLException {
         log.setLevel(Level.ALL);
-        ResourceDripper rd = new ResourceDripper("file:///home/davidkaste/Projects/rhizomer/target/rhizomer/metadata/nasa-apollo.rdf");
+        ResourceDripper rd = new ResourceDripper("file:///home/davidkaste/Projects/rhizomer/target/rhizomer/metadata/Altres-Administracions.rdf");
         URL url = new URL("http://localhost:8080/marmotta/ldp");
         //rd.importResources2LDP(url, "missions", "http://purl.org/net/schemas/space/Mission");
         rd.importResources2LDP(url);

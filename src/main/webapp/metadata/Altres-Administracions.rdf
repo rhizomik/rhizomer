@@ -1,0 +1,2992 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+		xmlns:schema="http://schema.org/"
+		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+		xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/1">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1</dc:identifier>
+	<schema:legalName>Oficina de Serveis de Gestió de Documents als Ciutadans Estrangers  </schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/65836b90a1a5a03f4e35dc119d95f7dc">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Lleida">
+	<rdfs:label>Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/65836b90a1a5a03f4e35dc119d95f7dc">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:streetAddress>c. Jaume II  15</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Jaume II  15</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/1">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/65836b90a1a5a03f4e35dc119d95f7dc"/>
+	<schema:telephone>973 214 297</schema:telephone>
+	<rdfs:label>Oficina de Serveis de Gestió de Documents als Ciutadans Estrangers  </rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/2">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2</dc:identifier>
+	<schema:legalName>Sala Gòtica de l Institut d Estudis Ilerdencs</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/2c0c5e405f41a363747112041a035ac6">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25002</schema:postalCode>
+	<schema:streetAddress>pl. de la Catedral  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Catedral  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/2">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/2c0c5e405f41a363747112041a035ac6"/>
+	<schema:telephone>973 271 500</schema:telephone>
+	<schema:email>iei@fpiei.es</schema:email>
+	<rdfs:label>Sala Gòtica de l Institut d Estudis Ilerdencs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/3">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">3</dc:identifier>
+	<schema:legalName>Servei d Arxiu i Llegats de la Fundació Pública Institut d Estudis Ilerdencs</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/7ff620359814a65ae783fddeda7bd055">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25002</schema:postalCode>
+	<schema:streetAddress>pl. de la Catedral  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Catedral  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/3">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/7ff620359814a65ae783fddeda7bd055"/>
+	<schema:telephone>973 271 500</schema:telephone>
+	<schema:email>arxiusiei@diputaciolleida.es</schema:email>
+	<schema:url>http://www.fpiei.es</schema:url>
+	<rdfs:label>Servei d Arxiu i Llegats de la Fundació Pública Institut d Estudis Ilerdencs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/4">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">4</dc:identifier>
+	<schema:legalName>Institut d Estudis Ilerdencs-Sala d Arqueologia</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/106a0406520a952a3134f33d516ecc76">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25002</schema:postalCode>
+	<schema:streetAddress>pl. de la Catedral  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Catedral  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/4">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/106a0406520a952a3134f33d516ecc76"/>
+	<schema:telephone>973 271 500</schema:telephone>
+	<schema:email>salaarq@diputaciolleida.es</schema:email>
+	<schema:url>http://www.fpiei.es</schema:url>
+	<rdfs:label>Institut d Estudis Ilerdencs-Sala d Arqueologia</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/5">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">5</dc:identifier>
+	<schema:legalName>Serveis d Arxius  Estudis i Informació de la Diputació de Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/c0e14971f8392a87d815d6449edbff58">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del Carme  26</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del Carme  26</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/5">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/c0e14971f8392a87d815d6449edbff58"/>
+	<schema:telephone>973 249 200</schema:telephone>
+	<schema:email>tibars@diputaciolleida.es</schema:email>
+	<schema:url>http://www.diputaciolleida.net</schema:url>
+	<rdfs:label>Serveis d Arxius  Estudis i Informació de la Diputació de Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/6">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">6</dc:identifier>
+	<schema:legalName>Biblioteca Hemeroteca de l IEI</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/8ff437f8d9c6606555b3c8e8b2ce9608">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25002</schema:postalCode>
+	<schema:streetAddress>pl. de la Catedral  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Catedral  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/6">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/8ff437f8d9c6606555b3c8e8b2ce9608"/>
+	<schema:telephone>973 271 500</schema:telephone>
+	<schema:email>biblio@diputaciolleida.es</schema:email>
+	<schema:url>http://www.fpiei.es</schema:url>
+	<schema:scheduledTime>&amp;De dilluns a divendres: &lt;br /&gt;&amp;&amp;nbs</schema:scheduledTime>
+	<rdfs:label>Biblioteca Hemeroteca de l IEI</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/7">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">7</dc:identifier>
+	<schema:legalName>Palau de la Diputació - Balcó del serraller</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/7e8cf258194be3d0085ac44e4b41b405">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del Carme  26</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del Carme  26</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/7">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/7e8cf258194be3d0085ac44e4b41b405"/>
+	<schema:telephone>973 249 200</schema:telephone>
+	<schema:email>diputacio@diputaciolleida.es</schema:email>
+	<rdfs:label>Palau de la Diputació - Balcó del serraller</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/8">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">8</dc:identifier>
+	<schema:legalName>Fundació Pública Institut d Estudis Ilerdencs</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/f45cdd2817a731cc597463289769bab2">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25002</schema:postalCode>
+	<schema:streetAddress>pl. de la Catedral  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Catedral  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/8">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/f45cdd2817a731cc597463289769bab2"/>
+	<schema:telephone>973 271 500</schema:telephone>
+	<schema:email>fiei@diputaciolleida.es</schema:email>
+	<rdfs:label>Fundació Pública Institut d Estudis Ilerdencs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/9">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">9</dc:identifier>
+	<schema:legalName>Organisme autònom de Gestió i Recaptació de Tributs Locals</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/3c63876bad014018d979544490c05cc8">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>rbla. Ferran  18 2n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>rbla. Ferran  18 2n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/9">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/3c63876bad014018d979544490c05cc8"/>
+	<schema:telephone>973 230 401</schema:telephone>
+	<schema:email>oagrt@diputaciolleida.es</schema:email>
+	<rdfs:label>Organisme autònom de Gestió i Recaptació de Tributs Locals</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/10">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">10</dc:identifier>
+	<schema:legalName>Patronat Intercomarcal de Turisme Terres de Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/8fd24dc7fa9b802dd79cbf989f2f8cad">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>rbla. Ferran  18 3r</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>rbla. Ferran  18 3r</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/10">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/8fd24dc7fa9b802dd79cbf989f2f8cad"/>
+	<schema:telephone>973 245 408</schema:telephone>
+	<schema:email>lleidatur@lleidatur.com</schema:email>
+	<rdfs:label>Patronat Intercomarcal de Turisme Terres de Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/11">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">11</dc:identifier>
+	<schema:legalName>Centre Europeu d Empreses i Innovació a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d21302f672cc0ef369ce49cd04d365f4">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>rbla. Ferran  18 1r</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>rbla. Ferran  18 1r</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/11">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/d21302f672cc0ef369ce49cd04d365f4"/>
+	<schema:telephone>973 230 393 </schema:telephone>
+	<schema:email>ceei@diputaciolleida.es</schema:email>
+	<rdfs:label>Centre Europeu d Empreses i Innovació a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/12">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">12</dc:identifier>
+	<schema:legalName>Jutjat Contenciós Administratiu número 1</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/321b7ed11bbdca0f15481b6453a1b34e">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>C. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/12">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/321b7ed11bbdca0f15481b6453a1b34e"/>
+	<schema:telephone>973 700 133</schema:telephone>
+	<rdfs:label>Jutjat Contenciós Administratiu número 1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/13">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">13</dc:identifier>
+	<schema:legalName>Jutjat de Vigilància Penitenciària número 3 de Catalunya</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/96331395b75f948f4b5dd6493a2f2d8b">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del Clavell 15 bx 3a (Col·legi Arquitectes)</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del Clavell 15 bx 3a (Col·legi Arquitectes)</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/13">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/96331395b75f948f4b5dd6493a2f2d8b"/>
+	<schema:telephone>973 700 092</schema:telephone>
+	<rdfs:label>Jutjat de Vigilància Penitenciària número 3 de Catalunya</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/14">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">14</dc:identifier>
+	<schema:legalName>Jutjat Social Núm. 1</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/48e797e0c1d255c7ac193e2cbc4e561e">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/14">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/48e797e0c1d255c7ac193e2cbc4e561e"/>
+	<schema:telephone>973 700 185</schema:telephone>
+	<rdfs:label>Jutjat Social Núm. 1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/15">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">15</dc:identifier>
+	<schema:legalName>Jutjat Penal número 3</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/ab7d18387f23adcadcce51d6cc654cec">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/15">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/ab7d18387f23adcadcce51d6cc654cec"/>
+	<schema:telephone>973 700 253</schema:telephone>
+	<rdfs:label>Jutjat Penal número 3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/16">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">16</dc:identifier>
+	<schema:legalName>Jutjat Penal número 2</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/8c3d851ea0b381f6d2af000efb3a8b31">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/16">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/8c3d851ea0b381f6d2af000efb3a8b31"/>
+	<schema:telephone>973 700 147</schema:telephone>
+	<rdfs:label>Jutjat Penal número 2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/17">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">17</dc:identifier>
+	<schema:legalName>Jutjat Penal número 1</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/348408ded2f5255f7774810e3c85bc35">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/17">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/348408ded2f5255f7774810e3c85bc35"/>
+	<schema:telephone>973 700 140</schema:telephone>
+	<rdfs:label>Jutjat Penal número 1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/18">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">18</dc:identifier>
+	<schema:legalName>Jutjat d Instrucció número 4</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/e7d9045a407361a0e1f3ed33e38aa91d">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/18">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/e7d9045a407361a0e1f3ed33e38aa91d"/>
+	<schema:telephone>973 030 505</schema:telephone>
+	<rdfs:label>Jutjat d Instrucció número 4</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/19">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">19</dc:identifier>
+	<schema:legalName>Jutjat d Instrucció número 3</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d7378bc2318be15081b16682b0cc8550">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/19">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/d7378bc2318be15081b16682b0cc8550"/>
+	<schema:telephone>973 700 194</schema:telephone>
+	<rdfs:label>Jutjat d Instrucció número 3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/20">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">20</dc:identifier>
+	<schema:legalName>Jutjat d Instrucció número 2</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/0bc82b6f6b9a35f6a2c1e5885ee8e57a">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/20">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/0bc82b6f6b9a35f6a2c1e5885ee8e57a"/>
+	<schema:telephone>973 700 175</schema:telephone>
+	<rdfs:label>Jutjat d Instrucció número 2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/21">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">21</dc:identifier>
+	<schema:legalName>Jutjat d Instrucció número 1</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/75316863f7ee6ebd5f354c9b66325454">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/21">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/75316863f7ee6ebd5f354c9b66325454"/>
+	<schema:telephone>973 700 164</schema:telephone>
+	<rdfs:label>Jutjat d Instrucció número 1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/22">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">22</dc:identifier>
+	<schema:legalName>Jutjat de Primera Instància número 6 (Jutjat de primera instància i jutjat mercantil)</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/42189e4b06a11cdb97784640c72a85c5">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/22">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/42189e4b06a11cdb97784640c72a85c5"/>
+	<schema:telephone>973 700 136</schema:telephone>
+	<rdfs:label>Jutjat de Primera Instància número 6 (Jutjat de primera instància i jutjat mercantil)</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/23">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">23</dc:identifier>
+	<schema:legalName>Jutjat de Primera Instància número 5</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/9f369f0ef66a0d0defdfe1e236935264">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/23">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/9f369f0ef66a0d0defdfe1e236935264"/>
+	<schema:telephone>973 700 158</schema:telephone>
+	<rdfs:label>Jutjat de Primera Instància número 5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/24">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">24</dc:identifier>
+	<schema:legalName>Jutjat de Primera Instància número 4 (primera instància i registre civil)</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/f0e70dce455ee2634399320e782d458c">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  8</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  8</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/24">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/f0e70dce455ee2634399320e782d458c"/>
+	<schema:telephone>973 229 100</schema:telephone>
+	<rdfs:label>Jutjat de Primera Instància número 4 (primera instància i registre civil)</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/25">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25</dc:identifier>
+	<schema:legalName>Jutjat de Primera Instància número 3</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/29861c4ea626581d8a3fe8cf309de15a">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/25">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/29861c4ea626581d8a3fe8cf309de15a"/>
+	<schema:telephone>973 700 181 </schema:telephone>
+	<rdfs:label>Jutjat de Primera Instància número 3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/26">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">26</dc:identifier>
+	<schema:legalName>Jutjat de Primera Instància número 2</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/23afcd3f23badd9b34b303a4236430f8">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/26">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/23afcd3f23badd9b34b303a4236430f8"/>
+	<schema:telephone>973 700 161</schema:telephone>
+	<rdfs:label>Jutjat de Primera Instància número 2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/27">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">27</dc:identifier>
+	<schema:legalName>Jutjat de Primera Instància número 1</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/4843cc660c8919cd94552c5812d16297">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/27">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/4843cc660c8919cd94552c5812d16297"/>
+	<schema:telephone>973 700 172</schema:telephone>
+	<rdfs:label>Jutjat de Primera Instància número 1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/28">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">28</dc:identifier>
+	<schema:legalName>Jutjat Degà</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/5b54497aed68eec467b23a99bc12d827">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/28">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/5b54497aed68eec467b23a99bc12d827"/>
+	<schema:telephone>973 700 160</schema:telephone>
+	<rdfs:label>Jutjat Degà</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/29">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">29</dc:identifier>
+	<schema:legalName>Secció Segona Civil de l Audiència Provincial</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/4a1b1f32e987753fef6932f569fe5cf6">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:streetAddress>c. del canyeret  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/29">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/4a1b1f32e987753fef6932f569fe5cf6"/>
+	<schema:telephone>973 705 820</schema:telephone>
+	<rdfs:label>Secció Segona Civil de l Audiència Provincial</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/30">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">30</dc:identifier>
+	<schema:legalName>Secció Primera de l Audiència Provincial (àmbit de violència sobre la dona)</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/65d1f669d4ddac791776caabb1f8ee0f">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:streetAddress>c. del canyeret  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/30">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/65d1f669d4ddac791776caabb1f8ee0f"/>
+	<schema:telephone>973 705 826</schema:telephone>
+	<rdfs:label>Secció Primera de l Audiència Provincial (àmbit de violència sobre la dona)</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/31">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">31</dc:identifier>
+	<schema:legalName>Junta Electoral Zona</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/b08abf5fab304d7d07400207e23e56eb">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:streetAddress>c. Canyeret  3-5 Porta D (Costat Jutjat de Guárdia</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Canyeret  3-5 Porta D (Costat Jutjat de Guárdia</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/31">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/b08abf5fab304d7d07400207e23e56eb"/>
+	<schema:telephone>973 245 391</schema:telephone>
+	<schema:scheduledTime>&lt;p align=justify&gt;Dilluns a divendres de 10 a 1</schema:scheduledTime>
+	<rdfs:label>Junta Electoral Zona</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/32">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">32</dc:identifier>
+	<schema:legalName>Registre Civil Madrid</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/20739492630095ff679685f237ac5abc">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/32">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/20739492630095ff679685f237ac5abc"/>
+	<schema:telephone>917 014 303</schema:telephone>
+	<rdfs:label>Registre Civil Madrid</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/33">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">33</dc:identifier>
+	<schema:legalName>Registre Civil Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/ee057cc7eedbc5e0c8fac1cc9f11f38e">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. Canyeret  8</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Canyeret  8</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/33">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/ee057cc7eedbc5e0c8fac1cc9f11f38e"/>
+	<schema:telephone>973 229 113</schema:telephone>
+	<schema:scheduledTime>De 8 a 13h</schema:scheduledTime>
+	<rdfs:label>Registre Civil Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/34">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">34</dc:identifier>
+	<schema:legalName>Presidència de l Audiència Provincial de Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/7b6a6cc1f05af246c240edd4b7acdf9d">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. del canyeret  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. del canyeret  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/34">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/7b6a6cc1f05af246c240edd4b7acdf9d"/>
+	<schema:telephone>973 705 824</schema:telephone>
+	<rdfs:label>Presidència de l Audiència Provincial de Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/35">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">35</dc:identifier>
+	<schema:legalName>Jutjat de Primera Instància número 7 (família)</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/5b16dc82b7fa25c3191150e016ea443b">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>C. del Canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. del Canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/35">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/5b16dc82b7fa25c3191150e016ea443b"/>
+	<schema:telephone>973 700 243</schema:telephone>
+	<rdfs:label>Jutjat de Primera Instància número 7 (família)</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/36">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">36</dc:identifier>
+	<schema:legalName>Registre Mercantil de Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/2befcdec50b3e7c6973778020957844f">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25006</schema:postalCode>
+	<schema:streetAddress>ps. Gran Passeig de Ronda  89</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>ps. Gran Passeig de Ronda  89</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/36">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/2befcdec50b3e7c6973778020957844f"/>
+	<schema:telephone>973 273 309</schema:telephone>
+	<schema:url>http://www.rmc.es/</schema:url>
+	<rdfs:label>Registre Mercantil de Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/37">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">37</dc:identifier>
+	<schema:legalName>Jutjat de Menors núm 1</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/933e9f316083672be2d4fe2b2b3be9a4">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>c. Canyeret 3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Canyeret 3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/37">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/933e9f316083672be2d4fe2b2b3be9a4"/>
+	<schema:telephone>973 700 178</schema:telephone>
+	<rdfs:label>Jutjat de Menors núm 1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/38">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">38</dc:identifier>
+	<schema:legalName>Fiscalia de Menors</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/e04e3eb9d2712cc8c8ac7b0252b61176">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>C. del Canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. del Canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/38">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/e04e3eb9d2712cc8c8ac7b0252b61176"/>
+	<schema:telephone>973 700 151</schema:telephone>
+	<rdfs:label>Fiscalia de Menors</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/39">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">39</dc:identifier>
+	<schema:legalName>Fiscalia Provincia de Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/ce9076dd5f68180527bec51ba69b71b4">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>C. del Canyeret  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. del Canyeret  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/39">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/ce9076dd5f68180527bec51ba69b71b4"/>
+	<schema:telephone>973 705 840</schema:telephone>
+	<rdfs:label>Fiscalia Provincia de Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/40">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">40</dc:identifier>
+	<schema:legalName>Jutjat de Guàrdia</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/a7e421fd496622c4baad4cbcd2de7da2">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>C. del Canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. del Canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/40">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/a7e421fd496622c4baad4cbcd2de7da2"/>
+	<schema:telephone>973 700 200</schema:telephone>
+	<rdfs:label>Jutjat de Guàrdia</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/41">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">41</dc:identifier>
+	<schema:legalName>Jutjat Social núm. 2</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/4c414a7b903908ac8a3ead8734e3c008">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>C. del Canyeret  3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. del Canyeret  3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/41">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/4c414a7b903908ac8a3ead8734e3c008"/>
+	<schema:telephone>973 030 027</schema:telephone>
+	<rdfs:label>Jutjat Social núm. 2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/42">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">42</dc:identifier>
+	<schema:legalName>Secretaria coordinació provincial de Lleida del Tribunal Superior de Justícia</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/1ec399f34cd4e5412a82151cbafb60e7">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>C. del Canyeret  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. del Canyeret  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/42">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/1ec399f34cd4e5412a82151cbafb60e7"/>
+	<schema:telephone>973 030 487</schema:telephone>
+	<rdfs:label>Secretaria coordinació provincial de Lleida del Tribunal Superior de Justícia</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/43">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">43</dc:identifier>
+	<schema:legalName>Jutjat de Violència sobre la Dona núm. 1</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/f1695480734f14768cb52c03a1d5e5c7">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>C. del Canyeret  núm.3-5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. del Canyeret  núm.3-5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/43">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/f1695480734f14768cb52c03a1d5e5c7"/>
+	<schema:telephone>973 030 085</schema:telephone>
+	<rdfs:label>Jutjat de Violència sobre la Dona núm. 1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/44">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">44</dc:identifier>
+	<schema:legalName>Administració de Justícia: Atenció al ciutadà</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/85e916299227422faf68ea84d793dc3e">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>C. del Canyeret  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. del Canyeret  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/44">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/85e916299227422faf68ea84d793dc3e"/>
+	<schema:telephone>973 705 813</schema:telephone>
+	<rdfs:label>Administració de Justícia: Atenció al ciutadà</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/45">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">45</dc:identifier>
+	<schema:legalName>Servei Territorial de Justícia</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/b0ca9e2c14586aae54692ffb6d2b6ebc">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25004</schema:postalCode>
+	<schema:streetAddress>c. Sant Martí  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Sant Martí  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/45">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/b0ca9e2c14586aae54692ffb6d2b6ebc"/>
+	<schema:telephone>973 727 707</schema:telephone>
+	<schema:email>justicia.dtlle@gencat.ent</schema:email>
+	<schema:scheduledTime>Horari: de dilluns a dijous  de 8.30h a 17h div</schema:scheduledTime>
+	<rdfs:label>Servei Territorial de Justícia</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/46">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">46</dc:identifier>
+	<schema:legalName>Institut Nacional de la Seguretat Social a Lleida- Centre urbà</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/53b3c586e995cdc6fe877a9604b8497d">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25006</schema:postalCode>
+	<schema:streetAddress>av. Prat de la Riba  3</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>av. Prat de la Riba  3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/46">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/53b3c586e995cdc6fe877a9604b8497d"/>
+	<schema:telephone>973 700 700 </schema:telephone>
+	<schema:scheduledTime>Horari: de dilluns a divendres  de 9 a 14h&lt;br /&gt;</schema:scheduledTime>
+	<rdfs:label>Institut Nacional de la Seguretat Social a Lleida- Centre urbà</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/47">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">47</dc:identifier>
+	<schema:legalName>Paidós Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/dff02e5cb99d489e9dbed412b911eb0d">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:streetAddress>av. Segre  5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>av. Segre  5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/47">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/dff02e5cb99d489e9dbed412b911eb0d"/>
+	<schema:telephone>973 244 100</schema:telephone>
+	<rdfs:label>Paidós Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/48">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">48</dc:identifier>
+	<schema:legalName>Oficina de Serveis de Gestió de Documents als Ciutadans Estrangers  </schema:legalName>
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/65836b90a1a5a03f4e35dc119d95f7dc"/>
+	<schema:telephone>973 214 297</schema:telephone>
+	<rdfs:label>Oficina de Serveis de Gestió de Documents als Ciutadans Estrangers  </rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/49">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">49</dc:identifier>
+	<schema:legalName>Oficina del Cens Electoral</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/0dce9e677d59a4a965a8ae30ac8f3803">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25004</schema:postalCode>
+	<schema:streetAddress>C/ Bonaire 47-49</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C/ Bonaire 47-49</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/49">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/0dce9e677d59a4a965a8ae30ac8f3803"/>
+	<schema:telephone>973 238 224</schema:telephone>
+	<rdfs:label>Oficina del Cens Electoral</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/50">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">50</dc:identifier>
+	<schema:legalName>Registre Mercantil de Lleida</schema:legalName>
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/2befcdec50b3e7c6973778020957844f"/>
+	<schema:telephone>973 273 309</schema:telephone>
+	<schema:url>http://www.rmc.es/</schema:url>
+	<rdfs:label>Registre Mercantil de Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/51">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">51</dc:identifier>
+	<schema:legalName>Oficina única d estrangers</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/f1c5ced283ecc05f2eb44cf99c6878ad">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:streetAddress>av.Prat de la Riba  36</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>av.Prat de la Riba  36</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/51">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/f1c5ced283ecc05f2eb44cf99c6878ad"/>
+	<schema:telephone>973 727 450</schema:telephone>
+	<schema:url>http://extranjeros.mtas.es</schema:url>
+	<rdfs:label>Oficina única d estrangers</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/52">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">52</dc:identifier>
+	<schema:legalName>Registre de la Propietat de Lleida núm. 1</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/f773294f11b4c7f02cf8d5b8318d8930">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:streetAddress>ps. Gran Passeig de Ronda  89</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>ps. Gran Passeig de Ronda  89</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/52">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/f773294f11b4c7f02cf8d5b8318d8930"/>
+	<schema:telephone>973 273 300</schema:telephone>
+	<rdfs:label>Registre de la Propietat de Lleida núm. 1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/53">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">53</dc:identifier>
+	<schema:legalName>Registre de la Propietat de Lleida núm. 2</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/b59420cbf24a0670f93cb9d5a049d017">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:streetAddress>ps. Gran Passeig de Ronda  89</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>ps. Gran Passeig de Ronda  89</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/53">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/b59420cbf24a0670f93cb9d5a049d017"/>
+	<schema:telephone>973 273 309</schema:telephone>
+	<rdfs:label>Registre de la Propietat de Lleida núm. 2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/54">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">54</dc:identifier>
+	<schema:legalName>Registre de la propietat de Lleida núm. 3</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/f45f3f77ecfd5b5445530b98eca0e085">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:streetAddress>ps. Gran Passeig de Ronda  89</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>ps. Gran Passeig de Ronda  89</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/54">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/f45f3f77ecfd5b5445530b98eca0e085"/>
+	<schema:telephone>973 263 987</schema:telephone>
+	<rdfs:label>Registre de la propietat de Lleida núm. 3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/55">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">55</dc:identifier>
+	<schema:legalName>Oficina d Estrangers</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/ae3d343c5b09554a30ca1725af46d811">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25008</schema:postalCode>
+	<schema:streetAddress>c. Prat de la Riba  36</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Prat de la Riba  36</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/55">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/ae3d343c5b09554a30ca1725af46d811"/>
+	<schema:telephone>973 959 230</schema:telephone>
+	<schema:url>http://www.paeria.es/Extranjeria/</schema:url>
+	<rdfs:label>Oficina d Estrangers</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/56">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">56</dc:identifier>
+	<schema:legalName>Confederación Hidrográfica del Ebro</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d2f20ac9641a874fffa260101adb3502">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Zaragoza">
+	<rdfs:label>Saragossa</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d2f20ac9641a874fffa260101adb3502">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Zaragoza"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">50071</schema:postalCode>
+	<schema:streetAddress>Paseo de Sagasta  24-26</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Paseo de Sagasta  24-26</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/56">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/d2f20ac9641a874fffa260101adb3502"/>
+	<schema:telephone>976 711 000</schema:telephone>
+	<schema:url>http://www.chebro.es</schema:url>
+	<rdfs:label>Confederación Hidrográfica del Ebro</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/57">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">57</dc:identifier>
+	<schema:legalName>Informació sobre la Televisió Digital (TDT)</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/3176d6abccc6496fef883b0c9a834230">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/57">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/3176d6abccc6496fef883b0c9a834230"/>
+	<schema:telephone>901 20 10 04</schema:telephone>
+	<schema:url>http://www.impulsatdt.ess</schema:url>
+	<schema:scheduledTime>De Dilluns a&amp;divendres de 9 a 19h i dissabt</schema:scheduledTime>
+	<rdfs:label>Informació sobre la Televisió Digital (TDT)</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/58">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">58</dc:identifier>
+	<schema:legalName>Oficina de Treball Lleida-Fleming</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/0b8a8be30f44fe6d53ed4f5de99eb8db">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25006</schema:postalCode>
+	<schema:streetAddress>av. Doctor Fleming  5</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>av. Doctor Fleming  5</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/58">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/0b8a8be30f44fe6d53ed4f5de99eb8db"/>
+	<schema:telephone>973 725 363</schema:telephone>
+	<rdfs:label>Oficina de Treball Lleida-Fleming</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/59">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">59</dc:identifier>
+	<schema:legalName>Oficina de treball Lleida-Comarcal</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/b78c660ef7eb01d23db92cb52fd97fdf">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25008</schema:postalCode>
+	<schema:streetAddress>C. Mossen Reig  3</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. Mossen Reig  3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/59">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/b78c660ef7eb01d23db92cb52fd97fdf"/>
+	<schema:telephone>973 230 550</schema:telephone>
+	<rdfs:label>Oficina de treball Lleida-Comarcal</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/60">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">60</dc:identifier>
+	<schema:legalName>Jefatura provincial de trànsit</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/566b4a72b11b226e736b3dfdc52ec1dc">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25006</schema:postalCode>
+	<schema:streetAddress>av. Alcalde Pujol  2</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>av. Alcalde Pujol  2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/60">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/566b4a72b11b226e736b3dfdc52ec1dc"/>
+	<schema:telephone>973 269 700</schema:telephone>
+	<schema:scheduledTime>De 9 a 14h. S expedeix número d atenció fins les</schema:scheduledTime>
+	<rdfs:label>Jefatura provincial de trànsit</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/61">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">61</dc:identifier>
+	<schema:legalName>Academia General Bàsica de Suboficials de Talarn</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d41b390895055a9bb12e458abf756f9c">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Tremp">
+	<rdfs:label>Tremp</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d41b390895055a9bb12e458abf756f9c">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Tremp"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25620</schema:postalCode>
+	<schema:streetAddress>Campament Martín Alonso</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Campament Martín Alonso</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/61">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/d41b390895055a9bb12e458abf756f9c"/>
+	<schema:telephone>973 658 600</schema:telephone>
+	<rdfs:label>Academia General Bàsica de Suboficials de Talarn</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/62">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">62</dc:identifier>
+	<schema:legalName>Subdelegació del Govern a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/9224f6f14865ceed920bdf632eed6056">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25071</schema:postalCode>
+	<schema:streetAddress>pl. de la Pau  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Pau  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/62">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/9224f6f14865ceed920bdf632eed6056"/>
+	<schema:telephone>973 959 000</schema:telephone>
+	<rdfs:label>Subdelegació del Govern a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/63">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">63</dc:identifier>
+	<schema:legalName>Direcció Provincial de l INEM a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/c9de8188970f3481484af43712f498bc">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25003</schema:postalCode>
+	<schema:streetAddress>C. Dr. Combelles  57</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>C. Dr. Combelles  57</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/63">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/c9de8188970f3481484af43712f498bc"/>
+	<schema:telephone>973 289 370</schema:telephone>
+	<rdfs:label>Direcció Provincial de l INEM a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/64">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">64</dc:identifier>
+	<schema:legalName>Delegació del Govern a Catalunya</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/778bbc7cbe6059a9cdd39293688762a4">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Barcelona">
+	<rdfs:label>Barcelona</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/778bbc7cbe6059a9cdd39293688762a4">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Barcelona"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">8003</schema:postalCode>
+	<schema:streetAddress>Marques de l Argentera  2</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Marques de l Argentera  2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/64">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/778bbc7cbe6059a9cdd39293688762a4"/>
+	<schema:telephone>93 520 90 00</schema:telephone>
+	<rdfs:label>Delegació del Govern a Catalunya</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/65">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">65</dc:identifier>
+	<schema:legalName>Dependència de Treball i Afers Socials a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/928d6a31401b5d0ccc6455e991ccdf59">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25002</schema:postalCode>
+	<schema:streetAddress>Av. Catalunya  2 3pl</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Av. Catalunya  2 3pl</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/65">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/928d6a31401b5d0ccc6455e991ccdf59"/>
+	<schema:telephone>973 959 211</schema:telephone>
+	<rdfs:label>Dependència de Treball i Afers Socials a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/66">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">66</dc:identifier>
+	<schema:legalName>Inspecció Provincial de Treball i Seguretat Social a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/0e7e83b2721329cddf30b7248fc2685c">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25001</schema:postalCode>
+	<schema:streetAddress>c. Riu Besòs  2</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Riu Besòs  2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/66">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/0e7e83b2721329cddf30b7248fc2685c"/>
+	<schema:telephone>973 216 380</schema:telephone>
+	<rdfs:label>Inspecció Provincial de Treball i Seguretat Social a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/67">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">67</dc:identifier>
+	<schema:legalName>Unitat d Indústria i Energia a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/c9e6918a39d954627d766aa5f7dd7d92">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25071</schema:postalCode>
+	<schema:streetAddress>pl. de la Pau  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Pau  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/67">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/c9e6918a39d954627d766aa5f7dd7d92"/>
+	<schema:telephone>973 959 000</schema:telephone>
+	<rdfs:label>Unitat d Indústria i Energia a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/68">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">68</dc:identifier>
+	<schema:legalName>Dependència de Sanitat i Consum a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/121e904f87449ab4258cdd7fd81a782a">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25071</schema:postalCode>
+	<schema:streetAddress>Pl. de la Pau  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Pl. de la Pau  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/68">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/121e904f87449ab4258cdd7fd81a782a"/>
+	<schema:telephone>973 959 000</schema:telephone>
+	<rdfs:label>Dependència de Sanitat i Consum a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/69">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">69</dc:identifier>
+	<schema:legalName>Direcció Provincial de l Institut Nacional de Seguretat Social a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/eee13e789b1f406c98e71e9b5f1815fb">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25006</schema:postalCode>
+	<schema:streetAddress>Ps. Pompeu  2</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Ps. Pompeu  2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/69">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/eee13e789b1f406c98e71e9b5f1815fb"/>
+	<schema:telephone>973 700 700</schema:telephone>
+	<rdfs:label>Direcció Provincial de l Institut Nacional de Seguretat Social a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/70">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">70</dc:identifier>
+	<schema:legalName>Tresoreria General de la Seguretat Social a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/561f0582043c48d87f39131bc8219eeb">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25004</schema:postalCode>
+	<schema:streetAddress>c. Salmerón  14</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Salmerón  14</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/70">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/561f0582043c48d87f39131bc8219eeb"/>
+	<schema:telephone>973 701 700</schema:telephone>
+	<schema:scheduledTime>De dilluns a divendres de 09 a 14h</schema:scheduledTime>
+	<rdfs:label>Tresoreria General de la Seguretat Social a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/71">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">71</dc:identifier>
+	<schema:legalName>Oficina de Correus central de Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/6eb2eded574b610cc65cc2adfb0566f4">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>rbla. Ferran  16</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>rbla. Ferran  16</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/71">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/6eb2eded574b610cc65cc2adfb0566f4"/>
+	<schema:telephone>973 228 748</schema:telephone>
+	<schema:scheduledTime>De dilluns a divendres de 08.30 a 20.30h Dissabt</schema:scheduledTime>
+	<rdfs:label>Oficina de Correus central de Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/72">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">72</dc:identifier>
+	<schema:legalName>Institut Nacional d Estadística</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/02a8faddc54fc89cbda473a0507b8909">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25004</schema:postalCode>
+	<schema:streetAddress>c. Bonaire  47-49</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Bonaire  47-49</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/72">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/02a8faddc54fc89cbda473a0507b8909"/>
+	<schema:telephone>973 228 820</schema:telephone>
+	<rdfs:label>Institut Nacional d Estadística</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/73">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">73</dc:identifier>
+	<schema:legalName>Servei de Conservació i Explotació de Lleida de la Demarcació de Carreteres de l Estat de Catalunya</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/489fbf81b7ae8590c57e059ce0084ae8">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>pl. Sant Joan  22</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Sant Joan  22</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/73">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/489fbf81b7ae8590c57e059ce0084ae8"/>
+	<schema:telephone>973 247 108 </schema:telephone>
+	<rdfs:label>Servei de Conservació i Explotació de Lleida de la Demarcació de Carreteres de l Estat de Catalunya</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/74">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">74</dc:identifier>
+	<schema:legalName>Unitat de Foment a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/c01c5972e3f55f96e64a3a24232bda4c">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25007</schema:postalCode>
+	<schema:streetAddress>pl. Sant Joan  24</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Sant Joan  24</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/74">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/c01c5972e3f55f96e64a3a24232bda4c"/>
+	<schema:telephone>973 247 108</schema:telephone>
+	<rdfs:label>Unitat de Foment a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/75">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">75</dc:identifier>
+	<schema:legalName>Unitat d Agricultura  Pesca i Alimentació a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/414063b9f9932ffcdb9e05120ce1fa82">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25071</schema:postalCode>
+	<schema:streetAddress>pl. de la Pau  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Pau  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/75">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/414063b9f9932ffcdb9e05120ce1fa82"/>
+	<schema:telephone>973 959 000</schema:telephone>
+	<rdfs:label>Unitat d Agricultura  Pesca i Alimentació a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/76">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">76</dc:identifier>
+	<schema:legalName>Defensor del pueblo</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/317f756533c6f10f8827fa38463c79ba">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/76">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/317f756533c6f10f8827fa38463c79ba"/>
+	<schema:telephone>91 410 61 63</schema:telephone>
+	<rdfs:label>Defensor del pueblo</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/77">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">77</dc:identifier>
+	<schema:legalName>Subdelegació de Defensa a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/f12306e596a29d292d3b1b72d1cd07b8">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25071</schema:postalCode>
+	<schema:streetAddress>Onofré Cerveró  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Onofré Cerveró  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/77">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/f12306e596a29d292d3b1b72d1cd07b8"/>
+	<schema:telephone>973 223 584 </schema:telephone>
+	<rdfs:label>Subdelegació de Defensa a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/78">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">78</dc:identifier>
+	<schema:legalName>Delegació Provincial de l Agència Estatal de l Administració Tributària a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/e3e44852a41c0671085186c1832c58c1">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25003</schema:postalCode>
+	<schema:streetAddress>Pl. Cervantes  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Pl. Cervantes  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/78">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/e3e44852a41c0671085186c1832c58c1"/>
+	<schema:telephone>973 706 700</schema:telephone>
+	<rdfs:label>Delegació Provincial de l Agència Estatal de l Administració Tributària a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/79">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">79</dc:identifier>
+	<schema:legalName>Delegació Provincial d Economia i Hisenda a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/e5109377ec917a17b1bf3a19ce33a9f4">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25003</schema:postalCode>
+	<schema:streetAddress>Pl. Cervantes  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Pl. Cervantes  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/79">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/e5109377ec917a17b1bf3a19ce33a9f4"/>
+	<schema:telephone>973 706 700</schema:telephone>
+	<rdfs:label>Delegació Provincial d Economia i Hisenda a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/80">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">80</dc:identifier>
+	<schema:legalName>Gerència Territorial del Cadastre a Lleida</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/9913a4e8293ea178e87df21b3ecb1c0e">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25002</schema:postalCode>
+	<schema:streetAddress>Av. Blondel  23</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Av. Blondel  23</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/80">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/9913a4e8293ea178e87df21b3ecb1c0e"/>
+	<schema:telephone>973 289 730</schema:telephone>
+	<schema:scheduledTime>de 09 a 14h</schema:scheduledTime>
+	<rdfs:label>Gerència Territorial del Cadastre a Lleida</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/81">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">81</dc:identifier>
+	<schema:legalName>Oficina de correus</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/4df515ffeb8509971511efd097576400">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Lleida"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25006</schema:postalCode>
+	<schema:streetAddress>c. Segovia  8</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Segovia  8</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/81">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/4df515ffeb8509971511efd097576400"/>
+	<schema:telephone>973 268 260</schema:telephone>
+	<schema:scheduledTime>De dilluns a divendres de 08.30 a 20.30h Dissabt</schema:scheduledTime>
+	<rdfs:label>Oficina de correus</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/82">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">82</dc:identifier>
+	<schema:legalName>Ajuntament de Vilanova de la Barca</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/68f2da5662fc8a8d42e49a6ddf159735">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vilanova_de_la_Barca">
+	<rdfs:label>Vilanova de la Barca</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/68f2da5662fc8a8d42e49a6ddf159735">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vilanova_de_la_Barca"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25690</schema:postalCode>
+	<schema:streetAddress>pl. Major  4</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Major  4</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/82">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/68f2da5662fc8a8d42e49a6ddf159735"/>
+	<schema:telephone>973 190 005</schema:telephone>
+	<schema:email>ajuntament@vilanovabarca.ddl.net</schema:email>
+	<schema:url>http://vilanovabarca.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 9h-15h</schema:scheduledTime>
+	<rdfs:label>Ajuntament de Vilanova de la Barca</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/83">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">83</dc:identifier>
+	<schema:legalName>Ajuntament del Vilosell</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/f823c8340e15f7c7fc7b7a6bcdf5646d">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/El_Vilosell">
+	<rdfs:label>El Vilosell</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/f823c8340e15f7c7fc7b7a6bcdf5646d">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/El_Vilosell"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25547</schema:postalCode>
+	<schema:streetAddress>Pl. Ajuntament  3</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Pl. Ajuntament  3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/83">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/f823c8340e15f7c7fc7b7a6bcdf5646d"/>
+	<schema:telephone>973-175221</schema:telephone>
+	<schema:email>ajuntament@vilosell.ddl.net</schema:email>
+	<schema:url>http://vilosell.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 16h-20h</schema:scheduledTime>
+	<rdfs:label>Ajuntament del Vilosell</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/84">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">84</dc:identifier>
+	<schema:legalName>Ajuntament de Vilanova de l Aguda</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/6c853f5bd0ed691afeebe5744734c53d">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25749</schema:postalCode>
+	<schema:streetAddress>c. J. Donato  30</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. J. Donato  30</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/84">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/6c853f5bd0ed691afeebe5744734c53d"/>
+	<schema:telephone>973 460 927</schema:telephone>
+	<schema:email>ajuntament@vilanovaaguda.ddl.net</schema:email>
+	<schema:url>http://vilanovaaguda.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vilanova de l Aguda</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/85">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">85</dc:identifier>
+	<schema:legalName>Ajuntament de Vilanova de Segrià</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/e47fbdcad2cb7b8692c42cd7a65269cb">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vilanova_de_Segri%C3%A0">
+	<rdfs:label>Vilanova de Segrià</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/e47fbdcad2cb7b8692c42cd7a65269cb">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vilanova_de_Segri%C3%A0"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25133</schema:postalCode>
+	<schema:streetAddress>Casa Consistorial</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Casa Consistorial</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/85">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/e47fbdcad2cb7b8692c42cd7a65269cb"/>
+	<schema:telephone>973 777 081</schema:telephone>
+	<schema:email>ajuntament@vilanovasegria.ddl.net</schema:email>
+	<schema:url>http://vilanovasegria.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vilanova de Segrià</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/86">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">86</dc:identifier>
+	<schema:legalName>Ajuntament de Vilanova de Meià</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/864fd321e511b028c884624b75cb3b03">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vilanova_de_Mei%C3%A0">
+	<rdfs:label>Vilanova de Meià</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/864fd321e511b028c884624b75cb3b03">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vilanova_de_Mei%C3%A0"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25735</schema:postalCode>
+	<schema:streetAddress>pl. Església  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Església  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/86">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/864fd321e511b028c884624b75cb3b03"/>
+	<schema:telephone>973 415 005</schema:telephone>
+	<schema:email>ajuntament@vilanovameia.ddl.net</schema:email>
+	<schema:url>http://vilanovameia.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vilanova de Meià</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/87">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">87</dc:identifier>
+	<schema:legalName>Ajuntament de Vilanova de Bellpuig</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/59ad1a1ef6c51c7f46c6f597ed1bcc43">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vilanova_de_Bellpuig">
+	<rdfs:label>Vilanova de Bellpuig</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/59ad1a1ef6c51c7f46c6f597ed1bcc43">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vilanova_de_Bellpuig"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25264</schema:postalCode>
+	<schema:streetAddress>c. Doctor Gassol  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Doctor Gassol  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/87">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/59ad1a1ef6c51c7f46c6f597ed1bcc43"/>
+	<schema:telephone>973 324 000</schema:telephone>
+	<schema:email>ajuntament@vilanovabellpuig.ddl.net</schema:email>
+	<schema:url>http://vilanovabellpuig.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vilanova de Bellpuig</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/88">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">88</dc:identifier>
+	<schema:legalName>Ajuntament de Vilamòs</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/806b837f2319003d1632745d6586b395">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vilam%C3%B2s">
+	<rdfs:label>Vilamòs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/806b837f2319003d1632745d6586b395">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vilam%C3%B2s"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25551</schema:postalCode>
+	<schema:streetAddress>Casa Consistorial</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Casa Consistorial</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/88">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/806b837f2319003d1632745d6586b395"/>
+	<schema:telephone>973 640 739</schema:telephone>
+	<schema:email>ajuntament@vilamos.ddl.net</schema:email>
+	<schema:url>http://vilamos.ddl.net/</schema:url>
+	<schema:scheduledTime>dilluns  dimarts i dimecres de 10h-14h</schema:scheduledTime>
+	<rdfs:label>Ajuntament de Vilamòs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/89">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">89</dc:identifier>
+	<schema:legalName>Ajuntament de Vilaller</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/0269de85e30bcb0a74b9244c1a6e068a">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vilaller">
+	<rdfs:label>Vilaller</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/0269de85e30bcb0a74b9244c1a6e068a">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vilaller"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25552</schema:postalCode>
+	<schema:streetAddress>c. Sant Climent  3</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Sant Climent  3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/89">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/0269de85e30bcb0a74b9244c1a6e068a"/>
+	<schema:telephone>973 697 014</schema:telephone>
+	<schema:email>ajuntament@vilaller.ddl.net</schema:email>
+	<schema:url>http://vilaller.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vilaller</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/90">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">90</dc:identifier>
+	<schema:legalName>Ajuntament de Vilagrassa</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/5504233ebe736d12b8a463a069b9adbd">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vilagrassa">
+	<rdfs:label>Vilagrassa</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/5504233ebe736d12b8a463a069b9adbd">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vilagrassa"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25330</schema:postalCode>
+	<schema:streetAddress>c. Tàrrega  12</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Tàrrega  12</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/90">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/5504233ebe736d12b8a463a069b9adbd"/>
+	<schema:telephone>973 311 162</schema:telephone>
+	<schema:email>ajuntament@vilagrassa.ddl.net</schema:email>
+	<schema:url>http://vilagrassa.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vilagrassa</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/91">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">91</dc:identifier>
+	<schema:legalName>Ajuntament de Vila-sana</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/3ce913b23497b21ce9e2e429989d2035">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vila-sana">
+	<rdfs:label>Vila-sana</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/3ce913b23497b21ce9e2e429989d2035">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vila-sana"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25245</schema:postalCode>
+	<schema:streetAddress>pl. Major  4</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Major  4</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/91">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/3ce913b23497b21ce9e2e429989d2035"/>
+	<schema:telephone>973 710 391</schema:telephone>
+	<schema:email>ajuntament@vilasana.ddl.net</schema:email>
+	<schema:url>http://vilasana.ddl.net/</schema:url>
+	<schema:scheduledTime>Tots els dies de 9 a 15</schema:scheduledTime>
+	<rdfs:label>Ajuntament de Vila-sana</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/92">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">92</dc:identifier>
+	<schema:legalName>Ajuntament de Vielha e Mijaran</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/11f8592cb965b18c25a46a69fc406773">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vielha_e_Mijaran">
+	<rdfs:label>Vielha e Mijaran</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/11f8592cb965b18c25a46a69fc406773">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vielha_e_Mijaran"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25530</schema:postalCode>
+	<schema:streetAddress>c. Sarriulèra  2</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Sarriulèra  2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/92">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/11f8592cb965b18c25a46a69fc406773"/>
+	<schema:telephone>973 640 018</schema:telephone>
+	<schema:email>ajuntament@vielha.ddl.net</schema:email>
+	<schema:url>http://vielha.ddl.net/</schema:url>
+	<schema:scheduledTime>Tots els dies de 8 a 15</schema:scheduledTime>
+	<rdfs:label>Ajuntament de Vielha e Mijaran</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/93">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">93</dc:identifier>
+	<schema:legalName>Ajuntament de Verdú</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/2ac3f6408d6b2066c596deeaec098f28">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Verd%C3%BA">
+	<rdfs:label>Verdú</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/2ac3f6408d6b2066c596deeaec098f28">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Verd%C3%BA"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25340</schema:postalCode>
+	<schema:streetAddress>pl. Major  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Major  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/93">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/2ac3f6408d6b2066c596deeaec098f28"/>
+	<schema:telephone>973 347 007</schema:telephone>
+	<schema:email>ajuntament@verdu.cat</schema:email>
+	<schema:url>http://www.verdu.cat</schema:url>
+	<rdfs:label>Ajuntament de Verdú</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/94">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">94</dc:identifier>
+	<schema:legalName>Ajuntament de la Vansa i Fórnols</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/965dce03fd95443483bf8cbccedb0d61">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/La_Vansa_i_F%C3%B3rnols">
+	<rdfs:label>La Vansa i Fórnols</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/965dce03fd95443483bf8cbccedb0d61">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/La_Vansa_i_F%C3%B3rnols"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25717</schema:postalCode>
+	<schema:streetAddress>Sorribes de la Vansa</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Sorribes de la Vansa</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/94">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/965dce03fd95443483bf8cbccedb0d61"/>
+	<schema:telephone>973 370 368</schema:telephone>
+	<schema:email>ajuntament@vansafornols.ddl.net</schema:email>
+	<schema:url>http://vansafornols.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 9h-14h</schema:scheduledTime>
+	<rdfs:label>Ajuntament de la Vansa i Fórnols</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/95">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">95</dc:identifier>
+	<schema:legalName>Ajuntament de les Valls de Valira</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/2ee0887cd34deaee04d3c2a9f3e95d74">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Les_Valls_de_Valira">
+	<rdfs:label>Les Valls de Valira</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/2ee0887cd34deaee04d3c2a9f3e95d74">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Les_Valls_de_Valira"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25798</schema:postalCode>
+	<schema:streetAddress>Casa Consistorial</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Casa Consistorial</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/95">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/2ee0887cd34deaee04d3c2a9f3e95d74"/>
+	<schema:telephone>973 350 458</schema:telephone>
+	<schema:email>ajuntament@vallsvalira.ddl.net</schema:email>
+	<schema:url>http://vallsvalira.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 8h a 14h</schema:scheduledTime>
+	<rdfs:label>Ajuntament de les Valls de Valira</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/96">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">96</dc:identifier>
+	<schema:legalName>Ajuntament de les Valls d Aguilar</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/3088b76e45cfdd2b65a9a319ff2b6431">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25795</schema:postalCode>
+	<schema:streetAddress>c. Diputat Garriga  3</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Diputat Garriga  3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/96">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/3088b76e45cfdd2b65a9a319ff2b6431"/>
+	<schema:telephone>973 387 086</schema:telephone>
+	<schema:email>ajuntament@vallsaguilar.ddl.net</schema:email>
+	<schema:url>http://vallsaguilar.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de les Valls d Aguilar</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/97">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">97</dc:identifier>
+	<schema:legalName>Ajuntament de Vallfogona de Balaguer</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/b76e3ce9bad0e3e47246316c8d6c6015">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vallfogona_de_Balaguer">
+	<rdfs:label>Vallfogona de Balaguer</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/b76e3ce9bad0e3e47246316c8d6c6015">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vallfogona_de_Balaguer"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25680</schema:postalCode>
+	<schema:streetAddress>c. Major  29</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Major  29</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/97">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/b76e3ce9bad0e3e47246316c8d6c6015"/>
+	<schema:telephone>973 432 008</schema:telephone>
+	<schema:email>ajuntament@vallfogona.ddl.net</schema:email>
+	<schema:url>http://vallfogona.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vallfogona de Balaguer</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/98">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">98</dc:identifier>
+	<schema:legalName>Ajuntament de Vallbona de les Monges</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/358a241d79b2f932be6b9b2e5f950abd">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vallbona_de_les_Monges">
+	<rdfs:label>Vallbona de les Monges</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/358a241d79b2f932be6b9b2e5f950abd">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vallbona_de_les_Monges"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25268</schema:postalCode>
+	<schema:streetAddress>c. Prat de la Riba  3</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Prat de la Riba  3</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/98">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/358a241d79b2f932be6b9b2e5f950abd"/>
+	<schema:telephone>973 330 260</schema:telephone>
+	<schema:email>ajuntament@vallbona.ddl.net</schema:email>
+	<schema:url>http://vallbona.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vallbona de les Monges</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/99">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">99</dc:identifier>
+	<schema:legalName>Ajuntament de Vall de Cardós</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/14ce1652086d8d429fb3e5efc37fe096">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vall_de_Card%C3%B3s">
+	<rdfs:label>Vall de Cardós</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/14ce1652086d8d429fb3e5efc37fe096">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vall_de_Card%C3%B3s"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25570</schema:postalCode>
+	<schema:streetAddress>Camí Comunidor  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>Camí Comunidor  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/99">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/14ce1652086d8d429fb3e5efc37fe096"/>
+	<schema:telephone>973 623 122</schema:telephone>
+	<schema:email>ajuntament@vallcardos.ddl.net</schema:email>
+	<schema:url>http://vallcardos.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vall de Cardós</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/100">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">100</dc:identifier>
+	<schema:legalName>Ajuntament de la Vall de Boí</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/a8cc8c202a1186e0c91b61d04b72ee53">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vall_de_Bo%C3%AD">
+	<rdfs:label>La Vall de Boí</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/a8cc8c202a1186e0c91b61d04b72ee53">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vall_de_Bo%C3%AD"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25527</schema:postalCode>
+	<schema:streetAddress>ctra. de Caldes de Boí  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>ctra. de Caldes de Boí  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/100">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/a8cc8c202a1186e0c91b61d04b72ee53"/>
+	<schema:telephone>973 694 018</schema:telephone>
+	<schema:email>ajuntament@vallboi.ddl.net</schema:email>
+	<schema:url>http://vallboi.ddl.net/</schema:url>
+	<schema:scheduledTime>Tots els dies de 8 a 15</schema:scheduledTime>
+	<rdfs:label>Ajuntament de la Vall de Boí</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/101">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">101</dc:identifier>
+	<schema:legalName>Ajuntament de Tírvia</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/eef98ea77fdf98fad230a610ab535650">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/T%C3%ADrvia">
+	<rdfs:label>Tírvia</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/eef98ea77fdf98fad230a610ab535650">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/T%C3%ADrvia"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25595</schema:postalCode>
+	<schema:streetAddress>pl. Ajuntament  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Ajuntament  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/101">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/eef98ea77fdf98fad230a610ab535650"/>
+	<schema:telephone>973 622 073</schema:telephone>
+	<schema:email>ajuntament@tirvia.ddl.net</schema:email>
+	<schema:url>http://tirvia.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 10h-14h i de 16h-20h</schema:scheduledTime>
+	<rdfs:label>Ajuntament de Tírvia</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/102">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">102</dc:identifier>
+	<schema:legalName>Ajuntament de Térmens</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/3787be5352f9f758398dc2016446a177">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/T%C3%A9rmens">
+	<rdfs:label>Térmens</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/3787be5352f9f758398dc2016446a177">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/T%C3%A9rmens"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25670</schema:postalCode>
+	<schema:streetAddress>pl. de Catalunya  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de Catalunya  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/102">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/3787be5352f9f758398dc2016446a177"/>
+	<schema:telephone>973 180 010</schema:telephone>
+	<schema:email>ajuntament@termens.info</schema:email>
+	<schema:url>http://www.termens.info</schema:url>
+	<schema:scheduledTime>tots els dies de 8h-15h</schema:scheduledTime>
+	<rdfs:label>Ajuntament de Térmens</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/103">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">103</dc:identifier>
+	<schema:legalName>Ajuntament de Tàrrega</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/c2e3b86746673499feb607ed5ae093d6">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/T%C3%A0rrega">
+	<rdfs:label>Tàrrega</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/c2e3b86746673499feb607ed5ae093d6">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/T%C3%A0rrega"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25300</schema:postalCode>
+	<schema:streetAddress>pl. Major  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Major  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/103">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/c2e3b86746673499feb607ed5ae093d6"/>
+	<schema:telephone>973 311 608</schema:telephone>
+	<schema:email>ajuntament@ajtarrega.es</schema:email>
+	<schema:url>http://www.ajtarrega.es</schema:url>
+	<rdfs:label>Ajuntament de Tàrrega</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/104">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">104</dc:identifier>
+	<schema:legalName>Ajuntament de Tremp</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/afc61b978bdd2d8ccf3fa4c8d4b11a6f">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Tremp"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25620</schema:postalCode>
+	<schema:streetAddress>pl. de la Creu  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Creu  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/104">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/afc61b978bdd2d8ccf3fa4c8d4b11a6f"/>
+	<schema:telephone>973 650 005</schema:telephone>
+	<schema:email>ajuntament@tremp.ddl.net</schema:email>
+	<schema:url>http://www.ajuntamentdetremp.com/</schema:url>
+	<rdfs:label>Ajuntament de Tremp</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/105">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">105</dc:identifier>
+	<schema:legalName>Ajuntament de Torà</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d66e423748ce17556581d88f34066caa">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Tor%C3%A0">
+	<rdfs:label>Torà</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d66e423748ce17556581d88f34066caa">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Tor%C3%A0"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25750</schema:postalCode>
+	<schema:streetAddress>pl. Vall  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Vall  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/105">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/d66e423748ce17556581d88f34066caa"/>
+	<schema:telephone>973 473 028</schema:telephone>
+	<schema:email>ajuntament@tora.ddl.net</schema:email>
+	<schema:url>http://www.viladetora.net</schema:url>
+	<schema:scheduledTime>tots els dies de 8h-15h</schema:scheduledTime>
+	<rdfs:label>Ajuntament de Torà</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/106">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">106</dc:identifier>
+	<schema:legalName>Ajuntament de Torres de Segre</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d62a1aba04a76236fffe5f01812393ae">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Torres_de_Segre">
+	<rdfs:label>Torres de Segre</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d62a1aba04a76236fffe5f01812393ae">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Torres_de_Segre"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25170</schema:postalCode>
+	<schema:streetAddress>pl. Església  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Església  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/106">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/d62a1aba04a76236fffe5f01812393ae"/>
+	<schema:telephone>973 796 005</schema:telephone>
+	<schema:email>ajuntament@torressegre.ddl.net</schema:email>
+	<schema:url>http://torressegre.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 9h-14h i de 17h-19h</schema:scheduledTime>
+	<rdfs:label>Ajuntament de Torres de Segre</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/107">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">107</dc:identifier>
+	<schema:legalName>Ajuntament d Àger</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/104d86b5f690f2148ef4f75201cda882">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/%C3%80ger">
+	<rdfs:label>Àger</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/104d86b5f690f2148ef4f75201cda882">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/%C3%80ger"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25691</schema:postalCode>
+	<schema:streetAddress>pl. Major  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Major  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/107">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/104d86b5f690f2148ef4f75201cda882"/>
+	<schema:telephone>973 455 004</schema:telephone>
+	<schema:email>ajuntament@ager.ddl.net</schema:email>
+	<schema:url>http://ager.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 9h-13h i de 17h-21h</schema:scheduledTime>
+	<rdfs:label>Ajuntament d Àger</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/108">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">108</dc:identifier>
+	<schema:legalName>Ajuntament de Vinaixa</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/cee0a25e4b4c95cf822084ec771ea632">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vinaixa">
+	<rdfs:label>Vinaixa</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/cee0a25e4b4c95cf822084ec771ea632">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Vinaixa"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25440</schema:postalCode>
+	<schema:streetAddress>pl. Arbres  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Arbres  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/108">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/cee0a25e4b4c95cf822084ec771ea632"/>
+	<schema:telephone>973 175 307</schema:telephone>
+	<schema:email>ajuntament@vinaixa.ddl.net</schema:email>
+	<schema:url>http://vinaixa.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de Vinaixa</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/109">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">109</dc:identifier>
+	<schema:legalName>Ajuntament dels Alamús</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/94fe4863da78b3304860b24b4990b8b5">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Els_Alam%C3%BAs">
+	<rdfs:label>Els Alamús</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/94fe4863da78b3304860b24b4990b8b5">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Els_Alam%C3%BAs"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25221</schema:postalCode>
+	<schema:streetAddress>pl. de la Creu  2</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. de la Creu  2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/109">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/94fe4863da78b3304860b24b4990b8b5"/>
+	<schema:telephone>973 199 006</schema:telephone>
+	<schema:email>ajuntament@alamus.ddl.net</schema:email>
+	<schema:url>http://alamus.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 8h a 15h</schema:scheduledTime>
+	<rdfs:label>Ajuntament dels Alamús</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/110">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">110</dc:identifier>
+	<schema:legalName>Ajuntament d Aitona</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/9616e6fafeec4686e75d936e07dd6fa3">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Aitona">
+	<rdfs:label>Aitona</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/9616e6fafeec4686e75d936e07dd6fa3">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Aitona"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25182</schema:postalCode>
+	<schema:streetAddress>c. Major  6</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Major  6</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/110">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/9616e6fafeec4686e75d936e07dd6fa3"/>
+	<schema:telephone>973 794 010</schema:telephone>
+	<schema:email>ajuntament@aitona.ddl.net</schema:email>
+	<schema:url>http://aitona.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament d Aitona</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/111">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">111</dc:identifier>
+	<schema:legalName>Ajuntament d Agramunt</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/7e33ed92382c20adc76a4721e09c79dc">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Agramunt">
+	<rdfs:label>Agramunt</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/7e33ed92382c20adc76a4721e09c79dc">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Agramunt"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25310</schema:postalCode>
+	<schema:streetAddress>pl. Esglèsia  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Esglèsia  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/111">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/7e33ed92382c20adc76a4721e09c79dc"/>
+	<schema:telephone>973 390 057</schema:telephone>
+	<schema:email>ajuntament@agramunt.ddl.net</schema:email>
+	<schema:url>http://agramunt.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament d Agramunt</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/112">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">112</dc:identifier>
+	<schema:legalName>Ajuntament d Abella de la Conca</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/840297521c1b58a1f329e2259c057473">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Abella_de_la_Conca">
+	<rdfs:label>Abella de la Conca</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/840297521c1b58a1f329e2259c057473">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Abella_de_la_Conca"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25651</schema:postalCode>
+	<schema:streetAddress>c. Espiguet  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Espiguet  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/112">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/840297521c1b58a1f329e2259c057473"/>
+	<schema:telephone>973 664 198</schema:telephone>
+	<schema:email>ajuntament@abellaconca.ddl.net</schema:email>
+	<schema:url>http://abellaconca.ddl.net</schema:url>
+	<rdfs:label>Ajuntament d Abella de la Conca</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/113">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">113</dc:identifier>
+	<schema:legalName>Ajuntament d Alfarràs</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/94373c352a931c75b5868f278a5258e4">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Alfarr%C3%A0s">
+	<rdfs:label>Alfarràs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/94373c352a931c75b5868f278a5258e4">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Alfarr%C3%A0s"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25120</schema:postalCode>
+	<schema:streetAddress>av. Catalunya  16</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>av. Catalunya  16</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/113">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/94373c352a931c75b5868f278a5258e4"/>
+	<schema:telephone>973 760 007</schema:telephone>
+	<schema:email>ajuntament@alfarras.ddl.net</schema:email>
+	<schema:url>http://alfarras.ddl.net</schema:url>
+	<rdfs:label>Ajuntament d Alfarràs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/114">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">114</dc:identifier>
+	<schema:legalName>Ajuntament d Alcoletge</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/a3b78676299c9e975e837c97cb642c92">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Alcoletge">
+	<rdfs:label>Alcoletge</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/a3b78676299c9e975e837c97cb642c92">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Alcoletge"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25660</schema:postalCode>
+	<schema:streetAddress>c. Sitjar  2</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Sitjar  2</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/114">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/a3b78676299c9e975e837c97cb642c92"/>
+	<schema:telephone>973 196 011</schema:telephone>
+	<schema:email>ajuntament@alcoletge.ddl.net</schema:email>
+	<schema:url>http://alcoletge.ddl.net/</schema:url>
+	<schema:scheduledTime>dima. dime. dij. de 8h-15h / dijous 17h-19h</schema:scheduledTime>
+	<rdfs:label>Ajuntament d Alcoletge</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/115">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">115</dc:identifier>
+	<schema:legalName>Ajuntament d Alcarràs</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/20e4be90e9c904ae7e02b5400e2f3463">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Alcarr%C3%A0s">
+	<rdfs:label>Alcarràs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/20e4be90e9c904ae7e02b5400e2f3463">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Alcarr%C3%A0s"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25180</schema:postalCode>
+	<schema:streetAddress>pl. Església  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Església  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/115">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/20e4be90e9c904ae7e02b5400e2f3463"/>
+	<schema:telephone>973 790 004</schema:telephone>
+	<schema:email>ajuntament@alcarras.ddl.net</schema:email>
+	<schema:url>http://alcarras.ddl.net</schema:url>
+	<schema:scheduledTime>tots els dies de 8h-14h i de 16h-20h</schema:scheduledTime>
+	<rdfs:label>Ajuntament d Alcarràs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/116">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">116</dc:identifier>
+	<schema:legalName>Ajuntament d Alcanó</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d5adc8b76b4f675f1639bac2b119d4f5">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Alcan%C3%B3">
+	<rdfs:label>Alcanó</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/d5adc8b76b4f675f1639bac2b119d4f5">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Alcan%C3%B3"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25162</schema:postalCode>
+	<schema:streetAddress>c. Major  13</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Major  13</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/116">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/d5adc8b76b4f675f1639bac2b119d4f5"/>
+	<schema:telephone>973 136 500</schema:telephone>
+	<schema:email>ajuntament@alcano.ddl.net</schema:email>
+	<schema:url>http://alcano.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament d Alcanó</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/117">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">117</dc:identifier>
+	<schema:legalName>Ajuntament de l Albi</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/1e1cae0314dceecefb5e44656ecd53c7">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Royal_Albion_Hotel">
+	<rdfs:label>L Albi</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/1e1cae0314dceecefb5e44656ecd53c7">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Royal_Albion_Hotel"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25450</schema:postalCode>
+	<schema:streetAddress>c. Abeurador  1</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Abeurador  1</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/117">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/1e1cae0314dceecefb5e44656ecd53c7"/>
+	<schema:telephone>973 175 004</schema:telephone>
+	<schema:email>ajuntament@albi.ddl.net</schema:email>
+	<schema:url>http://albi.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 9h-13h i de 17h-21h</schema:scheduledTime>
+	<rdfs:label>Ajuntament de l Albi</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/118">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">118</dc:identifier>
+	<schema:legalName>Ajuntament d Albesa</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/ec388981b1aa279f1db4c7bb73e55c25">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Albesa">
+	<rdfs:label>Albesa</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/ec388981b1aa279f1db4c7bb73e55c25">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Albesa"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25135</schema:postalCode>
+	<schema:streetAddress>c. Major  14</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Major  14</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/118">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/ec388981b1aa279f1db4c7bb73e55c25"/>
+	<schema:telephone>973 186 007</schema:telephone>
+	<schema:email>ajuntament@albesa.ddl.net</schema:email>
+	<schema:url>http://albesa.ddl.net/</schema:url>
+	<schema:scheduledTime>Tots els dies de 8 a 15</schema:scheduledTime>
+	<rdfs:label>Ajuntament d Albesa</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/119">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">119</dc:identifier>
+	<schema:legalName>Ajuntament d Albatàrrec</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/cb3eeb479dd9ffff2d3805c4e02fead9">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Albat%C3%A0rrec">
+	<rdfs:label>Albatàrrec</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/cb3eeb479dd9ffff2d3805c4e02fead9">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Albat%C3%A0rrec"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25171</schema:postalCode>
+	<schema:streetAddress>c. Sant Salvador  19</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Sant Salvador  19</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/119">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/cb3eeb479dd9ffff2d3805c4e02fead9"/>
+	<schema:telephone>973 720 013</schema:telephone>
+	<schema:email>ajuntament@albatarrec.ddl.net</schema:email>
+	<schema:url>http://albatarrec.ddl.net/</schema:url>
+	<schema:scheduledTime>tots els dies de 9h-14h</schema:scheduledTime>
+	<rdfs:label>Ajuntament d Albatàrrec</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/120">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">120</dc:identifier>
+	<schema:legalName>Ajuntament de l Albagés</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/bcf744354da016b3deb290b16b4428d7">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25155</schema:postalCode>
+	<schema:streetAddress>c. Santiago Rusiñol  9</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Santiago Rusiñol  9</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/120">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/bcf744354da016b3deb290b16b4428d7"/>
+	<schema:telephone>973 121 129</schema:telephone>
+	<schema:email>ajuntament@albages.ddl.net</schema:email>
+	<schema:url>http://albages.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament de l Albagés</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/121">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">121</dc:identifier>
+	<schema:legalName>Ajuntament d Esterri d Àneu</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/6783908dc999fb4bafe4bfcd575b651b">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25580</schema:postalCode>
+	<schema:streetAddress>c. Major  6</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Major  6</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/121">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/6783908dc999fb4bafe4bfcd575b651b"/>
+	<schema:telephone>973 626 005</schema:telephone>
+	<schema:email>ajuntament@esterrianeu.ddl.net</schema:email>
+	<schema:url>http://esterrianeu.ddl.net/portadae.html</schema:url>
+	<rdfs:label>Ajuntament d Esterri d Àneu</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/122">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">122</dc:identifier>
+	<schema:legalName>Ajuntament d Estaràs</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/04f9be56653b21c4dbe70b0009eda64c">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Estar%C3%A0s">
+	<rdfs:label>Estaràs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/04f9be56653b21c4dbe70b0009eda64c">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Estar%C3%A0s"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25214</schema:postalCode>
+	<schema:streetAddress>pl. Església  6</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>pl. Església  6</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/122">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/04f9be56653b21c4dbe70b0009eda64c"/>
+	<schema:telephone>973 556 388</schema:telephone>
+	<schema:email>ajuntament@estaras.ddl.net</schema:email>
+	<schema:url>http://estaras.ddl.net/</schema:url>
+	<schema:scheduledTime>dimecres de 10h-15h / dijous de 10h-13h i 15h-19</schema:scheduledTime>
+	<rdfs:label>Ajuntament d Estaràs</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/123">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">123</dc:identifier>
+	<schema:legalName>Ajuntament d Estamariu</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/5e3e909c3714058328f31a44c83f7569">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Estamariu">
+	<rdfs:label>Estamariu</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/5e3e909c3714058328f31a44c83f7569">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Estamariu"/>
+	<schema:postalCode rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25719</schema:postalCode>
+	<schema:streetAddress>c. Major  10</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Major  10</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/123">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/5e3e909c3714058328f31a44c83f7569"/>
+	<schema:telephone>973 351 457</schema:telephone>
+	<schema:email>ajuntament@estamariu.ddl.net</schema:email>
+	<schema:url>http://estamariu.ddl.net/</schema:url>
+	<rdfs:label>Ajuntament d Estamariu</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/124">
+	<rdf:type rdf:resource="http://schema.org/GovernmentOrganization"/>
+	<dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#int">124</dc:identifier>
+	<schema:legalName>Ajuntament d Espot</schema:legalName>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/1e676f91c7545bc8a8d2a5677230c7af">
+	<rdf:type rdf:resource="http://schema.org/PostalAddress"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Espot">
+	<rdfs:label>Espot</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/1e676f91c7545bc8a8d2a5677230c7af">
+	<schema:addressLocality rdf:resource="http://dbpedia.org/resource/Espot"/>
+	<schema:streetAddress>c. Carretera  s/n</schema:streetAddress>
+	<schema:addressCountry>Espanya</schema:addressCountry>
+	<rdfs:label>c. Carretera  s/n</rdfs:label>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8080/marmotta/context/administracions/124">
+	<schema:address rdf:resource="http://localhost:8080/marmotta/context/administracions/1e676f91c7545bc8a8d2a5677230c7af"/>
+	<schema:scheduledTime>dill i dij. 9-14h i 15-18h /dime. i div. 10-14h</schema:scheduledTime>
+	<rdfs:label>Ajuntament d Espot</rdfs:label>
+</rdf:Description>
+
+</rdf:RDF>

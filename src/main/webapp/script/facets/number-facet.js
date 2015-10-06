@@ -134,7 +134,7 @@ facet.NumberFacet = function(property, fm, typeUri){
     that.makeSPARQL = function (varCount, varName){
         if(that.isActive()){
             var query = "?"+varName+" <"+that.getUri()+"> ?"+varName+"var"+varCount+ " FILTER(";
-            query += "xsd:int(?"+varName+"var"+varCount+")>="+from+" && xsd:int(?"+varName+"var"+varCount+"<="+to+")) . ";
+            query += "xsd:int(?"+varName+"var"+varCount+")>="+from+" && xsd:int(?"+varName+"var"+varCount+")<="+to+") . ";
         }
         return query;
     };

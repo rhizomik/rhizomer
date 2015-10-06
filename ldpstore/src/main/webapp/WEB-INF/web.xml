@@ -12,103 +12,8 @@
 
 <!-- DataStore Configuration. Options: Virtuoso, Jena File/Database, OWLIM, LDP -->
 
-<!-- JENA FILE MODEL -->
+    <!-- LDP MODEL -->
     <context-param>
-      <param-name>store_class</param-name>
-      <param-value>net.rhizomik.rhizomer.store.jena.JenaStore</param-value>
-    </context-param>
-    <context-param>
-      <param-name>file_name</param-name>
-      <param-value>nasa-apollo.rdf</param-value>
-    </context-param>
-    <context-param>
-      <param-name>dir_name</param-name>
-      <param-value>/metadata</param-value>
-    </context-param>
-
-<!-- Virtuoso MODEL -->
-<!--    <context-param>
-      <param-name>store_class</param-name>
-      <param-value>net.rhizomik.rhizomer.store.virtuoso.VirtuosoStore</param-value>
-    </context-param>
-    <context-param>
-      <param-name>db_url</param-name>
-      <param-value>jdbc:virtuoso://localhost:1111</param-value>
-    </context-param>
-    <context-param>
-      <param-name>db_user</param-name>
-      <param-value>user</param-value>
-    </context-param>
-    <context-param>
-      <param-name>db_pass</param-name>
-      <param-value>pass</param-value>
-    </context-param>    
-    <context-param>
-      <param-name>db_graph</param-name>
-      <param-value>http://rhizomik.net/</param-value>
-    </context-param>
-    <context-param>
-      <param-name>cache_size</param-name>
-      <param-value>0</param-value>
-    </context-param>
--->  <!-- By default, the VirtuosoStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
-    <!--context-param>
-      <param-name>db_schema</param-name>
-      <param-value>http://rhizomik.net/schema/</param-value>
-    </context-param -->
-    
-<!-- SESAME MODEL -
-    <context-param>
-      <param-name>store_class</param-name>
-      <param-value>net.rhizomik.rhizomer.store.sesame.SesameStore</param-value>
-    </context-param>
-    <context-param>
-      <param-name>manager_url</param-name>
-      <param-value>http://localhost:8080/openrdf-sesame</param-value>
-    </context-param>
-    <context-param>
-      <param-name>repository_id</param-name>
-      <param-value>rhizomer</param-value>
-    </context-param>
-    <context-param>
-      <param-name>db_graph</param-name>
-      <param-value>http://rhizomik.net/</param-value>
-    </context-param>
---> <!-- By default, the SesameStore looks for the dataset schemas at db_graph+"schema/", use db_schema to override -->
-    <!--context-param>
-      <param-name>db_schema</param-name>
-      <param-value>http://rhizomik.net/schema/</param-value>
-    </context-param -->
-
-<!-- JENA DATABASE MODEL -
-    <context-param>
-      <param-name>db_url</param-name>
-      <param-value>jdbc:mysql://localhost/rhizomer?autoReconnect=true</param-value>
-    </context-param>
-    <context-param>
-      <param-name>db_user</param-name>
-      <param-value>user</param-value>
-    </context-param>
-    <context-param>
-      <param-name>db_pass</param-name>
-      <param-value>password</param-value>
-    </context-param>    
-    <context-param>
-      <param-name>db_type</param-name>
-      <param-value>MySQL</param-value>
-    </context-param>    
-    <context-param>
-      <param-name>db_driver</param-name>
-      <param-value>com.mysql.jdbc.Driver</param-value>
-    </context-param>
-    <context-param>
-      <param-name>db_model</param-name>
-      <param-value>rhizomer</param-value>
-    </context-param>
--->
-
-<!-- LDP MODEL -->
-<!--<context-param>
         <param-name>store_class</param-name>
         <param-value>net.rhizomik.rhizomer.store.ldp.LDPStore</param-value>
     </context-param>
@@ -122,7 +27,7 @@
     </context-param>
     <context-param>
         <param-name>sparql_endpoint</param-name>
-        <param-value>http://localhost:8080/marmotta/sparql/</param-value>
+        <param-value>http://ip6-localhost:8080/marmotta/sparql/</param-value>
     </context-param>
     <context-param>
         <param-name>rdf_data</param-name>
@@ -132,7 +37,6 @@
         <param-name>rdf_type</param-name>
         <param-value>http://purl.org/net/schemas/space/Mission</param-value>
     </context-param>
--->
   
   <security-constraint>
     <web-resource-collection>

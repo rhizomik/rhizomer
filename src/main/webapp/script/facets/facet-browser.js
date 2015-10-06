@@ -202,7 +202,7 @@ facet.FacetBrowser = function(parameters){
     self.printActive = function(){
         countQuery =
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-            "SELECT (COUNT(DISTINCT(?"+mainManager.getVariable()+")) as ?count) \n"+
+            "SELECT (COUNT(DISTINCT ?"+mainManager.getVariable()+") as ?count) \n"+
             "WHERE { "+
             "?"+mainManager.getVariable()+" a <"+mainManager.getTypeUri()+"> . ";
         countQuery += self.makeRestrictions();

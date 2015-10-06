@@ -1,19 +1,18 @@
 package net.rhizomik.rhizomer.autoia.manager;
 
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Literal;
+import net.rhizomik.rhizomer.agents.RhizomerRDF;
+import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
+import net.rhizomik.rhizomer.store.MetadataStore;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import net.rhizomik.rhizomer.agents.RhizomerRDF;
-import net.rhizomik.rhizomer.autoia.classes.HierarchyNode;
-
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
-import net.rhizomik.rhizomer.store.MetadataStore;
 
 public class HierarchyManagerSPARQL extends HierarchyManager 
 {
@@ -24,9 +23,9 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
-        "SELECT DISTINCT ?root ?label"+NL+
+        "SELECT ?root SAMPLE(?label)"+NL+
         "WHERE {"+NL+
-        "   { ?i rdf:type ?root } UNION { ?c rdfs:subClassOf ?root }"+NL+
+        "   ?c rdfs:subClassOf ?root"+NL+
         "   OPTIONAL {"+NL+
         "       ?root rdfs:subClassOf ?super."+NL+
         "       FILTER (?root!=?super && ?super!=owl:Thing &&?super!=rdfs:Resource && !isBlank(?super))"+NL+
@@ -54,7 +53,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
    	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#>"+NL+
         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+NL+
-        "SELECT DISTINCT ?sub ?label"+NL+
+        "SELECT ?sub SAMPLE(?label)"+NL+
         "WHERE {"+NL+
         "   ?sub rdfs:subClassOf <%1$s>"+NL+
         "   OPTIONAL {"+NL+
@@ -202,7 +201,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
             manager.readModel();
         else if (args[0].equalsIgnoreCase("recount"))
         {
-            manager.readXML("menu-"+menuHash+".xml");
+            manager.readVoid("menu-"+menuHash+".void");
             manager.countInstances();
         }
         else
@@ -210,6 +209,6 @@ public class HierarchyManagerSPARQL extends HierarchyManager
             System.err.println("Usage: ClassMenu.sh (build|recount)");
             System.exit(-1);
         }
-        manager.writeXMLFile("menu-"+menuHash+".xml");
+        manager.writeVoid("menu-"+menuHash+".void");
     }
 }

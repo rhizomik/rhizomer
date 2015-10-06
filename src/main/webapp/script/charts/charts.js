@@ -158,11 +158,11 @@ YUI().use("charts", "json", "node", function (Y) {
             return translator;
         }
 
-        function makeQuery() {
+        function makeQuery(mediator) {
             var variables = makeSelectQueryPart(),
                 values = makeValuesQueryPart(),
                 filterBlanks = makeFilterValuesQueryPart();
-            return
+            var query = 
                 " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                 " PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
                 " SELECT " + variables + "\n" +
@@ -172,6 +172,7 @@ YUI().use("charts", "json", "node", function (Y) {
                 "                  FILTER(LANG(?label)='en' || LANG(?label)='')} \n" +
                          mediator.restrictions + "\n" +
                 " } ORDER BY ?label LIMIT " + mediator.formData.maxResults;
+            return query;
         }
 
         function lastPartOfURI(uri) {
@@ -213,7 +214,6 @@ YUI().use("charts", "json", "node", function (Y) {
         // YUI3 Charts
 
         function showChartYUI3(chartData) {
-
             var myTooltip = {
                     styles: {
                         backgroundColor: "#333",
@@ -232,7 +232,6 @@ YUI().use("charts", "json", "node", function (Y) {
                     render: "#chart-viewer",
                     tooltip: myTooltip
                 });
-
         }
 
         return {

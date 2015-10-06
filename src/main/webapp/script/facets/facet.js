@@ -240,17 +240,19 @@ facet.Facet = function(property, inVariable, classURI)
 		$j("#"+id+"_loading").show();			
 		self.resetFacet();
 		query =
-        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-		"SELECT (STR(?obj) AS ?o) ?label (COUNT(?obj) AS ?n) "+
-		"WHERE {"+
-		"	?"+variable+" a <"+classURI+"> . "+
-		"   ?"+variable+" <"+uri+"> ?obj ."+
-		"   FILTER(?obj!=\"\" && (!isBlank(?obj) || bound(?label)) ) ."+
-		" OPTIONAL{ ?obj rdfs:label ?label " +
-		"  FILTER(LANG(?label)='en' || LANG(?label)='')} ."+
-		restrictions+
-		" } GROUP BY ?obj ?label ORDER BY DESC(?n) LIMIT 5";
+        	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+        	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+			"SELECT (str(?obj) AS ?o) (COUNT(?obj) AS ?n) (SAMPLE(?l) AS ?label) "+
+			"WHERE {"+
+			"   ?"+variable+" <"+uri+"> ?obj ."+
+			"   FILTER(?obj!=\"\" && (!isBlank(?obj) || bound(?l)) ) ."+
+			"   OPTIONAL{ ?obj rdfs:label ?l " +
+			"      FILTER(LANG(?l)='en' || LANG(?l)='') } "+
+			"   { SELECT DISTINCT ?"+variable+
+			"     WHERE { "+
+			"	     ?"+variable+" a <"+classURI+"> . "+
+		    	     restrictions+" } } "+
+			"} GROUP BY ?obj ORDER BY DESC(?n) LIMIT 5";
 		rhz.sparqlJSON(query, self.processMoreValues);
 	};
 	
@@ -265,15 +267,17 @@ facet.Facet = function(property, inVariable, classURI)
 		query =
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-			   "SELECT (STR(?obj) AS ?o) ?label (COUNT(?obj) AS ?n) "+
-		       "WHERE { "+
-		            "?"+variable+" a <"+classURI+"> . "+
-		            "?"+variable+" <"+uri+"> ?obj . "+
-		    		"   FILTER(?obj!=\"\" && (!isBlank(?obj) || bound(?label)) ) ."+
-		    		"OPTIONAL{ ?obj rdfs:label ?label . " +
-		    		"FILTER(LANG(?label)='en' || LANG(?label)='')} " +
-		    		facetBrowser.makeRestrictions(uri)+
-		    		" } GROUP BY ?obj ?label ORDER BY DESC(?n) LIMIT 6 OFFSET "+self.getCurrentValues();
+			"SELECT (str(?obj) AS ?o) (COUNT(?obj) AS ?n) (SAMPLE(?l) AS ?label) "+
+			"WHERE { "+
+			"   ?"+variable+" <"+uri+"> ?obj . "+
+			"   FILTER(?obj!=\"\" && (!isBlank(?obj) || bound(?l)) ) ."+
+			"   OPTIONAL{ ?obj rdfs:label ?l . " +
+			"      FILTER(LANG(?l)='en' || LANG(?l)='') } " +
+			"   { SELECT DISTINCT ?"+variable+
+			"     WHERE { "+
+			"        ?"+variable+" a <"+classURI+"> . "+
+  				     facetBrowser.makeRestrictions(uri)+" } } "+
+			"} GROUP BY ?obj ORDER BY DESC(?n) LIMIT 6 OFFSET "+self.getCurrentValues();
 		rhz.sparqlJSON(query,self.processMoreValues);
 	};
 	

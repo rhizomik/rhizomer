@@ -503,7 +503,8 @@ YUI().use('autocomplete', 'autocomplete-highlighters', 'autocomplete-filters', '
 							"WHERE { \n" +
 							"?uri rdf:type ?type; rdfs:label ?label. \n" +
 							"FILTER (" + typeCondition +
-                           "(contains(?label, '" + sQuery + "') && lang(?label)='en' ))}\n"+ 
+                             "(contains(?label, '" + sQuery + "') && lang(?label)='en' ))}\n"+ 
+//                           "(bif:contains(?label, '" + '"' + sQuery + '*"' + "') && lang(?label)='en' ))}\n"+
 //							"(regex(?label, '( |^)" + sQuery + ".*','i')))}\n" +
 							"LIMIT 500";
 				return '&query=' + encodeURIComponent(query) + '&format=json&timeout=5000'; 

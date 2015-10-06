@@ -132,8 +132,12 @@ facet.FacetManager = function (uri, inVariable){
             facetIds[hex_md5(property.uri+property.range)] = property.uri+property.range;
         }
 
-        else if(property.range == "http://www.w3.org/2001/XMLSchema#integer" || property.range=="http://www.w3.org/2001/XMLSchema#float"
-            || property.range == "http://www.w3.org/2001/XMLSchema#double" || property.range=="http://www.w3.org/2001/XMLSchema#int"){
+        else if(property.range == "http://www.w3.org/2001/XMLSchema#integer" || 
+                property.range=="http://www.w3.org/2001/XMLSchema#float" ||
+                property.range == "http://www.w3.org/2001/XMLSchema#double" || 
+                property.range=="http://www.w3.org/2001/XMLSchema#int" || 
+                property.range=="http://www.w3.org/2001/XMLSchema#decimal" || 
+                property.range=="http://www.w3.org/2001/XMLSchema#float") {
                 facets[property.uri] = facet.NumberFacet(property, self.getVariable(), typeUri);
                 //facets[property.uri] = facet.StringFacet(property, self.getVariable(), typeUri);
                 facetIds[hex_md5(property.uri)] = property.uri;

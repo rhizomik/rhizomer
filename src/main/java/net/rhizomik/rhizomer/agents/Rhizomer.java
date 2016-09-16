@@ -138,7 +138,8 @@ public class Rhizomer extends HttpServlet
     	{
     		URL requestURL = new URL(request.getRequestURL().toString());
     		String base = requestURL.getProtocol()+"://"+requestURL.getHost()+(requestURL.getPort()>0?":"+requestURL.getPort():"");
-    		String destination = base+request.getContextPath()+"/html"+request.getPathInfo();
+			String path = (request.getPathInfo() != null? request.getPathInfo():"/");
+    		String destination = base+request.getContextPath()+"/html"+path;
     		if (request.getQueryString() != null)
     			destination += "?"+request.getQueryString();
     		response.setStatus(HttpServletResponse.SC_SEE_OTHER);

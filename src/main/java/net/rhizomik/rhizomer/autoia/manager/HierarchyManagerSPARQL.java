@@ -32,7 +32,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         "   }"+NL+
         "   OPTIONAL { ?root rdfs:label ?label FILTER(LANG(?label)='en' || LANG(?label)='')}"+NL+
         "   FILTER (!bound(?super) && !isBlank(?root) && isURI(?root) && ?root!=owl:Thing )"+NL+
-        "}";
+        "} GROUP BY ?root";
 
 	protected String queryForRootsMinus = 
 	"PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
@@ -63,7 +63,7 @@ public class HierarchyManagerSPARQL extends HierarchyManager
         "   }"+NL+
         "   OPTIONAL { ?sub rdfs:label ?label FILTER(LANG(?label)='en' || LANG(?label)='')}"+NL+
         "   FILTER (!isBlank(?sub) && !bound(?sub2))"+NL+
-        "}";
+        "} GROUP BY ?root";
 	
     protected String queryForCount = 
     	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+NL+

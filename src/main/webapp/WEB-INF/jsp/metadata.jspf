@@ -14,7 +14,7 @@
 		// Define alternative query for the base path, get RSS items
 		if (location.search=="" &&
 			location.pathname =="<%=request.getContextPath()%>/html/")
-			alternativeQuery = "DESCRIBE ?r WHERE {?r a <http://purl.org/rss/1.0/item>; <http://purl.org/dc/elements/1.1/date> ?d} ORDER BY DESC(?d) LIMIT 3";
+          alternativeQuery = "DESCRIBE %3Fr WHERE %7B%3Fr a <http://purl.org/rss/1.0/item>; <http://purl.org/dc/elements/1.1/date> %3Fd%7D ORDER BY DESC(%3Fd) LIMIT 3";
 
 		// Define Rhizomer endpoint
 		var endpoint = '<%=request.getScheme()+"://"+request.getServerName()+
